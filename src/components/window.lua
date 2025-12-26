@@ -272,6 +272,10 @@ function Window:AddDropdown(config)
     return Dropdown.new(config, self.ContentArea, self.Theme, self.Utils)
 end
 
+function Window:AddMultiSelect(config)
+    return MultiSelect.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
 function Window:AddColorPicker(config)
     return ColorPicker.new(config, self.ContentArea, self.Theme, self.Utils)
 end

@@ -20,6 +20,7 @@ const config = {
         { path: 'src/components/slider.lua', name: 'Slider' },
         { path: 'src/components/textbox.lua', name: 'TextBox' },
         { path: 'src/components/dropdown.lua', name: 'Dropdown' },
+        { path: 'src/components/multiselect.lua', name: 'MultiSelect' },
         { path: 'src/components/colorpicker.lua', name: 'ColorPicker' },
         { path: 'src/components/keybind.lua', name: 'Keybind' },
         { path: 'src/components/section.lua', name: 'Section' },

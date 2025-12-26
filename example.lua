@@ -445,6 +445,16 @@ SettingsCategory:AddItem({
             end
         })
         
+        -- MultiSelect
+        window:AddMultiSelect({
+            Text = "MultiSelect Component",
+            Options = {"Feature 1", "Feature 2", "Feature 3", "Feature 4"},
+            Default = {"Feature 1"},
+            Callback = function(values)
+                print("[Test] MultiSelect:", table.concat(values, ", "))
+            end
+        })
+        
         -- ColorPicker
         window:AddColorPicker({
             Text = "ColorPicker Component",
@@ -502,12 +512,12 @@ SettingsCategory:AddItem({
         window:AddDivider()
         
         window:AddLabel({
-            Text = "✓ All 11 components are working perfectly!",
+            Text = "✓ All 12 components are working perfectly!",
             Color = window.Theme.Colors.Success
         })
         
         window:AddLabel({
-            Text = "Components: Label, Paragraph, Divider, Button, Toggle, Slider, TextBox, Dropdown, ColorPicker, Keybind, Section",
+            Text = "Components: Label, Paragraph, Divider, Button, Toggle, Slider, TextBox, Dropdown, MultiSelect, ColorPicker, Keybind, Section",
             Color = window.Theme.Colors.TextDim
         })
         

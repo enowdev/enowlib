@@ -1,30 +1,34 @@
--- EnowLib Dropdown Component
+-- EnowLib MultiSelect Component
 
-local Dropdown = {}
-Dropdown.__index = Dropdown
+local MultiSelect = {}
+MultiSelect.__index = MultiSelect
 
-function Dropdown.new(config, parent, theme, utils)
-    local self = setmetatable({}, Dropdown)
+function MultiSelect.new(config, parent, theme, utils)
+    local self = setmetatable({}, MultiSelect)
     
     self.Parent = parent
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Title = "Dropdown",
+        Text = "MultiSelect",
         Options = {"Option 1", "Option 2", "Option 3"},
-        Default = "Option 1",
-        Callback = function(value) end
+        Default = {},
+        Callback = function(values) end
     }, config or {})
     
-    self.Value = self.Config.Default
+    self.Values = {}
+    for _, v in ipairs(self.Config.Default) do
+        self.Values[v] = true
+    end
     self.Open = false
     
     self:CreateUI()
+    self:UpdateDisplay()
     
     return self
 end
 
-function Dropdown:CreateUI()
+function MultiSelect:CreateUI()
     self.Container = Instance.new("Frame")
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
@@ -41,13 +45,13 @@ function Dropdown:CreateUI()
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, 0, 0, 20)
     title.Font = self.Theme.Font.Regular
-    title.Text = self.Config.Title
+    title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
     
-    -- Dropdown Button
+    -- MultiSelect Button
     self.Button = Instance.new("TextButton")
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BorderSizePixel = 0
@@ -69,10 +73,11 @@ function Dropdown:CreateUI()
     self.SelectedText.BackgroundTransparency = 1
     self.SelectedText.Size = UDim2.new(1, -30, 1, 0)
     self.SelectedText.Font = self.Theme.Font.Mono
-    self.SelectedText.Text = self.Value
-    self.SelectedText.TextColor3 = self.Theme.Colors.Text
+    self.SelectedText.Text = "None selected"
+    self.SelectedText.TextColor3 = self.Theme.Colors.TextDim
     self.SelectedText.TextSize = self.Theme.Font.Size.Regular
     self.SelectedText.TextXAlignment = Enum.TextXAlignment.Left
+    self.SelectedText.TextTruncate = Enum.TextTruncate.AtEnd
     self.SelectedText.Parent = self.Button
     
     -- Chevron Icon
@@ -105,7 +110,6 @@ function Dropdown:CreateUI()
     layout.Parent = self.OptionsList
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        local maxHeight = math.min(layout.AbsoluteContentSize.Y, 150)
         self.OptionsList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y)
     end)
     
@@ -120,38 +124,134 @@ function Dropdown:CreateUI()
     end)
 end
 
-function Dropdown:CreateOption(optionText)
+function MultiSelect:CreateOption(optionText)
     local option = Instance.new("TextButton")
     option.BackgroundColor3 = self.Theme.Colors.Panel
     option.BackgroundTransparency = 1
     option.BorderSizePixel = 0
     option.Size = UDim2.new(1, 0, 0, 32)
     option.Font = self.Theme.Font.Mono
-    option.Text = optionText
-    option.TextColor3 = self.Theme.Colors.TextDim
-    option.TextSize = self.Theme.Font.Size.Regular
-    option.TextXAlignment = Enum.TextXAlignment.Left
+    option.Text = ""
     option.AutoButtonColor = false
     option.Parent = self.OptionsList
     
     self.Theme.CreatePadding(option, 10)
     
+    -- Checkbox
+    local checkbox = Instance.new("Frame")
+    checkbox.BackgroundColor3 = self.Theme.Colors.Secondary
+    checkbox.BorderSizePixel = 0
+    checkbox.Size = UDim2.fromOffset(18, 18)
+    checkbox.Position = UDim2.fromOffset(0, 7)
+    checkbox.Parent = option
+    
+    self.Theme.CreateCorner(checkbox, 4)
+    self.Theme.CreateStroke(checkbox, self.Theme.Colors.Border)
+    
+    -- Check Icon
+    local checkIcon = Instance.new("ImageLabel")
+    checkIcon.BackgroundTransparency = 1
+    checkIcon.Size = UDim2.fromOffset(14, 14)
+    checkIcon.Position = UDim2.fromScale(0.5, 0.5)
+    checkIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    checkIcon.Image = self.Theme.Icons.Check
+    checkIcon.ImageColor3 = self.Theme.Colors.Accent
+    checkIcon.ImageTransparency = 1
+    checkIcon.Parent = checkbox
+    
+    -- Option Text
+    local optionLabel = Instance.new("TextLabel")
+    optionLabel.BackgroundTransparency = 1
+    optionLabel.Size = UDim2.new(1, -28, 1, 0)
+    optionLabel.Position = UDim2.fromOffset(28, 0)
+    optionLabel.Font = self.Theme.Font.Mono
+    optionLabel.Text = optionText
+    optionLabel.TextColor3 = self.Theme.Colors.TextDim
+    optionLabel.TextSize = self.Theme.Font.Size.Regular
+    optionLabel.TextXAlignment = Enum.TextXAlignment.Left
+    optionLabel.Parent = option
+    
+    -- Update visual if already selected
+    if self.Values[optionText] then
+        checkbox.BackgroundColor3 = self.Theme.Colors.Accent
+        checkIcon.ImageTransparency = 0
+        optionLabel.TextColor3 = self.Theme.Colors.Text
+    end
+    
     option.MouseButton1Click:Connect(function()
-        self:Select(optionText)
+        self:ToggleOption(optionText, checkbox, checkIcon, optionLabel)
     end)
     
     option.MouseEnter:Connect(function()
         option.BackgroundTransparency = 0.9
-        option.TextColor3 = self.Theme.Colors.Accent
     end)
     
     option.MouseLeave:Connect(function()
         option.BackgroundTransparency = 1
-        option.TextColor3 = self.Theme.Colors.TextDim
     end)
 end
 
-function Dropdown:Toggle()
+function MultiSelect:ToggleOption(optionText, checkbox, checkIcon, optionLabel)
+    self.Values[optionText] = not self.Values[optionText]
+    
+    if self.Values[optionText] then
+        self.Utils.Tween(checkbox, {
+            BackgroundColor3 = self.Theme.Colors.Accent
+        }, 0.15)
+        self.Utils.Tween(checkIcon, {
+            ImageTransparency = 0
+        }, 0.15)
+        self.Utils.Tween(optionLabel, {
+            TextColor3 = self.Theme.Colors.Text
+        }, 0.15)
+    else
+        self.Utils.Tween(checkbox, {
+            BackgroundColor3 = self.Theme.Colors.Secondary
+        }, 0.15)
+        self.Utils.Tween(checkIcon, {
+            ImageTransparency = 1
+        }, 0.15)
+        self.Utils.Tween(optionLabel, {
+            TextColor3 = self.Theme.Colors.TextDim
+        }, 0.15)
+    end
+    
+    self:UpdateDisplay()
+    
+    local selectedValues = {}
+    for value, selected in pairs(self.Values) do
+        if selected then
+            table.insert(selectedValues, value)
+        end
+    end
+    
+    pcall(self.Config.Callback, selectedValues)
+end
+
+function MultiSelect:UpdateDisplay()
+    local selectedCount = 0
+    local selectedList = {}
+    
+    for value, selected in pairs(self.Values) do
+        if selected then
+            selectedCount = selectedCount + 1
+            table.insert(selectedList, value)
+        end
+    end
+    
+    if selectedCount == 0 then
+        self.SelectedText.Text = "None selected"
+        self.SelectedText.TextColor3 = self.Theme.Colors.TextDim
+    elseif selectedCount == 1 then
+        self.SelectedText.Text = selectedList[1]
+        self.SelectedText.TextColor3 = self.Theme.Colors.Text
+    else
+        self.SelectedText.Text = selectedCount .. " items selected"
+        self.SelectedText.TextColor3 = self.Theme.Colors.Text
+    end
+end
+
+function MultiSelect:Toggle()
     self.Open = not self.Open
     
     if self.Open then
@@ -168,11 +268,4 @@ function Dropdown:Toggle()
     end
 end
 
-function Dropdown:Select(value)
-    self.Value = value
-    self.SelectedText.Text = value
-    self:Toggle()
-    pcall(self.Config.Callback, value)
-end
-
-return Dropdown
+return MultiSelect

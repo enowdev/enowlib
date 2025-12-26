@@ -83,6 +83,10 @@ function Section:AddDropdown(config)
     return Dropdown.new(config, self.ContentContainer, self.Theme, self.Utils)
 end
 
+function Section:AddMultiSelect(config)
+    return MultiSelect.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
 function Section:AddColorPicker(config)
     return ColorPicker.new(config, self.ContentContainer, self.Theme, self.Utils)
 end
