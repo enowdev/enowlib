@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
--- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 12:17:13
+-- Radix UI Style - Modern Minimalist Design
+-- Built: 2025-12-26 12:19:35
 -- Author: EnowHub Development
 
 local EnowLib = {}

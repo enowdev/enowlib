@@ -89,7 +89,7 @@ end
 
 // Build header
 const header = `-- EnowLib v2.0.0
--- Vaporwave Tech Dark UI Library
+-- Radix UI Style - Modern Minimalist Design
 -- Built: ${new Date().toISOString().replace('T', ' ').substring(0, 19)}
 -- Author: EnowHub Development
 
