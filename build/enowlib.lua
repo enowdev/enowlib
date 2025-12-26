@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 13:54:44
+-- Built: 2025-12-26 13:57:24
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1569,52 +1569,62 @@ function Window:SelectTab(tab)
 end
 
 function Window:ShowContent(contentFunc)
-    -- Shutter out animation (close)
+    self.Utils.ClearChildren(self.ContentArea)
+    
+    if contentFunc then
+        pcall(contentFunc, self.ContentArea, self.Theme, self.Utils)
+    end
+end
+
+function Window:Toggle()
+    if self.Container.Visible then
+        self:Hide()
+    else
+        self:Show()
+    end
+end
+
+function Window:Hide()
+    -- Create shutter for hide animation
     local shutter = Instance.new("Frame")
     shutter.BackgroundColor3 = self.Theme.Colors.Accent
     shutter.BorderSizePixel = 0
     shutter.Size = UDim2.fromScale(0, 0)
     shutter.Position = UDim2.fromScale(0, 0)
-    shutter.ZIndex = 10
-    shutter.Parent = self.ContentArea
+    shutter.Rotation = 15
+    shutter.ZIndex = 100
+    shutter.Parent = self.Container
     
-    -- Animate shutter diagonal expand
+    -- Animate shutter diagonal expand to cover window
     self.Utils.Tween(shutter, {
         Size = UDim2.fromScale(1.5, 1.5),
-        Position = UDim2.fromScale(-0.25, -0.25),
-        Rotation = 15
-    }, 0.3, self.Theme.Animation.Style, self.Theme.Animation.Direction, function()
-        -- Clear old content
-        self.Utils.ClearChildren(self.ContentArea)
-        
-        -- Load new content
-        if contentFunc then
-            pcall(contentFunc, self.ContentArea, self.Theme, self.Utils)
-        end
-        
-        -- Create new shutter for in animation
-        local shutterIn = Instance.new("Frame")
-        shutterIn.BackgroundColor3 = self.Theme.Colors.Accent
-        shutterIn.BorderSizePixel = 0
-        shutterIn.Size = UDim2.fromScale(1.5, 1.5)
-        shutterIn.Position = UDim2.fromScale(-0.25, -0.25)
-        shutterIn.Rotation = 15
-        shutterIn.ZIndex = 10
-        shutterIn.Parent = self.ContentArea
-        
-        -- Animate shutter diagonal collapse
-        self.Utils.Tween(shutterIn, {
-            Size = UDim2.fromScale(0, 0),
-            Position = UDim2.fromScale(1, 1),
-            Rotation = 15
-        }, 0.3, self.Theme.Animation.Style, self.Theme.Animation.Direction, function()
-            shutterIn:Destroy()
-        end)
+        Position = UDim2.fromScale(-0.25, -0.25)
+    }, 0.4, self.Theme.Animation.Style, self.Theme.Animation.Direction, function()
+        self.Container.Visible = false
+        shutter:Destroy()
     end)
 end
 
-function Window:Toggle()
-    self.Container.Visible = not self.Container.Visible
+function Window:Show()
+    self.Container.Visible = true
+    
+    -- Create shutter for show animation
+    local shutter = Instance.new("Frame")
+    shutter.BackgroundColor3 = self.Theme.Colors.Accent
+    shutter.BorderSizePixel = 0
+    shutter.Size = UDim2.fromScale(1.5, 1.5)
+    shutter.Position = UDim2.fromScale(-0.25, -0.25)
+    shutter.Rotation = 15
+    shutter.ZIndex = 100
+    shutter.Parent = self.Container
+    
+    -- Animate shutter diagonal collapse to reveal window
+    self.Utils.Tween(shutter, {
+        Size = UDim2.fromScale(0, 0),
+        Position = UDim2.fromScale(1, 1)
+    }, 0.4, self.Theme.Animation.Style, self.Theme.Animation.Direction, function()
+        shutter:Destroy()
+    end)
 end
 Window = Window
 assert(Window, "Failed to assign Window module")
