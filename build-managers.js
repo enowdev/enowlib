@@ -23,6 +23,11 @@ const managers = [
         name: 'SaveManager',
         source: 'src/managers/savemanager.lua',
         output: 'build/managers/savemanager.lua'
+    },
+    {
+        name: 'KeySystemManager',
+        source: 'src/managers/keysystemmanager.lua',
+        output: 'build/managers/keysystemmanager.lua'
     }
 ];
 
