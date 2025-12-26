@@ -45,99 +45,242 @@ function KeySystemManager:Initialize(config)
 end
 
 function KeySystemManager:CreateUI()
-    -- Load EnowLib for UI
-    local EnowLib = self:GetEnowLib()
-    if not EnowLib then
-        warn("[KeySystemManager] EnowLib not found")
-        return
-    end
+    -- Cache services
+    local CoreGui = game:GetService("CoreGui")
+    local TweenService = game:GetService("TweenService")
     
-    -- Create blocking window
-    self.Window = EnowLib:CreateWindow({
-        Title = self.Config.Title,
-        Size = UDim2.fromOffset(500, 300)
-    })
+    -- Get theme colors (use default hacker theme)
+    local theme = {
+        Background = Color3.fromRGB(13, 17, 23),
+        Panel = Color3.fromRGB(22, 27, 34),
+        Secondary = Color3.fromRGB(33, 38, 45),
+        Accent = Color3.fromRGB(46, 204, 113),
+        AccentHover = Color3.fromRGB(39, 174, 96),
+        Text = Color3.fromRGB(201, 209, 217),
+        TextDim = Color3.fromRGB(139, 148, 158),
+        Border = Color3.fromRGB(48, 54, 61),
+        Error = Color3.fromRGB(231, 76, 60),
+        Success = Color3.fromRGB(46, 204, 113)
+    }
     
-    -- Add content
-    self.Window:AddLabel({
-        Text = "> " .. self.Config.Title,
-        Size = 18,
-        Color = self.Window.Theme.Colors.Accent,
-        Font = self.Window.Theme.Font.Bold
-    })
+    -- ScreenGui
+    self.ScreenGui = Instance.new("ScreenGui")
+    self.ScreenGui.Name = "EnowLibKeySystem"
+    self.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    self.ScreenGui.ResetOnSpawn = false
     
-    self.Window:AddParagraph({
-        Title = "Information",
-        Content = self.Config.Description
-    })
+    -- Background blur
+    local blur = Instance.new("Frame")
+    blur.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    blur.BackgroundTransparency = 0.3
+    blur.BorderSizePixel = 0
+    blur.Size = UDim2.fromScale(1, 1)
+    blur.Parent = self.ScreenGui
     
-    self.Window:AddDivider()
+    -- Login Container
+    local container = Instance.new("Frame")
+    container.BackgroundColor3 = theme.Panel
+    container.BackgroundTransparency = 0.1
+    container.BorderSizePixel = 0
+    container.Size = UDim2.fromOffset(400, 350)
+    container.Position = UDim2.fromScale(0.5, 0.5)
+    container.AnchorPoint = Vector2.new(0.5, 0.5)
+    container.Parent = self.ScreenGui
     
-    -- Key input
-    local keyInput = ""
-    self.Window:AddTextBox({
-        Text = "Enter Key",
-        Placeholder = "Paste your key here...",
-        Default = "",
-        Callback = function(value)
-            keyInput = value
+    local containerCorner = Instance.new("UICorner")
+    containerCorner.CornerRadius = UDim.new(0, 12)
+    containerCorner.Parent = container
+    
+    local containerStroke = Instance.new("UIStroke")
+    containerStroke.Color = theme.Border
+    containerStroke.Thickness = 1
+    containerStroke.Parent = container
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, -40, 0, 40)
+    title.Position = UDim2.fromOffset(20, 20)
+    title.Font = Enum.Font.GothamBold
+    title.Text = self.Config.Title
+    title.TextColor3 = theme.Accent
+    title.TextSize = 24
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = container
+    
+    -- Description
+    local desc = Instance.new("TextLabel")
+    desc.BackgroundTransparency = 1
+    desc.Size = UDim2.new(1, -40, 0, 40)
+    desc.Position = UDim2.fromOffset(20, 60)
+    desc.Font = Enum.Font.Gotham
+    desc.Text = self.Config.Description
+    desc.TextColor3 = theme.TextDim
+    desc.TextSize = 12
+    desc.TextXAlignment = Enum.TextXAlignment.Left
+    desc.TextWrapped = true
+    desc.Parent = container
+    
+    -- Username Field (read-only, decorative)
+    local usernameLabel = Instance.new("TextLabel")
+    usernameLabel.BackgroundTransparency = 1
+    usernameLabel.Size = UDim2.new(1, -40, 0, 16)
+    usernameLabel.Position = UDim2.fromOffset(20, 120)
+    usernameLabel.Font = Enum.Font.RobotoMono
+    usernameLabel.Text = "USERNAME"
+    usernameLabel.TextColor3 = theme.TextDim
+    usernameLabel.TextSize = 11
+    usernameLabel.TextXAlignment = Enum.TextXAlignment.Left
+    usernameLabel.Parent = container
+    
+    local usernameBox = Instance.new("Frame")
+    usernameBox.BackgroundColor3 = theme.Secondary
+    usernameBox.BorderSizePixel = 0
+    usernameBox.Size = UDim2.new(1, -40, 0, 40)
+    usernameBox.Position = UDim2.fromOffset(20, 140)
+    usernameBox.Parent = container
+    
+    local usernameCorner = Instance.new("UICorner")
+    usernameCorner.CornerRadius = UDim.new(0, 6)
+    usernameCorner.Parent = usernameBox
+    
+    local usernameText = Instance.new("TextLabel")
+    usernameText.BackgroundTransparency = 1
+    usernameText.Size = UDim2.new(1, -20, 1, 0)
+    usernameText.Position = UDim2.fromOffset(10, 0)
+    usernameText.Font = Enum.Font.RobotoMono
+    usernameText.Text = self.Config.Username or "enowhub"
+    usernameText.TextColor3 = theme.Text
+    usernameText.TextSize = 14
+    usernameText.TextXAlignment = Enum.TextXAlignment.Left
+    usernameText.Parent = usernameBox
+    
+    -- Key Field (input)
+    local keyLabel = Instance.new("TextLabel")
+    keyLabel.BackgroundTransparency = 1
+    keyLabel.Size = UDim2.new(1, -40, 0, 16)
+    keyLabel.Position = UDim2.fromOffset(20, 190)
+    keyLabel.Font = Enum.Font.RobotoMono
+    keyLabel.Text = "KEY"
+    keyLabel.TextColor3 = theme.TextDim
+    keyLabel.TextSize = 11
+    keyLabel.TextXAlignment = Enum.TextXAlignment.Left
+    keyLabel.Parent = container
+    
+    local keyBox = Instance.new("TextBox")
+    keyBox.BackgroundColor3 = theme.Secondary
+    keyBox.BorderSizePixel = 0
+    keyBox.Size = UDim2.new(1, -40, 0, 40)
+    keyBox.Position = UDim2.fromOffset(20, 210)
+    keyBox.Font = Enum.Font.RobotoMono
+    keyBox.PlaceholderText = "Enter your key..."
+    keyBox.Text = ""
+    keyBox.TextColor3 = theme.Text
+    keyBox.PlaceholderColor3 = theme.TextDim
+    keyBox.TextSize = 14
+    keyBox.TextXAlignment = Enum.TextXAlignment.Left
+    keyBox.ClearTextOnFocus = false
+    keyBox.Parent = container
+    
+    local keyCorner = Instance.new("UICorner")
+    keyCorner.CornerRadius = UDim.new(0, 6)
+    keyCorner.Parent = keyBox
+    
+    local keyPadding = Instance.new("UIPadding")
+    keyPadding.PaddingLeft = UDim.new(0, 10)
+    keyPadding.PaddingRight = UDim.new(0, 10)
+    keyPadding.Parent = keyBox
+    
+    -- Status Label
+    self.StatusLabel = Instance.new("TextLabel")
+    self.StatusLabel.BackgroundTransparency = 1
+    self.StatusLabel.Size = UDim2.new(1, -40, 0, 20)
+    self.StatusLabel.Position = UDim2.fromOffset(20, 260)
+    self.StatusLabel.Font = Enum.Font.RobotoMono
+    self.StatusLabel.Text = "Waiting for key..."
+    self.StatusLabel.TextColor3 = theme.TextDim
+    self.StatusLabel.TextSize = 11
+    self.StatusLabel.TextXAlignment = Enum.TextXAlignment.Center
+    self.StatusLabel.Parent = container
+    
+    -- Validate Button
+    local validateBtn = Instance.new("TextButton")
+    validateBtn.BackgroundColor3 = theme.Accent
+    validateBtn.BorderSizePixel = 0
+    validateBtn.Size = UDim2.new(1, -40, 0, 40)
+    validateBtn.Position = UDim2.fromOffset(20, 290)
+    validateBtn.Font = Enum.Font.GothamBold
+    validateBtn.Text = "VALIDATE"
+    validateBtn.TextColor3 = Color3.new(0, 0, 0)
+    validateBtn.TextSize = 14
+    validateBtn.AutoButtonColor = false
+    validateBtn.Parent = container
+    
+    local validateCorner = Instance.new("UICorner")
+    validateCorner.CornerRadius = UDim.new(0, 6)
+    validateCorner.Parent = validateBtn
+    
+    -- Button hover effect
+    validateBtn.MouseEnter:Connect(function()
+        TweenService:Create(validateBtn, TweenInfo.new(0.2), {
+            BackgroundColor3 = theme.AccentHover
+        }):Play()
+    end)
+    
+    validateBtn.MouseLeave:Connect(function()
+        TweenService:Create(validateBtn, TweenInfo.new(0.2), {
+            BackgroundColor3 = theme.Accent
+        }):Play()
+    end)
+    
+    -- Validate button click
+    validateBtn.MouseButton1Click:Connect(function()
+        local key = keyBox.Text
+        
+        if key == "" then
+            self:UpdateStatus("Please enter a key", "error")
+            return
         end
-    })
+        
+        self:ValidateKey(key, false)
+    end)
     
-    -- Status label
-    self.StatusLabel = self.Window:AddLabel({
-        Text = "Waiting for key...",
-        Color = self.Window.Theme.Colors.TextDim
-    })
-    
-    self.Window:AddDivider()
-    
-    -- Buttons
-    local buttonSection = self.Window:AddSection({
-        Title = "Actions"
-    })
-    
-    -- Validate button
-    buttonSection:AddButton({
-        Text = "Validate Key",
-        Callback = function()
-            if keyInput == "" then
-                self:UpdateStatus("Please enter a key", "error")
-                return
-            end
-            
-            self:ValidateKey(keyInput, false)
-        end
-    })
-    
-    -- Get key button (optional)
+    -- Get Key link (optional)
     if self.Config.GetKeyUrl then
-        buttonSection:AddButton({
-            Text = "Get Key",
-            Callback = function()
-                local success = pcall(function()
-                    if setclipboard then
-                        setclipboard(self.Config.GetKeyUrl)
-                        self:UpdateStatus("Link copied to clipboard!", "success")
-                    else
-                        self:UpdateStatus("URL: " .. self.Config.GetKeyUrl, "info")
-                    end
-                end)
-                
-                if not success then
-                    self:UpdateStatus("URL: " .. self.Config.GetKeyUrl, "info")
+        local getKeyBtn = Instance.new("TextButton")
+        getKeyBtn.BackgroundTransparency = 1
+        getKeyBtn.Size = UDim2.new(1, 0, 0, 20)
+        getKeyBtn.Position = UDim2.new(0, 0, 1, -30)
+        getKeyBtn.Font = Enum.Font.RobotoMono
+        getKeyBtn.Text = "Get Key"
+        getKeyBtn.TextColor3 = theme.Accent
+        getKeyBtn.TextSize = 11
+        getKeyBtn.Parent = container
+        
+        getKeyBtn.MouseButton1Click:Connect(function()
+            local success = pcall(function()
+                if setclipboard then
+                    setclipboard(self.Config.GetKeyUrl)
+                    self:UpdateStatus("Link copied to clipboard!", "success")
                 end
-            end
-        })
+            end)
+        end)
+        
+        getKeyBtn.MouseEnter:Connect(function()
+            getKeyBtn.TextColor3 = theme.AccentHover
+        end)
+        
+        getKeyBtn.MouseLeave:Connect(function()
+            getKeyBtn.TextColor3 = theme.Accent
+        end)
     end
     
-    -- Close button
-    buttonSection:AddButton({
-        Text = "Close",
-        Callback = function()
-            self:Close()
-        end
-    })
+    -- Store references
+    self.Container = container
+    self.Theme = theme
+    
+    -- Parent to CoreGui
+    self.ScreenGui.Parent = CoreGui
 end
 
 function KeySystemManager:ValidateKey(key, silent)
@@ -201,20 +344,20 @@ function KeySystemManager:UpdateStatus(text, statusType)
     if not self.StatusLabel then return end
     
     local colors = {
-        info = self.Window.Theme.Colors.TextDim,
-        success = self.Window.Theme.Colors.Success,
-        warning = self.Window.Theme.Colors.Warning,
-        error = self.Window.Theme.Colors.Error
+        info = self.Theme.TextDim,
+        success = self.Theme.Success,
+        warning = Color3.fromRGB(241, 196, 15),
+        error = self.Theme.Error
     }
     
-    self.StatusLabel.Container:FindFirstChildOfClass("TextLabel").Text = text
-    self.StatusLabel.Container:FindFirstChildOfClass("TextLabel").TextColor3 = colors[statusType] or colors.info
+    self.StatusLabel.Text = text
+    self.StatusLabel.TextColor3 = colors[statusType] or colors.info
 end
 
 function KeySystemManager:OnSuccess()
-    -- Close key system window
-    if self.Window and self.Window.Container then
-        self.Window.Container:Destroy()
+    -- Close key system UI
+    if self.ScreenGui then
+        self.ScreenGui:Destroy()
     end
     
     -- Call success callback
@@ -222,8 +365,8 @@ function KeySystemManager:OnSuccess()
 end
 
 function KeySystemManager:Close()
-    if self.Window and self.Window.Container then
-        self.Window.Container:Destroy()
+    if self.ScreenGui then
+        self.ScreenGui:Destroy()
     end
     
     pcall(self.Config.OnClose)
@@ -302,27 +445,9 @@ function KeySystemManager:GetHWID()
     return tostring(Players.LocalPlayer.UserId)
 end
 
-function KeySystemManager:GetEnowLib()
-    -- Try to get EnowLib from global
-    if _G.EnowLib then
-        return _G.EnowLib
-    end
-    
-    -- Try to require from ReplicatedStorage
-    local success, enowlib = pcall(function()
-        return require(game:GetService("ReplicatedStorage"):WaitForChild("EnowLib"))
-    end)
-    
-    if success then
-        return enowlib
-    end
-    
-    return nil
-end
-
 function KeySystemManager:Destroy()
-    if self.Window and self.Window.Container then
-        self.Window.Container:Destroy()
+    if self.ScreenGui then
+        self.ScreenGui:Destroy()
     end
     
     self.Initialized = false

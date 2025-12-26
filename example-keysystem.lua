@@ -3,13 +3,10 @@
 
 print("=== EnowLib KeySystem Example ===")
 
--- Load EnowLib first (required for UI)
-_G.EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua"))()
-
--- Load KeySystemManager
+-- Load KeySystemManager (no need to load EnowLib first)
 local KeySystemManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/keysystemmanager.lua"))()
 
-print("Libraries loaded!")
+print("KeySystemManager loaded!")
 
 -- Example 1: Simple true/false validation (server-side logic)
 local function simpleValidation()
@@ -113,8 +110,9 @@ end
 -- Example 3: Validate from GitHub file (keysample.txt)
 local function githubFileValidation()
     KeySystemManager:Initialize({
-        Title = "EnowLib Key System",
-        Description = "Enter your key to access the script. Valid keys are stored in keysample.txt on GitHub.",
+        Title = "ENOWLIB KEY SYSTEM",
+        Description = "Enter your key to access the script",
+        Username = "enowhub",
         
         ValidateKey = function(key)
             -- Fetch valid keys from GitHub
@@ -184,7 +182,10 @@ end
 
 -- Create main window after successful validation
 function createMainWindow()
-    local Window = _G.EnowLib:CreateWindow({
+    -- Load EnowLib for main window
+    local EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua"))()
+    
+    local Window = EnowLib:CreateWindow({
         Title = "Main Script",
         Size = UDim2.fromOffset(800, 500)
     })
