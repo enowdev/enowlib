@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 12:19:35
+-- Built: 2025-12-26 12:22:50
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2559,9 +2559,6 @@ function Section:CreateUI()
         self:Toggle()
     end)
     
-    -- Hover effect
-    self.Header.MouseEnter:Connect(function()
-        self.Utils.Tween(self.Header, {
     -- Hover effects (Radix UI subtle)
     self.Header.MouseEnter:Connect(function()
         self.Utils.Tween(self.Header, {
@@ -2602,6 +2599,7 @@ function Section:Toggle()
         end)
     end
 end
+
 function Section:UpdateSize()
     local contentHeight = self.Collapsed and 0 or self.Layout.AbsoluteContentSize.Y
     local totalHeight = 36 + contentHeight

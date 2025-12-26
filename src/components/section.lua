@@ -94,9 +94,6 @@ function Section:CreateUI()
         self:Toggle()
     end)
     
-    -- Hover effect
-    self.Header.MouseEnter:Connect(function()
-        self.Utils.Tween(self.Header, {
     -- Hover effects (Radix UI subtle)
     self.Header.MouseEnter:Connect(function()
         self.Utils.Tween(self.Header, {
@@ -137,6 +134,7 @@ function Section:Toggle()
         end)
     end
 end
+
 function Section:UpdateSize()
     local contentHeight = self.Collapsed and 0 or self.Layout.AbsoluteContentSize.Y
     local totalHeight = 36 + contentHeight
