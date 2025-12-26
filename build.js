@@ -97,19 +97,25 @@ const footer = `
 EnowLib.Version = "2.0.0"
 EnowLib.Author = "EnowHub Development"
 
--- Initialize notification system
-Notification.Initialize(Theme, Utils)
-
 -- Create window
 function EnowLib:CreateWindow(config)
+    -- Initialize notification system (lazy init)
+    if Notification and Notification.Initialize and not Notification.Initialized then
+        Notification.Initialize(Theme, Utils)
+        Notification.Initialized = true
+    end
+    
     local window = Window.new(config, Theme, Utils, EnowLib)
     
     -- Initialize managers
-    SaveManager.Initialize(window)
-    InterfaceManager.Initialize(window)
+    if SaveManager and SaveManager.Initialize then
+        SaveManager.Initialize(window)
+    end
     
-    -- Load saved interface settings
-    InterfaceManager.LoadSettings()
+    if InterfaceManager and InterfaceManager.Initialize then
+        InterfaceManager.Initialize(window)
+        InterfaceManager.LoadSettings()
+    end
     
     window.SaveManager = SaveManager
     window.InterfaceManager = InterfaceManager
@@ -119,6 +125,12 @@ end
 
 -- Show notification
 function EnowLib:Notify(config)
+    -- Initialize notification system if not already done
+    if Notification and Notification.Initialize and not Notification.Initialized then
+        Notification.Initialize(Theme, Utils)
+        Notification.Initialized = true
+    end
+    
     config.Theme = Theme
     config.Utils = Utils
     return Notification.Show(config)
