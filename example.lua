@@ -53,20 +53,24 @@ local Window = EnowLib:CreateWindow({
 local BasicTab = Window:AddTab({Title = "Basic"})
 
 BasicTab:AddLabel({
-    Text = "EnowLib v2.0.0 - Complete Component Test",
+    Text = "EnowLib v2.0.0 - Y2K Aesthetic UI",
     Size = "Large",
-    Color = Color3.fromRGB(138, 43, 226)
+    Color = Color3.fromRGB(0, 200, 255)
 })
 
 BasicTab:AddLabel({
-    Text = "Testing all 13 components with live functionality",
+    Text = "Click section headers to expand/collapse",
     Size = "Regular",
-    Color = Color3.fromRGB(150, 150, 170)
+    Color = Color3.fromRGB(100, 100, 120)
 })
 
-BasicTab:AddSection({Title = "BUTTONS"})
+-- BUTTONS SECTION (Collapsible)
+local ButtonSection = BasicTab:AddSection({
+    Title = "BUTTONS",
+    Collapsed = false  -- Start expanded
+})
 
-BasicTab:AddButton({
+ButtonSection:AddButton({
     Title = "Simple Button",
     Description = "Click to show notification",
     Callback = function()
@@ -79,7 +83,7 @@ BasicTab:AddButton({
     end
 })
 
-BasicTab:AddButton({
+ButtonSection:AddButton({
     Title = "Test All Notifications",
     Description = "Shows all notification types",
     Callback = function()
@@ -119,9 +123,13 @@ BasicTab:AddButton({
     end
 })
 
-BasicTab:AddSection({Title = "TOGGLES"})
+-- TOGGLES SECTION (Collapsible)
+local ToggleSection = BasicTab:AddSection({
+    Title = "TOGGLES",
+    Collapsed = false
+})
 
-local testToggle = BasicTab:AddToggle({
+ToggleSection:AddToggle({
     Title = "Test Toggle",
     Description = "Toggle on/off to test",
     Default = false,
@@ -136,7 +144,7 @@ local testToggle = BasicTab:AddToggle({
     end
 })
 
-BasicTab:AddToggle({
+ToggleSection:AddToggle({
     Title = "WalkSpeed Boost",
     Description = "Increase walk speed to 50",
     Default = false,
@@ -164,9 +172,13 @@ BasicTab:AddToggle({
     end
 })
 
-BasicTab:AddSection({Title = "SLIDERS"})
+-- SLIDERS SECTION (Collapsible - Start Collapsed)
+local SliderSection = BasicTab:AddSection({
+    Title = "SLIDERS",
+    Collapsed = true  -- Start collapsed to save space
+})
 
-BasicTab:AddSlider({
+SliderSection:AddSlider({
     Title = "Test Slider",
     Description = "Drag to change value",
     Min = 0,
@@ -178,7 +190,7 @@ BasicTab:AddSlider({
     end
 })
 
-BasicTab:AddSlider({
+SliderSection:AddSlider({
     Title = "WalkSpeed Control",
     Description = "Control your walk speed",
     Min = 16,
@@ -193,7 +205,7 @@ BasicTab:AddSlider({
     end
 })
 
-BasicTab:AddSlider({
+SliderSection:AddSlider({
     Title = "JumpPower Control",
     Description = "Control your jump power",
     Min = 50,
@@ -208,9 +220,13 @@ BasicTab:AddSlider({
     end
 })
 
-BasicTab:AddSection({Title = "INPUTS"})
+-- INPUTS SECTION (Collapsible - Start Collapsed)
+local InputSection = BasicTab:AddSection({
+    Title = "INPUTS",
+    Collapsed = true
+})
 
-BasicTab:AddInput({
+InputSection:AddInput({
     Title = "Test Input",
     Description = "Type and press Enter",
     Placeholder = "Enter text here...",
@@ -226,7 +242,7 @@ BasicTab:AddInput({
     end
 })
 
-BasicTab:AddInput({
+InputSection:AddInput({
     Title = "Player Name",
     Description = "Enter player name to find",
     Placeholder = "Username...",
@@ -250,9 +266,13 @@ BasicTab:AddInput({
     end
 })
 
-BasicTab:AddSection({Title = "DROPDOWNS"})
+-- DROPDOWNS SECTION (Collapsible - Start Collapsed)
+local DropdownSection = BasicTab:AddSection({
+    Title = "DROPDOWNS",
+    Collapsed = true
+})
 
-BasicTab:AddDropdown({
+DropdownSection:AddDropdown({
     Title = "Test Dropdown",
     Description = "Select an option",
     Options = {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"},
