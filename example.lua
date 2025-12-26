@@ -2,11 +2,22 @@
 -- Test all components and features
 -- Load from GitHub: https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua
 
+print("========================================")
+print("EnowLib v2.0.0 - Example Script")
+print("========================================")
 print("Loading EnowLib from GitHub...")
 
 -- Add cache buster to force fresh download
 local cacheBuster = tostring(os.time())
-local EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua?" .. cacheBuster))()
+local success, result = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua?" .. cacheBuster, true))()
+end)
+
+if not success then
+    error("Failed to download EnowLib: " .. tostring(result))
+end
+
+local EnowLib = result
 
 if not EnowLib then
     error("Failed to load EnowLib!")
@@ -14,8 +25,23 @@ end
 
 print("EnowLib loaded successfully!")
 print("Version:", EnowLib.Version)
+print("Author:", EnowLib.Author)
+print("========================================")
+
+-- Verify modules
+print("\nVerifying modules...")
+local modules = {"CreateWindow", "Notify", "GetTheme", "GetUtils"}
+for _, module in ipairs(modules) do
+    if EnowLib[module] then
+        print("  [OK]", module)
+    else
+        warn("  [MISSING]", module)
+    end
+end
+print("========================================")
 
 -- Create window
+print("\nCreating window...")
 local Window = EnowLib:CreateWindow({
     Title = "EnowLib v2.0 Test Suite",
     Size = UDim2.fromOffset(580, 460)

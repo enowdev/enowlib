@@ -105,6 +105,12 @@ EnowLib.Author = "EnowHub Development"
 
 -- Create window
 function EnowLib:CreateWindow(config)
+    -- Verify all required modules are loaded
+    assert(Theme, "Theme module not loaded")
+    assert(Utils, "Utils module not loaded")
+    assert(Window, "Window module not loaded")
+    assert(Tab, "Tab module not loaded")
+    
     -- Initialize notification system (lazy init)
     if Notification and Notification.Initialize and not Notification.Initialized then
         Notification.Initialize(Theme, Utils)
