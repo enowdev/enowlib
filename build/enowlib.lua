@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 12:48:55
+-- Built: 2025-12-26 12:54:42
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -25,26 +25,26 @@ Theme.Icons = {
 -- Dark Mode Color Palette
 Theme.Colors = {
     Background = Color3.fromRGB(10, 10, 10),
-    Panel = Color3.fromRGB(20, 20, 20),
-    Secondary = Color3.fromRGB(30, 30, 30),
+    Panel = Color3.fromRGB(24, 24, 27),
+    Secondary = Color3.fromRGB(39, 39, 42),
     
-    Accent = Color3.fromRGB(99, 102, 241),
-    AccentHover = Color3.fromRGB(129, 140, 248),
+    Accent = Color3.fromRGB(139, 92, 246),
+    AccentHover = Color3.fromRGB(167, 139, 250),
     
-    Text = Color3.fromRGB(255, 255, 255),
-    TextDim = Color3.fromRGB(160, 160, 160),
+    Text = Color3.fromRGB(250, 250, 250),
+    TextDim = Color3.fromRGB(161, 161, 170),
     
-    Border = Color3.fromRGB(40, 40, 40),
+    Border = Color3.fromRGB(63, 63, 70),
     
-    Success = Color3.fromRGB(34, 197, 94),
-    Error = Color3.fromRGB(239, 68, 68)
+    Success = Color3.fromRGB(74, 222, 128),
+    Error = Color3.fromRGB(248, 113, 113)
 }
 
 -- Transparency
 Theme.Transparency = {
     None = 0,
-    Glass = 0.2,
-    Subtle = 0.5
+    Glass = 0.15,
+    Subtle = 0.3
 }
 
 -- Typography
@@ -475,13 +475,14 @@ end
 
 function Toggle:CreateUI()
     self.Container = Instance.new("Frame")
-    self.Container.BackgroundColor3 = self.Theme.Colors.Secondary
-    self.Container.BackgroundTransparency = self.Theme.Transparency.Subtle
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 48)
     self.Container.Parent = self.Tab.Container
     
     self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
     self.Theme.CreatePadding(self.Container, 12)
     
     -- Title
@@ -526,6 +527,19 @@ function Toggle:CreateUI()
     button.MouseButton1Click:Connect(function()
         self:Toggle()
     end)
+    
+    -- Hover effect
+    button.MouseEnter:Connect(function()
+        self.Utils.Tween(self.Container, {
+            BackgroundTransparency = self.Theme.Transparency.None
+        }, 0.15)
+    end)
+    
+    button.MouseLeave:Connect(function()
+        self.Utils.Tween(self.Container, {
+            BackgroundTransparency = self.Theme.Transparency.Glass
+        }, 0.15)
+    end)
 end
 
 function Toggle:Toggle()
@@ -563,6 +577,8 @@ local Slider
 do
 -- EnowLib Slider Component
 
+local UserInputService = game:GetService("UserInputService")
+
 Slider = {}
 Slider.__index = Slider
 
@@ -591,13 +607,14 @@ end
 
 function Slider:CreateUI()
     self.Container = Instance.new("Frame")
-    self.Container.BackgroundColor3 = self.Theme.Colors.Secondary
-    self.Container.BackgroundTransparency = self.Theme.Transparency.Subtle
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 60)
     self.Container.Parent = self.Tab.Container
     
     self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
     self.Theme.CreatePadding(self.Container, 12)
     
     -- Title
@@ -616,7 +633,7 @@ function Slider:CreateUI()
     self.ValueLabel.BackgroundTransparency = 1
     self.ValueLabel.Size = UDim2.fromOffset(50, 18)
     self.ValueLabel.Position = UDim2.new(1, -50, 0, 0)
-    self.ValueLabel.Font = self.Theme.Font.Regular
+    self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Accent
     self.ValueLabel.TextSize = self.Theme.Font.Size.Regular
@@ -652,33 +669,57 @@ function Slider:CreateUI()
     self.Knob.Parent = self.Track
     
     self.Theme.CreateCorner(self.Knob, 8)
+    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Accent, 2)
     
-    -- Input
+    -- Input Button
     local input = Instance.new("TextButton")
     input.BackgroundTransparency = 1
-    input.Size = self.Track.Size
-    input.Position = self.Track.Position
+    input.Size = UDim2.new(1, 0, 0, 20)
+    input.Position = UDim2.fromOffset(0, 25)
     input.Text = ""
     input.Parent = self.Container
     
-    local function updateValue(input)
-        local pos = math.clamp((input.Position.X - self.Track.AbsolutePosition.X) / self.Track.AbsoluteSize.X, 0, 1)
-        self.Value = math.floor(self.Config.Min + (self.Config.Max - self.Config.Min) * pos)
+    local function updateValue(inputPos)
+        local trackPos = self.Track.AbsolutePosition.X
+        local trackSize = self.Track.AbsoluteSize.X
+        local relativePos = math.clamp((inputPos - trackPos) / trackSize, 0, 1)
+        
+        self.Value = math.floor(self.Config.Min + (self.Config.Max - self.Config.Min) * relativePos)
         self:UpdateVisual()
         pcall(self.Config.Callback, self.Value)
     end
     
     input.MouseButton1Down:Connect(function()
         self.Dragging = true
+        local mousePos = UserInputService:GetMouseLocation()
+        updateValue(mousePos.X)
     end)
     
-    input.MouseButton1Up:Connect(function()
-        self.Dragging = false
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            self.Dragging = false
+        end
     end)
     
-    input.MouseMoved:Connect(function(x, y)
-        if self.Dragging then
-            updateValue({Position = Vector2.new(x, y)})
+    UserInputService.InputChanged:Connect(function(input)
+        if self.Dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local mousePos = UserInputService:GetMouseLocation()
+            updateValue(mousePos.X)
+        end
+    end)
+    
+    -- Hover effect on knob
+    input.MouseEnter:Connect(function()
+        self.Utils.Tween(self.Knob, {
+            Size = UDim2.fromOffset(18, 18)
+        }, 0.15)
+    end)
+    
+    input.MouseLeave:Connect(function()
+        if not self.Dragging then
+            self.Utils.Tween(self.Knob, {
+                Size = UDim2.fromOffset(16, 16)
+            }, 0.15)
         end
     end)
 end

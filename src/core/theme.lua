@@ -14,26 +14,26 @@ Theme.Icons = {
 -- Dark Mode Color Palette
 Theme.Colors = {
     Background = Color3.fromRGB(10, 10, 10),
-    Panel = Color3.fromRGB(20, 20, 20),
-    Secondary = Color3.fromRGB(30, 30, 30),
+    Panel = Color3.fromRGB(24, 24, 27),
+    Secondary = Color3.fromRGB(39, 39, 42),
     
-    Accent = Color3.fromRGB(99, 102, 241),
-    AccentHover = Color3.fromRGB(129, 140, 248),
+    Accent = Color3.fromRGB(139, 92, 246),
+    AccentHover = Color3.fromRGB(167, 139, 250),
     
-    Text = Color3.fromRGB(255, 255, 255),
-    TextDim = Color3.fromRGB(160, 160, 160),
+    Text = Color3.fromRGB(250, 250, 250),
+    TextDim = Color3.fromRGB(161, 161, 170),
     
-    Border = Color3.fromRGB(40, 40, 40),
+    Border = Color3.fromRGB(63, 63, 70),
     
-    Success = Color3.fromRGB(34, 197, 94),
-    Error = Color3.fromRGB(239, 68, 68)
+    Success = Color3.fromRGB(74, 222, 128),
+    Error = Color3.fromRGB(248, 113, 113)
 }
 
 -- Transparency
 Theme.Transparency = {
     None = 0,
-    Glass = 0.2,
-    Subtle = 0.5
+    Glass = 0.15,
+    Subtle = 0.3
 }
 
 -- Typography

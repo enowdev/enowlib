@@ -25,13 +25,14 @@ end
 
 function Toggle:CreateUI()
     self.Container = Instance.new("Frame")
-    self.Container.BackgroundColor3 = self.Theme.Colors.Secondary
-    self.Container.BackgroundTransparency = self.Theme.Transparency.Subtle
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 48)
     self.Container.Parent = self.Tab.Container
     
     self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
     self.Theme.CreatePadding(self.Container, 12)
     
     -- Title
@@ -75,6 +76,19 @@ function Toggle:CreateUI()
     
     button.MouseButton1Click:Connect(function()
         self:Toggle()
+    end)
+    
+    -- Hover effect
+    button.MouseEnter:Connect(function()
+        self.Utils.Tween(self.Container, {
+            BackgroundTransparency = self.Theme.Transparency.None
+        }, 0.15)
+    end)
+    
+    button.MouseLeave:Connect(function()
+        self.Utils.Tween(self.Container, {
+            BackgroundTransparency = self.Theme.Transparency.Glass
+        }, 0.15)
     end)
 end
 
