@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 08:32:19
+-- Built: 2025-12-26 08:33:59
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -3169,11 +3169,8 @@ function Window:CreateUI()
     self.Container.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Container.Parent = self.ScreenGui
     
-    -- Y2K thick black border
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
-    
-    -- Y2K solid shadow
-    self.Theme.CreateShadow(self.Container)
+    -- Y2K thick black border (no shadow)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.BorderThick)
     
     -- Title bar
     self:CreateTitleBar()
