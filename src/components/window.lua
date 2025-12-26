@@ -11,7 +11,7 @@ function Window.new(config, theme, utils, enowlib)
     self.EnowLib = enowlib
     self.Config = utils.Merge({
         Title = "EnowLib",
-        Size = UDim2.fromOffset(500, 400)
+        Size = UDim2.fromOffset(600, 380)
     }, config or {})
     
     self.Tabs = {}

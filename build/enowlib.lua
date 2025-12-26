@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 12:59:11
+-- Built: 2025-12-26 13:01:37
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -911,7 +911,7 @@ function Window.new(config, theme, utils, enowlib)
     self.EnowLib = enowlib
     self.Config = utils.Merge({
         Title = "EnowLib",
-        Size = UDim2.fromOffset(500, 400)
+        Size = UDim2.fromOffset(600, 380)
     }, config or {})
     
     self.Tabs = {}
