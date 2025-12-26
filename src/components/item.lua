@@ -77,6 +77,11 @@ function Item:CreateUI()
     end)
     
     self.Button.MouseLeave:Connect(function()
+        -- Don't reset if this is the active item
+        if window.CurrentItem == self then
+            return
+        end
+        
         self.Utils.Tween(self.Button, {
             BackgroundTransparency = 1
         }, 0.15)
@@ -121,6 +126,7 @@ end
 
 function Item:Deselect()
     self.Utils.Tween(self.Button, {
+        BackgroundColor3 = self.Theme.Colors.Secondary,
         BackgroundTransparency = 1
     }, 0.15)
     self.Utils.Tween(self.Title, {
