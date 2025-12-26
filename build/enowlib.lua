@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 14:26:49
+-- Built: 2025-12-26 14:28:52
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -966,7 +966,7 @@ function TextBox:CreateUI()
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 70)
-    self.Container.Parent = self.Parent.Container or self.Parent
+    self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
@@ -1048,7 +1048,7 @@ function Dropdown:CreateUI()
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 70)
-    self.Container.Parent = self.Parent.Container or self.Parent
+    self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
@@ -1230,7 +1230,7 @@ function ColorPicker:CreateUI()
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 48)
-    self.Container.Parent = self.Parent.Container or self.Parent
+    self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
@@ -1322,7 +1322,7 @@ function Keybind:CreateUI()
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 48)
-    self.Container.Parent = self.Parent.Container or self.Parent
+    self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
@@ -1411,7 +1411,7 @@ function Section:CreateUI()
     self.Container.BackgroundTransparency = self.Theme.Transparency.Subtle
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 0)
-    self.Container.Parent = self.Parent.Container or self.Parent
+    self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
