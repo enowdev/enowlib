@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 12:15:30
+-- Built: 2025-12-26 12:17:13
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -772,12 +772,6 @@ function Toggle:UpdateVisual()
             Position = UDim2.fromOffset(22, 2),
             BackgroundColor3 = self.Theme.Colors.Panel
         }, 0.2)
-            }, 0.15)
-        end
-    else
-        -- Off state
-        self.Utils.Tween(self.Switch, {
-            BackgroundColor3 = self.Theme.Colors.BackgroundDark
     else
         -- Off state (Radix UI neutral)
         self.Utils.Tween(self.Switch, {

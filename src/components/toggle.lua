@@ -136,12 +136,6 @@ function Toggle:UpdateVisual()
             Position = UDim2.fromOffset(22, 2),
             BackgroundColor3 = self.Theme.Colors.Panel
         }, 0.2)
-            }, 0.15)
-        end
-    else
-        -- Off state
-        self.Utils.Tween(self.Switch, {
-            BackgroundColor3 = self.Theme.Colors.BackgroundDark
     else
         -- Off state (Radix UI neutral)
         self.Utils.Tween(self.Switch, {
