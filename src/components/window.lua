@@ -77,7 +77,7 @@ function Window:CreateUI()
     -- Close Icon
     local closeIcon = Instance.new("ImageLabel")
     closeIcon.BackgroundTransparency = 1
-    closeIcon.Size = UDim2.fromOffset(16, 16)
+    closeIcon.Size = UDim2.fromOffset(20, 20)
     closeIcon.Position = UDim2.fromScale(0.5, 0.5)
     closeIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     closeIcon.Image = self.Theme.Icons.X

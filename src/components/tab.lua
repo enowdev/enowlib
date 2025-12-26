@@ -43,8 +43,8 @@ function Tab:CreateUI()
     if self.Config.Icon then
         self.TabIcon = Instance.new("ImageLabel")
         self.TabIcon.BackgroundTransparency = 1
-        self.TabIcon.Size = UDim2.fromOffset(16, 16)
-        self.TabIcon.Position = UDim2.fromOffset(0, 10)
+        self.TabIcon.Size = UDim2.fromOffset(18, 18)
+        self.TabIcon.Position = UDim2.fromOffset(0, 9)
         self.TabIcon.Image = self.Config.Icon
         self.TabIcon.ImageColor3 = self.Theme.Colors.TextDim
         self.TabIcon.Parent = self.Button
@@ -53,17 +53,18 @@ function Tab:CreateUI()
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
     self.ChevronIcon.BackgroundTransparency = 1
-    self.ChevronIcon.Size = UDim2.fromOffset(14, 14)
-    self.ChevronIcon.Position = UDim2.new(1, -14, 0.5, -7)
+    self.ChevronIcon.Size = UDim2.fromOffset(16, 16)
+    self.ChevronIcon.Position = UDim2.new(1, -16, 0.5, -8)
     self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
     
     -- Title
-    local titleOffset = self.Config.Icon and 20 or 0
+    local titleOffset = self.Config.Icon and 24 or 0
+    local titleRightOffset = 24
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -(titleOffset + 20), 1, 0)
+    title.Size = UDim2.new(1, -(titleOffset + titleRightOffset), 1, 0)
     title.Position = UDim2.fromOffset(titleOffset, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title

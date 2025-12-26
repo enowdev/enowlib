@@ -70,7 +70,7 @@ function Toggle:CreateUI()
     -- Check icon
     self.CheckIcon = Instance.new("ImageLabel")
     self.CheckIcon.BackgroundTransparency = 1
-    self.CheckIcon.Size = UDim2.fromOffset(14, 14)
+    self.CheckIcon.Size = UDim2.fromOffset(16, 16)
     self.CheckIcon.Position = UDim2.fromScale(0.5, 0.5)
     self.CheckIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     self.CheckIcon.Image = self.Theme.Icons.Check
