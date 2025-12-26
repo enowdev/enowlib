@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 14:18:30
+-- Built: 2025-12-26 14:23:19
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1545,7 +1545,6 @@ function Item:CreateUI()
     
     -- Events
     self.Button.MouseButton1Click:Connect(function()
-        print("[EnowLib] Item clicked:", self.Config.Title)
         self:Select()
         pcall(self.Config.Callback)
     end)
@@ -1582,10 +1581,7 @@ end
 function Item:Select()
     local window = self.Category.Window
     
-    print("[EnowLib] Selecting item:", self.Config.Title)
-    
     if window.CurrentItem then
-        print("[EnowLib] Deselecting previous item:", window.CurrentItem.Config.Title)
         window.CurrentItem:Deselect()
     end
     
@@ -1606,10 +1602,7 @@ function Item:Select()
     end
     
     if self.Config.Content then
-        print("[EnowLib] Loading content for:", self.Config.Title)
         window:ShowContent(self.Config.Content)
-    else
-        print("[EnowLib] Warning: No content function for:", self.Config.Title)
     end
 end
 
@@ -2272,19 +2265,13 @@ function Window:SelectTab(tab)
 end
 
 function Window:ShowContent(contentFunc)
-    print("[EnowLib] ShowContent called")
     self.Utils.ClearChildren(self.ContentArea)
     
     if contentFunc then
-        print("[EnowLib] Executing content function...")
         local success, err = pcall(contentFunc, self)
         if not success then
             warn("[EnowLib] Content function error:", err)
-        else
-            print("[EnowLib] Content loaded successfully")
         end
-    else
-        warn("[EnowLib] No content function provided")
     end
 end
 

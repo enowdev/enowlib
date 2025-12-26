@@ -58,7 +58,6 @@ function Item:CreateUI()
     
     -- Events
     self.Button.MouseButton1Click:Connect(function()
-        print("[EnowLib] Item clicked:", self.Config.Title)
         self:Select()
         pcall(self.Config.Callback)
     end)
@@ -95,10 +94,7 @@ end
 function Item:Select()
     local window = self.Category.Window
     
-    print("[EnowLib] Selecting item:", self.Config.Title)
-    
     if window.CurrentItem then
-        print("[EnowLib] Deselecting previous item:", window.CurrentItem.Config.Title)
         window.CurrentItem:Deselect()
     end
     
@@ -119,10 +115,7 @@ function Item:Select()
     end
     
     if self.Config.Content then
-        print("[EnowLib] Loading content for:", self.Config.Title)
         window:ShowContent(self.Config.Content)
-    else
-        print("[EnowLib] Warning: No content function for:", self.Config.Title)
     end
 end
 
