@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 14:33:56
+-- Built: 2025-12-26 14:40:21
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1550,6 +1550,11 @@ function Item:CreateUI()
     end)
     
     self.Button.MouseEnter:Connect(function()
+        -- Don't show hover if this is the active item
+        if self.Category.Window.CurrentItem == self then
+            return
+        end
+        
         self.Utils.Tween(self.Button, {
             BackgroundTransparency = 0.9
         }, 0.15)
@@ -1565,7 +1570,7 @@ function Item:CreateUI()
     
     self.Button.MouseLeave:Connect(function()
         -- Don't reset if this is the active item
-        if window.CurrentItem == self then
+        if self.Category.Window.CurrentItem == self then
             return
         end
         
