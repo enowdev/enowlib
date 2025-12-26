@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 13:28:29
+-- Built: 2025-12-26 13:30:22
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -824,17 +824,26 @@ function Tab:CreateUI()
         self.TabIcon = Instance.new("ImageLabel")
         self.TabIcon.BackgroundTransparency = 1
         self.TabIcon.Size = UDim2.fromOffset(18, 18)
-        self.TabIcon.Position = UDim2.fromOffset(0, 9)
+        self.TabIcon.Position = UDim2.fromOffset(0, 0)
+        self.TabIcon.AnchorPoint = Vector2.new(0, 0.5)
         self.TabIcon.Image = self.Config.Icon
         self.TabIcon.ImageColor3 = self.Theme.Colors.TextDim
         self.TabIcon.Parent = self.Button
+        
+        -- Adjust position to center vertically
+        local connection
+        connection = self.Button:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+            self.TabIcon.Position = UDim2.fromOffset(0, self.Button.AbsoluteSize.Y / 2)
+        end)
+        self.TabIcon.Position = UDim2.fromOffset(0, self.Button.AbsoluteSize.Y / 2)
     end
     
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
     self.ChevronIcon.BackgroundTransparency = 1
     self.ChevronIcon.Size = UDim2.fromOffset(16, 16)
-    self.ChevronIcon.Position = UDim2.new(1, -16, 0.5, -8)
+    self.ChevronIcon.Position = UDim2.new(1, -16, 0.5, 0)
+    self.ChevronIcon.AnchorPoint = Vector2.new(0, 0.5)
     self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
