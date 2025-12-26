@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 12:04:39
+-- Built: 2025-12-26 12:07:12
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -133,28 +133,8 @@ Theme.Size = {
     IconSize = 16,                 -- Standard icon size
     ComponentHeight = 36,          -- Standard component height
     WindowMinWidth = 400,
-    WindowMinHeight = 300
-}
-    BorderThick = 4,               -- Extra thick
-    CornerRadius = 0,              -- NO rounding (pure Y2K)
-    ScrollBarWidth = 8,
-    
-    -- Component sizes (adjusted for better spacing)
-    ButtonHeight = 40,
-    ToggleSize = 24,
-    SliderHeight = 20,
-    InputHeight = 40,
-    DropdownHeight = 40,
-    
-    -- Container sizes
-    WindowMinWidth = 400,
     WindowMinHeight = 300,
-    TabWidth = 140,
-    SectionHeight = 32,
-    
-    -- Y2K shadow offset (thick shadow)
-    ShadowOffset = 5,
-    ShadowBlur = 0                 -- No blur, solid shadow
+    ScrollBarWidth = 4
 }
 
 -- Responsive breakpoints
