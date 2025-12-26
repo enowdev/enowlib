@@ -50,10 +50,16 @@ function Tab:CreateUI()
     self.Container.ScrollBarImageColor3 = self.Theme.Colors.Primary
     self.Container.CanvasSize = UDim2.fromOffset(0, 0)
     self.Container.Visible = false
+    self.Container.ClipsDescendants = true  -- Clip scrolling content
     self.Container.Parent = self.Window.ContentArea
     
-    -- Add padding to prevent overflow
-    self.Theme.CreatePadding(self.Container, self.Theme.Spacing.Small)
+    -- Add padding to prevent border clipping (extra space for borders)
+    self.Theme.CreatePadding(self.Container, {
+        self.Theme.Spacing.Small + 2,  -- Left (extra for border)
+        self.Theme.Spacing.Small + 2,  -- Right (extra for border)
+        self.Theme.Spacing.Small,      -- Top
+        self.Theme.Spacing.Small       -- Bottom
+    })
     
     -- List layout with proper spacing
     local layout = Instance.new("UIListLayout")

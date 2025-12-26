@@ -146,14 +146,14 @@ function Theme.CreateGradient(parent, rotation)
     return gradient
 end
 
--- Y2K thick shadow (solid, no blur)
+-- Y2K thick shadow (solid, no blur) - FIXED: Don't cover entire screen
 function Theme.CreateShadow(parent)
     local shadow = Instance.new("Frame")
     shadow.Name = "Shadow"
     shadow.BackgroundColor3 = Theme.Colors.Shadow
-    shadow.BackgroundTransparency = 0  -- Solid shadow
+    shadow.BackgroundTransparency = 0.7  -- Semi-transparent so it doesn't block game
     shadow.BorderSizePixel = 0
-    shadow.Size = UDim2.new(1, 0, 1, 0)
+    shadow.Size = parent.Size  -- Match parent size, not fullscreen
     shadow.Position = UDim2.fromOffset(Theme.Size.ShadowOffset, Theme.Size.ShadowOffset)
     shadow.ZIndex = parent.ZIndex - 1
     shadow.Parent = parent.Parent

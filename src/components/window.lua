@@ -91,7 +91,7 @@ function Window:CreateTitleBar()
     -- Add glossy gradient
     self.Theme.CreateGradient(self.TitleBar, 90)
     
-    -- Title text
+    -- Title text - WHITE for better contrast on cyan
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
@@ -99,10 +99,11 @@ function Window:CreateTitleBar()
     title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
-    title.TextColor3 = self.Theme.Colors.Text
+    title.TextColor3 = self.Theme.Colors.TextWhite  -- WHITE text on cyan
     title.TextSize = self.Theme.Font.Size.Large
     title.TextXAlignment = Enum.TextXAlignment.Left
-    title.TextStrokeTransparency = 0.8
+    title.TextStrokeTransparency = 0.5
+    title.TextStrokeColor3 = self.Theme.Colors.Text  -- Dark stroke for depth
     title.Parent = self.TitleBar
     
     -- Close button (Y2K style)
@@ -188,7 +189,7 @@ function Window:CreateContentArea()
     self.ContentArea.BorderSizePixel = 0
     self.ContentArea.Size = UDim2.new(1, -contentOffset, 1, -32)
     self.ContentArea.Position = UDim2.fromOffset(contentOffset, 32)
-    self.ContentArea.ClipsDescendants = true
+    self.ContentArea.ClipsDescendants = false  -- DON'T clip so borders show
     self.ContentArea.Parent = self.Container
     
     self.Theme.CreatePadding(self.ContentArea, self.IsMobile and self.Theme.Spacing.Small or self.Theme.Spacing.Medium)
