@@ -379,11 +379,27 @@ SettingsCategory:AddItem({
             Content = "This tab demonstrates all available components in EnowLib. Test each component to ensure responsive design works on all devices (PC, tablet, mobile)."
         })
         
+        window:AddDivider({Text = "Basic Components"})
+        
+        -- Label
+        window:AddLabel({
+            Text = "This is a Label component - used for simple text display"
+        })
+        
+        -- Paragraph
+        window:AddParagraph({
+            Title = "Paragraph Component",
+            Content = "This is a Paragraph component with title and content. It automatically wraps text and adjusts height based on content length. Perfect for descriptions and instructions."
+        })
+        
+        -- Divider
+        window:AddDivider()
+        
         window:AddDivider({Text = "Input Components"})
         
         -- Button
         window:AddButton({
-            Text = "Test Button",
+            Text = "Click Me - Button Component",
             Callback = function()
                 print("[Test] Button clicked!")
             end
@@ -391,7 +407,7 @@ SettingsCategory:AddItem({
         
         -- Toggle
         window:AddToggle({
-            Text = "Test Toggle",
+            Text = "Toggle Component - Enable/Disable",
             Default = false,
             Callback = function(value)
                 print("[Test] Toggle:", value)
@@ -400,7 +416,7 @@ SettingsCategory:AddItem({
         
         -- Slider
         window:AddSlider({
-            Text = "Test Slider",
+            Text = "Slider Component - Adjust Value",
             Min = 1,
             Max = 100,
             Default = 50,
@@ -411,8 +427,8 @@ SettingsCategory:AddItem({
         
         -- TextBox
         window:AddTextBox({
-            Text = "Test TextBox",
-            Placeholder = "Type something...",
+            Text = "TextBox Component",
+            Placeholder = "Type something here...",
             Default = "",
             Callback = function(value)
                 print("[Test] TextBox:", value)
@@ -421,8 +437,8 @@ SettingsCategory:AddItem({
         
         -- Dropdown
         window:AddDropdown({
-            Text = "Test Dropdown",
-            Options = {"Option A", "Option B", "Option C"},
+            Text = "Dropdown Component",
+            Options = {"Option A", "Option B", "Option C", "Option D"},
             Default = "Option A",
             Callback = function(value)
                 print("[Test] Dropdown:", value)
@@ -431,7 +447,7 @@ SettingsCategory:AddItem({
         
         -- ColorPicker
         window:AddColorPicker({
-            Text = "Test ColorPicker",
+            Text = "ColorPicker Component",
             Default = Color3.fromRGB(46, 204, 113),
             Callback = function(color)
                 print("[Test] ColorPicker:", color)
@@ -440,32 +456,59 @@ SettingsCategory:AddItem({
         
         -- Keybind
         window:AddKeybind({
-            Text = "Test Keybind",
+            Text = "Keybind Component",
             Default = "None",
             Callback = function(key)
                 print("[Test] Keybind:", key)
             end
         })
         
-        window:AddDivider({Text = "Layout Components"})
+        window:AddDivider({Text = "Section Component"})
         
-        -- Label
-        window:AddLabel({
-            Text = "This is a test label component",
-            Color = window.Theme.Colors.Success
+        -- Section with nested components
+        local testSection = window:AddSection({
+            Title = "Section Component Example"
         })
         
-        -- Paragraph
-        window:AddParagraph({
-            Title = "About EnowLib",
-            Content = "EnowLib is a modern UI library for Roblox with responsive design, smooth animations, and a hacker-style IDE theme. All components are optimized for PC, tablet, and mobile devices with touch-friendly sizes."
+        testSection:AddLabel({
+            Text = "Components inside a Section are grouped together"
+        })
+        
+        testSection:AddToggle({
+            Text = "Nested Toggle",
+            Default = true,
+            Callback = function(value)
+                print("[Test] Nested Toggle:", value)
+            end
+        })
+        
+        testSection:AddSlider({
+            Text = "Nested Slider",
+            Min = 0,
+            Max = 10,
+            Default = 5,
+            Callback = function(value)
+                print("[Test] Nested Slider:", value)
+            end
+        })
+        
+        testSection:AddButton({
+            Text = "Nested Button",
+            Callback = function()
+                print("[Test] Nested Button clicked!")
+            end
         })
         
         window:AddDivider()
         
         window:AddLabel({
-            Text = "All components are fully responsive!",
-            Color = window.Theme.Colors.Accent
+            Text = "✓ All 11 components are working perfectly!",
+            Color = window.Theme.Colors.Success
+        })
+        
+        window:AddLabel({
+            Text = "Components: Label, Paragraph, Divider, Button, Toggle, Slider, TextBox, Dropdown, ColorPicker, Keybind, Section",
+            Color = window.Theme.Colors.TextDim
         })
         
         print("[Example] All Components test loaded!")

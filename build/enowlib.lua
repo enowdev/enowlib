@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 14:23:19
+-- Built: 2025-12-26 14:26:49
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -576,7 +576,7 @@ function Button:CreateUI()
     self.Container.Size = UDim2.new(1, 0, 0, self.Theme.Size.Component)
     self.Container.Font = self.Theme.Font.Regular
     self.Container.Text = self.Config.Text
-    self.Container.TextColor3 = self.Theme.Colors.Text
+    self.Container.TextColor3 = Color3.fromRGB(0, 0, 0)
     self.Container.TextSize = self.Theme.Font.Size.Regular
     self.Container.AutoButtonColor = false
     self.Container.Parent = self.Parent
