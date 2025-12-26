@@ -345,11 +345,18 @@ function InterfaceManager:RefreshContentComponents()
         
         -- Refresh text labels
         if child:IsA("TextLabel") then
-            if child.TextColor3 ~= theme.Colors.Accent and child.TextColor3 ~= Color3.new(0, 0, 0) then
-                -- Don't change accent colors or black text (buttons)
-                if child.Name:match("Title") or child.Font == theme.Font.Bold then
+            -- Check if it's a button text (black color for contrast)
+            local isButtonText = false
+            if child.Parent and child.Parent:IsA("TextButton") and child.Parent.Name == "Button" then
+                isButtonText = true
+            end
+            
+            if not isButtonText then
+                -- Section titles and bold text
+                if child.Font == theme.Font.Bold or child.Name:match("Title") then
                     child.TextColor3 = theme.Colors.Accent
                 else
+                    -- Regular text
                     child.TextColor3 = theme.Colors.Text
                 end
             end
@@ -376,9 +383,17 @@ function InterfaceManager:RefreshContentComponents()
             end
         end
         
-        -- Refresh image labels (icons)
+        -- Refresh image labels (icons) - include accent color icons
         if child:IsA("ImageLabel") then
-            if child.ImageColor3 ~= theme.Colors.Accent then
+            -- Check if parent is active or highlighted
+            local isActive = false
+            if child.Parent and child.Parent.Name:match("Category") then
+                isActive = true
+            end
+            
+            if isActive then
+                child.ImageColor3 = theme.Colors.Accent
+            else
                 child.ImageColor3 = theme.Colors.TextDim
             end
         end
