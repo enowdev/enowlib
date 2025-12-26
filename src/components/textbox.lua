@@ -28,12 +28,12 @@ function TextBox:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 82)
+    self.Container.Size = UDim2.new(1, 0, 0, 86)
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 18)
+    self.Theme.CreatePadding(self.Container, 20)
     
     -- Title
     local title = Instance.new("TextLabel")

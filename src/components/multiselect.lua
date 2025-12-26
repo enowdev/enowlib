@@ -33,12 +33,12 @@ function MultiSelect:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 82)
+    self.Container.Size = UDim2.new(1, 0, 0, 86)
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 18)
+    self.Theme.CreatePadding(self.Container, 20)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -236,12 +236,12 @@ function MultiSelect:Toggle()
         local optionsHeight = math.min(#self.Config.Options * 30, 150)
         self.OptionsList.Size = UDim2.new(1, 0, 0, optionsHeight)
         self.OptionsList.Visible = true
-        self.Container.Size = UDim2.new(1, 0, 0, 82 + optionsHeight + 4)
+        self.Container.Size = UDim2.new(1, 0, 0, 86 + optionsHeight + 4)
         self.ChevronIcon.Rotation = 180
     else
         self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
         self.OptionsList.Visible = false
-        self.Container.Size = UDim2.new(1, 0, 0, 82)
+        self.Container.Size = UDim2.new(1, 0, 0, 86)
         self.ChevronIcon.Rotation = 0
     end
 end

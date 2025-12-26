@@ -31,12 +31,12 @@ function Dropdown:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 82)
+    self.Container.Size = UDim2.new(1, 0, 0, 86)
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 18)
+    self.Theme.CreatePadding(self.Container, 20)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -212,7 +212,7 @@ function Dropdown:FilterOptions(searchText)
         local baseHeight = self.Config.Searchable and 36 or 0
         local optionsHeight = math.min(visibleCount * 34, 150)
         self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight)
-        self.Container.Size = UDim2.new(1, 0, 0, 82 + baseHeight + optionsHeight + 4)
+        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 4)
     end
 end
 
@@ -224,7 +224,7 @@ function Dropdown:Toggle()
         local optionsHeight = math.min(#self.Config.Options * 34, 150)
         self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight)
         self.OptionsList.Visible = true
-        self.Container.Size = UDim2.new(1, 0, 0, 82 + baseHeight + optionsHeight + 4)
+        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 4)
         self.ChevronIcon.Rotation = 180
         
         -- Focus search box if searchable
@@ -235,7 +235,7 @@ function Dropdown:Toggle()
     else
         self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
         self.OptionsList.Visible = false
-        self.Container.Size = UDim2.new(1, 0, 0, 82)
+        self.Container.Size = UDim2.new(1, 0, 0, 86)
         self.ChevronIcon.Rotation = 0
         
         -- Clear search
