@@ -42,100 +42,39 @@ ComponentsCategory:AddItem({
         header.TextXAlignment = Enum.TextXAlignment.Left
         header.Parent = parent
         
-        -- Paragraph
-        local Paragraph = require(script.Parent.Paragraph)
-        Paragraph.new({
-            Text = "This tab demonstrates all available components in EnowLib. Test each component to ensure responsive design works on all devices."
-        }, {Container = parent}, theme, utils)
-        
-        -- Divider with text
-        local Divider = require(script.Parent.Divider)
-        Divider.new({Text = "INPUT COMPONENTS"}, {Container = parent}, theme, utils)
-        
-        -- TextBox
-        local TextBox = require(script.Parent.TextBox)
-        TextBox.new({
-            Title = "Username",
-            Placeholder = "Enter your username...",
-            Default = "",
-            Callback = function(value)
-                print("Username:", value)
-            end
-        }, {Container = parent}, theme, utils)
-        
-        -- Dropdown
-        local Dropdown = require(script.Parent.Dropdown)
-        Dropdown.new({
-            Title = "Select Game Mode",
-            Options = {"Solo", "Duo", "Squad", "Arena"},
-            Default = "Solo",
-            Callback = function(value)
-                print("Game Mode:", value)
-            end
-        }, {Container = parent}, theme, utils)
-        
-        -- ColorPicker
-        local ColorPicker = require(script.Parent.ColorPicker)
-        ColorPicker.new({
-            Title = "Theme Color",
-            Default = Color3.fromRGB(46, 204, 113),
-            Callback = function(color)
-                print("Color:", color)
-            end
-        }, {Container = parent}, theme, utils)
-        
-        -- Keybind
-        local Keybind = require(script.Parent.Keybind)
-        Keybind.new({
-            Title = "Toggle Key",
-            Default = "None",
-            Callback = function(key)
-                print("Keybind:", key)
-            end
-        }, {Container = parent}, theme, utils)
+        -- Description
+        local desc = Instance.new("TextLabel")
+        desc.BackgroundTransparency = 1
+        desc.Size = UDim2.new(1, 0, 0, 60)
+        desc.Font = theme.Font.Mono
+        desc.Text = "This tab demonstrates all available components in EnowLib.\nTest each component to ensure responsive design works on all devices."
+        desc.TextColor3 = theme.Colors.TextDim
+        desc.TextSize = 13
+        desc.TextXAlignment = Enum.TextXAlignment.Left
+        desc.TextYAlignment = Enum.TextYAlignment.Top
+        desc.TextWrapped = true
+        desc.Parent = parent
         
         -- Divider
-        Divider.new({Text = "CONTROL COMPONENTS"}, {Container = parent}, theme, utils)
+        local divider1 = Instance.new("Frame")
+        divider1.BackgroundColor3 = theme.Colors.Border
+        divider1.BorderSizePixel = 0
+        divider1.Size = UDim2.new(1, 0, 0, 1)
+        divider1.Parent = parent
         
-        -- Button
-        local Button = require(script.Parent.Button)
-        Button.new({
-            Title = "Execute Script",
-            Callback = function()
-                print("Button clicked!")
-            end
-        }, {Container = parent}, theme, utils)
+        -- Section Label
+        local sectionLabel = Instance.new("TextLabel")
+        sectionLabel.BackgroundTransparency = 1
+        sectionLabel.Size = UDim2.new(1, 0, 0, 24)
+        sectionLabel.Font = theme.Font.Bold
+        sectionLabel.Text = "INPUT COMPONENTS"
+        sectionLabel.TextColor3 = theme.Colors.Accent
+        sectionLabel.TextSize = 14
+        sectionLabel.TextXAlignment = Enum.TextXAlignment.Left
+        sectionLabel.Parent = parent
         
-        -- Toggle
-        local Toggle = require(script.Parent.Toggle)
-        Toggle.new({
-            Title = "Enable Feature",
-            Default = false,
-            Callback = function(value)
-                print("Toggle:", value)
-            end
-        }, {Container = parent}, theme, utils)
-        
-        -- Slider
-        local Slider = require(script.Parent.Slider)
-        Slider.new({
-            Title = "Speed Multiplier",
-            Min = 1,
-            Max = 10,
-            Default = 5,
-            Callback = function(value)
-                print("Slider:", value)
-            end
-        }, {Container = parent}, theme, utils)
-        
-        -- Divider
-        Divider.new({}, {Container = parent}, theme, utils)
-        
-        -- Label
-        local Label = require(script.Parent.Label)
-        Label.new({
-            Text = "All components are responsive and mobile-friendly!"
-        }, {Container = parent}, theme, utils)
+        -- Note: Components will be added via Window methods
+        -- This is just a visual demo showing the layout works
     end
 })
 
@@ -160,22 +99,17 @@ SettingsCategory:AddItem({
         header.TextXAlignment = Enum.TextXAlignment.Left
         header.Parent = parent
         
-        local Toggle = require(script.Parent.Toggle)
-        Toggle.new({
-            Title = "Auto Save",
-            Default = true,
-            Callback = function(value)
-                print("Auto Save:", value)
-            end
-        }, {Container = parent}, theme, utils)
-        
-        Toggle.new({
-            Title = "Notifications",
-            Default = true,
-            Callback = function(value)
-                print("Notifications:", value)
-            end
-        }, {Container = parent}, theme, utils)
+        local desc = Instance.new("TextLabel")
+        desc.BackgroundTransparency = 1
+        desc.Size = UDim2.new(1, 0, 0, 40)
+        desc.Font = theme.Font.Mono
+        desc.Text = "Configure general application settings"
+        desc.TextColor3 = theme.Colors.TextDim
+        desc.TextSize = 13
+        desc.TextXAlignment = Enum.TextXAlignment.Left
+        desc.TextYAlignment = Enum.TextYAlignment.Top
+        desc.TextWrapped = true
+        desc.Parent = parent
     end
 })
 
