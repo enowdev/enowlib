@@ -34,19 +34,19 @@ function Slider:CreateUI()
     self.Container.Name = "Slider"
     self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 60)
+    self.Container.Size = UDim2.new(1, 0, 0, 68)
     self.Container.Parent = self.Tab.Container
     
     self.Theme.CreateCorner(self.Container)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 0, 20)
-    title.Position = UDim2.fromOffset(12, 8)
-    title.Font = self.Theme.Font.Regular
+    title.Size = UDim2.new(1, -70, 0, 22)
+    title.Position = UDim2.fromOffset(14, 10)
+    title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
@@ -57,9 +57,9 @@ function Slider:CreateUI()
     self.ValueLabel = Instance.new("TextLabel")
     self.ValueLabel.Name = "Value"
     self.ValueLabel.BackgroundTransparency = 1
-    self.ValueLabel.Size = UDim2.fromOffset(50, 20)
-    self.ValueLabel.Position = UDim2.new(1, -58, 0, 8)
-    self.ValueLabel.Font = self.Theme.Font.Mono
+    self.ValueLabel.Size = UDim2.fromOffset(60, 22)
+    self.ValueLabel.Position = UDim2.new(1, -68, 0, 10)
+    self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Primary
     self.ValueLabel.TextSize = self.Theme.Font.Size.Regular
@@ -71,11 +71,12 @@ function Slider:CreateUI()
     self.Track.Name = "Track"
     self.Track.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.Track.BorderSizePixel = 0
-    self.Track.Size = UDim2.new(1, -24, 0, 6)
-    self.Track.Position = UDim2.fromOffset(12, 38)
+    self.Track.Size = UDim2.new(1, -28, 0, 10)
+    self.Track.Position = UDim2.fromOffset(14, 44)
     self.Track.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Track, 3)
+    self.Theme.CreateCorner(self.Track, 5)
+    self.Theme.CreateStroke(self.Track, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Slider fill
     self.Fill = Instance.new("Frame")
@@ -85,21 +86,20 @@ function Slider:CreateUI()
     self.Fill.Size = UDim2.new(0, 0, 1, 0)
     self.Fill.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Fill, 3)
-    self.Theme.CreateGradient(self.Fill, 0)
+    self.Theme.CreateCorner(self.Fill, 5)
     
     -- Slider knob
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(14, 14)
+    self.Knob.Size = UDim2.fromOffset(18, 18)
     self.Knob.Position = UDim2.new(0, 0, 0.5, 0)
     self.Knob.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Knob.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Knob, 7)
-    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Primary, 2)
+    self.Theme.CreateCorner(self.Knob, 9)
+    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Primary, self.Theme.Size.BorderThick)
     
     -- Input handling
     local UserInputService = game:GetService("UserInputService")
@@ -126,14 +126,14 @@ function Slider:CreateUI()
     -- Hover effects
     self.Track.MouseEnter:Connect(function()
         self.Utils.Tween(self.Knob, {
-            Size = UDim2.fromOffset(16, 16)
+            Size = UDim2.fromOffset(22, 22)
         }, 0.15)
     end)
     
     self.Track.MouseLeave:Connect(function()
         if not self.Dragging then
             self.Utils.Tween(self.Knob, {
-                Size = UDim2.fromOffset(14, 14)
+                Size = UDim2.fromOffset(18, 18)
             }, 0.15)
         end
     end)

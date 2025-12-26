@@ -30,19 +30,19 @@ function Toggle:CreateUI()
     self.Container.Name = "Toggle"
     self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 56 or 40)
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 64 or 44)
     self.Container.Parent = self.Tab.Container
     
     self.Theme.CreateCorner(self.Container)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 0, 20)
-    title.Position = UDim2.fromOffset(12, self.Config.Description and 8 or 10)
-    title.Font = self.Theme.Font.Regular
+    title.Size = UDim2.new(1, -70, 0, 22)
+    title.Position = UDim2.fromOffset(14, self.Config.Description and 10 or 11)
+    title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
@@ -54,8 +54,8 @@ function Toggle:CreateUI()
         local desc = Instance.new("TextLabel")
         desc.Name = "Description"
         desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, -60, 0, 16)
-        desc.Position = UDim2.fromOffset(12, 28)
+        desc.Size = UDim2.new(1, -70, 0, 18)
+        desc.Position = UDim2.fromOffset(14, 32)
         desc.Font = self.Theme.Font.Regular
         desc.Text = self.Config.Description
         desc.TextColor3 = self.Theme.Colors.TextDim
@@ -69,24 +69,25 @@ function Toggle:CreateUI()
     self.Switch.Name = "Switch"
     self.Switch.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.Switch.BorderSizePixel = 0
-    self.Switch.Size = UDim2.fromOffset(40, 20)
-    self.Switch.Position = UDim2.new(1, -48, 0.5, 0)
+    self.Switch.Size = UDim2.fromOffset(48, 26)
+    self.Switch.Position = UDim2.new(1, -56, 0.5, 0)
     self.Switch.AnchorPoint = Vector2.new(0, 0.5)
     self.Switch.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Switch, 10)
-    self.Theme.CreateStroke(self.Switch, self.Theme.Colors.Border)
+    self.Theme.CreateCorner(self.Switch, 13)
+    self.Theme.CreateStroke(self.Switch, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Toggle knob
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
-    self.Knob.BackgroundColor3 = self.Theme.Colors.TextDim
+    self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(16, 16)
-    self.Knob.Position = UDim2.fromOffset(2, 2)
+    self.Knob.Size = UDim2.fromOffset(20, 20)
+    self.Knob.Position = UDim2.fromOffset(3, 3)
     self.Knob.Parent = self.Switch
     
-    self.Theme.CreateCorner(self.Knob, 8)
+    self.Theme.CreateCorner(self.Knob, 10)
+    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Click button
     local button = Instance.new("TextButton")
@@ -133,14 +134,21 @@ function Toggle:UpdateVisual()
         }, 0.2)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(22, 2),
-            BackgroundColor3 = self.Theme.Colors.Text
+            Position = UDim2.fromOffset(25, 3),
+            BackgroundColor3 = self.Theme.Colors.Background
         }, 0.2)
         
         local stroke = self.Switch:FindFirstChild("UIStroke")
         if stroke then
             self.Utils.Tween(stroke, {
-                Color = self.Theme.Colors.Primary
+                Color = self.Theme.Colors.BorderAccent
+            }, 0.2)
+        end
+        
+        local knobStroke = self.Knob:FindFirstChild("UIStroke")
+        if knobStroke then
+            self.Utils.Tween(knobStroke, {
+                Color = self.Theme.Colors.Background
             }, 0.2)
         end
     else
@@ -150,13 +158,20 @@ function Toggle:UpdateVisual()
         }, 0.2)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(2, 2),
-            BackgroundColor3 = self.Theme.Colors.TextDim
+            Position = UDim2.fromOffset(3, 3),
+            BackgroundColor3 = self.Theme.Colors.Text
         }, 0.2)
         
         local stroke = self.Switch:FindFirstChild("UIStroke")
         if stroke then
             self.Utils.Tween(stroke, {
+                Color = self.Theme.Colors.Border
+            }, 0.2)
+        end
+        
+        local knobStroke = self.Knob:FindFirstChild("UIStroke")
+        if knobStroke then
+            self.Utils.Tween(knobStroke, {
                 Color = self.Theme.Colors.Border
             }, 0.2)
         end

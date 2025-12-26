@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 07:39:16
+-- Built: 2025-12-26 07:42:48
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -622,22 +622,22 @@ function Button:CreateUI()
     -- Container
     self.Container = Instance.new("Frame")
     self.Container.Name = "Button"
-    self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.Container.BackgroundColor3 = self.Theme.Colors.Primary
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 56 or 40)
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 64 or 44)
     self.Container.Parent = self.Tab.Container
     
     self.Theme.CreateCorner(self.Container)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.BorderAccent, self.Theme.Size.BorderThick)
     
     -- Button
     self.Button = Instance.new("TextButton")
     self.Button.Name = "ButtonClick"
     self.Button.BackgroundTransparency = 1
     self.Button.Size = UDim2.new(1, 0, 1, 0)
-    self.Button.Font = self.Theme.Font.Regular
+    self.Button.Font = self.Theme.Font.Bold
     self.Button.Text = ""
-    self.Button.TextColor3 = self.Theme.Colors.Text
+    self.Button.TextColor3 = self.Theme.Colors.Background
     self.Button.TextSize = self.Theme.Font.Size.Regular
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Container
@@ -646,11 +646,11 @@ function Button:CreateUI()
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -24, 0, 20)
-    title.Position = UDim2.fromOffset(12, self.Config.Description and 8 or 10)
-    title.Font = self.Theme.Font.Regular
+    title.Size = UDim2.new(1, -28, 0, 22)
+    title.Position = UDim2.fromOffset(14, self.Config.Description and 10 or 11)
+    title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
-    title.TextColor3 = self.Theme.Colors.Text
+    title.TextColor3 = self.Theme.Colors.Background
     title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
@@ -660,11 +660,11 @@ function Button:CreateUI()
         local desc = Instance.new("TextLabel")
         desc.Name = "Description"
         desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, -24, 0, 16)
-        desc.Position = UDim2.fromOffset(12, 28)
+        desc.Size = UDim2.new(1, -28, 0, 18)
+        desc.Position = UDim2.fromOffset(14, 32)
         desc.Font = self.Theme.Font.Regular
         desc.Text = self.Config.Description
-        desc.TextColor3 = self.Theme.Colors.TextDim
+        desc.TextColor3 = self.Theme.Colors.BackgroundLight
         desc.TextSize = self.Theme.Font.Size.Small
         desc.TextXAlignment = Enum.TextXAlignment.Left
         desc.Parent = self.Container
@@ -681,28 +681,14 @@ function Button:CreateUI()
     -- Hover effects
     self.Button.MouseEnter:Connect(function()
         self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.Hover
+            BackgroundColor3 = self.Theme.Colors.PrimaryLight
         }, 0.15)
-        
-        local stroke = self.Container:FindFirstChild("UIStroke")
-        if stroke then
-            self.Utils.Tween(stroke, {
-                Color = self.Theme.Colors.Primary
-            }, 0.15)
-        end
     end)
     
     self.Button.MouseLeave:Connect(function()
         self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.BackgroundLight
+            BackgroundColor3 = self.Theme.Colors.Primary
         }, 0.15)
-        
-        local stroke = self.Container:FindFirstChild("UIStroke")
-        if stroke then
-            self.Utils.Tween(stroke, {
-                Color = self.Theme.Colors.Border
-            }, 0.15)
-        end
     end)
 end
 
@@ -754,19 +740,19 @@ function Toggle:CreateUI()
     self.Container.Name = "Toggle"
     self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 56 or 40)
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 64 or 44)
     self.Container.Parent = self.Tab.Container
     
     self.Theme.CreateCorner(self.Container)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 0, 20)
-    title.Position = UDim2.fromOffset(12, self.Config.Description and 8 or 10)
-    title.Font = self.Theme.Font.Regular
+    title.Size = UDim2.new(1, -70, 0, 22)
+    title.Position = UDim2.fromOffset(14, self.Config.Description and 10 or 11)
+    title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
@@ -778,8 +764,8 @@ function Toggle:CreateUI()
         local desc = Instance.new("TextLabel")
         desc.Name = "Description"
         desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, -60, 0, 16)
-        desc.Position = UDim2.fromOffset(12, 28)
+        desc.Size = UDim2.new(1, -70, 0, 18)
+        desc.Position = UDim2.fromOffset(14, 32)
         desc.Font = self.Theme.Font.Regular
         desc.Text = self.Config.Description
         desc.TextColor3 = self.Theme.Colors.TextDim
@@ -793,24 +779,25 @@ function Toggle:CreateUI()
     self.Switch.Name = "Switch"
     self.Switch.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.Switch.BorderSizePixel = 0
-    self.Switch.Size = UDim2.fromOffset(40, 20)
-    self.Switch.Position = UDim2.new(1, -48, 0.5, 0)
+    self.Switch.Size = UDim2.fromOffset(48, 26)
+    self.Switch.Position = UDim2.new(1, -56, 0.5, 0)
     self.Switch.AnchorPoint = Vector2.new(0, 0.5)
     self.Switch.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Switch, 10)
-    self.Theme.CreateStroke(self.Switch, self.Theme.Colors.Border)
+    self.Theme.CreateCorner(self.Switch, 13)
+    self.Theme.CreateStroke(self.Switch, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Toggle knob
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
-    self.Knob.BackgroundColor3 = self.Theme.Colors.TextDim
+    self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(16, 16)
-    self.Knob.Position = UDim2.fromOffset(2, 2)
+    self.Knob.Size = UDim2.fromOffset(20, 20)
+    self.Knob.Position = UDim2.fromOffset(3, 3)
     self.Knob.Parent = self.Switch
     
-    self.Theme.CreateCorner(self.Knob, 8)
+    self.Theme.CreateCorner(self.Knob, 10)
+    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Click button
     local button = Instance.new("TextButton")
@@ -857,14 +844,21 @@ function Toggle:UpdateVisual()
         }, 0.2)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(22, 2),
-            BackgroundColor3 = self.Theme.Colors.Text
+            Position = UDim2.fromOffset(25, 3),
+            BackgroundColor3 = self.Theme.Colors.Background
         }, 0.2)
         
         local stroke = self.Switch:FindFirstChild("UIStroke")
         if stroke then
             self.Utils.Tween(stroke, {
-                Color = self.Theme.Colors.Primary
+                Color = self.Theme.Colors.BorderAccent
+            }, 0.2)
+        end
+        
+        local knobStroke = self.Knob:FindFirstChild("UIStroke")
+        if knobStroke then
+            self.Utils.Tween(knobStroke, {
+                Color = self.Theme.Colors.Background
             }, 0.2)
         end
     else
@@ -874,13 +868,20 @@ function Toggle:UpdateVisual()
         }, 0.2)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(2, 2),
-            BackgroundColor3 = self.Theme.Colors.TextDim
+            Position = UDim2.fromOffset(3, 3),
+            BackgroundColor3 = self.Theme.Colors.Text
         }, 0.2)
         
         local stroke = self.Switch:FindFirstChild("UIStroke")
         if stroke then
             self.Utils.Tween(stroke, {
+                Color = self.Theme.Colors.Border
+            }, 0.2)
+        end
+        
+        local knobStroke = self.Knob:FindFirstChild("UIStroke")
+        if knobStroke then
+            self.Utils.Tween(knobStroke, {
                 Color = self.Theme.Colors.Border
             }, 0.2)
         end
@@ -930,19 +931,19 @@ function Slider:CreateUI()
     self.Container.Name = "Slider"
     self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 60)
+    self.Container.Size = UDim2.new(1, 0, 0, 68)
     self.Container.Parent = self.Tab.Container
     
     self.Theme.CreateCorner(self.Container)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 0, 20)
-    title.Position = UDim2.fromOffset(12, 8)
-    title.Font = self.Theme.Font.Regular
+    title.Size = UDim2.new(1, -70, 0, 22)
+    title.Position = UDim2.fromOffset(14, 10)
+    title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
@@ -953,9 +954,9 @@ function Slider:CreateUI()
     self.ValueLabel = Instance.new("TextLabel")
     self.ValueLabel.Name = "Value"
     self.ValueLabel.BackgroundTransparency = 1
-    self.ValueLabel.Size = UDim2.fromOffset(50, 20)
-    self.ValueLabel.Position = UDim2.new(1, -58, 0, 8)
-    self.ValueLabel.Font = self.Theme.Font.Mono
+    self.ValueLabel.Size = UDim2.fromOffset(60, 22)
+    self.ValueLabel.Position = UDim2.new(1, -68, 0, 10)
+    self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Primary
     self.ValueLabel.TextSize = self.Theme.Font.Size.Regular
@@ -967,11 +968,12 @@ function Slider:CreateUI()
     self.Track.Name = "Track"
     self.Track.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.Track.BorderSizePixel = 0
-    self.Track.Size = UDim2.new(1, -24, 0, 6)
-    self.Track.Position = UDim2.fromOffset(12, 38)
+    self.Track.Size = UDim2.new(1, -28, 0, 10)
+    self.Track.Position = UDim2.fromOffset(14, 44)
     self.Track.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Track, 3)
+    self.Theme.CreateCorner(self.Track, 5)
+    self.Theme.CreateStroke(self.Track, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Slider fill
     self.Fill = Instance.new("Frame")
@@ -981,21 +983,20 @@ function Slider:CreateUI()
     self.Fill.Size = UDim2.new(0, 0, 1, 0)
     self.Fill.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Fill, 3)
-    self.Theme.CreateGradient(self.Fill, 0)
+    self.Theme.CreateCorner(self.Fill, 5)
     
     -- Slider knob
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(14, 14)
+    self.Knob.Size = UDim2.fromOffset(18, 18)
     self.Knob.Position = UDim2.new(0, 0, 0.5, 0)
     self.Knob.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Knob.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Knob, 7)
-    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Primary, 2)
+    self.Theme.CreateCorner(self.Knob, 9)
+    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Primary, self.Theme.Size.BorderThick)
     
     -- Input handling
     local UserInputService = game:GetService("UserInputService")
@@ -1022,14 +1023,14 @@ function Slider:CreateUI()
     -- Hover effects
     self.Track.MouseEnter:Connect(function()
         self.Utils.Tween(self.Knob, {
-            Size = UDim2.fromOffset(16, 16)
+            Size = UDim2.fromOffset(22, 22)
         }, 0.15)
     end)
     
     self.Track.MouseLeave:Connect(function()
         if not self.Dragging then
             self.Utils.Tween(self.Knob, {
-                Size = UDim2.fromOffset(14, 14)
+                Size = UDim2.fromOffset(18, 18)
             }, 0.15)
         end
     end)
