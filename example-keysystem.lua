@@ -110,7 +110,51 @@ local function advancedValidation()
     })
 end
 
--- Example 3: Local validation (for testing)
+-- Example 3: Validate from GitHub file (keysample.txt)
+local function githubFileValidation()
+    KeySystemManager:Initialize({
+        Title = "EnowLib Key System",
+        Description = "Enter your key to access the script. Valid keys are stored in keysample.txt on GitHub.",
+        
+        ValidateKey = function(key)
+            -- Fetch valid keys from GitHub
+            local success, response = pcall(function()
+                return game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/keysample.txt")
+            end)
+            
+            if not success then
+                return false, "Failed to fetch key database"
+            end
+            
+            -- Check if key exists in the list
+            for line in response:gmatch("[^\r\n]+") do
+                if line:match("^%s*(.-)%s*$") == key then
+                    return true
+                end
+            end
+            
+            return false, "Invalid key. Please check your key and try again."
+        end,
+        
+        GetKeyUrl = "https://github.com/enowdev/enowlib/blob/main/build/keysample.txt",
+        SaveKey = true,
+        
+        OnSuccess = function()
+            print("[KeySystem] Access granted!")
+            createMainWindow()
+        end,
+        
+        OnFail = function(reason)
+            warn("[KeySystem] Access denied:", reason)
+        end,
+        
+        OnClose = function()
+            print("[KeySystem] User closed key system")
+        end
+    })
+end
+
+-- Example 4: Local validation (for testing)
 local function localValidation()
     local validKeys = {
         ["TEST-KEY-123"] = true,
@@ -185,9 +229,11 @@ end
 print("Choose validation method:")
 print("1. Simple (true/false response)")
 print("2. Advanced (JSON response)")
-print("3. Local (testing)")
+print("3. GitHub File (keysample.txt)")
+print("4. Local (testing)")
 
--- For this example, use local validation
-localValidation()
+-- For this example, use GitHub file validation
+githubFileValidation()
 
 print("=== KeySystem Initialized ===")
+print("Valid keys are in: https://github.com/enowdev/enowlib/blob/main/build/keysample.txt")
