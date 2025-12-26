@@ -1,0 +1,27 @@
+{
+  "name": "enowlib",
+  "version": "2.0.0",
+  "description": "Vaporwave Tech Dark UI Library for Roblox",
+  "main": "build/enowlib.lua",
+  "scripts": {
+    "build": "node build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enowdev/enowlib.git"
+  },
+  "keywords": [
+    "roblox",
+    "ui",
+    "library",
+    "vaporwave",
+    "lua"
+  ],
+  "author": "EnowHub Development",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enowdev/enowlib/issues"
+  },
+  "homepage": "https://github.com/enowdev/enowlib#readme"
+}

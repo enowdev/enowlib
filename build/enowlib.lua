@@ -1,9 +1,10 @@
-﻿-- EnowLib v2.0.0
+-- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 14:16:15
+-- Built: 2025-12-26 07:21:00
 -- Author: EnowHub Development
 
 local EnowLib = {}
+
 
 -- Module: Theme
 local Theme
@@ -198,9 +199,9 @@ function Theme.CreatePadding(parent, padding)
     
     return uiPadding
 end
-
 Theme = Theme
 end
+
 
 -- Module: Utils
 local Utils
@@ -425,9 +426,9 @@ function Utils.Throttle(func, delay)
         end
     end
 end
-
 Utils = Utils
 end
+
 
 -- Module: Section
 local Section
@@ -500,9 +501,9 @@ function Section:CreateUI()
     
     self.Theme.CreateGradient(rightLine, 90)
 end
-
 Section = Section
 end
+
 
 -- Module: Label
 local Label
@@ -580,9 +581,9 @@ function Label:SetColor(color)
     self.Config.Color = color
     self.Label.TextColor3 = color
 end
-
 Label = Label
 end
+
 
 -- Module: Button
 local Button
@@ -705,9 +706,9 @@ end
 function Button:SetCallback(callback)
     self.Config.Callback = callback
 end
-
 Button = Button
 end
+
 
 -- Module: Toggle
 local Toggle
@@ -876,9 +877,9 @@ function Toggle:UpdateVisual()
         end
     end
 end
-
 Toggle = Toggle
 end
+
 
 -- Module: Slider
 local Slider
@@ -1050,9 +1051,9 @@ function Slider:UpdateVisual()
     self.Knob.Position = UDim2.new(percentage, 0, 0.5, 0)
     self.ValueLabel.Text = tostring(self.Value)
 end
-
 Slider = Slider
 end
+
 
 -- Module: Input
 local Input
@@ -1179,9 +1180,9 @@ end
 function Input:GetValue()
     return self.InputBox.Text
 end
-
 Input = Input
 end
+
 
 -- Module: Dropdown
 local Dropdown
@@ -1292,7 +1293,7 @@ function Dropdown:CreateUI()
     arrow.Position = UDim2.new(1, -24, 0.5, 0)
     arrow.AnchorPoint = Vector2.new(0, 0.5)
     arrow.Font = self.Theme.Font.Bold
-    arrow.Text = "â–¼"
+    arrow.Text = "▼"
     arrow.TextColor3 = self.Theme.Colors.TextDim
     arrow.TextSize = 10
     arrow.Parent = self.Button
@@ -1434,9 +1435,9 @@ function Dropdown:SetValue(value)
     self.Value = value
     self.ValueLabel.Text = value
 end
-
 Dropdown = Dropdown
 end
+
 
 -- Module: Keybind
 local Keybind
@@ -1619,9 +1620,9 @@ function Keybind:Destroy()
     end
     self.Container:Destroy()
 end
-
 Keybind = Keybind
 end
+
 
 -- Module: ColorPicker
 local ColorPicker
@@ -2018,9 +2019,9 @@ end
 function ColorPicker:SetValue(color)
     self:UpdateFromColor(color)
 end
-
 ColorPicker = ColorPicker
 end
+
 
 -- Module: MultiDropdown
 local MultiDropdown
@@ -2135,7 +2136,7 @@ function MultiDropdown:CreateUI()
     arrow.Position = UDim2.new(1, -24, 0.5, 0)
     arrow.AnchorPoint = Vector2.new(0, 0.5)
     arrow.Font = self.Theme.Font.Bold
-    arrow.Text = "â–¼"
+    arrow.Text = "▼"
     arrow.TextColor3 = self.Theme.Colors.TextDim
     arrow.TextSize = 10
     arrow.Parent = self.Button
@@ -2226,7 +2227,7 @@ function MultiDropdown:CreateOption(option, parent)
     checkmark.BackgroundTransparency = 1
     checkmark.Size = UDim2.new(1, 0, 1, 0)
     checkmark.Font = self.Theme.Font.Bold
-    checkmark.Text = "âœ“"
+    checkmark.Text = "✓"
     checkmark.TextColor3 = self.Theme.Colors.Primary
     checkmark.TextSize = 14
     checkmark.Visible = self.Values[option] or false
@@ -2367,9 +2368,9 @@ function MultiDropdown:SetValues(values)
     
     self.ValueLabel.Text = self:GetDisplayText()
 end
-
 MultiDropdown = MultiDropdown
 end
+
 
 -- Module: ProgressBar
 local ProgressBar
@@ -2537,9 +2538,9 @@ end
 function ProgressBar:Reset()
     self:SetValue(self.Config.Min)
 end
-
 ProgressBar = ProgressBar
 end
+
 
 -- Module: Notification
 local Notification
@@ -2676,7 +2677,7 @@ function Notification.Create(config)
     closeBtn.Size = UDim2.fromOffset(20, 20)
     closeBtn.Position = UDim2.new(1, -20, 0, 4)
     closeBtn.Font = Notification.Theme.Font.Bold
-    closeBtn.Text = "Ã—"
+    closeBtn.Text = "×"
     closeBtn.TextColor3 = Notification.Theme.Colors.TextDim
     closeBtn.TextSize = 18
     closeBtn.Parent = content
@@ -2731,9 +2732,9 @@ function Notification.GetTypeColor(type)
     
     return colors[type] or Notification.Theme.Colors.Primary
 end
-
 Notification = Notification
 end
+
 
 -- Module: Tab
 local Tab
@@ -2932,9 +2933,9 @@ function Tab:AddProgressBar(config)
     table.insert(self.Components, progressbar)
     return progressbar
 end
-
 Tab = Tab
 end
+
 
 -- Module: Window
 local Window
@@ -3043,7 +3044,7 @@ function Window:CreateTitleBar()
         closeBtn.Position = UDim2.new(1, -32, 0.5, 0)
         closeBtn.AnchorPoint = Vector2.new(0, 0.5)
         closeBtn.Font = self.Theme.Font.Bold
-        closeBtn.Text = "Ã—"
+        closeBtn.Text = "×"
         closeBtn.TextColor3 = self.Theme.Colors.Text
         closeBtn.TextSize = 20
         closeBtn.Parent = self.TitleBar
@@ -3156,9 +3157,9 @@ end
 function Window:Destroy()
     self.ScreenGui:Destroy()
 end
-
 Window = Window
 end
+
 
 -- Module: SaveManager
 local SaveManager
@@ -3511,9 +3512,9 @@ function SaveManager.CreateUI(tab)
         end
     })
 end
-
 SaveManager = SaveManager
 end
+
 
 -- Module: InterfaceManager
 local InterfaceManager
@@ -3828,9 +3829,9 @@ function InterfaceManager.CreateUI(tab)
         end
     })
 end
-
 InterfaceManager = InterfaceManager
 end
+
 
 -- Initialize EnowLib
 EnowLib.Version = "2.0.0"
