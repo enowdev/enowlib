@@ -1,0 +1,120 @@
+-- VaporUI Button Component
+
+local Button = {}
+Button.__index = Button
+
+function Button.new(config, tab, theme, utils)
+    local self = setmetatable({}, Button)
+    
+    self.Tab = tab
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Button",
+        Description = nil,
+        Callback = function() end
+    }, config or {})
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function Button:CreateUI()
+    -- Container
+    self.Container = Instance.new("Frame")
+    self.Container.Name = "Button"
+    self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.Container.BorderSizePixel = 0
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 56 or 40)
+    self.Container.Parent = self.Tab.Container
+    
+    self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    
+    -- Button
+    self.Button = Instance.new("TextButton")
+    self.Button.Name = "ButtonClick"
+    self.Button.BackgroundTransparency = 1
+    self.Button.Size = UDim2.new(1, 0, 1, 0)
+    self.Button.Font = self.Theme.Font.Regular
+    self.Button.Text = ""
+    self.Button.TextColor3 = self.Theme.Colors.Text
+    self.Button.TextSize = self.Theme.Font.Size.Regular
+    self.Button.AutoButtonColor = false
+    self.Button.Parent = self.Container
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.Name = "Title"
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, -24, 0, 20)
+    title.Position = UDim2.fromOffset(12, self.Config.Description and 8 or 10)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Description
+    if self.Config.Description then
+        local desc = Instance.new("TextLabel")
+        desc.Name = "Description"
+        desc.BackgroundTransparency = 1
+        desc.Size = UDim2.new(1, -24, 0, 16)
+        desc.Position = UDim2.fromOffset(12, 28)
+        desc.Font = self.Theme.Font.Regular
+        desc.Text = self.Config.Description
+        desc.TextColor3 = self.Theme.Colors.TextDim
+        desc.TextSize = self.Theme.Font.Size.Small
+        desc.TextXAlignment = Enum.TextXAlignment.Left
+        desc.Parent = self.Container
+    end
+    
+    -- Click handler
+    self.Button.MouseButton1Click:Connect(function()
+        self.Utils.CreateRipple(self.Container, 
+            Vector2.new(self.Button.AbsoluteSize.X / 2, self.Button.AbsoluteSize.Y / 2))
+        
+        pcall(self.Config.Callback)
+    end)
+    
+    -- Hover effects
+    self.Button.MouseEnter:Connect(function()
+        self.Utils.Tween(self.Container, {
+            BackgroundColor3 = self.Theme.Colors.Hover
+        }, 0.15)
+        
+        local stroke = self.Container:FindFirstChild("UIStroke")
+        if stroke then
+            self.Utils.Tween(stroke, {
+                Color = self.Theme.Colors.Primary
+            }, 0.15)
+        end
+    end)
+    
+    self.Button.MouseLeave:Connect(function()
+        self.Utils.Tween(self.Container, {
+            BackgroundColor3 = self.Theme.Colors.BackgroundLight
+        }, 0.15)
+        
+        local stroke = self.Container:FindFirstChild("UIStroke")
+        if stroke then
+            self.Utils.Tween(stroke, {
+                Color = self.Theme.Colors.Border
+            }, 0.15)
+        end
+    end)
+end
+
+function Button:SetTitle(title)
+    self.Config.Title = title
+    self.Container.Title.Text = title
+end
+
+function Button:SetCallback(callback)
+    self.Config.Callback = callback
+end
+
+return Button
