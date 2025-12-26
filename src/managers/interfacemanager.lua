@@ -1,5 +1,5 @@
 -- EnowLib InterfaceManager v2.0
--- Modern UI state and visibility management
+-- Modern UI state, visibility, and theme management
 
 local InterfaceManager = {}
 
@@ -9,7 +9,155 @@ local UserInputService = game:GetService("UserInputService")
 -- Settings
 InterfaceManager.Settings = {
     MinimizeKey = Enum.KeyCode.RightControl,
-    Visible = true
+    Visible = true,
+    CurrentTheme = "Hacker"
+}
+
+-- Theme presets (inspired by Kiro IDE)
+InterfaceManager.Themes = {
+    Hacker = {
+        Name = "Hacker",
+        Colors = {
+            Background = Color3.fromRGB(13, 17, 23),
+            Panel = Color3.fromRGB(22, 27, 34),
+            Secondary = Color3.fromRGB(33, 38, 45),
+            Accent = Color3.fromRGB(46, 204, 113),
+            AccentHover = Color3.fromRGB(39, 174, 96),
+            AccentDim = Color3.fromRGB(34, 153, 84),
+            Text = Color3.fromRGB(201, 209, 217),
+            TextDim = Color3.fromRGB(139, 148, 158),
+            Border = Color3.fromRGB(48, 54, 61),
+            Success = Color3.fromRGB(46, 204, 113),
+            Warning = Color3.fromRGB(241, 196, 15),
+            Error = Color3.fromRGB(231, 76, 60)
+        }
+    },
+    
+    Ocean = {
+        Name = "Ocean",
+        Colors = {
+            Background = Color3.fromRGB(15, 23, 42),
+            Panel = Color3.fromRGB(30, 41, 59),
+            Secondary = Color3.fromRGB(51, 65, 85),
+            Accent = Color3.fromRGB(56, 189, 248),
+            AccentHover = Color3.fromRGB(14, 165, 233),
+            AccentDim = Color3.fromRGB(2, 132, 199),
+            Text = Color3.fromRGB(226, 232, 240),
+            TextDim = Color3.fromRGB(148, 163, 184),
+            Border = Color3.fromRGB(71, 85, 105),
+            Success = Color3.fromRGB(34, 197, 94),
+            Warning = Color3.fromRGB(251, 191, 36),
+            Error = Color3.fromRGB(239, 68, 68)
+        }
+    },
+    
+    Purple = {
+        Name = "Purple",
+        Colors = {
+            Background = Color3.fromRGB(24, 24, 37),
+            Panel = Color3.fromRGB(39, 39, 58),
+            Secondary = Color3.fromRGB(55, 55, 79),
+            Accent = Color3.fromRGB(167, 139, 250),
+            AccentHover = Color3.fromRGB(139, 92, 246),
+            AccentDim = Color3.fromRGB(124, 58, 237),
+            Text = Color3.fromRGB(226, 232, 240),
+            TextDim = Color3.fromRGB(148, 163, 184),
+            Border = Color3.fromRGB(71, 71, 95),
+            Success = Color3.fromRGB(34, 197, 94),
+            Warning = Color3.fromRGB(251, 191, 36),
+            Error = Color3.fromRGB(239, 68, 68)
+        }
+    },
+    
+    Sunset = {
+        Name = "Sunset",
+        Colors = {
+            Background = Color3.fromRGB(30, 20, 25),
+            Panel = Color3.fromRGB(45, 30, 38),
+            Secondary = Color3.fromRGB(60, 40, 50),
+            Accent = Color3.fromRGB(251, 113, 133),
+            AccentHover = Color3.fromRGB(244, 63, 94),
+            AccentDim = Color3.fromRGB(225, 29, 72),
+            Text = Color3.fromRGB(254, 226, 226),
+            TextDim = Color3.fromRGB(190, 152, 152),
+            Border = Color3.fromRGB(75, 50, 63),
+            Success = Color3.fromRGB(34, 197, 94),
+            Warning = Color3.fromRGB(251, 191, 36),
+            Error = Color3.fromRGB(239, 68, 68)
+        }
+    },
+    
+    Midnight = {
+        Name = "Midnight",
+        Colors = {
+            Background = Color3.fromRGB(10, 10, 15),
+            Panel = Color3.fromRGB(20, 20, 30),
+            Secondary = Color3.fromRGB(30, 30, 45),
+            Accent = Color3.fromRGB(96, 165, 250),
+            AccentHover = Color3.fromRGB(59, 130, 246),
+            AccentDim = Color3.fromRGB(37, 99, 235),
+            Text = Color3.fromRGB(226, 232, 240),
+            TextDim = Color3.fromRGB(148, 163, 184),
+            Border = Color3.fromRGB(45, 45, 60),
+            Success = Color3.fromRGB(34, 197, 94),
+            Warning = Color3.fromRGB(251, 191, 36),
+            Error = Color3.fromRGB(239, 68, 68)
+        }
+    },
+    
+    Forest = {
+        Name = "Forest",
+        Colors = {
+            Background = Color3.fromRGB(17, 24, 20),
+            Panel = Color3.fromRGB(28, 38, 32),
+            Secondary = Color3.fromRGB(39, 52, 44),
+            Accent = Color3.fromRGB(74, 222, 128),
+            AccentHover = Color3.fromRGB(34, 197, 94),
+            AccentDim = Color3.fromRGB(22, 163, 74),
+            Text = Color3.fromRGB(220, 252, 231),
+            TextDim = Color3.fromRGB(134, 168, 144),
+            Border = Color3.fromRGB(54, 67, 59),
+            Success = Color3.fromRGB(34, 197, 94),
+            Warning = Color3.fromRGB(251, 191, 36),
+            Error = Color3.fromRGB(239, 68, 68)
+        }
+    },
+    
+    Amber = {
+        Name = "Amber",
+        Colors = {
+            Background = Color3.fromRGB(28, 25, 23),
+            Panel = Color3.fromRGB(41, 37, 36),
+            Secondary = Color3.fromRGB(57, 51, 48),
+            Accent = Color3.fromRGB(251, 191, 36),
+            AccentHover = Color3.fromRGB(245, 158, 11),
+            AccentDim = Color3.fromRGB(217, 119, 6),
+            Text = Color3.fromRGB(254, 243, 199),
+            TextDim = Color3.fromRGB(180, 160, 130),
+            Border = Color3.fromRGB(72, 66, 63),
+            Success = Color3.fromRGB(34, 197, 94),
+            Warning = Color3.fromRGB(251, 191, 36),
+            Error = Color3.fromRGB(239, 68, 68)
+        }
+    },
+    
+    Crimson = {
+        Name = "Crimson",
+        Colors = {
+            Background = Color3.fromRGB(25, 15, 18),
+            Panel = Color3.fromRGB(38, 23, 28),
+            Secondary = Color3.fromRGB(51, 31, 38),
+            Accent = Color3.fromRGB(239, 68, 68),
+            AccentHover = Color3.fromRGB(220, 38, 38),
+            AccentDim = Color3.fromRGB(185, 28, 28),
+            Text = Color3.fromRGB(254, 226, 226),
+            TextDim = Color3.fromRGB(180, 150, 150),
+            Border = Color3.fromRGB(66, 41, 48),
+            Success = Color3.fromRGB(34, 197, 94),
+            Warning = Color3.fromRGB(251, 191, 36),
+            Error = Color3.fromRGB(239, 68, 68)
+        }
+    }
 }
 
 function InterfaceManager:Initialize(window)
@@ -67,6 +215,132 @@ function InterfaceManager:SetMinimizeKey(keyCode)
     end
     
     self.Settings.MinimizeKey = keyCode
+end
+
+function InterfaceManager:SetTheme(themeName)
+    local theme = self.Themes[themeName]
+    
+    if not theme then
+        warn("[InterfaceManager] Theme not found:", themeName)
+        return false
+    end
+    
+    if not self.Window or not self.Window.Theme then
+        warn("[InterfaceManager] Window or theme not initialized")
+        return false
+    end
+    
+    -- Update theme colors
+    for key, color in pairs(theme.Colors) do
+        self.Window.Theme.Colors[key] = color
+    end
+    
+    self.Settings.CurrentTheme = themeName
+    
+    -- Refresh UI with new theme
+    self:RefreshUI()
+    
+    return true
+end
+
+function InterfaceManager:RefreshUI()
+    if not self.Window then return end
+    
+    local theme = self.Window.Theme
+    
+    -- Refresh window container
+    if self.Window.Container then
+        self.Window.Container.BackgroundColor3 = theme.Colors.Background
+        
+        local stroke = self.Window.Container:FindFirstChildOfClass("UIStroke")
+        if stroke then
+            stroke.Color = theme.Colors.Border
+        end
+    end
+    
+    -- Refresh titlebar
+    if self.Window.TitleBar then
+        self.Window.TitleBar.BackgroundColor3 = theme.Colors.Panel
+        
+        if self.Window.TitleLabel then
+            self.Window.TitleLabel.TextColor3 = theme.Colors.Text
+        end
+    end
+    
+    -- Refresh sidebar
+    if self.Window.Sidebar then
+        self.Window.Sidebar.BackgroundColor3 = theme.Colors.Panel
+        
+        if self.Window.SidebarHeader then
+            self.Window.SidebarHeader.TextColor3 = theme.Colors.TextDim
+        end
+    end
+    
+    -- Refresh content area
+    if self.Window.ContentArea then
+        self.Window.ContentArea.BackgroundColor3 = theme.Colors.Background
+    end
+    
+    -- Refresh all categories and items
+    self:RefreshCategories()
+end
+
+function InterfaceManager:RefreshCategories()
+    if not self.Window or not self.Window.Categories then return end
+    
+    local theme = self.Window.Theme
+    
+    for _, category in ipairs(self.Window.Categories) do
+        if category.Container then
+            category.Container.BackgroundColor3 = theme.Colors.Secondary
+            
+            if category.TitleLabel then
+                category.TitleLabel.TextColor3 = theme.Colors.Text
+            end
+            
+            if category.ChevronIcon then
+                category.ChevronIcon.ImageColor3 = theme.Colors.TextDim
+            end
+        end
+        
+        -- Refresh items in category
+        if category.Items then
+            for _, item in ipairs(category.Items) do
+                if item.Container then
+                    if item.Active then
+                        item.Container.BackgroundColor3 = theme.Colors.Accent
+                        item.Container.BackgroundTransparency = 0.85
+                        
+                        if item.TitleLabel then
+                            item.TitleLabel.TextColor3 = theme.Colors.Text
+                        end
+                        if item.Icon then
+                            item.Icon.ImageColor3 = theme.Colors.Text
+                        end
+                    else
+                        item.Container.BackgroundColor3 = theme.Colors.Secondary
+                        item.Container.BackgroundTransparency = 1
+                        
+                        if item.TitleLabel then
+                            item.TitleLabel.TextColor3 = theme.Colors.TextDim
+                        end
+                        if item.Icon then
+                            item.Icon.ImageColor3 = theme.Colors.TextDim
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+function InterfaceManager:GetThemeList()
+    local themes = {}
+    for name, _ in pairs(self.Themes) do
+        table.insert(themes, name)
+    end
+    table.sort(themes)
+    return themes
 end
 
 function InterfaceManager:Destroy()

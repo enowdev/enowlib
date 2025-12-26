@@ -10,9 +10,9 @@ Complete rewrite with IDE-style interface, responsive design, and modular manage
 
 - **IDE-Style Interface** - VS Code-like tree structure with categories and items
 - **12 UI Components** - Button, Toggle, Slider, Label, TextBox, Dropdown, MultiSelect, ColorPicker, Keybind, Section, Paragraph, Divider
+- **8 Beautiful Themes** - Hacker, Ocean, Purple, Sunset, Midnight, Forest, Amber, Crimson (inspired by Kiro IDE)
 - **Modular Managers** - Separate InterfaceManager and SaveManager modules
 - **Responsive Design** - Touch and mouse input support for PC, tablet, mobile
-- **Hacker Theme** - Green accent (#2ecc71), dark backgrounds, monospace font
 - **Smooth Animations** - Quint easing with 0.3s duration
 - **Single File Build** - Main library in one file (~84KB)
 - **Separate Manager Builds** - Load managers only when needed
@@ -77,7 +77,7 @@ src/
 build/
 ├── enowlib.lua           # Main library (~84KB)
 └── managers/
-    ├── interfacemanager.lua  # Interface manager (~2KB)
+    ├── interfacemanager.lua  # Interface manager (~12KB)
     └── savemanager.lua       # Save manager (~7KB)
 
 build.js                  # Main build script
@@ -177,6 +177,12 @@ InterfaceManager:Toggle()  -- Hide/show UI
 InterfaceManager:Hide()    -- Hide UI
 InterfaceManager:Show()    -- Show UI
 
+-- Interface Manager - Change theme
+InterfaceManager:SetTheme("Ocean")
+InterfaceManager:SetTheme("Purple")
+InterfaceManager:SetTheme("Sunset")
+local themes = InterfaceManager:GetThemeList()
+
 -- Save Manager - Register components
 local toggle = window:AddToggle({
     Text = "My Setting",
@@ -205,19 +211,42 @@ node build.js
 
 # Build managers
 node build-managers.js
-# Output: build/managers/interfacemanager.lua (~2KB)
+# Output: build/managers/interfacemanager.lua (~12KB)
 #         build/managers/savemanager.lua (~7KB)
 ```
 
 ## Theme
 
-EnowLib uses a hacker/terminal aesthetic:
+EnowLib includes 8 beautiful themes inspired by Kiro IDE:
 
-- **Colors**: Green accent (#2ecc71), dark backgrounds
+### Available Themes
+
+1. **Hacker** (Default) - Green accent (#2ecc71), dark backgrounds
+2. **Ocean** - Blue accent (#38bdf8), slate backgrounds
+3. **Purple** - Violet accent (#a78bfa), deep purple backgrounds
+4. **Sunset** - Pink accent (#fb7185), warm dark backgrounds
+5. **Midnight** - Blue accent (#60a5fa), very dark backgrounds
+6. **Forest** - Green accent (#4ade80), forest dark backgrounds
+7. **Amber** - Orange accent (#fbbf24), warm brown backgrounds
+8. **Crimson** - Red accent (#ef4444), dark red backgrounds
+
+All themes use:
 - **Font**: RobotoMono (monospace)
 - **Icons**: Lucide icon set
 - **Animations**: Quint easing, 0.3s duration
 - **Transparency**: Glass morphism effect
+
+### Changing Themes
+
+```lua
+-- Via InterfaceManager
+InterfaceManager:SetTheme("Ocean")
+InterfaceManager:SetTheme("Purple")
+InterfaceManager:SetTheme("Sunset")
+
+-- Get list of available themes
+local themes = InterfaceManager:GetThemeList()
+```
 
 ## Manager APIs
 
@@ -229,6 +258,9 @@ InterfaceManager:Toggle()
 InterfaceManager:Show()
 InterfaceManager:Hide()
 InterfaceManager:SetMinimizeKey(Enum.KeyCode.RightControl)
+InterfaceManager:SetTheme(themeName)
+InterfaceManager:GetThemeList()
+InterfaceManager:RefreshUI()
 InterfaceManager:Destroy()
 ```
 

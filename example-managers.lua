@@ -45,13 +45,30 @@ SettingsCategory:AddItem({
         
         window:AddParagraph({
             Title = "About Interface Manager",
-            Content = "Manage UI visibility and keybinds. Press the minimize key to toggle UI visibility."
+            Content = "Manage UI visibility, keybinds, and themes. Press the minimize key to toggle UI visibility. Choose from 8 beautiful themes inspired by Kiro IDE."
         })
         
         window:AddDivider()
         
         local interfaceSection = window:AddSection({
             Title = "Interface Settings"
+        })
+        
+        -- Theme selector
+        local themes = InterfaceManager:GetThemeList()
+        interfaceSection:AddDropdown({
+            Text = "UI Theme",
+            Options = themes,
+            Default = InterfaceManager.Settings.CurrentTheme,
+            Searchable = false,
+            Callback = function(value)
+                local success = InterfaceManager:SetTheme(value)
+                if success then
+                    print("[Interface] Theme changed to:", value)
+                else
+                    warn("[Interface] Failed to change theme")
+                end
+            end
         })
         
         -- Minimize keybind
@@ -67,29 +84,21 @@ SettingsCategory:AddItem({
             end
         })
         
-        -- Manual controls
-        interfaceSection:AddButton({
-            Text = "Hide UI",
-            Callback = function()
-                InterfaceManager:Hide()
-                print("[Interface] UI hidden")
-            end
+        window:AddDivider()
+        
+        window:AddLabel({
+            Text = "Available Themes:",
+            Color = window.Theme.Colors.Accent
         })
         
-        interfaceSection:AddButton({
-            Text = "Show UI",
-            Callback = function()
-                InterfaceManager:Show()
-                print("[Interface] UI shown")
-            end
+        window:AddLabel({
+            Text = "Hacker (Green), Ocean (Blue), Purple (Violet), Sunset (Pink)",
+            Color = window.Theme.Colors.TextDim
         })
         
-        interfaceSection:AddButton({
-            Text = "Toggle UI",
-            Callback = function()
-                InterfaceManager:Toggle()
-                print("[Interface] UI toggled")
-            end
+        window:AddLabel({
+            Text = "Midnight (Dark Blue), Forest (Green), Amber (Orange), Crimson (Red)",
+            Color = window.Theme.Colors.TextDim
         })
     end
 })
