@@ -3,50 +3,51 @@
 
 local Theme = {}
 
--- Color Palette - Y2K Bright Pastels
+-- Color Palette - Y2K Bright Pastels (Improved Contrast)
 Theme.Colors = {
-    -- Background colors (Light pastel base)
-    Background = Color3.fromRGB(255, 182, 193),      -- Pastel pink
-    BackgroundDark = Color3.fromRGB(230, 150, 170),  -- Darker pink
-    BackgroundLight = Color3.fromRGB(255, 200, 210), -- Lighter pink
+    -- Background colors (Lighter for better contrast)
+    Background = Color3.fromRGB(240, 240, 255),      -- Very light lavender
+    BackgroundDark = Color3.fromRGB(220, 220, 240),  -- Light lavender
+    BackgroundLight = Color3.fromRGB(255, 255, 255), -- Pure white
     
     -- Primary colors (Bright cyan - Y2K signature)
-    Primary = Color3.fromRGB(0, 255, 255),           -- Bright cyan
-    PrimaryLight = Color3.fromRGB(128, 255, 255),    -- Light cyan
-    PrimaryDark = Color3.fromRGB(0, 200, 200),       -- Deep cyan
+    Primary = Color3.fromRGB(0, 200, 255),           -- Bright cyan
+    PrimaryLight = Color3.fromRGB(100, 230, 255),    -- Light cyan
+    PrimaryDark = Color3.fromRGB(0, 150, 200),       -- Deep cyan
     
     -- Secondary colors (Bright purple)
-    Secondary = Color3.fromRGB(200, 162, 255),       -- Pastel purple
-    SecondaryLight = Color3.fromRGB(220, 190, 255),  -- Light purple
-    SecondaryDark = Color3.fromRGB(150, 100, 255),   -- Deep purple
+    Secondary = Color3.fromRGB(180, 140, 255),       -- Bright purple
+    SecondaryLight = Color3.fromRGB(210, 180, 255),  -- Light purple
+    SecondaryDark = Color3.fromRGB(140, 80, 255),    -- Deep purple
     
-    -- Accent colors (Y2K palette)
-    Yellow = Color3.fromRGB(255, 255, 0),            -- Bright yellow
-    Green = Color3.fromRGB(0, 255, 128),             -- Bright green
-    Orange = Color3.fromRGB(255, 165, 0),            -- Bright orange
+    -- Accent colors (Y2K palette - more vibrant)
+    Yellow = Color3.fromRGB(255, 220, 0),            -- Bright yellow
+    Green = Color3.fromRGB(100, 255, 150),           -- Bright green
+    Orange = Color3.fromRGB(255, 150, 50),           -- Bright orange
+    Pink = Color3.fromRGB(255, 150, 200),            -- Bright pink
     
-    -- Text colors
-    Text = Color3.fromRGB(0, 0, 0),                  -- Black text (Y2K style)
-    TextDim = Color3.fromRGB(80, 80, 80),            -- Dark gray
-    TextDisabled = Color3.fromRGB(150, 150, 150),    -- Light gray
+    -- Text colors (Better contrast)
+    Text = Color3.fromRGB(20, 20, 40),               -- Dark blue-gray (better than pure black)
+    TextDim = Color3.fromRGB(100, 100, 120),         -- Medium gray
+    TextDisabled = Color3.fromRGB(160, 160, 180),    -- Light gray
     TextWhite = Color3.fromRGB(255, 255, 255),       -- White text
     
     -- State colors (Bright versions)
-    Success = Color3.fromRGB(0, 255, 128),           -- Bright green
-    Warning = Color3.fromRGB(255, 255, 0),           -- Bright yellow
-    Error = Color3.fromRGB(255, 100, 100),           -- Bright red
-    Info = Color3.fromRGB(0, 255, 255),              -- Bright cyan
+    Success = Color3.fromRGB(100, 255, 150),         -- Bright green
+    Warning = Color3.fromRGB(255, 220, 0),           -- Bright yellow
+    Error = Color3.fromRGB(255, 80, 120),            -- Bright red
+    Info = Color3.fromRGB(0, 200, 255),              -- Bright cyan
     
     -- UI Element colors (Y2K style)
-    Border = Color3.fromRGB(0, 0, 0),                -- BLACK borders (signature Y2K)
-    BorderThick = Color3.fromRGB(0, 0, 0),           -- BLACK thick borders
+    Border = Color3.fromRGB(20, 20, 40),             -- Dark blue-gray borders
+    BorderThick = Color3.fromRGB(20, 20, 40),        -- Dark borders
     Shadow = Color3.fromRGB(0, 0, 0),                -- Black shadow
-    Hover = Color3.fromRGB(255, 220, 230),           -- Light pink hover
-    Active = Color3.fromRGB(255, 240, 245),          -- Very light pink
+    Hover = Color3.fromRGB(230, 240, 255),           -- Light blue hover
+    Active = Color3.fromRGB(200, 220, 255),          -- Light blue active
     
-    -- Window chrome colors (like Windows 95/2000)
-    TitleBar = Color3.fromRGB(0, 255, 255),          -- Cyan title bar
-    TitleBarInactive = Color3.fromRGB(128, 128, 128) -- Gray inactive
+    -- Window chrome colors (like Windows 2000)
+    TitleBar = Color3.fromRGB(0, 200, 255),          -- Cyan title bar
+    TitleBarInactive = Color3.fromRGB(150, 150, 170) -- Gray inactive
 }
 
 -- Transparency values
@@ -73,7 +74,7 @@ Theme.Font = {
     }
 }
 
--- Spacing and sizing (Y2K - compact but playful)
+-- Spacing and sizing (Y2K - better spacing to prevent overflow)
 Theme.Spacing = {
     Tiny = 4,
     Small = 8,
@@ -88,18 +89,18 @@ Theme.Size = {
     CornerRadius = 0,              -- NO rounding (pure Y2K)
     ScrollBarWidth = 8,
     
-    -- Component sizes
-    ButtonHeight = 36,
+    -- Component sizes (adjusted for better spacing)
+    ButtonHeight = 40,
     ToggleSize = 24,
     SliderHeight = 20,
-    InputHeight = 36,
-    DropdownHeight = 36,
+    InputHeight = 40,
+    DropdownHeight = 40,
     
     -- Container sizes
     WindowMinWidth = 400,
     WindowMinHeight = 300,
     TabWidth = 140,
-    SectionHeight = 28,
+    SectionHeight = 32,
     
     -- Y2K shadow offset (thick shadow)
     ShadowOffset = 5,

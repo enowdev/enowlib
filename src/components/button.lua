@@ -24,9 +24,9 @@ function Button:CreateUI()
     -- Container
     self.Container = Instance.new("Frame")
     self.Container.Name = "Button"
-    self.Container.BackgroundColor3 = self.Theme.Colors.Yellow  -- Bright yellow button
+    self.Container.BackgroundColor3 = self.Theme.Colors.Primary  -- Cyan button
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 56 or 40)
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 60 or 40)
     self.Container.Parent = self.Tab.Container
     
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
@@ -49,13 +49,14 @@ function Button:CreateUI()
     title.Name = "Title"
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -16, 0, 20)
-    title.Position = UDim2.fromOffset(8, self.Config.Description and 8 or 10)
+    title.Position = UDim2.fromOffset(8, self.Config.Description and 10 or 10)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
-    title.TextXAlignment = Enum.TextXAlignment.Left
-    title.TextStrokeTransparency = 0.8
+    title.TextXAlignment = Enum.TextXAlignment.Center
+    title.TextStrokeTransparency = 0.5
+    title.TextStrokeColor3 = self.Theme.Colors.TextWhite
     title.Parent = self.Container
     
     -- Description
@@ -64,12 +65,12 @@ function Button:CreateUI()
         desc.Name = "Description"
         desc.BackgroundTransparency = 1
         desc.Size = UDim2.new(1, -16, 0, 16)
-        desc.Position = UDim2.fromOffset(8, 28)
+        desc.Position = UDim2.fromOffset(8, 32)
         desc.Font = self.Theme.Font.Regular
         desc.Text = self.Config.Description
-        desc.TextColor3 = self.Theme.Colors.TextDim
+        desc.TextColor3 = self.Theme.Colors.Text
         desc.TextSize = self.Theme.Font.Size.Small
-        desc.TextXAlignment = Enum.TextXAlignment.Left
+        desc.TextXAlignment = Enum.TextXAlignment.Center
         desc.Parent = self.Container
     end
     
@@ -84,13 +85,13 @@ function Button:CreateUI()
     -- Hover effects
     self.Button.MouseEnter:Connect(function()
         self.Utils.Tween(self.Container, {
-            BackgroundColor3 = Color3.fromRGB(255, 255, 128)
+            BackgroundColor3 = self.Theme.Colors.PrimaryLight
         }, 0.1)
     end)
     
     self.Button.MouseLeave:Connect(function()
         self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.Yellow
+            BackgroundColor3 = self.Theme.Colors.Primary
         }, 0.1)
     end)
 end

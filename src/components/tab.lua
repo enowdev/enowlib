@@ -46,20 +46,23 @@ function Tab:CreateUI()
     self.Container.BackgroundTransparency = 1
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 1, 0)
-    self.Container.ScrollBarThickness = 4
+    self.Container.ScrollBarThickness = 8
     self.Container.ScrollBarImageColor3 = self.Theme.Colors.Primary
     self.Container.CanvasSize = UDim2.fromOffset(0, 0)
     self.Container.Visible = false
     self.Container.Parent = self.Window.ContentArea
     
-    -- List layout
+    -- Add padding to prevent overflow
+    self.Theme.CreatePadding(self.Container, self.Theme.Spacing.Small)
+    
+    -- List layout with proper spacing
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, self.Theme.Spacing.Small)
+    layout.Padding = UDim.new(0, self.Theme.Spacing.Medium)  -- Increased spacing
     layout.Parent = self.Container
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        self.Container.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 16)
+        self.Container.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + self.Theme.Spacing.Large)
     end)
     
     -- Button click

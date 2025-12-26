@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 07:54:43
+-- Built: 2025-12-26 08:17:46
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -14,50 +14,51 @@ do
 
 Theme = {}
 
--- Color Palette - Y2K Bright Pastels
+-- Color Palette - Y2K Bright Pastels (Improved Contrast)
 Theme.Colors = {
-    -- Background colors (Light pastel base)
-    Background = Color3.fromRGB(255, 182, 193),      -- Pastel pink
-    BackgroundDark = Color3.fromRGB(230, 150, 170),  -- Darker pink
-    BackgroundLight = Color3.fromRGB(255, 200, 210), -- Lighter pink
+    -- Background colors (Lighter for better contrast)
+    Background = Color3.fromRGB(240, 240, 255),      -- Very light lavender
+    BackgroundDark = Color3.fromRGB(220, 220, 240),  -- Light lavender
+    BackgroundLight = Color3.fromRGB(255, 255, 255), -- Pure white
     
     -- Primary colors (Bright cyan - Y2K signature)
-    Primary = Color3.fromRGB(0, 255, 255),           -- Bright cyan
-    PrimaryLight = Color3.fromRGB(128, 255, 255),    -- Light cyan
-    PrimaryDark = Color3.fromRGB(0, 200, 200),       -- Deep cyan
+    Primary = Color3.fromRGB(0, 200, 255),           -- Bright cyan
+    PrimaryLight = Color3.fromRGB(100, 230, 255),    -- Light cyan
+    PrimaryDark = Color3.fromRGB(0, 150, 200),       -- Deep cyan
     
     -- Secondary colors (Bright purple)
-    Secondary = Color3.fromRGB(200, 162, 255),       -- Pastel purple
-    SecondaryLight = Color3.fromRGB(220, 190, 255),  -- Light purple
-    SecondaryDark = Color3.fromRGB(150, 100, 255),   -- Deep purple
+    Secondary = Color3.fromRGB(180, 140, 255),       -- Bright purple
+    SecondaryLight = Color3.fromRGB(210, 180, 255),  -- Light purple
+    SecondaryDark = Color3.fromRGB(140, 80, 255),    -- Deep purple
     
-    -- Accent colors (Y2K palette)
-    Yellow = Color3.fromRGB(255, 255, 0),            -- Bright yellow
-    Green = Color3.fromRGB(0, 255, 128),             -- Bright green
-    Orange = Color3.fromRGB(255, 165, 0),            -- Bright orange
+    -- Accent colors (Y2K palette - more vibrant)
+    Yellow = Color3.fromRGB(255, 220, 0),            -- Bright yellow
+    Green = Color3.fromRGB(100, 255, 150),           -- Bright green
+    Orange = Color3.fromRGB(255, 150, 50),           -- Bright orange
+    Pink = Color3.fromRGB(255, 150, 200),            -- Bright pink
     
-    -- Text colors
-    Text = Color3.fromRGB(0, 0, 0),                  -- Black text (Y2K style)
-    TextDim = Color3.fromRGB(80, 80, 80),            -- Dark gray
-    TextDisabled = Color3.fromRGB(150, 150, 150),    -- Light gray
+    -- Text colors (Better contrast)
+    Text = Color3.fromRGB(20, 20, 40),               -- Dark blue-gray (better than pure black)
+    TextDim = Color3.fromRGB(100, 100, 120),         -- Medium gray
+    TextDisabled = Color3.fromRGB(160, 160, 180),    -- Light gray
     TextWhite = Color3.fromRGB(255, 255, 255),       -- White text
     
     -- State colors (Bright versions)
-    Success = Color3.fromRGB(0, 255, 128),           -- Bright green
-    Warning = Color3.fromRGB(255, 255, 0),           -- Bright yellow
-    Error = Color3.fromRGB(255, 100, 100),           -- Bright red
-    Info = Color3.fromRGB(0, 255, 255),              -- Bright cyan
+    Success = Color3.fromRGB(100, 255, 150),         -- Bright green
+    Warning = Color3.fromRGB(255, 220, 0),           -- Bright yellow
+    Error = Color3.fromRGB(255, 80, 120),            -- Bright red
+    Info = Color3.fromRGB(0, 200, 255),              -- Bright cyan
     
     -- UI Element colors (Y2K style)
-    Border = Color3.fromRGB(0, 0, 0),                -- BLACK borders (signature Y2K)
-    BorderThick = Color3.fromRGB(0, 0, 0),           -- BLACK thick borders
+    Border = Color3.fromRGB(20, 20, 40),             -- Dark blue-gray borders
+    BorderThick = Color3.fromRGB(20, 20, 40),        -- Dark borders
     Shadow = Color3.fromRGB(0, 0, 0),                -- Black shadow
-    Hover = Color3.fromRGB(255, 220, 230),           -- Light pink hover
-    Active = Color3.fromRGB(255, 240, 245),          -- Very light pink
+    Hover = Color3.fromRGB(230, 240, 255),           -- Light blue hover
+    Active = Color3.fromRGB(200, 220, 255),          -- Light blue active
     
-    -- Window chrome colors (like Windows 95/2000)
-    TitleBar = Color3.fromRGB(0, 255, 255),          -- Cyan title bar
-    TitleBarInactive = Color3.fromRGB(128, 128, 128) -- Gray inactive
+    -- Window chrome colors (like Windows 2000)
+    TitleBar = Color3.fromRGB(0, 200, 255),          -- Cyan title bar
+    TitleBarInactive = Color3.fromRGB(150, 150, 170) -- Gray inactive
 }
 
 -- Transparency values
@@ -84,7 +85,7 @@ Theme.Font = {
     }
 }
 
--- Spacing and sizing (Y2K - compact but playful)
+-- Spacing and sizing (Y2K - better spacing to prevent overflow)
 Theme.Spacing = {
     Tiny = 4,
     Small = 8,
@@ -99,18 +100,18 @@ Theme.Size = {
     CornerRadius = 0,              -- NO rounding (pure Y2K)
     ScrollBarWidth = 8,
     
-    -- Component sizes
-    ButtonHeight = 36,
+    -- Component sizes (adjusted for better spacing)
+    ButtonHeight = 40,
     ToggleSize = 24,
     SliderHeight = 20,
-    InputHeight = 36,
-    DropdownHeight = 36,
+    InputHeight = 40,
+    DropdownHeight = 40,
     
     -- Container sizes
     WindowMinWidth = 400,
     WindowMinHeight = 300,
     TabWidth = 140,
-    SectionHeight = 28,
+    SectionHeight = 32,
     
     -- Y2K shadow offset (thick shadow)
     ShadowOffset = 5,
@@ -620,9 +621,9 @@ function Button:CreateUI()
     -- Container
     self.Container = Instance.new("Frame")
     self.Container.Name = "Button"
-    self.Container.BackgroundColor3 = self.Theme.Colors.Yellow  -- Bright yellow button
+    self.Container.BackgroundColor3 = self.Theme.Colors.Primary  -- Cyan button
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 56 or 40)
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 60 or 40)
     self.Container.Parent = self.Tab.Container
     
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
@@ -645,13 +646,14 @@ function Button:CreateUI()
     title.Name = "Title"
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -16, 0, 20)
-    title.Position = UDim2.fromOffset(8, self.Config.Description and 8 or 10)
+    title.Position = UDim2.fromOffset(8, self.Config.Description and 10 or 10)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
-    title.TextXAlignment = Enum.TextXAlignment.Left
-    title.TextStrokeTransparency = 0.8
+    title.TextXAlignment = Enum.TextXAlignment.Center
+    title.TextStrokeTransparency = 0.5
+    title.TextStrokeColor3 = self.Theme.Colors.TextWhite
     title.Parent = self.Container
     
     -- Description
@@ -660,12 +662,12 @@ function Button:CreateUI()
         desc.Name = "Description"
         desc.BackgroundTransparency = 1
         desc.Size = UDim2.new(1, -16, 0, 16)
-        desc.Position = UDim2.fromOffset(8, 28)
+        desc.Position = UDim2.fromOffset(8, 32)
         desc.Font = self.Theme.Font.Regular
         desc.Text = self.Config.Description
-        desc.TextColor3 = self.Theme.Colors.TextDim
+        desc.TextColor3 = self.Theme.Colors.Text
         desc.TextSize = self.Theme.Font.Size.Small
-        desc.TextXAlignment = Enum.TextXAlignment.Left
+        desc.TextXAlignment = Enum.TextXAlignment.Center
         desc.Parent = self.Container
     end
     
@@ -680,13 +682,13 @@ function Button:CreateUI()
     -- Hover effects
     self.Button.MouseEnter:Connect(function()
         self.Utils.Tween(self.Container, {
-            BackgroundColor3 = Color3.fromRGB(255, 255, 128)
+            BackgroundColor3 = self.Theme.Colors.PrimaryLight
         }, 0.1)
     end)
     
     self.Button.MouseLeave:Connect(function()
         self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.Yellow
+            BackgroundColor3 = self.Theme.Colors.Primary
         }, 0.1)
     end)
 end
@@ -742,15 +744,14 @@ function Toggle:CreateUI()
     self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 64 or 44)
     self.Container.Parent = self.Tab.Container
     
-    self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -70, 0, 22)
-    title.Position = UDim2.fromOffset(14, self.Config.Description and 10 or 11)
+    title.Size = UDim2.new(1, -80, 0, 20)
+    title.Position = UDim2.fromOffset(12, self.Config.Description and 10 or 12)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -763,8 +764,8 @@ function Toggle:CreateUI()
         local desc = Instance.new("TextLabel")
         desc.Name = "Description"
         desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, -70, 0, 18)
-        desc.Position = UDim2.fromOffset(14, 32)
+        desc.Size = UDim2.new(1, -80, 0, 16)
+        desc.Position = UDim2.fromOffset(12, 32)
         desc.Font = self.Theme.Font.Regular
         desc.Text = self.Config.Description
         desc.TextColor3 = self.Theme.Colors.TextDim
@@ -773,17 +774,16 @@ function Toggle:CreateUI()
         desc.Parent = self.Container
     end
     
-    -- Toggle switch background (SQUARE for neo brutalism)
+    -- Toggle switch background (SQUARE for Y2K)
     self.Switch = Instance.new("Frame")
     self.Switch.Name = "Switch"
     self.Switch.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.Switch.BorderSizePixel = 0
-    self.Switch.Size = UDim2.fromOffset(52, 26)
-    self.Switch.Position = UDim2.new(1, -60, 0.5, 0)
+    self.Switch.Size = UDim2.fromOffset(56, 28)
+    self.Switch.Position = UDim2.new(1, -64, 0.5, 0)
     self.Switch.AnchorPoint = Vector2.new(0, 0.5)
     self.Switch.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Switch, 4)  -- Minimal rounding
     self.Theme.CreateStroke(self.Switch, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Toggle knob (SQUARE)
@@ -791,12 +791,11 @@ function Toggle:CreateUI()
     self.Knob.Name = "Knob"
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(22, 22)
+    self.Knob.Size = UDim2.fromOffset(24, 24)
     self.Knob.Position = UDim2.fromOffset(2, 2)
     self.Knob.Parent = self.Switch
     
-    self.Theme.CreateCorner(self.Knob, 2)  -- Very minimal rounding
-    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Border, 2)
     
     -- Click button
     local button = Instance.new("TextButton")
@@ -837,52 +836,52 @@ end
 
 function Toggle:UpdateVisual()
     if self.Value then
-        -- On state
+        -- On state - Green for success
         self.Utils.Tween(self.Switch, {
-            BackgroundColor3 = self.Theme.Colors.Primary
-        }, 0.2)
+            BackgroundColor3 = self.Theme.Colors.Green
+        }, 0.15)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(28, 2),
-            BackgroundColor3 = self.Theme.Colors.Background
-        }, 0.2)
+            Position = UDim2.fromOffset(30, 2),
+            BackgroundColor3 = self.Theme.Colors.TextWhite
+        }, 0.15)
         
         local stroke = self.Switch:FindFirstChild("UIStroke")
         if stroke then
             self.Utils.Tween(stroke, {
-                Color = self.Theme.Colors.BorderAccent
-            }, 0.2)
+                Color = self.Theme.Colors.Border
+            }, 0.15)
         end
         
         local knobStroke = self.Knob:FindFirstChild("UIStroke")
         if knobStroke then
             self.Utils.Tween(knobStroke, {
-                Color = self.Theme.Colors.Background
-            }, 0.2)
+                Color = self.Theme.Colors.Border
+            }, 0.15)
         end
     else
         -- Off state
         self.Utils.Tween(self.Switch, {
             BackgroundColor3 = self.Theme.Colors.BackgroundDark
-        }, 0.2)
+        }, 0.15)
         
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(2, 2),
             BackgroundColor3 = self.Theme.Colors.Text
-        }, 0.2)
+        }, 0.15)
         
         local stroke = self.Switch:FindFirstChild("UIStroke")
         if stroke then
             self.Utils.Tween(stroke, {
                 Color = self.Theme.Colors.Border
-            }, 0.2)
+            }, 0.15)
         end
         
         local knobStroke = self.Knob:FindFirstChild("UIStroke")
         if knobStroke then
             self.Utils.Tween(knobStroke, {
                 Color = self.Theme.Colors.Border
-            }, 0.2)
+            }, 0.15)
         end
     end
 end
@@ -2805,20 +2804,23 @@ function Tab:CreateUI()
     self.Container.BackgroundTransparency = 1
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 1, 0)
-    self.Container.ScrollBarThickness = 4
+    self.Container.ScrollBarThickness = 8
     self.Container.ScrollBarImageColor3 = self.Theme.Colors.Primary
     self.Container.CanvasSize = UDim2.fromOffset(0, 0)
     self.Container.Visible = false
     self.Container.Parent = self.Window.ContentArea
     
-    -- List layout
+    -- Add padding to prevent overflow
+    self.Theme.CreatePadding(self.Container, self.Theme.Spacing.Small)
+    
+    -- List layout with proper spacing
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, self.Theme.Spacing.Small)
+    layout.Padding = UDim.new(0, self.Theme.Spacing.Medium)  -- Increased spacing
     layout.Parent = self.Container
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        self.Container.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 16)
+        self.Container.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + self.Theme.Spacing.Large)
     end)
     
     -- Button click
