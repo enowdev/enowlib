@@ -154,7 +154,7 @@ return EnowLib
 
 # Write output
 Write-Host "Writing output file..." -ForegroundColor Yellow
-$output | Out-File -FilePath $outputFile -Encoding UTF8
+$output | Out-File -FilePath $outputFile -Encoding UTF8 -NoNewline
 
 $fileSize = (Get-Item $outputFile).Length
 $fileSizeKB = [math]::Round($fileSize / 1KB, 2)
