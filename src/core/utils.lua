@@ -19,7 +19,7 @@ function Utils.Tween(instance, properties, duration, easingStyle, easingDirectio
     return tween
 end
 
--- Create draggable frame
+-- Create draggable frame (supports mouse and touch)
 function Utils.MakeDraggable(frame, dragHandle)
     dragHandle = dragHandle or frame
     
@@ -41,7 +41,7 @@ function Utils.MakeDraggable(frame, dragHandle)
     end
     
     dragHandle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
             startPos = frame.Position
@@ -55,7 +55,7 @@ function Utils.MakeDraggable(frame, dragHandle)
     end)
     
     dragHandle.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             dragInput = input
         end
     end)

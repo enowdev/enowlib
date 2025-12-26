@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 15:07:12
+-- Built: 2025-12-26 15:10:07
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -154,7 +154,7 @@ function Utils.Tween(instance, properties, duration, easingStyle, easingDirectio
     return tween
 end
 
--- Create draggable frame
+-- Create draggable frame (supports mouse and touch)
 function Utils.MakeDraggable(frame, dragHandle)
     dragHandle = dragHandle or frame
     
@@ -176,7 +176,7 @@ function Utils.MakeDraggable(frame, dragHandle)
     end
     
     dragHandle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
             startPos = frame.Position
@@ -190,7 +190,7 @@ function Utils.MakeDraggable(frame, dragHandle)
     end)
     
     dragHandle.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             dragInput = input
         end
     end)
@@ -868,16 +868,17 @@ function Slider:CreateUI()
         pcall(self.Config.Callback, self.Value)
     end
     
-    -- Mouse down on slider
-    table.insert(self.Connections, input.MouseButton1Down:Connect(function()
-        self.Dragging = true
-        local mousePos = UserInputService:GetMouseLocation()
-        updateValue(mousePos.X)
+    -- Input began (mouse or touch)
+    table.insert(self.Connections, input.InputBegan:Connect(function(inputObject)
+        if inputObject.UserInputType == Enum.UserInputType.MouseButton1 or inputObject.UserInputType == Enum.UserInputType.Touch then
+            self.Dragging = true
+            updateValue(inputObject.Position.X)
+        end
     end))
     
-    -- Global mouse release
-    table.insert(self.Connections, UserInputService.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+    -- Global input release (mouse or touch)
+    table.insert(self.Connections, UserInputService.InputEnded:Connect(function(inputObject)
+        if inputObject.UserInputType == Enum.UserInputType.MouseButton1 or inputObject.UserInputType == Enum.UserInputType.Touch then
             if self.Dragging then
                 self.Dragging = false
                 self.Utils.Tween(self.Knob, {
@@ -887,12 +888,11 @@ function Slider:CreateUI()
         end
     end))
     
-    -- Global mouse move (only when dragging)
-    table.insert(self.Connections, UserInputService.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
+    -- Global input move (mouse or touch, only when dragging)
+    table.insert(self.Connections, UserInputService.InputChanged:Connect(function(inputObject)
+        if inputObject.UserInputType == Enum.UserInputType.MouseMovement or inputObject.UserInputType == Enum.UserInputType.Touch then
             if self.Dragging then
-                local mousePos = UserInputService:GetMouseLocation()
-                updateValue(mousePos.X)
+                updateValue(inputObject.Position.X)
             end
         end
     end))
