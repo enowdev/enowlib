@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 08:37:36
+-- Built: 2025-12-26 12:04:39
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -10,82 +10,115 @@ local EnowLib = {}
 local Theme
 do
 -- EnowLib Theme System
--- Y2K Aesthetic - Retro 2000s Pastel Style
+-- Radix UI Style - Modern Minimalist Design
 
 Theme = {}
 
--- Color Palette - Y2K Bright Pastels (Improved Contrast)
+-- Radix Icons (Load only what we need)
+Theme.Icons = {
+    ChevronDown = "rbxassetid://84943167918420",
+    ChevronUp = "rbxassetid://96782125528789",
+    ChevronRight = "rbxassetid://107730842937250",
+    ChevronLeft = "rbxassetid://129878891615647",
+    Cross = "rbxassetid://103469834740951",
+    Check = "rbxassetid://112055175771712",
+    Minus = "rbxassetid://136970829842166",
+    Plus = "rbxassetid://88749593140179",
+    Gear = "rbxassetid://71052135258381",
+    Home = "rbxassetid://83776942872883",
+    Search = "rbxassetid://76834693226502",
+    Bell = "rbxassetid://73091340382838",
+    Info = "rbxassetid://93427086753822",
+    Warning = "rbxassetid://129272457926822",
+    Error = "rbxassetid://132948061195895",
+    Success = "rbxassetid://109969715613335",
+    Eye = "rbxassetid://73765738340117",
+    EyeClosed = "rbxassetid://136306160292883",
+    Lock = "rbxassetid://93890239917122",
+    Unlock = "rbxassetid://137265616251359"
+}
+
+-- Color Palette - Radix UI Neutral Gray Scale
 Theme.Colors = {
-    -- Background colors (Lighter for better contrast)
-    Background = Color3.fromRGB(240, 240, 255),      -- Very light lavender
-    BackgroundDark = Color3.fromRGB(220, 220, 240),  -- Light lavender
+    -- Background colors (Neutral grays)
+    Background = Color3.fromRGB(252, 252, 252),      -- Almost white
+    BackgroundDark = Color3.fromRGB(249, 249, 249),  -- Very light gray
     BackgroundLight = Color3.fromRGB(255, 255, 255), -- Pure white
     
-    -- Primary colors (Bright cyan - Y2K signature)
-    Primary = Color3.fromRGB(0, 200, 255),           -- Bright cyan
-    PrimaryLight = Color3.fromRGB(100, 230, 255),    -- Light cyan
-    PrimaryDark = Color3.fromRGB(0, 150, 200),       -- Deep cyan
+    -- Panel/Card colors
+    Panel = Color3.fromRGB(255, 255, 255),           -- White
+    PanelHover = Color3.fromRGB(252, 252, 253),      -- Subtle hover
     
-    -- Secondary colors (Bright purple)
-    Secondary = Color3.fromRGB(180, 140, 255),       -- Bright purple
-    SecondaryLight = Color3.fromRGB(210, 180, 255),  -- Light purple
-    SecondaryDark = Color3.fromRGB(140, 80, 255),    -- Deep purple
+    -- Primary colors (Subtle blue accent)
+    Primary = Color3.fromRGB(17, 24, 39),            -- Dark gray (almost black)
+    PrimaryLight = Color3.fromRGB(59, 130, 246),     -- Blue accent
+    PrimaryDark = Color3.fromRGB(30, 58, 138),       -- Dark blue
     
-    -- Accent colors (Y2K palette - more vibrant)
-    Yellow = Color3.fromRGB(255, 220, 0),            -- Bright yellow
-    Green = Color3.fromRGB(100, 255, 150),           -- Bright green
-    Orange = Color3.fromRGB(255, 150, 50),           -- Bright orange
-    Pink = Color3.fromRGB(255, 150, 200),            -- Bright pink
+    -- Secondary colors (Neutral grays)
+    Secondary = Color3.fromRGB(244, 244, 245),       -- Light gray
+    SecondaryLight = Color3.fromRGB(250, 250, 250),  -- Very light gray
+    SecondaryDark = Color3.fromRGB(228, 228, 231),   -- Medium gray
     
-    -- Text colors (Better contrast)
-    Text = Color3.fromRGB(20, 20, 40),               -- Dark blue-gray (better than pure black)
-    TextDim = Color3.fromRGB(100, 100, 120),         -- Medium gray
-    TextDisabled = Color3.fromRGB(160, 160, 180),    -- Light gray
-    TextWhite = Color3.fromRGB(255, 255, 255),       -- White text
+    -- Accent colors (Subtle, not vibrant)
+    Accent = Color3.fromRGB(59, 130, 246),           -- Blue
+    AccentHover = Color3.fromRGB(37, 99, 235),       -- Darker blue
+    AccentLight = Color3.fromRGB(219, 234, 254),     -- Light blue
     
-    -- State colors (Bright versions)
-    Success = Color3.fromRGB(100, 255, 150),         -- Bright green
-    Warning = Color3.fromRGB(255, 220, 0),           -- Bright yellow
-    Error = Color3.fromRGB(255, 80, 120),            -- Bright red
-    Info = Color3.fromRGB(0, 200, 255),              -- Bright cyan
+    -- State colors (Subtle versions)
+    Success = Color3.fromRGB(34, 197, 94),           -- Green
+    Warning = Color3.fromRGB(234, 179, 8),           -- Yellow
+    Error = Color3.fromRGB(239, 68, 68),             -- Red
+    Info = Color3.fromRGB(59, 130, 246),             -- Blue
     
-    -- UI Element colors (Y2K style)
-    Border = Color3.fromRGB(20, 20, 40),             -- Dark blue-gray borders
-    BorderThick = Color3.fromRGB(20, 20, 40),        -- Dark borders
-    Shadow = Color3.fromRGB(0, 0, 0),                -- Black shadow
-    Hover = Color3.fromRGB(230, 240, 255),           -- Light blue hover
-    Active = Color3.fromRGB(200, 220, 255),          -- Light blue active
+    -- Text colors (High contrast for accessibility)
+    Text = Color3.fromRGB(9, 9, 11),                 -- Almost black
+    TextSecondary = Color3.fromRGB(113, 113, 122),   -- Medium gray
+    TextDisabled = Color3.fromRGB(161, 161, 170),    -- Light gray
+    TextWhite = Color3.fromRGB(255, 255, 255),       -- White
     
-    -- Window chrome colors (like Windows 2000)
-    TitleBar = Color3.fromRGB(0, 200, 255),          -- Cyan title bar
-    TitleBarInactive = Color3.fromRGB(150, 150, 170) -- Gray inactive
+    -- Border (Subtle, thin)
+    Border = Color3.fromRGB(228, 228, 231),          -- Light gray border
+    BorderHover = Color3.fromRGB(212, 212, 216),     -- Medium gray
+    BorderFocus = Color3.fromRGB(59, 130, 246),      -- Blue focus ring
+    
+    -- Legacy compatibility
+    Yellow = Color3.fromRGB(234, 179, 8),
+    Green = Color3.fromRGB(34, 197, 94),
+    Orange = Color3.fromRGB(249, 115, 22),
+    Pink = Color3.fromRGB(236, 72, 153),
+    TextDim = Color3.fromRGB(113, 113, 122),
+    Hover = Color3.fromRGB(244, 244, 245),
+    Active = Color3.fromRGB(228, 228, 231),
+    TitleBar = Color3.fromRGB(255, 255, 255),
+    TitleBarInactive = Color3.fromRGB(244, 244, 245),
+    Shadow = Color3.fromRGB(0, 0, 0)
 }
 
 -- Transparency values
 Theme.Transparency = {
     Solid = 0,
-    SemiTransparent = 0.3,
-    Translucent = 0.5,
-    VeryTranslucent = 0.7,
-    AlmostTransparent = 0.9,
+    SemiTransparent = 0.05,
+    Translucent = 0.1,
+    VeryTranslucent = 0.3,
+    AlmostTransparent = 0.7,
     Invisible = 1
 }
 
--- Font settings (Y2K style - bold and playful)
+-- Font settings (Radix UI - clean and readable)
 Theme.Font = {
-    Regular = Enum.Font.GothamBold,      -- Bold for Y2K
-    Bold = Enum.Font.GothamBlack,        -- Extra bold
+    Regular = Enum.Font.Gotham,          -- Clean sans-serif
+    Bold = Enum.Font.GothamBold,         -- Bold for emphasis
     Mono = Enum.Font.RobotoMono,
     Size = {
-        Small = 13,
-        Regular = 15,
-        Medium = 17,
-        Large = 19,
-        Title = 24
+        Small = 12,
+        Regular = 14,
+        Medium = 16,
+        Large = 18,
+        Title = 20
     }
 }
 
--- Spacing and sizing (Y2K - better spacing to prevent overflow)
+-- Spacing and sizing (Radix UI - consistent spacing scale)
 Theme.Spacing = {
     Tiny = 4,
     Small = 8,
@@ -95,7 +128,13 @@ Theme.Spacing = {
 }
 
 Theme.Size = {
-    Border = 3,                    -- THICK black borders (Y2K signature)
+    Border = 1,                    -- Thin subtle borders (Radix style)
+    CornerRadius = 6,              -- Soft rounded corners
+    IconSize = 16,                 -- Standard icon size
+    ComponentHeight = 36,          -- Standard component height
+    WindowMinWidth = 400,
+    WindowMinHeight = 300
+}
     BorderThick = 4,               -- Extra thick
     CornerRadius = 0,              -- NO rounding (pure Y2K)
     ScrollBarWidth = 8,
@@ -125,69 +164,49 @@ Theme.Responsive = {
     Desktop = 1200
 }
 
--- Animation settings (Snappy Y2K style)
+-- Animation settings (Smooth Radix style)
 Theme.Animation = {
     Speed = {
-        Fast = 0.1,
-        Normal = 0.15,
-        Slow = 0.25
+        Fast = 0.15,
+        Normal = 0.2,
+        Slow = 0.3
     },
-    Easing = Enum.EasingStyle.Linear,  -- Linear for retro feel
+    Easing = Enum.EasingStyle.Quad,
     Direction = Enum.EasingDirection.Out
 }
 
--- Y2K glossy gradient
-function Theme.CreateGradient(parent, rotation)
-    rotation = rotation or 90
+-- Radix UI subtle shadow
+function Theme.CreateShadow(parent, elevation)
+    elevation = elevation or 1
     
-    local gradient = Instance.new("UIGradient")
-    gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-        ColorSequenceKeypoint.new(0.5, parent.BackgroundColor3),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 200, 200))
-    })
-    gradient.Rotation = rotation
-    gradient.Transparency = NumberSequence.new({
-        NumberSequenceKeypoint.new(0, 0.7),
-        NumberSequenceKeypoint.new(0.5, 1),
-        NumberSequenceKeypoint.new(1, 0.8)
-    })
-    gradient.Parent = parent
-    
-    return gradient
-end
-
--- Y2K thick shadow (solid, no blur) - FIXED: Don't cover entire screen
-function Theme.CreateShadow(parent)
-    local shadow = Instance.new("Frame")
+    local shadow = Instance.new("ImageLabel")
     shadow.Name = "Shadow"
-    shadow.BackgroundColor3 = Theme.Colors.Shadow
-    shadow.BackgroundTransparency = 0.7  -- Semi-transparent so it doesn't block game
-    shadow.BorderSizePixel = 0
-    shadow.Size = parent.Size  -- Match parent size, not fullscreen
-    shadow.Position = UDim2.fromOffset(Theme.Size.ShadowOffset, Theme.Size.ShadowOffset)
+    shadow.BackgroundTransparency = 1
+    shadow.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+    shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    shadow.ImageTransparency = elevation == 1 and 0.95 or 0.9
+    shadow.ScaleType = Enum.ScaleType.Slice
+    shadow.SliceCenter = Rect.new(10, 10, 118, 118)
+    shadow.Size = UDim2.new(1, elevation * 4, 1, elevation * 4)
+    shadow.Position = UDim2.fromOffset(-elevation * 2, -elevation * 2)
     shadow.ZIndex = parent.ZIndex - 1
     shadow.Parent = parent.Parent
     
     return shadow
 end
 
--- Create corner radius (Y2K = NO rounding)
+-- Create corner radius (Radix = soft rounded)
 function Theme.CreateCorner(parent, radius)
-    -- Y2K style has NO rounded corners, but keep function for compatibility
     radius = radius or Theme.Size.CornerRadius
     
-    if radius > 0 then
-        local corner = Instance.new("UICorner")
-        corner.CornerRadius = UDim.new(0, radius)
-        corner.Parent = parent
-        return corner
-    end
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, radius)
+    corner.Parent = parent
     
-    return nil
+    return corner
 end
 
--- Create stroke/border (THICK BLACK for Y2K)
+-- Create stroke/border (Thin subtle for Radix)
 function Theme.CreateStroke(parent, color, thickness)
     color = color or Theme.Colors.Border
     thickness = thickness or Theme.Size.Border
@@ -200,6 +219,34 @@ function Theme.CreateStroke(parent, color, thickness)
     stroke.Parent = parent
     
     return stroke
+end
+
+-- Create focus ring (Radix accessibility feature)
+function Theme.CreateFocusRing(parent)
+    local ring = Instance.new("UIStroke")
+    ring.Name = "FocusRing"
+    ring.Color = Theme.Colors.BorderFocus
+    ring.Thickness = 2
+    ring.Transparency = 1  -- Hidden by default
+    ring.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ring.Parent = parent
+    
+    return ring
+end
+
+-- Create icon (using Radix icons)
+function Theme.CreateIcon(parent, iconId, size)
+    size = size or Theme.Size.IconSize
+    
+    local icon = Instance.new("ImageLabel")
+    icon.Name = "Icon"
+    icon.BackgroundTransparency = 1
+    icon.Image = iconId
+    icon.ImageColor3 = Theme.Colors.Text
+    icon.Size = UDim2.fromOffset(size, size)
+    icon.Parent = parent
+    
+    return icon
 end
 
 -- Create padding
@@ -557,84 +604,43 @@ function Button.new(config, tab, theme, utils)
 end
 
 function Button:CreateUI()
-    -- Container
-    self.Container = Instance.new("Frame")
+    -- Container (Radix UI button style)
+    self.Container = Instance.new("TextButton")
     self.Container.Name = "Button"
-    self.Container.BackgroundColor3 = self.Theme.Colors.Primary  -- Cyan button
+    self.Container.BackgroundColor3 = self.Theme.Colors.Accent
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 60 or 40)
+    self.Container.Size = UDim2.new(1, 0, 0, self.Theme.Size.ComponentHeight)
+    self.Container.Font = self.Theme.Font.Regular
+    self.Container.Text = self.Config.Title
+    self.Container.TextColor3 = self.Theme.Colors.TextWhite
+    self.Container.TextSize = self.Theme.Font.Size.Regular
+    self.Container.AutoButtonColor = false
     self.Container.Parent = self.Tab.Container
     
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
-    self.Theme.CreateGradient(self.Container, 90)  -- Glossy effect
-    
-    -- Button
-    self.Button = Instance.new("TextButton")
-    self.Button.Name = "ButtonClick"
-    self.Button.BackgroundTransparency = 1
-    self.Button.Size = UDim2.new(1, 0, 1, 0)
-    self.Button.Font = self.Theme.Font.Bold
-    self.Button.Text = ""
-    self.Button.TextColor3 = self.Theme.Colors.Text
-    self.Button.TextSize = self.Theme.Font.Size.Regular
-    self.Button.AutoButtonColor = false
-    self.Button.Parent = self.Container
-    
-    -- Title
-    local title = Instance.new("TextLabel")
-    title.Name = "Title"
-    title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -16, 0, 20)
-    title.Position = UDim2.fromOffset(8, self.Config.Description and 10 or 10)
-    title.Font = self.Theme.Font.Bold
-    title.Text = self.Config.Title
-    title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
-    title.TextXAlignment = Enum.TextXAlignment.Center
-    title.TextStrokeTransparency = 0.5
-    title.TextStrokeColor3 = self.Theme.Colors.TextWhite
-    title.Parent = self.Container
-    
-    -- Description
-    if self.Config.Description then
-        local desc = Instance.new("TextLabel")
-        desc.Name = "Description"
-        desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, -16, 0, 16)
-        desc.Position = UDim2.fromOffset(8, 32)
-        desc.Font = self.Theme.Font.Regular
-        desc.Text = self.Config.Description
-        desc.TextColor3 = self.Theme.Colors.Text
-        desc.TextSize = self.Theme.Font.Size.Small
-        desc.TextXAlignment = Enum.TextXAlignment.Center
-        desc.Parent = self.Container
-    end
+    self.Theme.CreateCorner(self.Container, 6)
     
     -- Click handler
-    self.Button.MouseButton1Click:Connect(function()
-        self.Utils.CreateRipple(self.Container, 
-            Vector2.new(self.Button.AbsoluteSize.X / 2, self.Button.AbsoluteSize.Y / 2))
-        
+    self.Container.MouseButton1Click:Connect(function()
         pcall(self.Config.Callback)
     end)
     
-    -- Hover effects
-    self.Button.MouseEnter:Connect(function()
+    -- Hover effects (Radix UI subtle)
+    self.Container.MouseEnter:Connect(function()
         self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.PrimaryLight
-        }, 0.1)
+            BackgroundColor3 = self.Theme.Colors.AccentHover
+        }, 0.15)
     end)
     
-    self.Button.MouseLeave:Connect(function()
+    self.Container.MouseLeave:Connect(function()
         self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.Primary
-        }, 0.1)
+            BackgroundColor3 = self.Theme.Colors.Accent
+        }, 0.15)
     end)
 end
 
 function Button:SetTitle(title)
     self.Config.Title = title
-    self.Container.Title.Text = title
+    self.Container.Text = title
 end
 
 function Button:SetCallback(callback)
@@ -675,23 +681,25 @@ function Toggle.new(config, tab, theme, utils)
 end
 
 function Toggle:CreateUI()
-    -- Container
+    -- Container (Radix UI style)
     self.Container = Instance.new("Frame")
     self.Container.Name = "Toggle"
-    self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 64 or 44)
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 60 or 40)
     self.Container.Parent = self.Tab.Container
     
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, 1)
+    self.Theme.CreateCorner(self.Container, 6)
+    self.Theme.CreatePadding(self.Container, 12)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -80, 0, 20)
-    title.Position = UDim2.fromOffset(12, self.Config.Description and 10 or 12)
-    title.Font = self.Theme.Font.Bold
+    title.Size = UDim2.new(1, -60, 0, 18)
+    title.Position = UDim2.fromOffset(0, self.Config.Description and 4 or 11)
+    title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
@@ -703,62 +711,62 @@ function Toggle:CreateUI()
         local desc = Instance.new("TextLabel")
         desc.Name = "Description"
         desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, -80, 0, 16)
-        desc.Position = UDim2.fromOffset(12, 32)
+        desc.Size = UDim2.new(1, -60, 0, 14)
+        desc.Position = UDim2.fromOffset(0, 24)
         desc.Font = self.Theme.Font.Regular
         desc.Text = self.Config.Description
-        desc.TextColor3 = self.Theme.Colors.TextDim
+        desc.TextColor3 = self.Theme.Colors.TextSecondary
         desc.TextSize = self.Theme.Font.Size.Small
         desc.TextXAlignment = Enum.TextXAlignment.Left
         desc.Parent = self.Container
     end
     
-    -- Toggle switch background (SQUARE for Y2K)
+    -- Radix UI Switch (rounded pill)
     self.Switch = Instance.new("Frame")
     self.Switch.Name = "Switch"
-    self.Switch.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.Switch.BackgroundColor3 = self.Theme.Colors.SecondaryDark
     self.Switch.BorderSizePixel = 0
-    self.Switch.Size = UDim2.fromOffset(56, 28)
-    self.Switch.Position = UDim2.new(1, -64, 0.5, 0)
-    self.Switch.AnchorPoint = Vector2.new(0, 0.5)
+    self.Switch.Size = UDim2.fromOffset(44, 24)
+    self.Switch.Position = UDim2.new(1, 0, 0.5, 0)
+    self.Switch.AnchorPoint = Vector2.new(1, 0.5)
     self.Switch.Parent = self.Container
     
-    self.Theme.CreateStroke(self.Switch, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateCorner(self.Switch, 12)
     
-    -- Toggle knob (SQUARE)
+    -- Toggle knob (circle)
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
-    self.Knob.BackgroundColor3 = self.Theme.Colors.Text
+    self.Knob.BackgroundColor3 = self.Theme.Colors.Panel
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(24, 24)
+    self.Knob.Size = UDim2.fromOffset(20, 20)
     self.Knob.Position = UDim2.fromOffset(2, 2)
     self.Knob.Parent = self.Switch
     
-    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Border, 2)
+    self.Theme.CreateCorner(self.Knob, 10)
     
     -- Click button
     local button = Instance.new("TextButton")
     button.Name = "ToggleButton"
     button.BackgroundTransparency = 1
-    button.Size = UDim2.new(1, 0, 1, 0)
-    button.Text = ""
-    button.Parent = self.Container
-    
     button.MouseButton1Click:Connect(function()
         self:Toggle()
     end)
     
-    -- Hover effects
+    -- Hover effects (Radix UI subtle)
     button.MouseEnter:Connect(function()
-        self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.Hover
-        }, 0.15)
+        if not self.Value then
+            self.Utils.Tween(self.Switch, {
+                BackgroundColor3 = self.Theme.Colors.Secondary
+            }, 0.15)
+        end
     end)
     
     button.MouseLeave:Connect(function()
-        self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.BackgroundLight
-        }, 0.15)
+        if not self.Value then
+            self.Utils.Tween(self.Switch, {
+                BackgroundColor3 = self.Theme.Colors.SecondaryDark
+            }, 0.15)
+        end
     end)
 end
 
@@ -775,53 +783,31 @@ end
 
 function Toggle:UpdateVisual()
     if self.Value then
-        -- On state - Green for success
+        -- On state (Radix UI accent color)
         self.Utils.Tween(self.Switch, {
-            BackgroundColor3 = self.Theme.Colors.Green
-        }, 0.15)
+            BackgroundColor3 = self.Theme.Colors.Accent
+        }, 0.2)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(30, 2),
-            BackgroundColor3 = self.Theme.Colors.TextWhite
-        }, 0.15)
-        
-        local stroke = self.Switch:FindFirstChild("UIStroke")
-        if stroke then
-            self.Utils.Tween(stroke, {
-                Color = self.Theme.Colors.Border
-            }, 0.15)
-        end
-        
-        local knobStroke = self.Knob:FindFirstChild("UIStroke")
-        if knobStroke then
-            self.Utils.Tween(knobStroke, {
-                Color = self.Theme.Colors.Border
+            Position = UDim2.fromOffset(22, 2),
+            BackgroundColor3 = self.Theme.Colors.Panel
+        }, 0.2)
             }, 0.15)
         end
     else
         -- Off state
         self.Utils.Tween(self.Switch, {
             BackgroundColor3 = self.Theme.Colors.BackgroundDark
-        }, 0.15)
+    else
+        -- Off state (Radix UI neutral)
+        self.Utils.Tween(self.Switch, {
+            BackgroundColor3 = self.Theme.Colors.SecondaryDark
+        }, 0.2)
         
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(2, 2),
-            BackgroundColor3 = self.Theme.Colors.Text
-        }, 0.15)
-        
-        local stroke = self.Switch:FindFirstChild("UIStroke")
-        if stroke then
-            self.Utils.Tween(stroke, {
-                Color = self.Theme.Colors.Border
-            }, 0.15)
-        end
-        
-        local knobStroke = self.Knob:FindFirstChild("UIStroke")
-        if knobStroke then
-            self.Utils.Tween(knobStroke, {
-                Color = self.Theme.Colors.Border
-            }, 0.15)
-        end
+            BackgroundColor3 = self.Theme.Colors.Panel
+        }, 0.2)
     end
 end
 Toggle = Toggle
@@ -863,24 +849,25 @@ function Slider.new(config, tab, theme, utils)
 end
 
 function Slider:CreateUI()
-    -- Container
+    -- Container (Radix UI style)
     self.Container = Instance.new("Frame")
     self.Container.Name = "Slider"
-    self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 68)
+    self.Container.Size = UDim2.new(1, 0, 0, 60)
     self.Container.Parent = self.Tab.Container
     
-    self.Theme.CreateCorner(self.Container)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateCorner(self.Container, 6)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, 1)
+    self.Theme.CreatePadding(self.Container, 12)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -70, 0, 22)
-    title.Position = UDim2.fromOffset(14, 10)
-    title.Font = self.Theme.Font.Bold
+    title.Size = UDim2.new(1, -60, 0, 18)
+    title.Position = UDim2.fromOffset(0, 0)
+    title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
@@ -891,46 +878,48 @@ function Slider:CreateUI()
     self.ValueLabel = Instance.new("TextLabel")
     self.ValueLabel.Name = "Value"
     self.ValueLabel.BackgroundTransparency = 1
-    self.ValueLabel.Size = UDim2.fromOffset(60, 22)
-    self.ValueLabel.Position = UDim2.new(1, -68, 0, 10)
-    self.ValueLabel.Font = self.Theme.Font.Bold
+    self.ValueLabel.Size = UDim2.fromOffset(50, 18)
+    self.ValueLabel.Position = UDim2.new(1, -50, 0, 0)
+    self.ValueLabel.Font = self.Theme.Font.Regular
     self.ValueLabel.Text = tostring(self.Value)
-    self.ValueLabel.TextColor3 = self.Theme.Colors.Primary
+    self.ValueLabel.TextColor3 = self.Theme.Colors.Accent
     self.ValueLabel.TextSize = self.Theme.Font.Size.Regular
     self.ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
     self.ValueLabel.Parent = self.Container
     
-    -- Slider track (SQUARE)
+    -- Slider track (Radix UI rounded)
     self.Track = Instance.new("Frame")
     self.Track.Name = "Track"
-    self.Track.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.Track.BackgroundColor3 = self.Theme.Colors.SecondaryDark
     self.Track.BorderSizePixel = 0
-    self.Track.Size = UDim2.new(1, -28, 0, self.Theme.Size.SliderHeight)
-    self.Track.Position = UDim2.fromOffset(14, 44)
+    self.Track.Size = UDim2.new(1, 0, 0, 8)
+    self.Track.Position = UDim2.fromOffset(0, 28)
     self.Track.Parent = self.Container
     
     self.Theme.CreateCorner(self.Track, 4)
-    self.Theme.CreateStroke(self.Track, self.Theme.Colors.Border, self.Theme.Size.Border)
     
-    -- Slider fill (SQUARE)
+    -- Slider fill (Radix UI accent)
     self.Fill = Instance.new("Frame")
     self.Fill.Name = "Fill"
-    self.Fill.BackgroundColor3 = self.Theme.Colors.Primary
+    self.Fill.BackgroundColor3 = self.Theme.Colors.Accent
     self.Fill.BorderSizePixel = 0
     self.Fill.Size = UDim2.new(0, 0, 1, 0)
     self.Fill.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Fill, 2)
+    self.Theme.CreateCorner(self.Fill, 4)
     
-    -- Slider knob (SQUARE)
+    -- Slider knob (Radix UI circle)
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
-    self.Knob.BackgroundColor3 = self.Theme.Colors.Text
+    self.Knob.BackgroundColor3 = self.Theme.Colors.Panel
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(self.Theme.Size.SliderHeight, self.Theme.Size.SliderHeight)
+    self.Knob.Size = UDim2.fromOffset(18, 18)
     self.Knob.Position = UDim2.new(0, 0, 0.5, 0)
     self.Knob.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Knob.Parent = self.Track
+    
+    self.Theme.CreateCorner(self.Knob, 9)
+    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Accent, 2)
     
     self.Theme.CreateCorner(self.Knob, 2)
     self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Primary, self.Theme.Size.BorderThick)
@@ -2535,28 +2524,27 @@ function Section:CreateUI()
     -- Section header (clickable)
     self.Header = Instance.new("TextButton")
     self.Header.Name = "Header"
-    self.Header.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.Header.BackgroundColor3 = self.Theme.Colors.Panel
     self.Header.BorderSizePixel = 0
-    self.Header.Size = UDim2.new(1, 0, 0, 32)
-    self.Header.Position = UDim2.fromOffset(0, 2)
-    self.Header.Font = self.Theme.Font.Bold
+    self.Header.Size = UDim2.new(1, 0, 0, 36)
+    self.Header.Position = UDim2.fromOffset(0, 0)
+    self.Header.Font = self.Theme.Font.Regular
     self.Header.Text = ""
     self.Header.AutoButtonColor = false
     self.Header.Parent = self.Container
     
-    self.Theme.CreateStroke(self.Header, self.Theme.Colors.Border, self.Theme.Size.Border)
-    self.Theme.CreateGradient(self.Header, 90)
+    self.Theme.CreateStroke(self.Header, self.Theme.Colors.Border, 1)
+    self.Theme.CreateCorner(self.Header, 6)
+    self.Theme.CreatePadding(self.Header, 12)
     
-    -- Arrow indicator
-    self.Arrow = Instance.new("TextLabel")
+    -- Arrow indicator (using Radix icon)
+    self.Arrow = Instance.new("ImageLabel")
     self.Arrow.Name = "Arrow"
     self.Arrow.BackgroundTransparency = 1
-    self.Arrow.Size = UDim2.fromOffset(20, 32)
-    self.Arrow.Position = UDim2.fromOffset(8, 0)
-    self.Arrow.Font = self.Theme.Font.Bold
-    self.Arrow.Text = self.Collapsed and ">" or "v"
-    self.Arrow.TextColor3 = self.Theme.Colors.Text
-    self.Arrow.TextSize = self.Theme.Font.Size.Regular
+    self.Arrow.Image = self.Collapsed and self.Theme.Icons.ChevronRight or self.Theme.Icons.ChevronDown
+    self.Arrow.ImageColor3 = self.Theme.Colors.TextSecondary
+    self.Arrow.Size = UDim2.fromOffset(16, 16)
+    self.Arrow.Position = UDim2.fromOffset(0, 0)
     self.Arrow.Parent = self.Header
     
     -- Title
@@ -2600,25 +2588,25 @@ function Section:CreateUI()
     -- Hover effect
     self.Header.MouseEnter:Connect(function()
         self.Utils.Tween(self.Header, {
-            BackgroundColor3 = self.Theme.Colors.SecondaryLight
-        }, 0.1)
+    -- Hover effects (Radix UI subtle)
+    self.Header.MouseEnter:Connect(function()
+        self.Utils.Tween(self.Header, {
+            BackgroundColor3 = self.Theme.Colors.Secondary
+        }, 0.15)
     end)
     
     self.Header.MouseLeave:Connect(function()
         self.Utils.Tween(self.Header, {
-            BackgroundColor3 = self.Theme.Colors.Secondary
-        }, 0.1)
+            BackgroundColor3 = self.Theme.Colors.Panel
+        }, 0.15)
     end)
 end
 
 function Section:Toggle()
     self.Collapsed = not self.Collapsed
     
-    -- Animate arrow
-    self.Utils.Tween(self.Arrow, {
-        Rotation = self.Collapsed and 0 or 90
-    }, 0.2)
-    self.Arrow.Text = self.Collapsed and ">" or "v"
+    -- Animate arrow icon (Radix UI)
+    self.Arrow.Image = self.Collapsed and self.Theme.Icons.ChevronRight or self.Theme.Icons.ChevronDown
     
     -- Animate content
     if self.Collapsed then
@@ -2640,7 +2628,6 @@ function Section:Toggle()
         end)
     end
 end
-
 function Section:UpdateSize()
     local contentHeight = self.Collapsed and 0 or self.Layout.AbsoluteContentSize.Y
     local totalHeight = 36 + contentHeight
@@ -2918,22 +2905,22 @@ function Tab.new(config, window, theme, utils)
 end
 
 function Tab:CreateUI()
-    -- Tab button
+    -- Tab button (Radix UI - minimal pill style)
     self.Button = Instance.new("TextButton")
     self.Button.Name = "TabButton"
-    self.Button.BackgroundColor3 = self.Theme.Colors.SecondaryLight
+    self.Button.BackgroundColor3 = self.Theme.Colors.Background
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 32)
-    self.Button.Font = self.Theme.Font.Bold
+    self.Button.Size = UDim2.new(1, 0, 0, 36)
+    self.Button.Font = self.Theme.Font.Regular
     self.Button.Text = self.Config.Title
-    self.Button.TextColor3 = self.Theme.Colors.Text
+    self.Button.TextColor3 = self.Theme.Colors.TextSecondary
     self.Button.TextSize = self.Theme.Font.Size.Regular
-    self.Button.TextXAlignment = Enum.TextXAlignment.Center
+    self.Button.TextXAlignment = Enum.TextXAlignment.Left
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Window.TabList
     
-    self.Theme.CreateStroke(self.Button, self.Theme.Colors.Border, 3)
-    self.Theme.CreatePadding(self.Button, {8, 8, 0, 0})
+    self.Theme.CreateCorner(self.Button, 6)
+    self.Theme.CreatePadding(self.Button, {12, 12, 0, 0})
     
     -- Tab content container
     self.Container = Instance.new("ScrollingFrame")
@@ -2941,25 +2928,19 @@ function Tab:CreateUI()
     self.Container.BackgroundTransparency = 1
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 1, 0)
-    self.Container.ScrollBarThickness = 8
-    self.Container.ScrollBarImageColor3 = self.Theme.Colors.Primary
+    self.Container.ScrollBarThickness = 4
+    self.Container.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.Container.CanvasSize = UDim2.fromOffset(0, 0)
     self.Container.Visible = false
-    self.Container.ClipsDescendants = true  -- Clip scrolling content
+    self.Container.ClipsDescendants = true
     self.Container.Parent = self.Window.ContentArea
     
-    -- Add padding to prevent border clipping (extra space for borders)
-    self.Theme.CreatePadding(self.Container, {
-        self.Theme.Spacing.Small + 2,  -- Left (extra for border)
-        self.Theme.Spacing.Small + 2,  -- Right (extra for border)
-        self.Theme.Spacing.Small,      -- Top
-        self.Theme.Spacing.Small       -- Bottom
-    })
+    self.Theme.CreatePadding(self.Container, self.Theme.Spacing.Large)
     
-    -- List layout with proper spacing
+    -- List layout
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, self.Theme.Spacing.Medium)  -- Increased spacing
+    layout.Padding = UDim.new(0, self.Theme.Spacing.Medium)
     layout.Parent = self.Container
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -2971,11 +2952,11 @@ function Tab:CreateUI()
         self.Window:SelectTab(self)
     end)
     
-    -- Hover effects
+    -- Hover effects (Radix UI subtle)
     self.Button.MouseEnter:Connect(function()
         if not self.Visible then
             self.Utils.Tween(self.Button, {
-                BackgroundColor3 = self.Theme.Colors.Hover
+                BackgroundColor3 = self.Theme.Colors.Secondary
             }, 0.15)
         end
     end)
@@ -2983,7 +2964,7 @@ function Tab:CreateUI()
     self.Button.MouseLeave:Connect(function()
         if not self.Visible then
             self.Utils.Tween(self.Button, {
-                BackgroundColor3 = self.Theme.Colors.BackgroundLight
+                BackgroundColor3 = self.Theme.Colors.Background
             }, 0.15)
         end
     end)
@@ -2993,32 +2974,23 @@ function Tab:Show()
     self.Visible = true
     self.Container.Visible = true
     
+    -- Radix UI active state - subtle accent background
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.Primary,  -- Cyan when active
-        TextColor3 = self.Theme.Colors.Text
-    }, 0.15)
-    
-    -- Update stroke
-    local stroke = self.Button:FindFirstChild("UIStroke")
-    if stroke then
-        self.Utils.Tween(stroke, {
-            Color = self.Theme.Colors.Border,
-            Thickness = 4
-        }, 0.15)
-    end
+        BackgroundColor3 = self.Theme.Colors.AccentLight,
+        TextColor3 = self.Theme.Colors.Accent
+    }, 0.2)
 end
 
 function Tab:Hide()
     self.Visible = false
     self.Container.Visible = false
     
+    -- Radix UI inactive state
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.SecondaryLight,
-        TextColor3 = self.Theme.Colors.Text
-    }, 0.15)
-    
-    -- Reset stroke
-    local stroke = self.Button:FindFirstChild("UIStroke")
+        BackgroundColor3 = self.Theme.Colors.Background,
+        TextColor3 = self.Theme.Colors.TextSecondary
+    }, 0.2)
+end
     if stroke then
         self.Utils.Tween(stroke, {
             Color = self.Theme.Colors.Border,
@@ -3159,18 +3131,22 @@ function Window:CreateUI()
     self.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     self.ScreenGui.ResetOnSpawn = false
     
-    -- Main container
+    -- Main container (Radix UI card style)
     self.Container = Instance.new("Frame")
     self.Container.Name = "Container"
-    self.Container.BackgroundColor3 = self.Theme.Colors.Background
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BorderSizePixel = 0
     self.Container.Size = self.Config.Size
     self.Container.Position = UDim2.fromScale(0.5, 0.5)
     self.Container.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Container.Parent = self.ScreenGui
     
-    -- Y2K thick black border (no shadow)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.BorderThick)
+    -- Radix UI subtle border and rounded corners
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateCorner(self.Container, 8)
+    
+    -- Subtle shadow for depth
+    self.Theme.CreateShadow(self.Container, 2)
     
     -- Title bar
     self:CreateTitleBar()
@@ -3193,44 +3169,53 @@ end
 function Window:CreateTitleBar()
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
-    self.TitleBar.BackgroundColor3 = self.Theme.Colors.TitleBar  -- Cyan like Windows 2000
+    self.TitleBar.BackgroundColor3 = self.Theme.Colors.Panel
     self.TitleBar.BorderSizePixel = 0
-    self.TitleBar.Size = UDim2.new(1, 0, 0, 32)
+    self.TitleBar.Size = UDim2.new(1, 0, 0, 48)
     self.TitleBar.Parent = self.Container
     
-    -- Add glossy gradient
-    self.Theme.CreateGradient(self.TitleBar, 90)
+    -- Bottom border separator
+    local separator = Instance.new("Frame")
+    separator.Name = "Separator"
+    separator.BackgroundColor3 = self.Theme.Colors.Border
+    separator.BorderSizePixel = 0
+    separator.Size = UDim2.new(1, 0, 0, 1)
+    separator.Position = UDim2.new(0, 0, 1, -1)
+    separator.Parent = self.TitleBar
     
-    -- Title text - WHITE for better contrast on cyan
+    -- Title text (Radix UI - clean and minimal)
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -100, 1, 0)
-    title.Position = UDim2.fromOffset(8, 0)
+    title.Position = UDim2.fromOffset(16, 0)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
-    title.TextColor3 = self.Theme.Colors.TextWhite  -- WHITE text on cyan
-    title.TextSize = self.Theme.Font.Size.Large
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Medium
     title.TextXAlignment = Enum.TextXAlignment.Left
-    title.TextStrokeTransparency = 0.5
-    title.TextStrokeColor3 = self.Theme.Colors.Text  -- Dark stroke for depth
     title.Parent = self.TitleBar
     
-    -- Close button (Y2K style)
+    -- Close button (Radix UI - icon button with hover)
     if self.Config.CloseButton then
         local closeBtn = Instance.new("TextButton")
         closeBtn.Name = "CloseButton"
-        closeBtn.BackgroundColor3 = self.Theme.Colors.Error
+        closeBtn.BackgroundColor3 = self.Theme.Colors.Panel
         closeBtn.BorderSizePixel = 0
-        closeBtn.Size = UDim2.fromOffset(24, 24)
-        closeBtn.Position = UDim2.new(1, -28, 0, 4)
-        closeBtn.Font = self.Theme.Font.Bold
-        closeBtn.Text = "X"
-        closeBtn.TextColor3 = self.Theme.Colors.Text
-        closeBtn.TextSize = 16
+        closeBtn.Size = UDim2.fromOffset(32, 32)
+        closeBtn.Position = UDim2.new(1, -40, 0.5, -16)
+        closeBtn.Font = self.Theme.Font.Regular
+        closeBtn.Text = ""
+        closeBtn.AutoButtonColor = false
         closeBtn.Parent = self.TitleBar
         
-        self.Theme.CreateStroke(closeBtn, self.Theme.Colors.Border, 3)
+        self.Theme.CreateCorner(closeBtn, 4)
+        
+        -- Close icon (X)
+        local icon = self.Theme.CreateIcon(closeBtn, self.Theme.Icons.Cross, 16)
+        icon.Position = UDim2.fromScale(0.5, 0.5)
+        icon.AnchorPoint = Vector2.new(0.5, 0.5)
+        icon.ImageColor3 = self.Theme.Colors.TextSecondary
         
         closeBtn.MouseButton1Click:Connect(function()
             self:Toggle()
@@ -3238,32 +3223,45 @@ function Window:CreateTitleBar()
         
         closeBtn.MouseEnter:Connect(function()
             self.Utils.Tween(closeBtn, {
-                BackgroundColor3 = Color3.fromRGB(255, 150, 150)
-            }, 0.1)
+                BackgroundColor3 = self.Theme.Colors.Secondary
+            }, 0.15)
+            self.Utils.Tween(icon, {
+                ImageColor3 = self.Theme.Colors.Text
+            }, 0.15)
         end)
         
         closeBtn.MouseLeave:Connect(function()
             self.Utils.Tween(closeBtn, {
-                BackgroundColor3 = self.Theme.Colors.Error
-            }, 0.1)
+                BackgroundColor3 = self.Theme.Colors.Panel
+            }, 0.15)
+            self.Utils.Tween(icon, {
+                ImageColor3 = self.Theme.Colors.TextSecondary
+            }, 0.15)
         end)
     end
 end
 
 function Window:CreateTabBar()
     -- Responsive tab bar width
-    local tabBarWidth = self.IsMobile and 0 or (self.IsTablet and 120 or 140)
+    local tabBarWidth = self.IsMobile and 0 or (self.IsTablet and 120 or 200)
     
     self.TabBar = Instance.new("Frame")
     self.TabBar.Name = "TabBar"
-    self.TabBar.BackgroundColor3 = self.Theme.Colors.Secondary  -- Purple sidebar
+    self.TabBar.BackgroundColor3 = self.Theme.Colors.Background
     self.TabBar.BorderSizePixel = 0
-    self.TabBar.Size = UDim2.new(0, tabBarWidth, 1, -32)
-    self.TabBar.Position = UDim2.fromOffset(0, 32)
+    self.TabBar.Size = UDim2.new(0, tabBarWidth, 1, -48)
+    self.TabBar.Position = UDim2.fromOffset(0, 48)
     self.TabBar.Visible = not self.IsMobile
     self.TabBar.Parent = self.Container
     
-    self.Theme.CreateStroke(self.TabBar, self.Theme.Colors.Border, 3)
+    -- Right border separator
+    local separator = Instance.new("Frame")
+    separator.Name = "Separator"
+    separator.BackgroundColor3 = self.Theme.Colors.Border
+    separator.BorderSizePixel = 0
+    separator.Size = UDim2.new(0, 1, 1, 0)
+    separator.Position = UDim2.new(1, -1, 0, 0)
+    separator.Parent = self.TabBar
     
     -- Tab list
     self.TabList = Instance.new("ScrollingFrame")
@@ -3271,8 +3269,8 @@ function Window:CreateTabBar()
     self.TabList.BackgroundTransparency = 1
     self.TabList.BorderSizePixel = 0
     self.TabList.Size = UDim2.new(1, 0, 1, 0)
-    self.TabList.ScrollBarThickness = 8
-    self.TabList.ScrollBarImageColor3 = self.Theme.Colors.Primary
+    self.TabList.ScrollBarThickness = 4
+    self.TabList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.TabList.CanvasSize = UDim2.fromOffset(0, 0)
     self.TabList.Parent = self.TabBar
     
@@ -3281,7 +3279,7 @@ function Window:CreateTabBar()
     -- List layout
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, self.Theme.Spacing.Small)
+    layout.Padding = UDim.new(0, self.Theme.Spacing.Tiny)
     layout.Parent = self.TabList
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -3291,15 +3289,15 @@ end
 
 function Window:CreateContentArea()
     -- Responsive content area
-    local contentOffset = self.IsMobile and 0 or (self.IsTablet and 120 or 140)
+    local contentOffset = self.IsMobile and 0 or (self.IsTablet and 120 or 200)
     
     self.ContentArea = Instance.new("Frame")
     self.ContentArea.Name = "ContentArea"
-    self.ContentArea.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.ContentArea.BackgroundColor3 = self.Theme.Colors.Panel
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(1, -contentOffset, 1, -32)
-    self.ContentArea.Position = UDim2.fromOffset(contentOffset, 32)
-    self.ContentArea.ClipsDescendants = false  -- DON'T clip so borders show
+    self.ContentArea.Size = UDim2.new(1, -contentOffset, 1, -48)
+    self.ContentArea.Position = UDim2.fromOffset(contentOffset, 48)
+    self.ContentArea.ClipsDescendants = false
     self.ContentArea.Parent = self.Container
     
     self.Theme.CreatePadding(self.ContentArea, self.IsMobile and self.Theme.Spacing.Small or self.Theme.Spacing.Medium)

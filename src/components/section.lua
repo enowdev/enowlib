@@ -33,28 +33,27 @@ function Section:CreateUI()
     -- Section header (clickable)
     self.Header = Instance.new("TextButton")
     self.Header.Name = "Header"
-    self.Header.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.Header.BackgroundColor3 = self.Theme.Colors.Panel
     self.Header.BorderSizePixel = 0
-    self.Header.Size = UDim2.new(1, 0, 0, 32)
-    self.Header.Position = UDim2.fromOffset(0, 2)
-    self.Header.Font = self.Theme.Font.Bold
+    self.Header.Size = UDim2.new(1, 0, 0, 36)
+    self.Header.Position = UDim2.fromOffset(0, 0)
+    self.Header.Font = self.Theme.Font.Regular
     self.Header.Text = ""
     self.Header.AutoButtonColor = false
     self.Header.Parent = self.Container
     
-    self.Theme.CreateStroke(self.Header, self.Theme.Colors.Border, self.Theme.Size.Border)
-    self.Theme.CreateGradient(self.Header, 90)
+    self.Theme.CreateStroke(self.Header, self.Theme.Colors.Border, 1)
+    self.Theme.CreateCorner(self.Header, 6)
+    self.Theme.CreatePadding(self.Header, 12)
     
-    -- Arrow indicator
-    self.Arrow = Instance.new("TextLabel")
+    -- Arrow indicator (using Radix icon)
+    self.Arrow = Instance.new("ImageLabel")
     self.Arrow.Name = "Arrow"
     self.Arrow.BackgroundTransparency = 1
-    self.Arrow.Size = UDim2.fromOffset(20, 32)
-    self.Arrow.Position = UDim2.fromOffset(8, 0)
-    self.Arrow.Font = self.Theme.Font.Bold
-    self.Arrow.Text = self.Collapsed and ">" or "v"
-    self.Arrow.TextColor3 = self.Theme.Colors.Text
-    self.Arrow.TextSize = self.Theme.Font.Size.Regular
+    self.Arrow.Image = self.Collapsed and self.Theme.Icons.ChevronRight or self.Theme.Icons.ChevronDown
+    self.Arrow.ImageColor3 = self.Theme.Colors.TextSecondary
+    self.Arrow.Size = UDim2.fromOffset(16, 16)
+    self.Arrow.Position = UDim2.fromOffset(0, 0)
     self.Arrow.Parent = self.Header
     
     -- Title
@@ -98,25 +97,25 @@ function Section:CreateUI()
     -- Hover effect
     self.Header.MouseEnter:Connect(function()
         self.Utils.Tween(self.Header, {
-            BackgroundColor3 = self.Theme.Colors.SecondaryLight
-        }, 0.1)
+    -- Hover effects (Radix UI subtle)
+    self.Header.MouseEnter:Connect(function()
+        self.Utils.Tween(self.Header, {
+            BackgroundColor3 = self.Theme.Colors.Secondary
+        }, 0.15)
     end)
     
     self.Header.MouseLeave:Connect(function()
         self.Utils.Tween(self.Header, {
-            BackgroundColor3 = self.Theme.Colors.Secondary
-        }, 0.1)
+            BackgroundColor3 = self.Theme.Colors.Panel
+        }, 0.15)
     end)
 end
 
 function Section:Toggle()
     self.Collapsed = not self.Collapsed
     
-    -- Animate arrow
-    self.Utils.Tween(self.Arrow, {
-        Rotation = self.Collapsed and 0 or 90
-    }, 0.2)
-    self.Arrow.Text = self.Collapsed and ">" or "v"
+    -- Animate arrow icon (Radix UI)
+    self.Arrow.Image = self.Collapsed and self.Theme.Icons.ChevronRight or self.Theme.Icons.ChevronDown
     
     -- Animate content
     if self.Collapsed then
@@ -138,7 +137,6 @@ function Section:Toggle()
         end)
     end
 end
-
 function Section:UpdateSize()
     local contentHeight = self.Collapsed and 0 or self.Layout.AbsoluteContentSize.Y
     local totalHeight = 36 + contentHeight

@@ -1,80 +1,113 @@
 -- EnowLib Theme System
--- Y2K Aesthetic - Retro 2000s Pastel Style
+-- Radix UI Style - Modern Minimalist Design
 
 local Theme = {}
 
--- Color Palette - Y2K Bright Pastels (Improved Contrast)
+-- Radix Icons (Load only what we need)
+Theme.Icons = {
+    ChevronDown = "rbxassetid://84943167918420",
+    ChevronUp = "rbxassetid://96782125528789",
+    ChevronRight = "rbxassetid://107730842937250",
+    ChevronLeft = "rbxassetid://129878891615647",
+    Cross = "rbxassetid://103469834740951",
+    Check = "rbxassetid://112055175771712",
+    Minus = "rbxassetid://136970829842166",
+    Plus = "rbxassetid://88749593140179",
+    Gear = "rbxassetid://71052135258381",
+    Home = "rbxassetid://83776942872883",
+    Search = "rbxassetid://76834693226502",
+    Bell = "rbxassetid://73091340382838",
+    Info = "rbxassetid://93427086753822",
+    Warning = "rbxassetid://129272457926822",
+    Error = "rbxassetid://132948061195895",
+    Success = "rbxassetid://109969715613335",
+    Eye = "rbxassetid://73765738340117",
+    EyeClosed = "rbxassetid://136306160292883",
+    Lock = "rbxassetid://93890239917122",
+    Unlock = "rbxassetid://137265616251359"
+}
+
+-- Color Palette - Radix UI Neutral Gray Scale
 Theme.Colors = {
-    -- Background colors (Lighter for better contrast)
-    Background = Color3.fromRGB(240, 240, 255),      -- Very light lavender
-    BackgroundDark = Color3.fromRGB(220, 220, 240),  -- Light lavender
+    -- Background colors (Neutral grays)
+    Background = Color3.fromRGB(252, 252, 252),      -- Almost white
+    BackgroundDark = Color3.fromRGB(249, 249, 249),  -- Very light gray
     BackgroundLight = Color3.fromRGB(255, 255, 255), -- Pure white
     
-    -- Primary colors (Bright cyan - Y2K signature)
-    Primary = Color3.fromRGB(0, 200, 255),           -- Bright cyan
-    PrimaryLight = Color3.fromRGB(100, 230, 255),    -- Light cyan
-    PrimaryDark = Color3.fromRGB(0, 150, 200),       -- Deep cyan
+    -- Panel/Card colors
+    Panel = Color3.fromRGB(255, 255, 255),           -- White
+    PanelHover = Color3.fromRGB(252, 252, 253),      -- Subtle hover
     
-    -- Secondary colors (Bright purple)
-    Secondary = Color3.fromRGB(180, 140, 255),       -- Bright purple
-    SecondaryLight = Color3.fromRGB(210, 180, 255),  -- Light purple
-    SecondaryDark = Color3.fromRGB(140, 80, 255),    -- Deep purple
+    -- Primary colors (Subtle blue accent)
+    Primary = Color3.fromRGB(17, 24, 39),            -- Dark gray (almost black)
+    PrimaryLight = Color3.fromRGB(59, 130, 246),     -- Blue accent
+    PrimaryDark = Color3.fromRGB(30, 58, 138),       -- Dark blue
     
-    -- Accent colors (Y2K palette - more vibrant)
-    Yellow = Color3.fromRGB(255, 220, 0),            -- Bright yellow
-    Green = Color3.fromRGB(100, 255, 150),           -- Bright green
-    Orange = Color3.fromRGB(255, 150, 50),           -- Bright orange
-    Pink = Color3.fromRGB(255, 150, 200),            -- Bright pink
+    -- Secondary colors (Neutral grays)
+    Secondary = Color3.fromRGB(244, 244, 245),       -- Light gray
+    SecondaryLight = Color3.fromRGB(250, 250, 250),  -- Very light gray
+    SecondaryDark = Color3.fromRGB(228, 228, 231),   -- Medium gray
     
-    -- Text colors (Better contrast)
-    Text = Color3.fromRGB(20, 20, 40),               -- Dark blue-gray (better than pure black)
-    TextDim = Color3.fromRGB(100, 100, 120),         -- Medium gray
-    TextDisabled = Color3.fromRGB(160, 160, 180),    -- Light gray
-    TextWhite = Color3.fromRGB(255, 255, 255),       -- White text
+    -- Accent colors (Subtle, not vibrant)
+    Accent = Color3.fromRGB(59, 130, 246),           -- Blue
+    AccentHover = Color3.fromRGB(37, 99, 235),       -- Darker blue
+    AccentLight = Color3.fromRGB(219, 234, 254),     -- Light blue
     
-    -- State colors (Bright versions)
-    Success = Color3.fromRGB(100, 255, 150),         -- Bright green
-    Warning = Color3.fromRGB(255, 220, 0),           -- Bright yellow
-    Error = Color3.fromRGB(255, 80, 120),            -- Bright red
-    Info = Color3.fromRGB(0, 200, 255),              -- Bright cyan
+    -- State colors (Subtle versions)
+    Success = Color3.fromRGB(34, 197, 94),           -- Green
+    Warning = Color3.fromRGB(234, 179, 8),           -- Yellow
+    Error = Color3.fromRGB(239, 68, 68),             -- Red
+    Info = Color3.fromRGB(59, 130, 246),             -- Blue
     
-    -- UI Element colors (Y2K style)
-    Border = Color3.fromRGB(20, 20, 40),             -- Dark blue-gray borders
-    BorderThick = Color3.fromRGB(20, 20, 40),        -- Dark borders
-    Shadow = Color3.fromRGB(0, 0, 0),                -- Black shadow
-    Hover = Color3.fromRGB(230, 240, 255),           -- Light blue hover
-    Active = Color3.fromRGB(200, 220, 255),          -- Light blue active
+    -- Text colors (High contrast for accessibility)
+    Text = Color3.fromRGB(9, 9, 11),                 -- Almost black
+    TextSecondary = Color3.fromRGB(113, 113, 122),   -- Medium gray
+    TextDisabled = Color3.fromRGB(161, 161, 170),    -- Light gray
+    TextWhite = Color3.fromRGB(255, 255, 255),       -- White
     
-    -- Window chrome colors (like Windows 2000)
-    TitleBar = Color3.fromRGB(0, 200, 255),          -- Cyan title bar
-    TitleBarInactive = Color3.fromRGB(150, 150, 170) -- Gray inactive
+    -- Border (Subtle, thin)
+    Border = Color3.fromRGB(228, 228, 231),          -- Light gray border
+    BorderHover = Color3.fromRGB(212, 212, 216),     -- Medium gray
+    BorderFocus = Color3.fromRGB(59, 130, 246),      -- Blue focus ring
+    
+    -- Legacy compatibility
+    Yellow = Color3.fromRGB(234, 179, 8),
+    Green = Color3.fromRGB(34, 197, 94),
+    Orange = Color3.fromRGB(249, 115, 22),
+    Pink = Color3.fromRGB(236, 72, 153),
+    TextDim = Color3.fromRGB(113, 113, 122),
+    Hover = Color3.fromRGB(244, 244, 245),
+    Active = Color3.fromRGB(228, 228, 231),
+    TitleBar = Color3.fromRGB(255, 255, 255),
+    TitleBarInactive = Color3.fromRGB(244, 244, 245),
+    Shadow = Color3.fromRGB(0, 0, 0)
 }
 
 -- Transparency values
 Theme.Transparency = {
     Solid = 0,
-    SemiTransparent = 0.3,
-    Translucent = 0.5,
-    VeryTranslucent = 0.7,
-    AlmostTransparent = 0.9,
+    SemiTransparent = 0.05,
+    Translucent = 0.1,
+    VeryTranslucent = 0.3,
+    AlmostTransparent = 0.7,
     Invisible = 1
 }
 
--- Font settings (Y2K style - bold and playful)
+-- Font settings (Radix UI - clean and readable)
 Theme.Font = {
-    Regular = Enum.Font.GothamBold,      -- Bold for Y2K
-    Bold = Enum.Font.GothamBlack,        -- Extra bold
+    Regular = Enum.Font.Gotham,          -- Clean sans-serif
+    Bold = Enum.Font.GothamBold,         -- Bold for emphasis
     Mono = Enum.Font.RobotoMono,
     Size = {
-        Small = 13,
-        Regular = 15,
-        Medium = 17,
-        Large = 19,
-        Title = 24
+        Small = 12,
+        Regular = 14,
+        Medium = 16,
+        Large = 18,
+        Title = 20
     }
 }
 
--- Spacing and sizing (Y2K - better spacing to prevent overflow)
+-- Spacing and sizing (Radix UI - consistent spacing scale)
 Theme.Spacing = {
     Tiny = 4,
     Small = 8,
@@ -84,7 +117,13 @@ Theme.Spacing = {
 }
 
 Theme.Size = {
-    Border = 3,                    -- THICK black borders (Y2K signature)
+    Border = 1,                    -- Thin subtle borders (Radix style)
+    CornerRadius = 6,              -- Soft rounded corners
+    IconSize = 16,                 -- Standard icon size
+    ComponentHeight = 36,          -- Standard component height
+    WindowMinWidth = 400,
+    WindowMinHeight = 300
+}
     BorderThick = 4,               -- Extra thick
     CornerRadius = 0,              -- NO rounding (pure Y2K)
     ScrollBarWidth = 8,
@@ -114,69 +153,49 @@ Theme.Responsive = {
     Desktop = 1200
 }
 
--- Animation settings (Snappy Y2K style)
+-- Animation settings (Smooth Radix style)
 Theme.Animation = {
     Speed = {
-        Fast = 0.1,
-        Normal = 0.15,
-        Slow = 0.25
+        Fast = 0.15,
+        Normal = 0.2,
+        Slow = 0.3
     },
-    Easing = Enum.EasingStyle.Linear,  -- Linear for retro feel
+    Easing = Enum.EasingStyle.Quad,
     Direction = Enum.EasingDirection.Out
 }
 
--- Y2K glossy gradient
-function Theme.CreateGradient(parent, rotation)
-    rotation = rotation or 90
+-- Radix UI subtle shadow
+function Theme.CreateShadow(parent, elevation)
+    elevation = elevation or 1
     
-    local gradient = Instance.new("UIGradient")
-    gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-        ColorSequenceKeypoint.new(0.5, parent.BackgroundColor3),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 200, 200))
-    })
-    gradient.Rotation = rotation
-    gradient.Transparency = NumberSequence.new({
-        NumberSequenceKeypoint.new(0, 0.7),
-        NumberSequenceKeypoint.new(0.5, 1),
-        NumberSequenceKeypoint.new(1, 0.8)
-    })
-    gradient.Parent = parent
-    
-    return gradient
-end
-
--- Y2K thick shadow (solid, no blur) - FIXED: Don't cover entire screen
-function Theme.CreateShadow(parent)
-    local shadow = Instance.new("Frame")
+    local shadow = Instance.new("ImageLabel")
     shadow.Name = "Shadow"
-    shadow.BackgroundColor3 = Theme.Colors.Shadow
-    shadow.BackgroundTransparency = 0.7  -- Semi-transparent so it doesn't block game
-    shadow.BorderSizePixel = 0
-    shadow.Size = parent.Size  -- Match parent size, not fullscreen
-    shadow.Position = UDim2.fromOffset(Theme.Size.ShadowOffset, Theme.Size.ShadowOffset)
+    shadow.BackgroundTransparency = 1
+    shadow.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+    shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    shadow.ImageTransparency = elevation == 1 and 0.95 or 0.9
+    shadow.ScaleType = Enum.ScaleType.Slice
+    shadow.SliceCenter = Rect.new(10, 10, 118, 118)
+    shadow.Size = UDim2.new(1, elevation * 4, 1, elevation * 4)
+    shadow.Position = UDim2.fromOffset(-elevation * 2, -elevation * 2)
     shadow.ZIndex = parent.ZIndex - 1
     shadow.Parent = parent.Parent
     
     return shadow
 end
 
--- Create corner radius (Y2K = NO rounding)
+-- Create corner radius (Radix = soft rounded)
 function Theme.CreateCorner(parent, radius)
-    -- Y2K style has NO rounded corners, but keep function for compatibility
     radius = radius or Theme.Size.CornerRadius
     
-    if radius > 0 then
-        local corner = Instance.new("UICorner")
-        corner.CornerRadius = UDim.new(0, radius)
-        corner.Parent = parent
-        return corner
-    end
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, radius)
+    corner.Parent = parent
     
-    return nil
+    return corner
 end
 
--- Create stroke/border (THICK BLACK for Y2K)
+-- Create stroke/border (Thin subtle for Radix)
 function Theme.CreateStroke(parent, color, thickness)
     color = color or Theme.Colors.Border
     thickness = thickness or Theme.Size.Border
@@ -189,6 +208,34 @@ function Theme.CreateStroke(parent, color, thickness)
     stroke.Parent = parent
     
     return stroke
+end
+
+-- Create focus ring (Radix accessibility feature)
+function Theme.CreateFocusRing(parent)
+    local ring = Instance.new("UIStroke")
+    ring.Name = "FocusRing"
+    ring.Color = Theme.Colors.BorderFocus
+    ring.Thickness = 2
+    ring.Transparency = 1  -- Hidden by default
+    ring.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ring.Parent = parent
+    
+    return ring
+end
+
+-- Create icon (using Radix icons)
+function Theme.CreateIcon(parent, iconId, size)
+    size = size or Theme.Size.IconSize
+    
+    local icon = Instance.new("ImageLabel")
+    icon.Name = "Icon"
+    icon.BackgroundTransparency = 1
+    icon.Image = iconId
+    icon.ImageColor3 = Theme.Colors.Text
+    icon.Size = UDim2.fromOffset(size, size)
+    icon.Parent = parent
+    
+    return icon
 end
 
 -- Create padding

@@ -46,18 +46,22 @@ function Window:CreateUI()
     self.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     self.ScreenGui.ResetOnSpawn = false
     
-    -- Main container
+    -- Main container (Radix UI card style)
     self.Container = Instance.new("Frame")
     self.Container.Name = "Container"
-    self.Container.BackgroundColor3 = self.Theme.Colors.Background
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BorderSizePixel = 0
     self.Container.Size = self.Config.Size
     self.Container.Position = UDim2.fromScale(0.5, 0.5)
     self.Container.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Container.Parent = self.ScreenGui
     
-    -- Y2K thick black border (no shadow)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.BorderThick)
+    -- Radix UI subtle border and rounded corners
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateCorner(self.Container, 8)
+    
+    -- Subtle shadow for depth
+    self.Theme.CreateShadow(self.Container, 2)
     
     -- Title bar
     self:CreateTitleBar()
@@ -80,44 +84,53 @@ end
 function Window:CreateTitleBar()
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
-    self.TitleBar.BackgroundColor3 = self.Theme.Colors.TitleBar  -- Cyan like Windows 2000
+    self.TitleBar.BackgroundColor3 = self.Theme.Colors.Panel
     self.TitleBar.BorderSizePixel = 0
-    self.TitleBar.Size = UDim2.new(1, 0, 0, 32)
+    self.TitleBar.Size = UDim2.new(1, 0, 0, 48)
     self.TitleBar.Parent = self.Container
     
-    -- Add glossy gradient
-    self.Theme.CreateGradient(self.TitleBar, 90)
+    -- Bottom border separator
+    local separator = Instance.new("Frame")
+    separator.Name = "Separator"
+    separator.BackgroundColor3 = self.Theme.Colors.Border
+    separator.BorderSizePixel = 0
+    separator.Size = UDim2.new(1, 0, 0, 1)
+    separator.Position = UDim2.new(0, 0, 1, -1)
+    separator.Parent = self.TitleBar
     
-    -- Title text - WHITE for better contrast on cyan
+    -- Title text (Radix UI - clean and minimal)
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -100, 1, 0)
-    title.Position = UDim2.fromOffset(8, 0)
+    title.Position = UDim2.fromOffset(16, 0)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
-    title.TextColor3 = self.Theme.Colors.TextWhite  -- WHITE text on cyan
-    title.TextSize = self.Theme.Font.Size.Large
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Medium
     title.TextXAlignment = Enum.TextXAlignment.Left
-    title.TextStrokeTransparency = 0.5
-    title.TextStrokeColor3 = self.Theme.Colors.Text  -- Dark stroke for depth
     title.Parent = self.TitleBar
     
-    -- Close button (Y2K style)
+    -- Close button (Radix UI - icon button with hover)
     if self.Config.CloseButton then
         local closeBtn = Instance.new("TextButton")
         closeBtn.Name = "CloseButton"
-        closeBtn.BackgroundColor3 = self.Theme.Colors.Error
+        closeBtn.BackgroundColor3 = self.Theme.Colors.Panel
         closeBtn.BorderSizePixel = 0
-        closeBtn.Size = UDim2.fromOffset(24, 24)
-        closeBtn.Position = UDim2.new(1, -28, 0, 4)
-        closeBtn.Font = self.Theme.Font.Bold
-        closeBtn.Text = "X"
-        closeBtn.TextColor3 = self.Theme.Colors.Text
-        closeBtn.TextSize = 16
+        closeBtn.Size = UDim2.fromOffset(32, 32)
+        closeBtn.Position = UDim2.new(1, -40, 0.5, -16)
+        closeBtn.Font = self.Theme.Font.Regular
+        closeBtn.Text = ""
+        closeBtn.AutoButtonColor = false
         closeBtn.Parent = self.TitleBar
         
-        self.Theme.CreateStroke(closeBtn, self.Theme.Colors.Border, 3)
+        self.Theme.CreateCorner(closeBtn, 4)
+        
+        -- Close icon (X)
+        local icon = self.Theme.CreateIcon(closeBtn, self.Theme.Icons.Cross, 16)
+        icon.Position = UDim2.fromScale(0.5, 0.5)
+        icon.AnchorPoint = Vector2.new(0.5, 0.5)
+        icon.ImageColor3 = self.Theme.Colors.TextSecondary
         
         closeBtn.MouseButton1Click:Connect(function()
             self:Toggle()
@@ -125,32 +138,45 @@ function Window:CreateTitleBar()
         
         closeBtn.MouseEnter:Connect(function()
             self.Utils.Tween(closeBtn, {
-                BackgroundColor3 = Color3.fromRGB(255, 150, 150)
-            }, 0.1)
+                BackgroundColor3 = self.Theme.Colors.Secondary
+            }, 0.15)
+            self.Utils.Tween(icon, {
+                ImageColor3 = self.Theme.Colors.Text
+            }, 0.15)
         end)
         
         closeBtn.MouseLeave:Connect(function()
             self.Utils.Tween(closeBtn, {
-                BackgroundColor3 = self.Theme.Colors.Error
-            }, 0.1)
+                BackgroundColor3 = self.Theme.Colors.Panel
+            }, 0.15)
+            self.Utils.Tween(icon, {
+                ImageColor3 = self.Theme.Colors.TextSecondary
+            }, 0.15)
         end)
     end
 end
 
 function Window:CreateTabBar()
     -- Responsive tab bar width
-    local tabBarWidth = self.IsMobile and 0 or (self.IsTablet and 120 or 140)
+    local tabBarWidth = self.IsMobile and 0 or (self.IsTablet and 120 or 200)
     
     self.TabBar = Instance.new("Frame")
     self.TabBar.Name = "TabBar"
-    self.TabBar.BackgroundColor3 = self.Theme.Colors.Secondary  -- Purple sidebar
+    self.TabBar.BackgroundColor3 = self.Theme.Colors.Background
     self.TabBar.BorderSizePixel = 0
-    self.TabBar.Size = UDim2.new(0, tabBarWidth, 1, -32)
-    self.TabBar.Position = UDim2.fromOffset(0, 32)
+    self.TabBar.Size = UDim2.new(0, tabBarWidth, 1, -48)
+    self.TabBar.Position = UDim2.fromOffset(0, 48)
     self.TabBar.Visible = not self.IsMobile
     self.TabBar.Parent = self.Container
     
-    self.Theme.CreateStroke(self.TabBar, self.Theme.Colors.Border, 3)
+    -- Right border separator
+    local separator = Instance.new("Frame")
+    separator.Name = "Separator"
+    separator.BackgroundColor3 = self.Theme.Colors.Border
+    separator.BorderSizePixel = 0
+    separator.Size = UDim2.new(0, 1, 1, 0)
+    separator.Position = UDim2.new(1, -1, 0, 0)
+    separator.Parent = self.TabBar
     
     -- Tab list
     self.TabList = Instance.new("ScrollingFrame")
@@ -158,8 +184,8 @@ function Window:CreateTabBar()
     self.TabList.BackgroundTransparency = 1
     self.TabList.BorderSizePixel = 0
     self.TabList.Size = UDim2.new(1, 0, 1, 0)
-    self.TabList.ScrollBarThickness = 8
-    self.TabList.ScrollBarImageColor3 = self.Theme.Colors.Primary
+    self.TabList.ScrollBarThickness = 4
+    self.TabList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.TabList.CanvasSize = UDim2.fromOffset(0, 0)
     self.TabList.Parent = self.TabBar
     
@@ -168,7 +194,7 @@ function Window:CreateTabBar()
     -- List layout
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, self.Theme.Spacing.Small)
+    layout.Padding = UDim.new(0, self.Theme.Spacing.Tiny)
     layout.Parent = self.TabList
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -178,15 +204,15 @@ end
 
 function Window:CreateContentArea()
     -- Responsive content area
-    local contentOffset = self.IsMobile and 0 or (self.IsTablet and 120 or 140)
+    local contentOffset = self.IsMobile and 0 or (self.IsTablet and 120 or 200)
     
     self.ContentArea = Instance.new("Frame")
     self.ContentArea.Name = "ContentArea"
-    self.ContentArea.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.ContentArea.BackgroundColor3 = self.Theme.Colors.Panel
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(1, -contentOffset, 1, -32)
-    self.ContentArea.Position = UDim2.fromOffset(contentOffset, 32)
-    self.ContentArea.ClipsDescendants = false  -- DON'T clip so borders show
+    self.ContentArea.Size = UDim2.new(1, -contentOffset, 1, -48)
+    self.ContentArea.Position = UDim2.fromOffset(contentOffset, 48)
+    self.ContentArea.ClipsDescendants = false
     self.ContentArea.Parent = self.Container
     
     self.Theme.CreatePadding(self.ContentArea, self.IsMobile and self.Theme.Spacing.Small or self.Theme.Spacing.Medium)

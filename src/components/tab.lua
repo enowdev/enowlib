@@ -23,22 +23,22 @@ function Tab.new(config, window, theme, utils)
 end
 
 function Tab:CreateUI()
-    -- Tab button
+    -- Tab button (Radix UI - minimal pill style)
     self.Button = Instance.new("TextButton")
     self.Button.Name = "TabButton"
-    self.Button.BackgroundColor3 = self.Theme.Colors.SecondaryLight
+    self.Button.BackgroundColor3 = self.Theme.Colors.Background
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 32)
-    self.Button.Font = self.Theme.Font.Bold
+    self.Button.Size = UDim2.new(1, 0, 0, 36)
+    self.Button.Font = self.Theme.Font.Regular
     self.Button.Text = self.Config.Title
-    self.Button.TextColor3 = self.Theme.Colors.Text
+    self.Button.TextColor3 = self.Theme.Colors.TextSecondary
     self.Button.TextSize = self.Theme.Font.Size.Regular
-    self.Button.TextXAlignment = Enum.TextXAlignment.Center
+    self.Button.TextXAlignment = Enum.TextXAlignment.Left
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Window.TabList
     
-    self.Theme.CreateStroke(self.Button, self.Theme.Colors.Border, 3)
-    self.Theme.CreatePadding(self.Button, {8, 8, 0, 0})
+    self.Theme.CreateCorner(self.Button, 6)
+    self.Theme.CreatePadding(self.Button, {12, 12, 0, 0})
     
     -- Tab content container
     self.Container = Instance.new("ScrollingFrame")
@@ -46,25 +46,19 @@ function Tab:CreateUI()
     self.Container.BackgroundTransparency = 1
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 1, 0)
-    self.Container.ScrollBarThickness = 8
-    self.Container.ScrollBarImageColor3 = self.Theme.Colors.Primary
+    self.Container.ScrollBarThickness = 4
+    self.Container.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.Container.CanvasSize = UDim2.fromOffset(0, 0)
     self.Container.Visible = false
-    self.Container.ClipsDescendants = true  -- Clip scrolling content
+    self.Container.ClipsDescendants = true
     self.Container.Parent = self.Window.ContentArea
     
-    -- Add padding to prevent border clipping (extra space for borders)
-    self.Theme.CreatePadding(self.Container, {
-        self.Theme.Spacing.Small + 2,  -- Left (extra for border)
-        self.Theme.Spacing.Small + 2,  -- Right (extra for border)
-        self.Theme.Spacing.Small,      -- Top
-        self.Theme.Spacing.Small       -- Bottom
-    })
+    self.Theme.CreatePadding(self.Container, self.Theme.Spacing.Large)
     
-    -- List layout with proper spacing
+    -- List layout
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, self.Theme.Spacing.Medium)  -- Increased spacing
+    layout.Padding = UDim.new(0, self.Theme.Spacing.Medium)
     layout.Parent = self.Container
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -76,11 +70,11 @@ function Tab:CreateUI()
         self.Window:SelectTab(self)
     end)
     
-    -- Hover effects
+    -- Hover effects (Radix UI subtle)
     self.Button.MouseEnter:Connect(function()
         if not self.Visible then
             self.Utils.Tween(self.Button, {
-                BackgroundColor3 = self.Theme.Colors.Hover
+                BackgroundColor3 = self.Theme.Colors.Secondary
             }, 0.15)
         end
     end)
@@ -88,7 +82,7 @@ function Tab:CreateUI()
     self.Button.MouseLeave:Connect(function()
         if not self.Visible then
             self.Utils.Tween(self.Button, {
-                BackgroundColor3 = self.Theme.Colors.BackgroundLight
+                BackgroundColor3 = self.Theme.Colors.Background
             }, 0.15)
         end
     end)
@@ -98,32 +92,23 @@ function Tab:Show()
     self.Visible = true
     self.Container.Visible = true
     
+    -- Radix UI active state - subtle accent background
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.Primary,  -- Cyan when active
-        TextColor3 = self.Theme.Colors.Text
-    }, 0.15)
-    
-    -- Update stroke
-    local stroke = self.Button:FindFirstChild("UIStroke")
-    if stroke then
-        self.Utils.Tween(stroke, {
-            Color = self.Theme.Colors.Border,
-            Thickness = 4
-        }, 0.15)
-    end
+        BackgroundColor3 = self.Theme.Colors.AccentLight,
+        TextColor3 = self.Theme.Colors.Accent
+    }, 0.2)
 end
 
 function Tab:Hide()
     self.Visible = false
     self.Container.Visible = false
     
+    -- Radix UI inactive state
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.SecondaryLight,
-        TextColor3 = self.Theme.Colors.Text
-    }, 0.15)
-    
-    -- Reset stroke
-    local stroke = self.Button:FindFirstChild("UIStroke")
+        BackgroundColor3 = self.Theme.Colors.Background,
+        TextColor3 = self.Theme.Colors.TextSecondary
+    }, 0.2)
+end
     if stroke then
         self.Utils.Tween(stroke, {
             Color = self.Theme.Colors.Border,

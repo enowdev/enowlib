@@ -25,23 +25,25 @@ function Toggle.new(config, tab, theme, utils)
 end
 
 function Toggle:CreateUI()
-    -- Container
+    -- Container (Radix UI style)
     self.Container = Instance.new("Frame")
     self.Container.Name = "Toggle"
-    self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 64 or 44)
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 60 or 40)
     self.Container.Parent = self.Tab.Container
     
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, 1)
+    self.Theme.CreateCorner(self.Container, 6)
+    self.Theme.CreatePadding(self.Container, 12)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -80, 0, 20)
-    title.Position = UDim2.fromOffset(12, self.Config.Description and 10 or 12)
-    title.Font = self.Theme.Font.Bold
+    title.Size = UDim2.new(1, -60, 0, 18)
+    title.Position = UDim2.fromOffset(0, self.Config.Description and 4 or 11)
+    title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
@@ -53,62 +55,62 @@ function Toggle:CreateUI()
         local desc = Instance.new("TextLabel")
         desc.Name = "Description"
         desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, -80, 0, 16)
-        desc.Position = UDim2.fromOffset(12, 32)
+        desc.Size = UDim2.new(1, -60, 0, 14)
+        desc.Position = UDim2.fromOffset(0, 24)
         desc.Font = self.Theme.Font.Regular
         desc.Text = self.Config.Description
-        desc.TextColor3 = self.Theme.Colors.TextDim
+        desc.TextColor3 = self.Theme.Colors.TextSecondary
         desc.TextSize = self.Theme.Font.Size.Small
         desc.TextXAlignment = Enum.TextXAlignment.Left
         desc.Parent = self.Container
     end
     
-    -- Toggle switch background (SQUARE for Y2K)
+    -- Radix UI Switch (rounded pill)
     self.Switch = Instance.new("Frame")
     self.Switch.Name = "Switch"
-    self.Switch.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.Switch.BackgroundColor3 = self.Theme.Colors.SecondaryDark
     self.Switch.BorderSizePixel = 0
-    self.Switch.Size = UDim2.fromOffset(56, 28)
-    self.Switch.Position = UDim2.new(1, -64, 0.5, 0)
-    self.Switch.AnchorPoint = Vector2.new(0, 0.5)
+    self.Switch.Size = UDim2.fromOffset(44, 24)
+    self.Switch.Position = UDim2.new(1, 0, 0.5, 0)
+    self.Switch.AnchorPoint = Vector2.new(1, 0.5)
     self.Switch.Parent = self.Container
     
-    self.Theme.CreateStroke(self.Switch, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateCorner(self.Switch, 12)
     
-    -- Toggle knob (SQUARE)
+    -- Toggle knob (circle)
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
-    self.Knob.BackgroundColor3 = self.Theme.Colors.Text
+    self.Knob.BackgroundColor3 = self.Theme.Colors.Panel
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(24, 24)
+    self.Knob.Size = UDim2.fromOffset(20, 20)
     self.Knob.Position = UDim2.fromOffset(2, 2)
     self.Knob.Parent = self.Switch
     
-    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Border, 2)
+    self.Theme.CreateCorner(self.Knob, 10)
     
     -- Click button
     local button = Instance.new("TextButton")
     button.Name = "ToggleButton"
     button.BackgroundTransparency = 1
-    button.Size = UDim2.new(1, 0, 1, 0)
-    button.Text = ""
-    button.Parent = self.Container
-    
     button.MouseButton1Click:Connect(function()
         self:Toggle()
     end)
     
-    -- Hover effects
+    -- Hover effects (Radix UI subtle)
     button.MouseEnter:Connect(function()
-        self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.Hover
-        }, 0.15)
+        if not self.Value then
+            self.Utils.Tween(self.Switch, {
+                BackgroundColor3 = self.Theme.Colors.Secondary
+            }, 0.15)
+        end
     end)
     
     button.MouseLeave:Connect(function()
-        self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.BackgroundLight
-        }, 0.15)
+        if not self.Value then
+            self.Utils.Tween(self.Switch, {
+                BackgroundColor3 = self.Theme.Colors.SecondaryDark
+            }, 0.15)
+        end
     end)
 end
 
@@ -125,53 +127,31 @@ end
 
 function Toggle:UpdateVisual()
     if self.Value then
-        -- On state - Green for success
+        -- On state (Radix UI accent color)
         self.Utils.Tween(self.Switch, {
-            BackgroundColor3 = self.Theme.Colors.Green
-        }, 0.15)
+            BackgroundColor3 = self.Theme.Colors.Accent
+        }, 0.2)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(30, 2),
-            BackgroundColor3 = self.Theme.Colors.TextWhite
-        }, 0.15)
-        
-        local stroke = self.Switch:FindFirstChild("UIStroke")
-        if stroke then
-            self.Utils.Tween(stroke, {
-                Color = self.Theme.Colors.Border
-            }, 0.15)
-        end
-        
-        local knobStroke = self.Knob:FindFirstChild("UIStroke")
-        if knobStroke then
-            self.Utils.Tween(knobStroke, {
-                Color = self.Theme.Colors.Border
+            Position = UDim2.fromOffset(22, 2),
+            BackgroundColor3 = self.Theme.Colors.Panel
+        }, 0.2)
             }, 0.15)
         end
     else
         -- Off state
         self.Utils.Tween(self.Switch, {
             BackgroundColor3 = self.Theme.Colors.BackgroundDark
-        }, 0.15)
+    else
+        -- Off state (Radix UI neutral)
+        self.Utils.Tween(self.Switch, {
+            BackgroundColor3 = self.Theme.Colors.SecondaryDark
+        }, 0.2)
         
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(2, 2),
-            BackgroundColor3 = self.Theme.Colors.Text
-        }, 0.15)
-        
-        local stroke = self.Switch:FindFirstChild("UIStroke")
-        if stroke then
-            self.Utils.Tween(stroke, {
-                Color = self.Theme.Colors.Border
-            }, 0.15)
-        end
-        
-        local knobStroke = self.Knob:FindFirstChild("UIStroke")
-        if knobStroke then
-            self.Utils.Tween(knobStroke, {
-                Color = self.Theme.Colors.Border
-            }, 0.15)
-        end
+            BackgroundColor3 = self.Theme.Colors.Panel
+        }, 0.2)
     end
 end
 
