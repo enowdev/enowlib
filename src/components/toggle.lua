@@ -96,12 +96,12 @@ function Toggle:CreateUI()
         self:Toggle()
     end)
     
-    -- Hover effects (Radix UI subtle)
+    -- Hover effects (Dark mode smooth)
     button.MouseEnter:Connect(function()
         if not self.Value then
             self.Utils.Tween(self.Switch, {
                 BackgroundColor3 = self.Theme.Colors.Secondary
-            }, 0.15)
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end
     end)
     
@@ -109,7 +109,7 @@ function Toggle:CreateUI()
         if not self.Value then
             self.Utils.Tween(self.Switch, {
                 BackgroundColor3 = self.Theme.Colors.SecondaryDark
-            }, 0.15)
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end
     end)
 end
@@ -127,25 +127,25 @@ end
 
 function Toggle:UpdateVisual()
     if self.Value then
-        -- On state (Radix UI accent color)
+        -- On state (Dark mode bright accent)
         self.Utils.Tween(self.Switch, {
             BackgroundColor3 = self.Theme.Colors.Accent
-        }, 0.2)
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
         
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(22, 2),
             BackgroundColor3 = self.Theme.Colors.Panel
-        }, 0.2)
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
     else
-        -- Off state (Radix UI neutral)
+        -- Off state (Dark mode neutral)
         self.Utils.Tween(self.Switch, {
             BackgroundColor3 = self.Theme.Colors.SecondaryDark
-        }, 0.2)
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
         
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(2, 2),
             BackgroundColor3 = self.Theme.Colors.Panel
-        }, 0.2)
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
     end
 end
 

@@ -27,70 +27,71 @@ Theme.Icons = {
     Unlock = "rbxassetid://137265616251359"
 }
 
--- Color Palette - Radix UI Neutral Gray Scale
+-- Color Palette - Radix UI Dark Mode with Transparency
 Theme.Colors = {
-    -- Background colors (Neutral grays)
-    Background = Color3.fromRGB(252, 252, 252),      -- Almost white
-    BackgroundDark = Color3.fromRGB(249, 249, 249),  -- Very light gray
-    BackgroundLight = Color3.fromRGB(255, 255, 255), -- Pure white
+    -- Background colors (Dark with transparency)
+    Background = Color3.fromRGB(18, 18, 18),         -- Very dark gray
+    BackgroundDark = Color3.fromRGB(12, 12, 12),     -- Almost black
+    BackgroundLight = Color3.fromRGB(24, 24, 24),    -- Dark gray
     
-    -- Panel/Card colors
-    Panel = Color3.fromRGB(255, 255, 255),           -- White
-    PanelHover = Color3.fromRGB(252, 252, 253),      -- Subtle hover
+    -- Panel/Card colors (Dark with slight transparency)
+    Panel = Color3.fromRGB(24, 24, 27),              -- Dark panel
+    PanelHover = Color3.fromRGB(30, 30, 35),         -- Lighter on hover
     
-    -- Primary colors (Subtle blue accent)
-    Primary = Color3.fromRGB(17, 24, 39),            -- Dark gray (almost black)
-    PrimaryLight = Color3.fromRGB(59, 130, 246),     -- Blue accent
-    PrimaryDark = Color3.fromRGB(30, 58, 138),       -- Dark blue
+    -- Primary colors (Bright accent for dark mode)
+    Primary = Color3.fromRGB(250, 250, 250),         -- Almost white
+    PrimaryLight = Color3.fromRGB(96, 165, 250),     -- Bright blue
+    PrimaryDark = Color3.fromRGB(59, 130, 246),      -- Blue
     
-    -- Secondary colors (Neutral grays)
-    Secondary = Color3.fromRGB(244, 244, 245),       -- Light gray
-    SecondaryLight = Color3.fromRGB(250, 250, 250),  -- Very light gray
-    SecondaryDark = Color3.fromRGB(228, 228, 231),   -- Medium gray
+    -- Secondary colors (Dark grays)
+    Secondary = Color3.fromRGB(39, 39, 42),          -- Medium dark
+    SecondaryLight = Color3.fromRGB(50, 50, 55),     -- Lighter dark
+    SecondaryDark = Color3.fromRGB(30, 30, 33),      -- Darker
     
-    -- Accent colors (Subtle, not vibrant)
-    Accent = Color3.fromRGB(59, 130, 246),           -- Blue
-    AccentHover = Color3.fromRGB(37, 99, 235),       -- Darker blue
-    AccentLight = Color3.fromRGB(219, 234, 254),     -- Light blue
+    -- Accent colors (Bright for dark mode)
+    Accent = Color3.fromRGB(96, 165, 250),           -- Bright blue
+    AccentHover = Color3.fromRGB(59, 130, 246),      -- Blue
+    AccentLight = Color3.fromRGB(30, 58, 138),       -- Dark blue
     
-    -- State colors (Subtle versions)
-    Success = Color3.fromRGB(34, 197, 94),           -- Green
-    Warning = Color3.fromRGB(234, 179, 8),           -- Yellow
-    Error = Color3.fromRGB(239, 68, 68),             -- Red
-    Info = Color3.fromRGB(59, 130, 246),             -- Blue
+    -- State colors (Vibrant for dark mode)
+    Success = Color3.fromRGB(74, 222, 128),          -- Bright green
+    Warning = Color3.fromRGB(251, 191, 36),          -- Bright yellow
+    Error = Color3.fromRGB(248, 113, 113),           -- Bright red
+    Info = Color3.fromRGB(96, 165, 250),             -- Bright blue
     
-    -- Text colors (High contrast for accessibility)
-    Text = Color3.fromRGB(9, 9, 11),                 -- Almost black
-    TextSecondary = Color3.fromRGB(113, 113, 122),   -- Medium gray
-    TextDisabled = Color3.fromRGB(161, 161, 170),    -- Light gray
-    TextWhite = Color3.fromRGB(255, 255, 255),       -- White
+    -- Text colors (Light for dark mode)
+    Text = Color3.fromRGB(250, 250, 250),            -- Almost white
+    TextSecondary = Color3.fromRGB(161, 161, 170),   -- Gray
+    TextDisabled = Color3.fromRGB(113, 113, 122),    -- Dark gray
+    TextWhite = Color3.fromRGB(255, 255, 255),       -- Pure white
     
-    -- Border (Subtle, thin)
-    Border = Color3.fromRGB(228, 228, 231),          -- Light gray border
-    BorderHover = Color3.fromRGB(212, 212, 216),     -- Medium gray
-    BorderFocus = Color3.fromRGB(59, 130, 246),      -- Blue focus ring
+    -- Border (Subtle for dark mode)
+    Border = Color3.fromRGB(39, 39, 42),             -- Dark border
+    BorderHover = Color3.fromRGB(63, 63, 70),        -- Lighter border
+    BorderFocus = Color3.fromRGB(96, 165, 250),      -- Blue focus
     
     -- Legacy compatibility
-    Yellow = Color3.fromRGB(234, 179, 8),
-    Green = Color3.fromRGB(34, 197, 94),
-    Orange = Color3.fromRGB(249, 115, 22),
-    Pink = Color3.fromRGB(236, 72, 153),
-    TextDim = Color3.fromRGB(113, 113, 122),
-    Hover = Color3.fromRGB(244, 244, 245),
-    Active = Color3.fromRGB(228, 228, 231),
-    TitleBar = Color3.fromRGB(255, 255, 255),
-    TitleBarInactive = Color3.fromRGB(244, 244, 245),
+    Yellow = Color3.fromRGB(251, 191, 36),
+    Green = Color3.fromRGB(74, 222, 128),
+    Orange = Color3.fromRGB(251, 146, 60),
+    Pink = Color3.fromRGB(244, 114, 182),
+    TextDim = Color3.fromRGB(161, 161, 170),
+    Hover = Color3.fromRGB(39, 39, 42),
+    Active = Color3.fromRGB(63, 63, 70),
+    TitleBar = Color3.fromRGB(24, 24, 27),
+    TitleBarInactive = Color3.fromRGB(18, 18, 18),
     Shadow = Color3.fromRGB(0, 0, 0)
 }
 
--- Transparency values
+-- Transparency values (Dark mode with transparency)
 Theme.Transparency = {
     Solid = 0,
-    SemiTransparent = 0.05,
-    Translucent = 0.1,
-    VeryTranslucent = 0.3,
+    SemiTransparent = 0.1,
+    Translucent = 0.2,
+    VeryTranslucent = 0.4,
     AlmostTransparent = 0.7,
-    Invisible = 1
+    Invisible = 1,
+    Background = 0.15  -- Background transparency for glass effect
 }
 
 -- Font settings (Radix UI - clean and readable)
@@ -133,14 +134,14 @@ Theme.Responsive = {
     Desktop = 1200
 }
 
--- Animation settings (Smooth Radix style)
+-- Animation settings (Smooth and fluid)
 Theme.Animation = {
     Speed = {
-        Fast = 0.15,
-        Normal = 0.2,
-        Slow = 0.3
+        Fast = 0.2,
+        Normal = 0.3,
+        Slow = 0.4
     },
-    Easing = Enum.EasingStyle.Quad,
+    Easing = Enum.EasingStyle.Quint,  -- Smoother easing
     Direction = Enum.EasingDirection.Out
 }
 

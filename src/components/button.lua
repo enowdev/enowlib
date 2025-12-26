@@ -41,17 +41,17 @@ function Button:CreateUI()
         pcall(self.Config.Callback)
     end)
     
-    -- Hover effects (Radix UI subtle)
+    -- Hover effects (Dark mode smooth)
     self.Container.MouseEnter:Connect(function()
         self.Utils.Tween(self.Container, {
             BackgroundColor3 = self.Theme.Colors.AccentHover
-        }, 0.15)
+        }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
     end)
     
     self.Container.MouseLeave:Connect(function()
         self.Utils.Tween(self.Container, {
             BackgroundColor3 = self.Theme.Colors.Accent
-        }, 0.15)
+        }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
     end)
 end
 

@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 12:27:50
+-- Built: 2025-12-26 12:43:24
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -38,70 +38,71 @@ Theme.Icons = {
     Unlock = "rbxassetid://137265616251359"
 }
 
--- Color Palette - Radix UI Neutral Gray Scale
+-- Color Palette - Radix UI Dark Mode with Transparency
 Theme.Colors = {
-    -- Background colors (Neutral grays)
-    Background = Color3.fromRGB(252, 252, 252),      -- Almost white
-    BackgroundDark = Color3.fromRGB(249, 249, 249),  -- Very light gray
-    BackgroundLight = Color3.fromRGB(255, 255, 255), -- Pure white
+    -- Background colors (Dark with transparency)
+    Background = Color3.fromRGB(18, 18, 18),         -- Very dark gray
+    BackgroundDark = Color3.fromRGB(12, 12, 12),     -- Almost black
+    BackgroundLight = Color3.fromRGB(24, 24, 24),    -- Dark gray
     
-    -- Panel/Card colors
-    Panel = Color3.fromRGB(255, 255, 255),           -- White
-    PanelHover = Color3.fromRGB(252, 252, 253),      -- Subtle hover
+    -- Panel/Card colors (Dark with slight transparency)
+    Panel = Color3.fromRGB(24, 24, 27),              -- Dark panel
+    PanelHover = Color3.fromRGB(30, 30, 35),         -- Lighter on hover
     
-    -- Primary colors (Subtle blue accent)
-    Primary = Color3.fromRGB(17, 24, 39),            -- Dark gray (almost black)
-    PrimaryLight = Color3.fromRGB(59, 130, 246),     -- Blue accent
-    PrimaryDark = Color3.fromRGB(30, 58, 138),       -- Dark blue
+    -- Primary colors (Bright accent for dark mode)
+    Primary = Color3.fromRGB(250, 250, 250),         -- Almost white
+    PrimaryLight = Color3.fromRGB(96, 165, 250),     -- Bright blue
+    PrimaryDark = Color3.fromRGB(59, 130, 246),      -- Blue
     
-    -- Secondary colors (Neutral grays)
-    Secondary = Color3.fromRGB(244, 244, 245),       -- Light gray
-    SecondaryLight = Color3.fromRGB(250, 250, 250),  -- Very light gray
-    SecondaryDark = Color3.fromRGB(228, 228, 231),   -- Medium gray
+    -- Secondary colors (Dark grays)
+    Secondary = Color3.fromRGB(39, 39, 42),          -- Medium dark
+    SecondaryLight = Color3.fromRGB(50, 50, 55),     -- Lighter dark
+    SecondaryDark = Color3.fromRGB(30, 30, 33),      -- Darker
     
-    -- Accent colors (Subtle, not vibrant)
-    Accent = Color3.fromRGB(59, 130, 246),           -- Blue
-    AccentHover = Color3.fromRGB(37, 99, 235),       -- Darker blue
-    AccentLight = Color3.fromRGB(219, 234, 254),     -- Light blue
+    -- Accent colors (Bright for dark mode)
+    Accent = Color3.fromRGB(96, 165, 250),           -- Bright blue
+    AccentHover = Color3.fromRGB(59, 130, 246),      -- Blue
+    AccentLight = Color3.fromRGB(30, 58, 138),       -- Dark blue
     
-    -- State colors (Subtle versions)
-    Success = Color3.fromRGB(34, 197, 94),           -- Green
-    Warning = Color3.fromRGB(234, 179, 8),           -- Yellow
-    Error = Color3.fromRGB(239, 68, 68),             -- Red
-    Info = Color3.fromRGB(59, 130, 246),             -- Blue
+    -- State colors (Vibrant for dark mode)
+    Success = Color3.fromRGB(74, 222, 128),          -- Bright green
+    Warning = Color3.fromRGB(251, 191, 36),          -- Bright yellow
+    Error = Color3.fromRGB(248, 113, 113),           -- Bright red
+    Info = Color3.fromRGB(96, 165, 250),             -- Bright blue
     
-    -- Text colors (High contrast for accessibility)
-    Text = Color3.fromRGB(9, 9, 11),                 -- Almost black
-    TextSecondary = Color3.fromRGB(113, 113, 122),   -- Medium gray
-    TextDisabled = Color3.fromRGB(161, 161, 170),    -- Light gray
-    TextWhite = Color3.fromRGB(255, 255, 255),       -- White
+    -- Text colors (Light for dark mode)
+    Text = Color3.fromRGB(250, 250, 250),            -- Almost white
+    TextSecondary = Color3.fromRGB(161, 161, 170),   -- Gray
+    TextDisabled = Color3.fromRGB(113, 113, 122),    -- Dark gray
+    TextWhite = Color3.fromRGB(255, 255, 255),       -- Pure white
     
-    -- Border (Subtle, thin)
-    Border = Color3.fromRGB(228, 228, 231),          -- Light gray border
-    BorderHover = Color3.fromRGB(212, 212, 216),     -- Medium gray
-    BorderFocus = Color3.fromRGB(59, 130, 246),      -- Blue focus ring
+    -- Border (Subtle for dark mode)
+    Border = Color3.fromRGB(39, 39, 42),             -- Dark border
+    BorderHover = Color3.fromRGB(63, 63, 70),        -- Lighter border
+    BorderFocus = Color3.fromRGB(96, 165, 250),      -- Blue focus
     
     -- Legacy compatibility
-    Yellow = Color3.fromRGB(234, 179, 8),
-    Green = Color3.fromRGB(34, 197, 94),
-    Orange = Color3.fromRGB(249, 115, 22),
-    Pink = Color3.fromRGB(236, 72, 153),
-    TextDim = Color3.fromRGB(113, 113, 122),
-    Hover = Color3.fromRGB(244, 244, 245),
-    Active = Color3.fromRGB(228, 228, 231),
-    TitleBar = Color3.fromRGB(255, 255, 255),
-    TitleBarInactive = Color3.fromRGB(244, 244, 245),
+    Yellow = Color3.fromRGB(251, 191, 36),
+    Green = Color3.fromRGB(74, 222, 128),
+    Orange = Color3.fromRGB(251, 146, 60),
+    Pink = Color3.fromRGB(244, 114, 182),
+    TextDim = Color3.fromRGB(161, 161, 170),
+    Hover = Color3.fromRGB(39, 39, 42),
+    Active = Color3.fromRGB(63, 63, 70),
+    TitleBar = Color3.fromRGB(24, 24, 27),
+    TitleBarInactive = Color3.fromRGB(18, 18, 18),
     Shadow = Color3.fromRGB(0, 0, 0)
 }
 
--- Transparency values
+-- Transparency values (Dark mode with transparency)
 Theme.Transparency = {
     Solid = 0,
-    SemiTransparent = 0.05,
-    Translucent = 0.1,
-    VeryTranslucent = 0.3,
+    SemiTransparent = 0.1,
+    Translucent = 0.2,
+    VeryTranslucent = 0.4,
     AlmostTransparent = 0.7,
-    Invisible = 1
+    Invisible = 1,
+    Background = 0.15  -- Background transparency for glass effect
 }
 
 -- Font settings (Radix UI - clean and readable)
@@ -144,14 +145,14 @@ Theme.Responsive = {
     Desktop = 1200
 }
 
--- Animation settings (Smooth Radix style)
+-- Animation settings (Smooth and fluid)
 Theme.Animation = {
     Speed = {
-        Fast = 0.15,
-        Normal = 0.2,
-        Slow = 0.3
+        Fast = 0.2,
+        Normal = 0.3,
+        Slow = 0.4
     },
-    Easing = Enum.EasingStyle.Quad,
+    Easing = Enum.EasingStyle.Quint,  -- Smoother easing
     Direction = Enum.EasingDirection.Out
 }
 
@@ -604,17 +605,17 @@ function Button:CreateUI()
         pcall(self.Config.Callback)
     end)
     
-    -- Hover effects (Radix UI subtle)
+    -- Hover effects (Dark mode smooth)
     self.Container.MouseEnter:Connect(function()
         self.Utils.Tween(self.Container, {
             BackgroundColor3 = self.Theme.Colors.AccentHover
-        }, 0.15)
+        }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
     end)
     
     self.Container.MouseLeave:Connect(function()
         self.Utils.Tween(self.Container, {
             BackgroundColor3 = self.Theme.Colors.Accent
-        }, 0.15)
+        }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
     end)
 end
 
@@ -732,12 +733,12 @@ function Toggle:CreateUI()
         self:Toggle()
     end)
     
-    -- Hover effects (Radix UI subtle)
+    -- Hover effects (Dark mode smooth)
     button.MouseEnter:Connect(function()
         if not self.Value then
             self.Utils.Tween(self.Switch, {
                 BackgroundColor3 = self.Theme.Colors.Secondary
-            }, 0.15)
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end
     end)
     
@@ -745,7 +746,7 @@ function Toggle:CreateUI()
         if not self.Value then
             self.Utils.Tween(self.Switch, {
                 BackgroundColor3 = self.Theme.Colors.SecondaryDark
-            }, 0.15)
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end
     end)
 end
@@ -763,25 +764,25 @@ end
 
 function Toggle:UpdateVisual()
     if self.Value then
-        -- On state (Radix UI accent color)
+        -- On state (Dark mode bright accent)
         self.Utils.Tween(self.Switch, {
             BackgroundColor3 = self.Theme.Colors.Accent
-        }, 0.2)
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
         
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(22, 2),
             BackgroundColor3 = self.Theme.Colors.Panel
-        }, 0.2)
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
     else
-        -- Off state (Radix UI neutral)
+        -- Off state (Dark mode neutral)
         self.Utils.Tween(self.Switch, {
             BackgroundColor3 = self.Theme.Colors.SecondaryDark
-        }, 0.2)
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
         
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(2, 2),
             BackgroundColor3 = self.Theme.Colors.Panel
-        }, 0.2)
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
     end
 end
 Toggle = Toggle
@@ -2559,42 +2560,42 @@ function Section:CreateUI()
         self:Toggle()
     end)
     
-    -- Hover effects (Radix UI subtle)
+    -- Hover effects (Dark mode smooth)
     self.Header.MouseEnter:Connect(function()
         self.Utils.Tween(self.Header, {
             BackgroundColor3 = self.Theme.Colors.Secondary
-        }, 0.15)
+        }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
     end)
     
     self.Header.MouseLeave:Connect(function()
         self.Utils.Tween(self.Header, {
             BackgroundColor3 = self.Theme.Colors.Panel
-        }, 0.15)
+        }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
     end)
 end
 
 function Section:Toggle()
     self.Collapsed = not self.Collapsed
     
-    -- Animate arrow icon (Radix UI)
+    -- Animate arrow icon with smooth rotation
     self.Arrow.Image = self.Collapsed and self.Theme.Icons.ChevronRight or self.Theme.Icons.ChevronDown
     
-    -- Animate content
+    -- Smooth dropdown animation
     if self.Collapsed then
-        -- Collapse
+        -- Collapse with smooth animation
         self.Utils.Tween(self.Content, {
             Size = UDim2.new(1, 0, 0, 0)
-        }, 0.2, nil, nil, function()
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing, nil, function()
             self.Content.Visible = false
             self:UpdateSize()
         end)
     else
-        -- Expand
+        -- Expand with smooth animation
         self.Content.Visible = true
         local targetHeight = self.Layout.AbsoluteContentSize.Y
         self.Utils.Tween(self.Content, {
             Size = UDim2.new(1, 0, 0, targetHeight)
-        }, 0.2, nil, nil, function()
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing, nil, function()
             self:UpdateSize()
         end)
     end
@@ -2924,12 +2925,12 @@ function Tab:CreateUI()
         self.Window:SelectTab(self)
     end)
     
-    -- Hover effects (Radix UI subtle)
+    -- Hover effects (Dark mode smooth)
     self.Button.MouseEnter:Connect(function()
         if not self.Visible then
             self.Utils.Tween(self.Button, {
                 BackgroundColor3 = self.Theme.Colors.Secondary
-            }, 0.15)
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end
     end)
     
@@ -2937,7 +2938,7 @@ function Tab:CreateUI()
         if not self.Visible then
             self.Utils.Tween(self.Button, {
                 BackgroundColor3 = self.Theme.Colors.Background
-            }, 0.15)
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end
     end)
 end
@@ -2946,22 +2947,22 @@ function Tab:Show()
     self.Visible = true
     self.Container.Visible = true
     
-    -- Radix UI active state - subtle accent background
+    -- Dark mode active state with smooth animation
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.AccentLight,
-        TextColor3 = self.Theme.Colors.Accent
-    }, 0.2)
+        BackgroundColor3 = self.Theme.Colors.Accent,
+        TextColor3 = self.Theme.Colors.TextWhite
+    }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
 end
 
 function Tab:Hide()
     self.Visible = false
     self.Container.Visible = false
     
-    -- Radix UI inactive state
+    -- Dark mode inactive state with smooth animation
     self.Utils.Tween(self.Button, {
         BackgroundColor3 = self.Theme.Colors.Background,
         TextColor3 = self.Theme.Colors.TextSecondary
-    }, 0.2)
+    }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
 end
 
 function Tab:AddButton(config)
@@ -3096,22 +3097,36 @@ function Window:CreateUI()
     self.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     self.ScreenGui.ResetOnSpawn = false
     
-    -- Main container (Radix UI card style)
+    -- Main container (Dark mode with transparency)
     self.Container = Instance.new("Frame")
     self.Container.Name = "Container"
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Background
     self.Container.BorderSizePixel = 0
     self.Container.Size = self.Config.Size
     self.Container.Position = UDim2.fromScale(0.5, 0.5)
     self.Container.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Container.Parent = self.ScreenGui
     
-    -- Radix UI subtle border and rounded corners
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
-    self.Theme.CreateCorner(self.Container, 8)
+    -- Backdrop blur effect for glass morphism
+    local blur = Instance.new("ImageLabel")
+    blur.Name = "Blur"
+    blur.BackgroundTransparency = 1
+    blur.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+    blur.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    blur.ImageTransparency = 0.5
+    blur.ScaleType = Enum.ScaleType.Slice
+    blur.SliceCenter = Rect.new(10, 10, 118, 118)
+    blur.Size = UDim2.new(1, 0, 1, 0)
+    blur.ZIndex = 0
+    blur.Parent = self.Container
     
-    -- Subtle shadow for depth
-    self.Theme.CreateShadow(self.Container, 2)
+    -- Dark border
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateCorner(self.Container, 12)
+    
+    -- Subtle glow shadow
+    self.Theme.CreateShadow(self.Container, 3)
     
     -- Title bar
     self:CreateTitleBar()
@@ -3134,7 +3149,8 @@ end
 function Window:CreateTitleBar()
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
-    self.TitleBar.BackgroundColor3 = self.Theme.Colors.Panel
+    self.TitleBar.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.TitleBar.BackgroundTransparency = 0.3
     self.TitleBar.BorderSizePixel = 0
     self.TitleBar.Size = UDim2.new(1, 0, 0, 48)
     self.TitleBar.Parent = self.Container
@@ -3148,7 +3164,7 @@ function Window:CreateTitleBar()
     separator.Position = UDim2.new(0, 0, 1, -1)
     separator.Parent = self.TitleBar
     
-    -- Title text (Radix UI - clean and minimal)
+    -- Title text (Dark mode - bright text)
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
@@ -3161,11 +3177,12 @@ function Window:CreateTitleBar()
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.TitleBar
     
-    -- Close button (Radix UI - icon button with hover)
+    -- Close button (Dark mode style)
     if self.Config.CloseButton then
         local closeBtn = Instance.new("TextButton")
         closeBtn.Name = "CloseButton"
-        closeBtn.BackgroundColor3 = self.Theme.Colors.Panel
+        closeBtn.BackgroundColor3 = self.Theme.Colors.Secondary
+        closeBtn.BackgroundTransparency = 0.3
         closeBtn.BorderSizePixel = 0
         closeBtn.Size = UDim2.fromOffset(32, 32)
         closeBtn.Position = UDim2.new(1, -40, 0.5, -16)
@@ -3174,7 +3191,7 @@ function Window:CreateTitleBar()
         closeBtn.AutoButtonColor = false
         closeBtn.Parent = self.TitleBar
         
-        self.Theme.CreateCorner(closeBtn, 4)
+        self.Theme.CreateCorner(closeBtn, 6)
         
         -- Close icon (X)
         local icon = self.Theme.CreateIcon(closeBtn, self.Theme.Icons.Cross, 16)
@@ -3188,20 +3205,22 @@ function Window:CreateTitleBar()
         
         closeBtn.MouseEnter:Connect(function()
             self.Utils.Tween(closeBtn, {
-                BackgroundColor3 = self.Theme.Colors.Secondary
-            }, 0.15)
+                BackgroundColor3 = self.Theme.Colors.Error,
+                BackgroundTransparency = 0
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
             self.Utils.Tween(icon, {
-                ImageColor3 = self.Theme.Colors.Text
-            }, 0.15)
+                ImageColor3 = self.Theme.Colors.TextWhite
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end)
         
         closeBtn.MouseLeave:Connect(function()
             self.Utils.Tween(closeBtn, {
-                BackgroundColor3 = self.Theme.Colors.Panel
-            }, 0.15)
+                BackgroundColor3 = self.Theme.Colors.Secondary,
+                BackgroundTransparency = 0.3
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
             self.Utils.Tween(icon, {
                 ImageColor3 = self.Theme.Colors.TextSecondary
-            }, 0.15)
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end)
     end
 end

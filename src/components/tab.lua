@@ -70,12 +70,12 @@ function Tab:CreateUI()
         self.Window:SelectTab(self)
     end)
     
-    -- Hover effects (Radix UI subtle)
+    -- Hover effects (Dark mode smooth)
     self.Button.MouseEnter:Connect(function()
         if not self.Visible then
             self.Utils.Tween(self.Button, {
                 BackgroundColor3 = self.Theme.Colors.Secondary
-            }, 0.15)
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end
     end)
     
@@ -83,7 +83,7 @@ function Tab:CreateUI()
         if not self.Visible then
             self.Utils.Tween(self.Button, {
                 BackgroundColor3 = self.Theme.Colors.Background
-            }, 0.15)
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end
     end)
 end
@@ -92,22 +92,22 @@ function Tab:Show()
     self.Visible = true
     self.Container.Visible = true
     
-    -- Radix UI active state - subtle accent background
+    -- Dark mode active state with smooth animation
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.AccentLight,
-        TextColor3 = self.Theme.Colors.Accent
-    }, 0.2)
+        BackgroundColor3 = self.Theme.Colors.Accent,
+        TextColor3 = self.Theme.Colors.TextWhite
+    }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
 end
 
 function Tab:Hide()
     self.Visible = false
     self.Container.Visible = false
     
-    -- Radix UI inactive state
+    -- Dark mode inactive state with smooth animation
     self.Utils.Tween(self.Button, {
         BackgroundColor3 = self.Theme.Colors.Background,
         TextColor3 = self.Theme.Colors.TextSecondary
-    }, 0.2)
+    }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
 end
 
 function Tab:AddButton(config)

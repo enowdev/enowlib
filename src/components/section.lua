@@ -94,42 +94,42 @@ function Section:CreateUI()
         self:Toggle()
     end)
     
-    -- Hover effects (Radix UI subtle)
+    -- Hover effects (Dark mode smooth)
     self.Header.MouseEnter:Connect(function()
         self.Utils.Tween(self.Header, {
             BackgroundColor3 = self.Theme.Colors.Secondary
-        }, 0.15)
+        }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
     end)
     
     self.Header.MouseLeave:Connect(function()
         self.Utils.Tween(self.Header, {
             BackgroundColor3 = self.Theme.Colors.Panel
-        }, 0.15)
+        }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
     end)
 end
 
 function Section:Toggle()
     self.Collapsed = not self.Collapsed
     
-    -- Animate arrow icon (Radix UI)
+    -- Animate arrow icon with smooth rotation
     self.Arrow.Image = self.Collapsed and self.Theme.Icons.ChevronRight or self.Theme.Icons.ChevronDown
     
-    -- Animate content
+    -- Smooth dropdown animation
     if self.Collapsed then
-        -- Collapse
+        -- Collapse with smooth animation
         self.Utils.Tween(self.Content, {
             Size = UDim2.new(1, 0, 0, 0)
-        }, 0.2, nil, nil, function()
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing, nil, function()
             self.Content.Visible = false
             self:UpdateSize()
         end)
     else
-        -- Expand
+        -- Expand with smooth animation
         self.Content.Visible = true
         local targetHeight = self.Layout.AbsoluteContentSize.Y
         self.Utils.Tween(self.Content, {
             Size = UDim2.new(1, 0, 0, targetHeight)
-        }, 0.2, nil, nil, function()
+        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing, nil, function()
             self:UpdateSize()
         end)
     end

@@ -46,22 +46,36 @@ function Window:CreateUI()
     self.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     self.ScreenGui.ResetOnSpawn = false
     
-    -- Main container (Radix UI card style)
+    -- Main container (Dark mode with transparency)
     self.Container = Instance.new("Frame")
     self.Container.Name = "Container"
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Background
     self.Container.BorderSizePixel = 0
     self.Container.Size = self.Config.Size
     self.Container.Position = UDim2.fromScale(0.5, 0.5)
     self.Container.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Container.Parent = self.ScreenGui
     
-    -- Radix UI subtle border and rounded corners
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
-    self.Theme.CreateCorner(self.Container, 8)
+    -- Backdrop blur effect for glass morphism
+    local blur = Instance.new("ImageLabel")
+    blur.Name = "Blur"
+    blur.BackgroundTransparency = 1
+    blur.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+    blur.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    blur.ImageTransparency = 0.5
+    blur.ScaleType = Enum.ScaleType.Slice
+    blur.SliceCenter = Rect.new(10, 10, 118, 118)
+    blur.Size = UDim2.new(1, 0, 1, 0)
+    blur.ZIndex = 0
+    blur.Parent = self.Container
     
-    -- Subtle shadow for depth
-    self.Theme.CreateShadow(self.Container, 2)
+    -- Dark border
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateCorner(self.Container, 12)
+    
+    -- Subtle glow shadow
+    self.Theme.CreateShadow(self.Container, 3)
     
     -- Title bar
     self:CreateTitleBar()
@@ -84,7 +98,8 @@ end
 function Window:CreateTitleBar()
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
-    self.TitleBar.BackgroundColor3 = self.Theme.Colors.Panel
+    self.TitleBar.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.TitleBar.BackgroundTransparency = 0.3
     self.TitleBar.BorderSizePixel = 0
     self.TitleBar.Size = UDim2.new(1, 0, 0, 48)
     self.TitleBar.Parent = self.Container
@@ -98,7 +113,7 @@ function Window:CreateTitleBar()
     separator.Position = UDim2.new(0, 0, 1, -1)
     separator.Parent = self.TitleBar
     
-    -- Title text (Radix UI - clean and minimal)
+    -- Title text (Dark mode - bright text)
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
@@ -111,11 +126,12 @@ function Window:CreateTitleBar()
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.TitleBar
     
-    -- Close button (Radix UI - icon button with hover)
+    -- Close button (Dark mode style)
     if self.Config.CloseButton then
         local closeBtn = Instance.new("TextButton")
         closeBtn.Name = "CloseButton"
-        closeBtn.BackgroundColor3 = self.Theme.Colors.Panel
+        closeBtn.BackgroundColor3 = self.Theme.Colors.Secondary
+        closeBtn.BackgroundTransparency = 0.3
         closeBtn.BorderSizePixel = 0
         closeBtn.Size = UDim2.fromOffset(32, 32)
         closeBtn.Position = UDim2.new(1, -40, 0.5, -16)
@@ -124,7 +140,7 @@ function Window:CreateTitleBar()
         closeBtn.AutoButtonColor = false
         closeBtn.Parent = self.TitleBar
         
-        self.Theme.CreateCorner(closeBtn, 4)
+        self.Theme.CreateCorner(closeBtn, 6)
         
         -- Close icon (X)
         local icon = self.Theme.CreateIcon(closeBtn, self.Theme.Icons.Cross, 16)
@@ -138,20 +154,22 @@ function Window:CreateTitleBar()
         
         closeBtn.MouseEnter:Connect(function()
             self.Utils.Tween(closeBtn, {
-                BackgroundColor3 = self.Theme.Colors.Secondary
-            }, 0.15)
+                BackgroundColor3 = self.Theme.Colors.Error,
+                BackgroundTransparency = 0
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
             self.Utils.Tween(icon, {
-                ImageColor3 = self.Theme.Colors.Text
-            }, 0.15)
+                ImageColor3 = self.Theme.Colors.TextWhite
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end)
         
         closeBtn.MouseLeave:Connect(function()
             self.Utils.Tween(closeBtn, {
-                BackgroundColor3 = self.Theme.Colors.Panel
-            }, 0.15)
+                BackgroundColor3 = self.Theme.Colors.Secondary,
+                BackgroundTransparency = 0.3
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
             self.Utils.Tween(icon, {
                 ImageColor3 = self.Theme.Colors.TextSecondary
-            }, 0.15)
+            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
         end)
     end
 end
