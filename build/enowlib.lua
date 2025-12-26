@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 13:30:22
+-- Built: 2025-12-26 13:38:23
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -14,32 +14,40 @@ do
 
 Theme = {}
 
--- Lucide Icons (minimal set)
+-- Lucide Icons (IDE set)
 Theme.Icons = {
     ChevronDown = "rbxassetid://10709790948",
     ChevronRight = "rbxassetid://10709791437",
     X = "rbxassetid://10747384394",
     Check = "rbxassetid://10709790644",
     Settings = "rbxassetid://10734950309",
-    Home = "rbxassetid://10723407389"
+    Home = "rbxassetid://10723407389",
+    Folder = "rbxassetid://10723387563",
+    FolderOpen = "rbxassetid://10723386277",
+    File = "rbxassetid://10723374759",
+    FileCode = "rbxassetid://10723356507",
+    Terminal = "rbxassetid://10734982144",
+    Play = "rbxassetid://10734923549"
 }
 
--- Dark Mode Color Palette
+-- Dark Mode Color Palette (Hacker IDE Style)
 Theme.Colors = {
-    Background = Color3.fromRGB(9, 9, 11),
-    Panel = Color3.fromRGB(39, 39, 42),
-    Secondary = Color3.fromRGB(63, 63, 70),
+    Background = Color3.fromRGB(13, 17, 23),
+    Panel = Color3.fromRGB(22, 27, 34),
+    Secondary = Color3.fromRGB(33, 38, 45),
     
-    Accent = Color3.fromRGB(168, 85, 247),
-    AccentHover = Color3.fromRGB(192, 132, 252),
+    Accent = Color3.fromRGB(46, 204, 113),
+    AccentHover = Color3.fromRGB(39, 174, 96),
+    AccentDim = Color3.fromRGB(34, 153, 84),
     
-    Text = Color3.fromRGB(250, 250, 250),
-    TextDim = Color3.fromRGB(161, 161, 170),
+    Text = Color3.fromRGB(201, 209, 217),
+    TextDim = Color3.fromRGB(139, 148, 158),
     
-    Border = Color3.fromRGB(82, 82, 91),
+    Border = Color3.fromRGB(48, 54, 61),
     
-    Success = Color3.fromRGB(74, 222, 128),
-    Error = Color3.fromRGB(248, 113, 113)
+    Success = Color3.fromRGB(46, 204, 113),
+    Warning = Color3.fromRGB(241, 196, 15),
+    Error = Color3.fromRGB(231, 76, 60)
 }
 
 -- Transparency
@@ -53,6 +61,7 @@ Theme.Transparency = {
 Theme.Font = {
     Regular = Enum.Font.Gotham,
     Bold = Enum.Font.GothamBold,
+    Mono = Enum.Font.RobotoMono,
     Size = {
         Small = 12,
         Regular = 14,
@@ -775,6 +784,286 @@ assert(Slider, "Failed to assign Slider module")
 end
 
 
+-- Module: Item
+local Item
+do
+-- EnowLib Item Component (File in Tree)
+
+Item = {}
+Item.__index = Item
+
+function Item.new(config, category, theme, utils)
+    local self = setmetatable({}, Item)
+    
+    self.Category = category
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Item",
+        Icon = nil,
+        Callback = function() end
+    }, config or {})
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function Item:CreateUI()
+    -- Item Button
+    self.Button = Instance.new("TextButton")
+    self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.Button.BackgroundTransparency = 1
+    self.Button.BorderSizePixel = 0
+    self.Button.Size = UDim2.new(1, 0, 0, 28)
+    self.Button.Text = ""
+    self.Button.AutoButtonColor = false
+    self.Button.Parent = self.Category.ItemsContainer
+    
+    -- Icon (optional)
+    if self.Config.Icon then
+        self.Icon = Instance.new("ImageLabel")
+        self.Icon.BackgroundTransparency = 1
+        self.Icon.Size = UDim2.fromOffset(14, 14)
+        self.Icon.Position = UDim2.fromOffset(50, 7)
+        self.Icon.Image = self.Config.Icon
+        self.Icon.ImageColor3 = self.Theme.Colors.TextDim
+        self.Icon.Parent = self.Button
+    end
+    
+    -- Title
+    local titleOffset = self.Config.Icon and 70 or 50
+    self.Title = Instance.new("TextLabel")
+    self.Title.BackgroundTransparency = 1
+    self.Title.Size = UDim2.new(1, -titleOffset, 1, 0)
+    self.Title.Position = UDim2.fromOffset(titleOffset, 0)
+    self.Title.Font = self.Theme.Font.Mono
+    self.Title.Text = self.Config.Title
+    self.Title.TextColor3 = self.Theme.Colors.TextDim
+    self.Title.TextSize = self.Theme.Font.Size.Small
+    self.Title.TextXAlignment = Enum.TextXAlignment.Left
+    self.Title.Parent = self.Button
+    
+    -- Events
+    self.Button.MouseButton1Click:Connect(function()
+        pcall(self.Config.Callback)
+    end)
+    
+    self.Button.MouseEnter:Connect(function()
+        self.Utils.Tween(self.Button, {
+            BackgroundTransparency = 0.9
+        }, 0.15)
+        self.Utils.Tween(self.Title, {
+            TextColor3 = self.Theme.Colors.Accent
+        }, 0.15)
+        if self.Icon then
+            self.Utils.Tween(self.Icon, {
+                ImageColor3 = self.Theme.Colors.Accent
+            }, 0.15)
+        end
+    end)
+    
+    self.Button.MouseLeave:Connect(function()
+        self.Utils.Tween(self.Button, {
+            BackgroundTransparency = 1
+        }, 0.15)
+        self.Utils.Tween(self.Title, {
+            TextColor3 = self.Theme.Colors.TextDim
+        }, 0.15)
+        if self.Icon then
+            self.Utils.Tween(self.Icon, {
+                ImageColor3 = self.Theme.Colors.TextDim
+            }, 0.15)
+        end
+    end)
+end
+Item = Item
+assert(Item, "Failed to assign Item module")
+end
+
+
+-- Module: Category
+local Category
+do
+-- EnowLib Category Component (Tree Folder)
+
+Category = {}
+Category.__index = Category
+
+function Category.new(config, window, theme, utils)
+    local self = setmetatable({}, Category)
+    
+    self.Window = window
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Category",
+        Icon = nil,
+        Expanded = false
+    }, config or {})
+    
+    self.Items = {}
+    self.Expanded = self.Config.Expanded
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function Category:CreateUI()
+    -- Category Container
+    self.Container = Instance.new("Frame")
+    self.Container.BackgroundTransparency = 1
+    self.Container.Size = UDim2.new(1, 0, 0, 32)
+    self.Container.Parent = self.Window.SidebarList
+    
+    -- Category Button
+    self.Button = Instance.new("TextButton")
+    self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.Button.BackgroundTransparency = 1
+    self.Button.BorderSizePixel = 0
+    self.Button.Size = UDim2.new(1, 0, 0, 32)
+    self.Button.Text = ""
+    self.Button.AutoButtonColor = false
+    self.Button.Parent = self.Container
+    
+    -- Chevron Icon
+    self.ChevronIcon = Instance.new("ImageLabel")
+    self.ChevronIcon.BackgroundTransparency = 1
+    self.ChevronIcon.Size = UDim2.fromOffset(14, 14)
+    self.ChevronIcon.Position = UDim2.fromOffset(8, 9)
+    self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
+    self.ChevronIcon.ImageColor3 = self.Theme.Colors.Accent
+    self.ChevronIcon.Rotation = 0
+    self.ChevronIcon.Parent = self.Button
+    
+    -- Folder Icon (optional)
+    if self.Config.Icon then
+        self.FolderIcon = Instance.new("ImageLabel")
+        self.FolderIcon.BackgroundTransparency = 1
+        self.FolderIcon.Size = UDim2.fromOffset(16, 16)
+        self.FolderIcon.Position = UDim2.fromOffset(28, 8)
+        self.FolderIcon.Image = self.Config.Icon
+        self.FolderIcon.ImageColor3 = self.Theme.Colors.Accent
+        self.FolderIcon.Parent = self.Button
+    end
+    
+    -- Title
+    local titleOffset = self.Config.Icon and 50 or 28
+    self.Title = Instance.new("TextLabel")
+    self.Title.BackgroundTransparency = 1
+    self.Title.Size = UDim2.new(1, -titleOffset, 1, 0)
+    self.Title.Position = UDim2.fromOffset(titleOffset, 0)
+    self.Title.Font = self.Theme.Font.Mono
+    self.Title.Text = self.Config.Title
+    self.Title.TextColor3 = self.Theme.Colors.Text
+    self.Title.TextSize = self.Theme.Font.Size.Regular
+    self.Title.TextXAlignment = Enum.TextXAlignment.Left
+    self.Title.Parent = self.Button
+    
+    -- Items Container
+    self.ItemsContainer = Instance.new("Frame")
+    self.ItemsContainer.BackgroundTransparency = 1
+    self.ItemsContainer.Size = UDim2.new(1, 0, 0, 0)
+    self.ItemsContainer.Position = UDim2.fromOffset(0, 32)
+    self.ItemsContainer.ClipsDescendants = true
+    self.ItemsContainer.Parent = self.Container
+    
+    local layout = Instance.new("UIListLayout")
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.Padding = UDim.new(0, 0)
+    layout.Parent = self.ItemsContainer
+    
+    -- Events
+    self.Button.MouseButton1Click:Connect(function()
+        self:Toggle()
+    end)
+    
+    self.Button.MouseEnter:Connect(function()
+        self.Utils.Tween(self.Button, {
+            BackgroundTransparency = 0.9
+        }, 0.15)
+    end)
+    
+    self.Button.MouseLeave:Connect(function()
+        self.Utils.Tween(self.Button, {
+            BackgroundTransparency = 1
+        }, 0.15)
+    end)
+    
+    -- Set initial state
+    if self.Expanded then
+        self:Expand(true)
+    end
+end
+
+function Category:Toggle()
+    if self.Expanded then
+        self:Collapse()
+    else
+        self:Expand()
+    end
+end
+
+function Category:Expand(instant)
+    self.Expanded = true
+    
+    local duration = instant and 0 or self.Theme.Animation.Duration
+    
+    -- Rotate chevron
+    self.Utils.Tween(self.ChevronIcon, {
+        Rotation = 90
+    }, duration)
+    
+    -- Calculate total height
+    local totalHeight = 0
+    for _, item in ipairs(self.Items) do
+        totalHeight = totalHeight + 28
+    end
+    
+    -- Expand container
+    self.Utils.Tween(self.ItemsContainer, {
+        Size = UDim2.new(1, 0, 0, totalHeight)
+    }, duration)
+    
+    self.Utils.Tween(self.Container, {
+        Size = UDim2.new(1, 0, 0, 32 + totalHeight)
+    }, duration)
+end
+
+function Category:Collapse()
+    self.Expanded = false
+    
+    -- Rotate chevron back
+    self.Utils.Tween(self.ChevronIcon, {
+        Rotation = 0
+    }, self.Theme.Animation.Duration)
+    
+    -- Collapse container
+    self.Utils.Tween(self.ItemsContainer, {
+        Size = UDim2.new(1, 0, 0, 0)
+    }, self.Theme.Animation.Duration)
+    
+    self.Utils.Tween(self.Container, {
+        Size = UDim2.new(1, 0, 0, 32)
+    }, self.Theme.Animation.Duration)
+end
+
+function Category:AddItem(config)
+    local item = Item.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Items, item)
+    
+    if self.Expanded then
+        self:Expand(true)
+    end
+    
+    return item
+end
+Category = Category
+assert(Category, "Failed to assign Category module")
+end
+
+
 -- Module: Tab
 local Tab
 do
@@ -814,7 +1103,7 @@ function Tab:CreateUI()
     self.Button.TextColor3 = self.Theme.Colors.TextDim
     self.Button.TextSize = self.Theme.Font.Size.Regular
     self.Button.AutoButtonColor = false
-    self.Button.Parent = self.Window.TabList
+    self.Button.Parent = self.Window.SidebarList
     
     self.Theme.CreateCorner(self.Button, 6)
     self.Theme.CreatePadding(self.Button, 12)
@@ -1006,10 +1295,12 @@ function Window.new(config, theme, utils, enowlib)
     self.Utils = utils
     self.EnowLib = enowlib
     self.Config = utils.Merge({
-        Title = "EnowLib",
-        Size = UDim2.fromOffset(800, 500)
+        Title = "EnowLib IDE",
+        Size = UDim2.fromOffset(900, 600),
+        ShowStatusBar = true
     }, config or {})
     
+    self.Categories = {}
     self.Tabs = {}
     self.CurrentTab = nil
     
@@ -1114,29 +1405,49 @@ function Window:CreateUI()
     
     -- Tab Bar
     self.TabBar = Instance.new("Frame")
-    self.TabBar.BackgroundTransparency = 1
-    self.TabBar.Size = UDim2.new(0, 180, 1, -49)
+    self.TabBar.BackgroundColor3 = self.Theme.Colors.Panel
+    self.TabBar.BorderSizePixel = 0
+    self.TabBar.Size = UDim2.new(0, 240, 1, -49)
     self.TabBar.Position = UDim2.fromOffset(0, 49)
     self.TabBar.Parent = self.Container
     
-    self.TabList = Instance.new("ScrollingFrame")
-    self.TabList.BackgroundTransparency = 1
-    self.TabList.BorderSizePixel = 0
-    self.TabList.Size = UDim2.new(1, 0, 1, 0)
-    self.TabList.ScrollBarThickness = 4
-    self.TabList.ScrollBarImageColor3 = self.Theme.Colors.Border
-    self.TabList.CanvasSize = UDim2.fromOffset(0, 0)
-    self.TabList.Parent = self.TabBar
+    -- Sidebar Header
+    local sidebarHeader = Instance.new("Frame")
+    sidebarHeader.BackgroundColor3 = self.Theme.Colors.Secondary
+    sidebarHeader.BorderSizePixel = 0
+    sidebarHeader.Size = UDim2.new(1, 0, 0, 32)
+    sidebarHeader.Parent = self.TabBar
     
-    self.Theme.CreatePadding(self.TabList, self.Theme.Spacing.Small)
+    local explorerLabel = Instance.new("TextLabel")
+    explorerLabel.BackgroundTransparency = 1
+    explorerLabel.Size = UDim2.new(1, -16, 1, 0)
+    explorerLabel.Position = UDim2.fromOffset(12, 0)
+    explorerLabel.Font = self.Theme.Font.Bold
+    explorerLabel.Text = "EXPLORER"
+    explorerLabel.TextColor3 = self.Theme.Colors.TextDim
+    explorerLabel.TextSize = 11
+    explorerLabel.TextXAlignment = Enum.TextXAlignment.Left
+    explorerLabel.Parent = sidebarHeader
+    
+    self.SidebarList = Instance.new("ScrollingFrame")
+    self.SidebarList.BackgroundTransparency = 1
+    self.SidebarList.BorderSizePixel = 0
+    self.SidebarList.Size = UDim2.new(1, 0, 1, -32)
+    self.SidebarList.Position = UDim2.fromOffset(0, 32)
+    self.SidebarList.ScrollBarThickness = 4
+    self.SidebarList.ScrollBarImageColor3 = self.Theme.Colors.Border
+    self.SidebarList.CanvasSize = UDim2.fromOffset(0, 0)
+    self.SidebarList.Parent = self.TabBar
+    
+    self.Theme.CreatePadding(self.SidebarList, 4)
     
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, 4)
-    layout.Parent = self.TabList
+    layout.Padding = UDim.new(0, 2)
+    layout.Parent = self.SidebarList
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        self.TabList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 16)
+        self.SidebarList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 8)
     end)
     
     -- Vertical Separator
@@ -1144,14 +1455,14 @@ function Window:CreateUI()
     vSeparator.BackgroundColor3 = self.Theme.Colors.Border
     vSeparator.BorderSizePixel = 0
     vSeparator.Size = UDim2.new(0, 1, 1, -49)
-    vSeparator.Position = UDim2.fromOffset(180, 49)
+    vSeparator.Position = UDim2.fromOffset(240, 49)
     vSeparator.Parent = self.Container
     
     -- Content Area
     self.ContentArea = Instance.new("Frame")
     self.ContentArea.BackgroundTransparency = 1
-    self.ContentArea.Size = UDim2.new(1, -181, 1, -49)
-    self.ContentArea.Position = UDim2.fromOffset(181, 49)
+    self.ContentArea.Size = UDim2.new(1, -241, 1, -49)
+    self.ContentArea.Position = UDim2.fromOffset(241, 49)
     self.ContentArea.Parent = self.Container
     
     -- Make draggable
@@ -1159,6 +1470,12 @@ function Window:CreateUI()
     
     -- Parent to CoreGui
     self.ScreenGui.Parent = game:GetService("CoreGui")
+end
+
+function Window:AddCategory(config)
+    local category = Category.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Categories, category)
+    return category
 end
 
 function Window:AddTab(config)

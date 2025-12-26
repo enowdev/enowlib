@@ -16,6 +16,8 @@ const config = {
         { path: 'src/components/button.lua', name: 'Button' },
         { path: 'src/components/toggle.lua', name: 'Toggle' },
         { path: 'src/components/slider.lua', name: 'Slider' },
+        { path: 'src/components/item.lua', name: 'Item' },
+        { path: 'src/components/category.lua', name: 'Category' },
         { path: 'src/components/tab.lua', name: 'Tab' },
         { path: 'src/components/window.lua', name: 'Window' }
     ]

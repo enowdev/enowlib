@@ -10,10 +10,12 @@ function Window.new(config, theme, utils, enowlib)
     self.Utils = utils
     self.EnowLib = enowlib
     self.Config = utils.Merge({
-        Title = "EnowLib",
-        Size = UDim2.fromOffset(800, 500)
+        Title = "EnowLib IDE",
+        Size = UDim2.fromOffset(900, 600),
+        ShowStatusBar = true
     }, config or {})
     
+    self.Categories = {}
     self.Tabs = {}
     self.CurrentTab = nil
     
@@ -118,29 +120,49 @@ function Window:CreateUI()
     
     -- Tab Bar
     self.TabBar = Instance.new("Frame")
-    self.TabBar.BackgroundTransparency = 1
-    self.TabBar.Size = UDim2.new(0, 180, 1, -49)
+    self.TabBar.BackgroundColor3 = self.Theme.Colors.Panel
+    self.TabBar.BorderSizePixel = 0
+    self.TabBar.Size = UDim2.new(0, 240, 1, -49)
     self.TabBar.Position = UDim2.fromOffset(0, 49)
     self.TabBar.Parent = self.Container
     
-    self.TabList = Instance.new("ScrollingFrame")
-    self.TabList.BackgroundTransparency = 1
-    self.TabList.BorderSizePixel = 0
-    self.TabList.Size = UDim2.new(1, 0, 1, 0)
-    self.TabList.ScrollBarThickness = 4
-    self.TabList.ScrollBarImageColor3 = self.Theme.Colors.Border
-    self.TabList.CanvasSize = UDim2.fromOffset(0, 0)
-    self.TabList.Parent = self.TabBar
+    -- Sidebar Header
+    local sidebarHeader = Instance.new("Frame")
+    sidebarHeader.BackgroundColor3 = self.Theme.Colors.Secondary
+    sidebarHeader.BorderSizePixel = 0
+    sidebarHeader.Size = UDim2.new(1, 0, 0, 32)
+    sidebarHeader.Parent = self.TabBar
     
-    self.Theme.CreatePadding(self.TabList, self.Theme.Spacing.Small)
+    local explorerLabel = Instance.new("TextLabel")
+    explorerLabel.BackgroundTransparency = 1
+    explorerLabel.Size = UDim2.new(1, -16, 1, 0)
+    explorerLabel.Position = UDim2.fromOffset(12, 0)
+    explorerLabel.Font = self.Theme.Font.Bold
+    explorerLabel.Text = "EXPLORER"
+    explorerLabel.TextColor3 = self.Theme.Colors.TextDim
+    explorerLabel.TextSize = 11
+    explorerLabel.TextXAlignment = Enum.TextXAlignment.Left
+    explorerLabel.Parent = sidebarHeader
+    
+    self.SidebarList = Instance.new("ScrollingFrame")
+    self.SidebarList.BackgroundTransparency = 1
+    self.SidebarList.BorderSizePixel = 0
+    self.SidebarList.Size = UDim2.new(1, 0, 1, -32)
+    self.SidebarList.Position = UDim2.fromOffset(0, 32)
+    self.SidebarList.ScrollBarThickness = 4
+    self.SidebarList.ScrollBarImageColor3 = self.Theme.Colors.Border
+    self.SidebarList.CanvasSize = UDim2.fromOffset(0, 0)
+    self.SidebarList.Parent = self.TabBar
+    
+    self.Theme.CreatePadding(self.SidebarList, 4)
     
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, 4)
-    layout.Parent = self.TabList
+    layout.Padding = UDim.new(0, 2)
+    layout.Parent = self.SidebarList
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        self.TabList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 16)
+        self.SidebarList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 8)
     end)
     
     -- Vertical Separator
@@ -148,14 +170,14 @@ function Window:CreateUI()
     vSeparator.BackgroundColor3 = self.Theme.Colors.Border
     vSeparator.BorderSizePixel = 0
     vSeparator.Size = UDim2.new(0, 1, 1, -49)
-    vSeparator.Position = UDim2.fromOffset(180, 49)
+    vSeparator.Position = UDim2.fromOffset(240, 49)
     vSeparator.Parent = self.Container
     
     -- Content Area
     self.ContentArea = Instance.new("Frame")
     self.ContentArea.BackgroundTransparency = 1
-    self.ContentArea.Size = UDim2.new(1, -181, 1, -49)
-    self.ContentArea.Position = UDim2.fromOffset(181, 49)
+    self.ContentArea.Size = UDim2.new(1, -241, 1, -49)
+    self.ContentArea.Position = UDim2.fromOffset(241, 49)
     self.ContentArea.Parent = self.Container
     
     -- Make draggable
@@ -163,6 +185,12 @@ function Window:CreateUI()
     
     -- Parent to CoreGui
     self.ScreenGui.Parent = game:GetService("CoreGui")
+end
+
+function Window:AddCategory(config)
+    local category = Category.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Categories, category)
+    return category
 end
 
 function Window:AddTab(config)

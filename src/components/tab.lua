@@ -34,7 +34,7 @@ function Tab:CreateUI()
     self.Button.TextColor3 = self.Theme.Colors.TextDim
     self.Button.TextSize = self.Theme.Font.Size.Regular
     self.Button.AutoButtonColor = false
-    self.Button.Parent = self.Window.TabList
+    self.Button.Parent = self.Window.SidebarList
     
     self.Theme.CreateCorner(self.Button, 6)
     self.Theme.CreatePadding(self.Button, 12)

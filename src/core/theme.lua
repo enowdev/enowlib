@@ -3,32 +3,40 @@
 
 local Theme = {}
 
--- Lucide Icons (minimal set)
+-- Lucide Icons (IDE set)
 Theme.Icons = {
     ChevronDown = "rbxassetid://10709790948",
     ChevronRight = "rbxassetid://10709791437",
     X = "rbxassetid://10747384394",
     Check = "rbxassetid://10709790644",
     Settings = "rbxassetid://10734950309",
-    Home = "rbxassetid://10723407389"
+    Home = "rbxassetid://10723407389",
+    Folder = "rbxassetid://10723387563",
+    FolderOpen = "rbxassetid://10723386277",
+    File = "rbxassetid://10723374759",
+    FileCode = "rbxassetid://10723356507",
+    Terminal = "rbxassetid://10734982144",
+    Play = "rbxassetid://10734923549"
 }
 
--- Dark Mode Color Palette
+-- Dark Mode Color Palette (Hacker IDE Style)
 Theme.Colors = {
-    Background = Color3.fromRGB(9, 9, 11),
-    Panel = Color3.fromRGB(39, 39, 42),
-    Secondary = Color3.fromRGB(63, 63, 70),
+    Background = Color3.fromRGB(13, 17, 23),
+    Panel = Color3.fromRGB(22, 27, 34),
+    Secondary = Color3.fromRGB(33, 38, 45),
     
-    Accent = Color3.fromRGB(168, 85, 247),
-    AccentHover = Color3.fromRGB(192, 132, 252),
+    Accent = Color3.fromRGB(46, 204, 113),
+    AccentHover = Color3.fromRGB(39, 174, 96),
+    AccentDim = Color3.fromRGB(34, 153, 84),
     
-    Text = Color3.fromRGB(250, 250, 250),
-    TextDim = Color3.fromRGB(161, 161, 170),
+    Text = Color3.fromRGB(201, 209, 217),
+    TextDim = Color3.fromRGB(139, 148, 158),
     
-    Border = Color3.fromRGB(82, 82, 91),
+    Border = Color3.fromRGB(48, 54, 61),
     
-    Success = Color3.fromRGB(74, 222, 128),
-    Error = Color3.fromRGB(248, 113, 113)
+    Success = Color3.fromRGB(46, 204, 113),
+    Warning = Color3.fromRGB(241, 196, 15),
+    Error = Color3.fromRGB(231, 76, 60)
 }
 
 -- Transparency
@@ -42,6 +50,7 @@ Theme.Transparency = {
 Theme.Font = {
     Regular = Enum.Font.Gotham,
     Bold = Enum.Font.GothamBold,
+    Mono = Enum.Font.RobotoMono,
     Size = {
         Small = 12,
         Regular = 14,
