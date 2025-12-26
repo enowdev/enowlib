@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 15:10:07
+-- Built: 2025-12-26 15:13:48
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1119,7 +1119,12 @@ function Dropdown:CreateUI()
     
     self.Theme.CreateCorner(self.OptionsList, 6)
     
-    -- Search Box (optional)
+    local layout = Instance.new("UIListLayout")
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.Padding = UDim.new(0, 2)
+    layout.Parent = self.OptionsList
+    
+    -- Search Box (optional) - positioned at top
     if self.Config.Searchable then
         self.SearchBox = Instance.new("TextBox")
         self.SearchBox.BackgroundColor3 = self.Theme.Colors.Panel
@@ -1135,28 +1140,22 @@ function Dropdown:CreateUI()
         self.SearchBox.TextXAlignment = Enum.TextXAlignment.Left
         self.SearchBox.ClearTextOnFocus = false
         self.SearchBox.ZIndex = 6
+        self.SearchBox.LayoutOrder = -1
         self.SearchBox.Parent = self.OptionsList
         
         self.Theme.CreateCorner(self.SearchBox, 4)
         self.Theme.CreatePadding(self.SearchBox, 8)
         
+        -- Add spacing after search box
+        local spacer = Instance.new("Frame")
+        spacer.BackgroundTransparency = 1
+        spacer.Size = UDim2.new(1, 0, 0, 4)
+        spacer.LayoutOrder = 0
+        spacer.Parent = self.OptionsList
+        
         self.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
             self:FilterOptions(self.SearchBox.Text)
         end)
-    end
-    
-    local layout = Instance.new("UIListLayout")
-    layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, 2)
-    layout.Parent = self.OptionsList
-    
-    -- Add top padding if searchable
-    if self.Config.Searchable then
-        local topPadding = Instance.new("Frame")
-        topPadding.BackgroundTransparency = 1
-        topPadding.Size = UDim2.new(1, 0, 0, 36)
-        topPadding.LayoutOrder = -1
-        topPadding.Parent = self.OptionsList
     end
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -1188,6 +1187,7 @@ function Dropdown:CreateOption(optionText)
     option.TextXAlignment = Enum.TextXAlignment.Left
     option.AutoButtonColor = false
     option.Visible = true
+    option.LayoutOrder = 1
     option.Parent = self.OptionsList
     
     self.Theme.CreatePadding(option, 10)
@@ -1214,11 +1214,27 @@ function Dropdown:CreateOption(optionText)
 end
 
 function Dropdown:FilterOptions(searchText)
+    if searchText == "" then
+        -- Show all options
+        for _, optionData in ipairs(self.AllOptions) do
+            optionData.Button.Visible = true
+        end
+        
+        if self.Open then
+            local baseHeight = self.Config.Searchable and 36 or 0
+            local optionsHeight = math.min(#self.AllOptions * 34, 150)
+            self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight)
+            self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 4)
+        end
+        return
+    end
+    
     local lowerSearch = searchText:lower()
     local visibleCount = 0
     
     for _, optionData in ipairs(self.AllOptions) do
-        local matches = optionData.Text:lower():find(lowerSearch, 1, true) ~= nil
+        local lowerText = optionData.Text:lower()
+        local matches = lowerText:find(lowerSearch, 1, true) ~= nil
         optionData.Button.Visible = matches
         if matches then
             visibleCount = visibleCount + 1
@@ -1228,7 +1244,7 @@ function Dropdown:FilterOptions(searchText)
     -- Update height based on visible options
     if self.Open then
         local baseHeight = self.Config.Searchable and 36 or 0
-        local optionsHeight = math.min(visibleCount * 34, 150)
+        local optionsHeight = visibleCount > 0 and math.min(visibleCount * 34, 150) or 32
         self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight)
         self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 4)
     end
