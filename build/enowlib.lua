@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 14:53:15
+-- Built: 2025-12-26 15:01:44
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1028,14 +1028,16 @@ function Dropdown.new(config, parent, theme, utils)
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Title = "Dropdown",
+        Text = "Dropdown",
         Options = {"Option 1", "Option 2", "Option 3"},
         Default = "Option 1",
+        Searchable = false,
         Callback = function(value) end
     }, config or {})
     
     self.Value = self.Config.Default
     self.Open = false
+    self.AllOptions = {}
     
     self:CreateUI()
     
@@ -1059,7 +1061,7 @@ function Dropdown:CreateUI()
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, 0, 0, 20)
     title.Font = self.Theme.Font.Regular
-    title.Text = self.Config.Title
+    title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left
@@ -1117,10 +1119,45 @@ function Dropdown:CreateUI()
     
     self.Theme.CreateCorner(self.OptionsList, 6)
     
+    -- Search Box (optional)
+    if self.Config.Searchable then
+        self.SearchBox = Instance.new("TextBox")
+        self.SearchBox.BackgroundColor3 = self.Theme.Colors.Panel
+        self.SearchBox.BorderSizePixel = 0
+        self.SearchBox.Size = UDim2.new(1, -8, 0, 28)
+        self.SearchBox.Position = UDim2.fromOffset(4, 4)
+        self.SearchBox.Font = self.Theme.Font.Mono
+        self.SearchBox.PlaceholderText = "Search..."
+        self.SearchBox.Text = ""
+        self.SearchBox.TextColor3 = self.Theme.Colors.Text
+        self.SearchBox.PlaceholderColor3 = self.Theme.Colors.TextDim
+        self.SearchBox.TextSize = self.Theme.Font.Size.Regular
+        self.SearchBox.TextXAlignment = Enum.TextXAlignment.Left
+        self.SearchBox.ClearTextOnFocus = false
+        self.SearchBox.ZIndex = 6
+        self.SearchBox.Parent = self.OptionsList
+        
+        self.Theme.CreateCorner(self.SearchBox, 4)
+        self.Theme.CreatePadding(self.SearchBox, 8)
+        
+        self.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+            self:FilterOptions(self.SearchBox.Text)
+        end)
+    end
+    
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
     layout.Padding = UDim.new(0, 2)
     layout.Parent = self.OptionsList
+    
+    -- Add top padding if searchable
+    if self.Config.Searchable then
+        local topPadding = Instance.new("Frame")
+        topPadding.BackgroundTransparency = 1
+        topPadding.Size = UDim2.new(1, 0, 0, 36)
+        topPadding.LayoutOrder = -1
+        topPadding.Parent = self.OptionsList
+    end
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         local maxHeight = math.min(layout.AbsoluteContentSize.Y, 150)
@@ -1150,9 +1187,16 @@ function Dropdown:CreateOption(optionText)
     option.TextSize = self.Theme.Font.Size.Regular
     option.TextXAlignment = Enum.TextXAlignment.Left
     option.AutoButtonColor = false
+    option.Visible = true
     option.Parent = self.OptionsList
     
     self.Theme.CreatePadding(option, 10)
+    
+    -- Store reference
+    table.insert(self.AllOptions, {
+        Button = option,
+        Text = optionText
+    })
     
     option.MouseButton1Click:Connect(function()
         self:Select(optionText)
@@ -1169,20 +1213,54 @@ function Dropdown:CreateOption(optionText)
     end)
 end
 
+function Dropdown:FilterOptions(searchText)
+    local lowerSearch = searchText:lower()
+    local visibleCount = 0
+    
+    for _, optionData in ipairs(self.AllOptions) do
+        local matches = optionData.Text:lower():find(lowerSearch, 1, true) ~= nil
+        optionData.Button.Visible = matches
+        if matches then
+            visibleCount = visibleCount + 1
+        end
+    end
+    
+    -- Update height based on visible options
+    if self.Open then
+        local baseHeight = self.Config.Searchable and 36 or 0
+        local optionsHeight = math.min(visibleCount * 34, 150)
+        self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight)
+        self.Container.Size = UDim2.new(1, 0, 0, 82 + baseHeight + optionsHeight + 4)
+    end
+end
+
 function Dropdown:Toggle()
     self.Open = not self.Open
     
     if self.Open then
+        local baseHeight = self.Config.Searchable and 36 or 0
         local optionsHeight = math.min(#self.Config.Options * 34, 150)
-        self.OptionsList.Size = UDim2.new(1, 0, 0, optionsHeight)
+        self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight)
         self.OptionsList.Visible = true
-        self.Container.Size = UDim2.new(1, 0, 0, 82 + optionsHeight + 4)
+        self.Container.Size = UDim2.new(1, 0, 0, 82 + baseHeight + optionsHeight + 4)
         self.ChevronIcon.Rotation = 180
+        
+        -- Focus search box if searchable
+        if self.Config.Searchable then
+            task.wait(0.1)
+            self.SearchBox:CaptureFocus()
+        end
     else
         self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
         self.OptionsList.Visible = false
         self.Container.Size = UDim2.new(1, 0, 0, 82)
         self.ChevronIcon.Rotation = 0
+        
+        -- Clear search
+        if self.Config.Searchable then
+            self.SearchBox.Text = ""
+            self:FilterOptions("")
+        end
     end
 end
 
@@ -2337,7 +2415,6 @@ function Window:CreateUI()
     self.Container.Size = self.Config.Size
     self.Container.Position = UDim2.fromScale(0.5, 0.5)
     self.Container.AnchorPoint = Vector2.new(0.5, 0.5)
-    self.Container.ClipsDescendants = true
     self.Container.Parent = self.ScreenGui
     
     self.Theme.CreateCorner(self.Container, 12)

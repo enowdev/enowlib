@@ -40,7 +40,6 @@ function Window:CreateUI()
     self.Container.Size = self.Config.Size
     self.Container.Position = UDim2.fromScale(0.5, 0.5)
     self.Container.AnchorPoint = Vector2.new(0.5, 0.5)
-    self.Container.ClipsDescendants = true
     self.Container.Parent = self.ScreenGui
     
     self.Theme.CreateCorner(self.Container, 12)

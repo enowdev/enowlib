@@ -440,8 +440,20 @@ SettingsCategory:AddItem({
             Text = "Dropdown Component",
             Options = {"Option A", "Option B", "Option C", "Option D"},
             Default = "Option A",
+            Searchable = false,
             Callback = function(value)
                 print("[Test] Dropdown:", value)
+            end
+        })
+        
+        -- Dropdown with Search
+        window:AddDropdown({
+            Text = "Searchable Dropdown",
+            Options = {"Apple", "Banana", "Cherry", "Dragon Fruit", "Elderberry", "Fig", "Grape", "Honeydew"},
+            Default = "Apple",
+            Searchable = true,
+            Callback = function(value)
+                print("[Test] Searchable Dropdown:", value)
             end
         })
         
