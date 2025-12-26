@@ -3,14 +3,14 @@
 local Button = {}
 Button.__index = Button
 
-function Button.new(config, tab, theme, utils)
+function Button.new(config, parent, theme, utils)
     local self = setmetatable({}, Button)
     
-    self.Tab = tab
+    self.Parent = parent
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Title = "Button",
+        Text = "Button",
         Callback = function() end
     }, config or {})
     
@@ -25,11 +25,11 @@ function Button:CreateUI()
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, self.Theme.Size.Component)
     self.Container.Font = self.Theme.Font.Regular
-    self.Container.Text = self.Config.Title
+    self.Container.Text = self.Config.Text
     self.Container.TextColor3 = self.Theme.Colors.Text
     self.Container.TextSize = self.Theme.Font.Size.Regular
     self.Container.AutoButtonColor = false
-    self.Container.Parent = self.Tab.Container
+    self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     

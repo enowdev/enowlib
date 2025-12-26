@@ -3,14 +3,14 @@
 local Toggle = {}
 Toggle.__index = Toggle
 
-function Toggle.new(config, tab, theme, utils)
+function Toggle.new(config, parent, theme, utils)
     local self = setmetatable({}, Toggle)
     
-    self.Tab = tab
+    self.Parent = parent
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Title = "Toggle",
+        Text = "Toggle",
         Default = false,
         Callback = function(value) end
     }, config or {})
@@ -29,7 +29,7 @@ function Toggle:CreateUI()
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 48)
-    self.Container.Parent = self.Tab.Container
+    self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
@@ -40,7 +40,7 @@ function Toggle:CreateUI()
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -60, 1, 0)
     title.Font = self.Theme.Font.Regular
-    title.Text = self.Config.Title
+    title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left

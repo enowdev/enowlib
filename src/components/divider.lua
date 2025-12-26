@@ -24,7 +24,7 @@ function Divider:CreateUI()
         self.Container = Instance.new("Frame")
         self.Container.BackgroundTransparency = 1
         self.Container.Size = UDim2.new(1, 0, 0, 30)
-        self.Container.Parent = self.Parent.Container or self.Parent
+        self.Container.Parent = self.Parent
         
         local leftLine = Instance.new("Frame")
         leftLine.BackgroundColor3 = self.Theme.Colors.Border
@@ -55,7 +55,7 @@ function Divider:CreateUI()
         self.Container.BackgroundColor3 = self.Theme.Colors.Border
         self.Container.BorderSizePixel = 0
         self.Container.Size = UDim2.new(1, 0, 0, 1)
-        self.Container.Parent = self.Parent.Container or self.Parent
+        self.Container.Parent = self.Parent
     end
 end
 

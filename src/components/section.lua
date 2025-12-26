@@ -58,4 +58,37 @@ function Section:CreateUI()
     end)
 end
 
+-- Component methods for Section
+function Section:AddButton(config)
+    return Button.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddToggle(config)
+    return Toggle.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddSlider(config)
+    return Slider.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddLabel(config)
+    return Label.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddTextBox(config)
+    return TextBox.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddDropdown(config)
+    return Dropdown.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddColorPicker(config)
+    return ColorPicker.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddKeybind(config)
+    return Keybind.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
 return Section

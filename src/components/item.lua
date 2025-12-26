@@ -58,6 +58,7 @@ function Item:CreateUI()
     
     -- Events
     self.Button.MouseButton1Click:Connect(function()
+        print("[EnowLib] Item clicked:", self.Config.Title)
         self:Select()
         pcall(self.Config.Callback)
     end)
@@ -94,27 +95,34 @@ end
 function Item:Select()
     local window = self.Category.Window
     
+    print("[EnowLib] Selecting item:", self.Config.Title)
+    
     if window.CurrentItem then
+        print("[EnowLib] Deselecting previous item:", window.CurrentItem.Config.Title)
         window.CurrentItem:Deselect()
     end
     
     window.CurrentItem = self
     
+    -- Active state visual
     self.Utils.Tween(self.Button, {
         BackgroundColor3 = self.Theme.Colors.Accent,
-        BackgroundTransparency = 0.9
+        BackgroundTransparency = 0.85
     }, 0.15)
     self.Utils.Tween(self.Title, {
-        TextColor3 = self.Theme.Colors.Accent
+        TextColor3 = self.Theme.Colors.Text
     }, 0.15)
     if self.Icon then
         self.Utils.Tween(self.Icon, {
-            ImageColor3 = self.Theme.Colors.Accent
+            ImageColor3 = self.Theme.Colors.Text
         }, 0.15)
     end
     
     if self.Config.Content then
+        print("[EnowLib] Loading content for:", self.Config.Title)
         window:ShowContent(self.Config.Content)
+    else
+        print("[EnowLib] Warning: No content function for:", self.Config.Title)
     end
 end
 

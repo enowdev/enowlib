@@ -238,10 +238,19 @@ function Window:SelectTab(tab)
 end
 
 function Window:ShowContent(contentFunc)
+    print("[EnowLib] ShowContent called")
     self.Utils.ClearChildren(self.ContentArea)
     
     if contentFunc then
-        pcall(contentFunc, self)
+        print("[EnowLib] Executing content function...")
+        local success, err = pcall(contentFunc, self)
+        if not success then
+            warn("[EnowLib] Content function error:", err)
+        else
+            print("[EnowLib] Content loaded successfully")
+        end
+    else
+        warn("[EnowLib] No content function provided")
     end
 end
 

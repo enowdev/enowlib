@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 14:14:33
+-- Built: 2025-12-26 14:18:30
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -374,14 +374,17 @@ do
 Label = {}
 Label.__index = Label
 
-function Label.new(config, tab, theme, utils)
+function Label.new(config, parent, theme, utils)
     local self = setmetatable({}, Label)
     
-    self.Tab = tab
+    self.Parent = parent
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Text = "Label"
+        Text = "Label",
+        Size = nil,
+        Color = nil,
+        Font = nil
     }, config or {})
     
     self:CreateUI()
@@ -392,13 +395,13 @@ end
 function Label:CreateUI()
     self.Container = Instance.new("TextLabel")
     self.Container.BackgroundTransparency = 1
-    self.Container.Size = UDim2.new(1, 0, 0, 24)
-    self.Container.Font = self.Theme.Font.Regular
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Size and 30 or 24)
+    self.Container.Font = self.Config.Font or self.Theme.Font.Regular
     self.Container.Text = self.Config.Text
-    self.Container.TextColor3 = self.Theme.Colors.TextDim
-    self.Container.TextSize = self.Theme.Font.Size.Regular
+    self.Container.TextColor3 = self.Config.Color or self.Theme.Colors.TextDim
+    self.Container.TextSize = self.Config.Size or self.Theme.Font.Size.Regular
     self.Container.TextXAlignment = Enum.TextXAlignment.Left
-    self.Container.Parent = self.Tab.Container
+    self.Container.Parent = self.Parent
 end
 Label = Label
 assert(Label, "Failed to assign Label module")
@@ -420,7 +423,8 @@ function Paragraph.new(config, parent, theme, utils)
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Text = "Paragraph text here..."
+        Title = "Title",
+        Content = "Paragraph text here..."
     }, config or {})
     
     self:CreateUI()
@@ -429,23 +433,43 @@ function Paragraph.new(config, parent, theme, utils)
 end
 
 function Paragraph:CreateUI()
-    self.Container = Instance.new("TextLabel")
+    self.Container = Instance.new("Frame")
     self.Container.BackgroundTransparency = 1
     self.Container.Size = UDim2.new(1, 0, 0, 0)
-    self.Container.Font = self.Theme.Font.Mono
-    self.Container.Text = self.Config.Text
-    self.Container.TextColor3 = self.Theme.Colors.TextDim
-    self.Container.TextSize = self.Theme.Font.Size.Regular
-    self.Container.TextXAlignment = Enum.TextXAlignment.Left
-    self.Container.TextYAlignment = Enum.TextYAlignment.Top
-    self.Container.TextWrapped = true
-    self.Container.Parent = self.Parent.Container or self.Parent
+    self.Container.Parent = self.Parent
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, 0, 0, 20)
+    title.Font = self.Theme.Font.Bold
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Content
+    local content = Instance.new("TextLabel")
+    content.BackgroundTransparency = 1
+    content.Size = UDim2.new(1, 0, 0, 0)
+    content.Position = UDim2.fromOffset(0, 24)
+    content.Font = self.Theme.Font.Mono
+    content.Text = self.Config.Content
+    content.TextColor3 = self.Theme.Colors.TextDim
+    content.TextSize = self.Theme.Font.Size.Regular
+    content.TextXAlignment = Enum.TextXAlignment.Left
+    content.TextYAlignment = Enum.TextYAlignment.Top
+    content.TextWrapped = true
+    content.Parent = self.Container
     
     -- Auto-size based on text
-    self.Container.Size = UDim2.new(1, 0, 0, self.Container.TextBounds.Y + 4)
+    content.Size = UDim2.new(1, 0, 0, content.TextBounds.Y + 4)
+    self.Container.Size = UDim2.new(1, 0, 0, content.TextBounds.Y + 28)
     
-    self.Container:GetPropertyChangedSignal("TextBounds"):Connect(function()
-        self.Container.Size = UDim2.new(1, 0, 0, self.Container.TextBounds.Y + 4)
+    content:GetPropertyChangedSignal("TextBounds"):Connect(function()
+        content.Size = UDim2.new(1, 0, 0, content.TextBounds.Y + 4)
+        self.Container.Size = UDim2.new(1, 0, 0, content.TextBounds.Y + 28)
     end)
 end
 Paragraph = Paragraph
@@ -482,7 +506,7 @@ function Divider:CreateUI()
         self.Container = Instance.new("Frame")
         self.Container.BackgroundTransparency = 1
         self.Container.Size = UDim2.new(1, 0, 0, 30)
-        self.Container.Parent = self.Parent.Container or self.Parent
+        self.Container.Parent = self.Parent
         
         local leftLine = Instance.new("Frame")
         leftLine.BackgroundColor3 = self.Theme.Colors.Border
@@ -513,7 +537,7 @@ function Divider:CreateUI()
         self.Container.BackgroundColor3 = self.Theme.Colors.Border
         self.Container.BorderSizePixel = 0
         self.Container.Size = UDim2.new(1, 0, 0, 1)
-        self.Container.Parent = self.Parent.Container or self.Parent
+        self.Container.Parent = self.Parent
     end
 end
 Divider = Divider
@@ -529,14 +553,14 @@ do
 Button = {}
 Button.__index = Button
 
-function Button.new(config, tab, theme, utils)
+function Button.new(config, parent, theme, utils)
     local self = setmetatable({}, Button)
     
-    self.Tab = tab
+    self.Parent = parent
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Title = "Button",
+        Text = "Button",
         Callback = function() end
     }, config or {})
     
@@ -551,11 +575,11 @@ function Button:CreateUI()
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, self.Theme.Size.Component)
     self.Container.Font = self.Theme.Font.Regular
-    self.Container.Text = self.Config.Title
+    self.Container.Text = self.Config.Text
     self.Container.TextColor3 = self.Theme.Colors.Text
     self.Container.TextSize = self.Theme.Font.Size.Regular
     self.Container.AutoButtonColor = false
-    self.Container.Parent = self.Tab.Container
+    self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     
@@ -588,14 +612,14 @@ do
 Toggle = {}
 Toggle.__index = Toggle
 
-function Toggle.new(config, tab, theme, utils)
+function Toggle.new(config, parent, theme, utils)
     local self = setmetatable({}, Toggle)
     
-    self.Tab = tab
+    self.Parent = parent
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Title = "Toggle",
+        Text = "Toggle",
         Default = false,
         Callback = function(value) end
     }, config or {})
@@ -614,7 +638,7 @@ function Toggle:CreateUI()
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 48)
-    self.Container.Parent = self.Tab.Container
+    self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
@@ -625,7 +649,7 @@ function Toggle:CreateUI()
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -60, 1, 0)
     title.Font = self.Theme.Font.Regular
-    title.Text = self.Config.Title
+    title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left
@@ -736,14 +760,14 @@ local UserInputService = game:GetService("UserInputService")
 Slider = {}
 Slider.__index = Slider
 
-function Slider.new(config, tab, theme, utils)
+function Slider.new(config, parent, theme, utils)
     local self = setmetatable({}, Slider)
     
-    self.Tab = tab
+    self.Parent = parent
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Title = "Slider",
+        Text = "Slider",
         Min = 0,
         Max = 100,
         Default = 50,
@@ -766,7 +790,7 @@ function Slider:CreateUI()
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 60)
-    self.Container.Parent = self.Tab.Container
+    self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
@@ -777,7 +801,7 @@ function Slider:CreateUI()
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -60, 0, 18)
     title.Font = self.Theme.Font.Regular
-    title.Text = self.Config.Title
+    title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left
@@ -1420,6 +1444,39 @@ function Section:CreateUI()
         self.Container.Size = UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y + 52)
     end)
 end
+
+-- Component methods for Section
+function Section:AddButton(config)
+    return Button.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddToggle(config)
+    return Toggle.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddSlider(config)
+    return Slider.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddLabel(config)
+    return Label.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddTextBox(config)
+    return TextBox.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddDropdown(config)
+    return Dropdown.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddColorPicker(config)
+    return ColorPicker.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
+
+function Section:AddKeybind(config)
+    return Keybind.new(config, self.ContentContainer, self.Theme, self.Utils)
+end
 Section = Section
 assert(Section, "Failed to assign Section module")
 end
@@ -1488,6 +1545,7 @@ function Item:CreateUI()
     
     -- Events
     self.Button.MouseButton1Click:Connect(function()
+        print("[EnowLib] Item clicked:", self.Config.Title)
         self:Select()
         pcall(self.Config.Callback)
     end)
@@ -1524,27 +1582,34 @@ end
 function Item:Select()
     local window = self.Category.Window
     
+    print("[EnowLib] Selecting item:", self.Config.Title)
+    
     if window.CurrentItem then
+        print("[EnowLib] Deselecting previous item:", window.CurrentItem.Config.Title)
         window.CurrentItem:Deselect()
     end
     
     window.CurrentItem = self
     
+    -- Active state visual
     self.Utils.Tween(self.Button, {
         BackgroundColor3 = self.Theme.Colors.Accent,
-        BackgroundTransparency = 0.9
+        BackgroundTransparency = 0.85
     }, 0.15)
     self.Utils.Tween(self.Title, {
-        TextColor3 = self.Theme.Colors.Accent
+        TextColor3 = self.Theme.Colors.Text
     }, 0.15)
     if self.Icon then
         self.Utils.Tween(self.Icon, {
-            ImageColor3 = self.Theme.Colors.Accent
+            ImageColor3 = self.Theme.Colors.Text
         }, 0.15)
     end
     
     if self.Config.Content then
+        print("[EnowLib] Loading content for:", self.Config.Title)
         window:ShowContent(self.Config.Content)
+    else
+        print("[EnowLib] Warning: No content function for:", self.Config.Title)
     end
 end
 
@@ -2207,10 +2272,19 @@ function Window:SelectTab(tab)
 end
 
 function Window:ShowContent(contentFunc)
+    print("[EnowLib] ShowContent called")
     self.Utils.ClearChildren(self.ContentArea)
     
     if contentFunc then
-        pcall(contentFunc, self)
+        print("[EnowLib] Executing content function...")
+        local success, err = pcall(contentFunc, self)
+        if not success then
+            warn("[EnowLib] Content function error:", err)
+        else
+            print("[EnowLib] Content loaded successfully")
+        end
+    else
+        warn("[EnowLib] No content function provided")
     end
 end
 
