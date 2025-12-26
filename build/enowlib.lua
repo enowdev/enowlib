@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 15:19:42
+-- Built: 2025-12-26 15:47:50
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2503,39 +2503,44 @@ function Window:CreateUI()
     
     -- Separator
     local separator = Instance.new("Frame")
+    separator.Name = "HeaderSeparator"
     separator.BackgroundColor3 = self.Theme.Colors.Border
     separator.BorderSizePixel = 0
     separator.Size = UDim2.new(1, 0, 0, 1)
     separator.Position = UDim2.new(0, 0, 0, 48)
     separator.Parent = self.Container
     
-    -- Tab Bar
-    self.TabBar = Instance.new("Frame")
-    self.TabBar.BackgroundColor3 = self.Theme.Colors.Panel
-    self.TabBar.BackgroundTransparency = 0.2
-    self.TabBar.BorderSizePixel = 0
-    self.TabBar.Size = UDim2.new(0, 280, 1, -49)
-    self.TabBar.Position = UDim2.fromOffset(0, 49)
-    self.TabBar.Parent = self.Container
+    self.HeaderSeparator = separator
+    
+    -- Tab Bar (Sidebar)
+    self.Sidebar = Instance.new("Frame")
+    self.Sidebar.Name = "Sidebar"
+    self.Sidebar.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Sidebar.BackgroundTransparency = 0.2
+    self.Sidebar.BorderSizePixel = 0
+    self.Sidebar.Size = UDim2.new(0, 280, 1, -73)
+    self.Sidebar.Position = UDim2.fromOffset(0, 49)
+    self.Sidebar.Parent = self.Container
     
     -- Sidebar Header
-    local sidebarHeader = Instance.new("Frame")
-    sidebarHeader.BackgroundColor3 = self.Theme.Colors.Secondary
-    sidebarHeader.BackgroundTransparency = self.Theme.Transparency.Subtle
-    sidebarHeader.BorderSizePixel = 0
-    sidebarHeader.Size = UDim2.new(1, 0, 0, 32)
-    sidebarHeader.Parent = self.TabBar
+    self.SidebarHeader = Instance.new("Frame")
+    self.SidebarHeader.Name = "SidebarHeader"
+    self.SidebarHeader.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.SidebarHeader.BackgroundTransparency = self.Theme.Transparency.Subtle
+    self.SidebarHeader.BorderSizePixel = 0
+    self.SidebarHeader.Size = UDim2.new(1, 0, 0, 32)
+    self.SidebarHeader.Parent = self.Sidebar
     
-    local explorerLabel = Instance.new("TextLabel")
-    explorerLabel.BackgroundTransparency = 1
-    explorerLabel.Size = UDim2.new(1, -16, 1, 0)
-    explorerLabel.Position = UDim2.fromOffset(12, 0)
-    explorerLabel.Font = self.Theme.Font.Bold
-    explorerLabel.Text = "EXPLORER"
-    explorerLabel.TextColor3 = self.Theme.Colors.TextDim
-    explorerLabel.TextSize = 11
-    explorerLabel.TextXAlignment = Enum.TextXAlignment.Left
-    explorerLabel.Parent = sidebarHeader
+    self.ExplorerLabel = Instance.new("TextLabel")
+    self.ExplorerLabel.BackgroundTransparency = 1
+    self.ExplorerLabel.Size = UDim2.new(1, -16, 1, 0)
+    self.ExplorerLabel.Position = UDim2.fromOffset(12, 0)
+    self.ExplorerLabel.Font = self.Theme.Font.Bold
+    self.ExplorerLabel.Text = "EXPLORER"
+    self.ExplorerLabel.TextColor3 = self.Theme.Colors.TextDim
+    self.ExplorerLabel.TextSize = 11
+    self.ExplorerLabel.TextXAlignment = Enum.TextXAlignment.Left
+    self.ExplorerLabel.Parent = self.SidebarHeader
     
     self.SidebarList = Instance.new("ScrollingFrame")
     self.SidebarList.BackgroundTransparency = 1
@@ -2545,7 +2550,7 @@ function Window:CreateUI()
     self.SidebarList.ScrollBarThickness = 4
     self.SidebarList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.SidebarList.CanvasSize = UDim2.fromOffset(0, 0)
-    self.SidebarList.Parent = self.TabBar
+    self.SidebarList.Parent = self.Sidebar
     
     self.Theme.CreatePadding(self.SidebarList, 4)
     
@@ -2559,19 +2564,20 @@ function Window:CreateUI()
     end)
     
     -- Vertical Separator
-    local vSeparator = Instance.new("Frame")
-    vSeparator.BackgroundColor3 = self.Theme.Colors.Border
-    vSeparator.BorderSizePixel = 0
-    vSeparator.Size = UDim2.new(0, 1, 1, -49)
-    vSeparator.Position = UDim2.fromOffset(280, 49)
-    vSeparator.Parent = self.Container
+    self.VerticalSeparator = Instance.new("Frame")
+    self.VerticalSeparator.Name = "VerticalSeparator"
+    self.VerticalSeparator.BackgroundColor3 = self.Theme.Colors.Border
+    self.VerticalSeparator.BorderSizePixel = 0
+    self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -73)
+    self.VerticalSeparator.Position = UDim2.fromOffset(280, 49)
+    self.VerticalSeparator.Parent = self.Container
     
     -- Content Area
     self.ContentArea = Instance.new("ScrollingFrame")
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BackgroundTransparency = 0.2
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(1, -281, 1, -49)
+    self.ContentArea.Size = UDim2.new(1, -281, 1, -73)
     self.ContentArea.Position = UDim2.fromOffset(281, 49)
     self.ContentArea.ScrollBarThickness = 6
     self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
@@ -2588,6 +2594,35 @@ function Window:CreateUI()
     contentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         self.ContentArea.CanvasSize = UDim2.fromOffset(0, contentLayout.AbsoluteContentSize.Y + 32)
     end)
+    
+    -- Footer Separator
+    self.FooterSeparator = Instance.new("Frame")
+    self.FooterSeparator.Name = "FooterSeparator"
+    self.FooterSeparator.BackgroundColor3 = self.Theme.Colors.Border
+    self.FooterSeparator.BorderSizePixel = 0
+    self.FooterSeparator.Size = UDim2.new(1, 0, 0, 1)
+    self.FooterSeparator.Position = UDim2.new(0, 0, 1, -24)
+    self.FooterSeparator.Parent = self.Container
+    
+    -- Footer
+    self.Footer = Instance.new("Frame")
+    self.Footer.Name = "Footer"
+    self.Footer.BackgroundTransparency = 1
+    self.Footer.Size = UDim2.new(1, 0, 0, 24)
+    self.Footer.Position = UDim2.new(0, 0, 1, -24)
+    self.Footer.Parent = self.Container
+    
+    -- Footer Text (read-only)
+    self.FooterLabel = Instance.new("TextLabel")
+    self.FooterLabel.BackgroundTransparency = 1
+    self.FooterLabel.Size = UDim2.new(1, -32, 1, 0)
+    self.FooterLabel.Position = UDim2.fromOffset(16, 0)
+    self.FooterLabel.Font = self.Theme.Font.Mono
+    self.FooterLabel.Text = "EnowLib v2.0.0"
+    self.FooterLabel.TextColor3 = self.Theme.Colors.TextDim
+    self.FooterLabel.TextSize = 11
+    self.FooterLabel.TextXAlignment = Enum.TextXAlignment.Left
+    self.FooterLabel.Parent = self.Footer
     
     -- Make draggable
     self.Utils.MakeDraggable(self.Container, self.TitleBar)

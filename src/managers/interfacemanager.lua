@@ -250,7 +250,7 @@ function InterfaceManager:RefreshUI()
     
     -- Refresh window container
     if self.Window.Container then
-        self.Window.Container.BackgroundColor3 = theme.Colors.Background
+        self.Window.Container.BackgroundColor3 = theme.Colors.Panel
         
         local stroke = self.Window.Container:FindFirstChildOfClass("UIStroke")
         if stroke then
@@ -262,9 +262,23 @@ function InterfaceManager:RefreshUI()
     if self.Window.TitleBar then
         self.Window.TitleBar.BackgroundColor3 = theme.Colors.Panel
         
-        if self.Window.TitleLabel then
-            self.Window.TitleLabel.TextColor3 = theme.Colors.Text
+        local titleLabel = self.Window.TitleBar:FindFirstChildOfClass("TextLabel")
+        if titleLabel then
+            titleLabel.TextColor3 = theme.Colors.Text
         end
+    end
+    
+    -- Refresh separators
+    if self.Window.HeaderSeparator then
+        self.Window.HeaderSeparator.BackgroundColor3 = theme.Colors.Border
+    end
+    
+    if self.Window.FooterSeparator then
+        self.Window.FooterSeparator.BackgroundColor3 = theme.Colors.Border
+    end
+    
+    if self.Window.VerticalSeparator then
+        self.Window.VerticalSeparator.BackgroundColor3 = theme.Colors.Border
     end
     
     -- Refresh sidebar
@@ -272,13 +286,27 @@ function InterfaceManager:RefreshUI()
         self.Window.Sidebar.BackgroundColor3 = theme.Colors.Panel
         
         if self.Window.SidebarHeader then
-            self.Window.SidebarHeader.TextColor3 = theme.Colors.TextDim
+            self.Window.SidebarHeader.BackgroundColor3 = theme.Colors.Secondary
+        end
+        
+        if self.Window.ExplorerLabel then
+            self.Window.ExplorerLabel.TextColor3 = theme.Colors.TextDim
+        end
+        
+        if self.Window.SidebarList then
+            self.Window.SidebarList.ScrollBarImageColor3 = theme.Colors.Border
         end
     end
     
     -- Refresh content area
     if self.Window.ContentArea then
         self.Window.ContentArea.BackgroundColor3 = theme.Colors.Background
+        self.Window.ContentArea.ScrollBarImageColor3 = theme.Colors.Border
+    end
+    
+    -- Refresh footer
+    if self.Window.FooterLabel then
+        self.Window.FooterLabel.TextColor3 = theme.Colors.TextDim
     end
     
     -- Refresh all categories and items
