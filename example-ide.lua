@@ -31,8 +31,56 @@ local UniversalCategory = Window:AddCategory({
 UniversalCategory:AddItem({
     Title = "ESP.lua",
     Icon = Icons.FileCode,
+    Content = function(parent, theme, utils)
+        local label = Instance.new("TextLabel")
+        label.BackgroundTransparency = 1
+        label.Size = UDim2.new(1, 0, 0, 30)
+        label.Font = theme.Font.Bold
+        label.Text = "> ESP.lua"
+        label.TextColor3 = theme.Colors.Accent
+        label.TextSize = 18
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        label.Parent = parent
+        
+        local desc = Instance.new("TextLabel")
+        desc.BackgroundTransparency = 1
+        desc.Size = UDim2.new(1, 0, 0, 60)
+        desc.Font = theme.Font.Mono
+        desc.Text = "Displays player information through walls.\nShows name, distance, and health."
+        desc.TextColor3 = theme.Colors.TextDim
+        desc.TextSize = 14
+        desc.TextXAlignment = Enum.TextXAlignment.Left
+        desc.TextYAlignment = Enum.TextYAlignment.Top
+        desc.TextWrapped = true
+        desc.Parent = parent
+        
+        local Button = require(script.Parent.Button)
+        Button.new({
+            Title = "Execute ESP",
+            Callback = function()
+                print("[Execute] ESP.lua")
+            end
+        }, {Container = parent}, theme, utils)
+        
+        local Toggle = require(script.Parent.Toggle)
+        Toggle.new({
+            Title = "Show Names",
+            Default = true,
+            Callback = function(value)
+                print("Show Names:", value)
+            end
+        }, {Container = parent}, theme, utils)
+        
+        Toggle.new({
+            Title = "Show Distance",
+            Default = true,
+            Callback = function(value)
+                print("Show Distance:", value)
+            end
+        }, {Container = parent}, theme, utils)
+    end,
     Callback = function()
-        print("[Execute] ESP.lua")
+        print("[Selected] ESP.lua")
     end
 })
 

@@ -27,7 +27,7 @@ function Category:CreateUI()
     -- Category Container
     self.Container = Instance.new("Frame")
     self.Container.BackgroundTransparency = 1
-    self.Container.Size = UDim2.new(1, 0, 0, 32)
+    self.Container.Size = UDim2.new(1, 0, 0, 40)
     self.Container.Parent = self.Window.SidebarList
     
     -- Category Button
@@ -35,7 +35,7 @@ function Category:CreateUI()
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BackgroundTransparency = 1
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 32)
+    self.Button.Size = UDim2.new(1, 0, 0, 40)
     self.Button.Text = ""
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Container
@@ -43,8 +43,8 @@ function Category:CreateUI()
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
     self.ChevronIcon.BackgroundTransparency = 1
-    self.ChevronIcon.Size = UDim2.fromOffset(14, 14)
-    self.ChevronIcon.Position = UDim2.fromOffset(8, 9)
+    self.ChevronIcon.Size = UDim2.fromOffset(16, 16)
+    self.ChevronIcon.Position = UDim2.fromOffset(10, 12)
     self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.Accent
     self.ChevronIcon.Rotation = 0
@@ -54,15 +54,15 @@ function Category:CreateUI()
     if self.Config.Icon then
         self.FolderIcon = Instance.new("ImageLabel")
         self.FolderIcon.BackgroundTransparency = 1
-        self.FolderIcon.Size = UDim2.fromOffset(16, 16)
-        self.FolderIcon.Position = UDim2.fromOffset(28, 8)
+        self.FolderIcon.Size = UDim2.fromOffset(18, 18)
+        self.FolderIcon.Position = UDim2.fromOffset(32, 11)
         self.FolderIcon.Image = self.Config.Icon
         self.FolderIcon.ImageColor3 = self.Theme.Colors.Accent
         self.FolderIcon.Parent = self.Button
     end
     
     -- Title
-    local titleOffset = self.Config.Icon and 50 or 28
+    local titleOffset = self.Config.Icon and 56 or 32
     self.Title = Instance.new("TextLabel")
     self.Title.BackgroundTransparency = 1
     self.Title.Size = UDim2.new(1, -titleOffset, 1, 0)
@@ -78,7 +78,7 @@ function Category:CreateUI()
     self.ItemsContainer = Instance.new("Frame")
     self.ItemsContainer.BackgroundTransparency = 1
     self.ItemsContainer.Size = UDim2.new(1, 0, 0, 0)
-    self.ItemsContainer.Position = UDim2.fromOffset(0, 32)
+    self.ItemsContainer.Position = UDim2.fromOffset(0, 40)
     self.ItemsContainer.ClipsDescendants = true
     self.ItemsContainer.Parent = self.Container
     
@@ -131,7 +131,7 @@ function Category:Expand(instant)
     -- Calculate total height
     local totalHeight = 0
     for _, item in ipairs(self.Items) do
-        totalHeight = totalHeight + 28
+        totalHeight = totalHeight + 36
     end
     
     -- Expand container
@@ -140,7 +140,7 @@ function Category:Expand(instant)
     }, duration)
     
     self.Utils.Tween(self.Container, {
-        Size = UDim2.new(1, 0, 0, 32 + totalHeight)
+        Size = UDim2.new(1, 0, 0, 40 + totalHeight)
     }, duration)
 end
 
@@ -158,7 +158,7 @@ function Category:Collapse()
     }, self.Theme.Animation.Duration)
     
     self.Utils.Tween(self.Container, {
-        Size = UDim2.new(1, 0, 0, 32)
+        Size = UDim2.new(1, 0, 0, 40)
     }, self.Theme.Animation.Duration)
 end
 

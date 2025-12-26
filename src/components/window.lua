@@ -122,7 +122,7 @@ function Window:CreateUI()
     self.TabBar = Instance.new("Frame")
     self.TabBar.BackgroundColor3 = self.Theme.Colors.Panel
     self.TabBar.BorderSizePixel = 0
-    self.TabBar.Size = UDim2.new(0, 240, 1, -49)
+    self.TabBar.Size = UDim2.new(0, 280, 1, -49)
     self.TabBar.Position = UDim2.fromOffset(0, 49)
     self.TabBar.Parent = self.Container
     
@@ -152,13 +152,11 @@ function Window:CreateUI()
     self.SidebarList.ScrollBarThickness = 4
     self.SidebarList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.SidebarList.CanvasSize = UDim2.fromOffset(0, 0)
-    self.SidebarList.Parent = self.TabBar
-    
     self.Theme.CreatePadding(self.SidebarList, 4)
     
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, 2)
+    layout.Padding = UDim.new(0, 4)
     layout.Parent = self.SidebarList
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -170,15 +168,30 @@ function Window:CreateUI()
     vSeparator.BackgroundColor3 = self.Theme.Colors.Border
     vSeparator.BorderSizePixel = 0
     vSeparator.Size = UDim2.new(0, 1, 1, -49)
-    vSeparator.Position = UDim2.fromOffset(240, 49)
+    vSeparator.Position = UDim2.fromOffset(280, 49)
     vSeparator.Parent = self.Container
     
     -- Content Area
-    self.ContentArea = Instance.new("Frame")
-    self.ContentArea.BackgroundTransparency = 1
-    self.ContentArea.Size = UDim2.new(1, -241, 1, -49)
-    self.ContentArea.Position = UDim2.fromOffset(241, 49)
+    self.ContentArea = Instance.new("ScrollingFrame")
+    self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
+    self.ContentArea.BorderSizePixel = 0
+    self.ContentArea.Size = UDim2.new(1, -281, 1, -49)
+    self.ContentArea.Position = UDim2.fromOffset(281, 49)
+    self.ContentArea.ScrollBarThickness = 6
+    self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
+    self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
     self.ContentArea.Parent = self.Container
+    
+    self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Large)
+    
+    local contentLayout = Instance.new("UIListLayout")
+    contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    contentLayout.Padding = UDim.new(0, self.Theme.Spacing.Medium)
+    contentLayout.Parent = self.ContentArea
+    
+    contentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        self.ContentArea.CanvasSize = UDim2.fromOffset(0, contentLayout.AbsoluteContentSize.Y + 32)
+    end)
     
     -- Make draggable
     self.Utils.MakeDraggable(self.Container, self.TitleBar)
@@ -211,6 +224,14 @@ function Window:SelectTab(tab)
     
     self.CurrentTab = tab
     tab:Show()
+end
+
+function Window:ShowContent(contentFunc)
+    self.Utils.ClearChildren(self.ContentArea)
+    
+    if contentFunc then
+        pcall(contentFunc, self.ContentArea, self.Theme, self.Utils)
+    end
 end
 
 function Window:Toggle()

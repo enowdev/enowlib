@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 13:38:23
+-- Built: 2025-12-26 13:42:25
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -350,6 +350,14 @@ function Utils.Throttle(func, delay)
         if now - lastRun >= delay then
             lastRun = now
             func(...)
+        end
+    end
+end
+
+function Utils.ClearChildren(parent)
+    for _, child in ipairs(parent:GetChildren()) do
+        if not child:IsA("UIListLayout") and not child:IsA("UIPadding") then
+            child:Destroy()
         end
     end
 end
@@ -801,6 +809,7 @@ function Item.new(config, category, theme, utils)
     self.Config = utils.Merge({
         Title = "Item",
         Icon = nil,
+        Content = nil,
         Callback = function() end
     }, config or {})
     
@@ -815,7 +824,7 @@ function Item:CreateUI()
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BackgroundTransparency = 1
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 28)
+    self.Button.Size = UDim2.new(1, 0, 0, 36)
     self.Button.Text = ""
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Category.ItemsContainer
@@ -824,15 +833,15 @@ function Item:CreateUI()
     if self.Config.Icon then
         self.Icon = Instance.new("ImageLabel")
         self.Icon.BackgroundTransparency = 1
-        self.Icon.Size = UDim2.fromOffset(14, 14)
-        self.Icon.Position = UDim2.fromOffset(50, 7)
+        self.Icon.Size = UDim2.fromOffset(16, 16)
+        self.Icon.Position = UDim2.fromOffset(56, 10)
         self.Icon.Image = self.Config.Icon
         self.Icon.ImageColor3 = self.Theme.Colors.TextDim
         self.Icon.Parent = self.Button
     end
     
     -- Title
-    local titleOffset = self.Config.Icon and 70 or 50
+    local titleOffset = self.Config.Icon and 78 or 56
     self.Title = Instance.new("TextLabel")
     self.Title.BackgroundTransparency = 1
     self.Title.Size = UDim2.new(1, -titleOffset, 1, 0)
@@ -840,12 +849,13 @@ function Item:CreateUI()
     self.Title.Font = self.Theme.Font.Mono
     self.Title.Text = self.Config.Title
     self.Title.TextColor3 = self.Theme.Colors.TextDim
-    self.Title.TextSize = self.Theme.Font.Size.Small
+    self.Title.TextSize = self.Theme.Font.Size.Regular
     self.Title.TextXAlignment = Enum.TextXAlignment.Left
     self.Title.Parent = self.Button
     
     -- Events
     self.Button.MouseButton1Click:Connect(function()
+        self:Select()
         pcall(self.Config.Callback)
     end)
     
@@ -876,6 +886,47 @@ function Item:CreateUI()
             }, 0.15)
         end
     end)
+end
+
+function Item:Select()
+    local window = self.Category.Window
+    
+    if window.CurrentItem then
+        window.CurrentItem:Deselect()
+    end
+    
+    window.CurrentItem = self
+    
+    self.Utils.Tween(self.Button, {
+        BackgroundColor3 = self.Theme.Colors.Accent,
+        BackgroundTransparency = 0.9
+    }, 0.15)
+    self.Utils.Tween(self.Title, {
+        TextColor3 = self.Theme.Colors.Accent
+    }, 0.15)
+    if self.Icon then
+        self.Utils.Tween(self.Icon, {
+            ImageColor3 = self.Theme.Colors.Accent
+        }, 0.15)
+    end
+    
+    if self.Config.Content then
+        window:ShowContent(self.Config.Content)
+    end
+end
+
+function Item:Deselect()
+    self.Utils.Tween(self.Button, {
+        BackgroundTransparency = 1
+    }, 0.15)
+    self.Utils.Tween(self.Title, {
+        TextColor3 = self.Theme.Colors.TextDim
+    }, 0.15)
+    if self.Icon then
+        self.Utils.Tween(self.Icon, {
+            ImageColor3 = self.Theme.Colors.TextDim
+        }, 0.15)
+    end
 end
 Item = Item
 assert(Item, "Failed to assign Item module")
@@ -914,7 +965,7 @@ function Category:CreateUI()
     -- Category Container
     self.Container = Instance.new("Frame")
     self.Container.BackgroundTransparency = 1
-    self.Container.Size = UDim2.new(1, 0, 0, 32)
+    self.Container.Size = UDim2.new(1, 0, 0, 40)
     self.Container.Parent = self.Window.SidebarList
     
     -- Category Button
@@ -922,7 +973,7 @@ function Category:CreateUI()
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BackgroundTransparency = 1
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 32)
+    self.Button.Size = UDim2.new(1, 0, 0, 40)
     self.Button.Text = ""
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Container
@@ -930,8 +981,8 @@ function Category:CreateUI()
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
     self.ChevronIcon.BackgroundTransparency = 1
-    self.ChevronIcon.Size = UDim2.fromOffset(14, 14)
-    self.ChevronIcon.Position = UDim2.fromOffset(8, 9)
+    self.ChevronIcon.Size = UDim2.fromOffset(16, 16)
+    self.ChevronIcon.Position = UDim2.fromOffset(10, 12)
     self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.Accent
     self.ChevronIcon.Rotation = 0
@@ -941,15 +992,15 @@ function Category:CreateUI()
     if self.Config.Icon then
         self.FolderIcon = Instance.new("ImageLabel")
         self.FolderIcon.BackgroundTransparency = 1
-        self.FolderIcon.Size = UDim2.fromOffset(16, 16)
-        self.FolderIcon.Position = UDim2.fromOffset(28, 8)
+        self.FolderIcon.Size = UDim2.fromOffset(18, 18)
+        self.FolderIcon.Position = UDim2.fromOffset(32, 11)
         self.FolderIcon.Image = self.Config.Icon
         self.FolderIcon.ImageColor3 = self.Theme.Colors.Accent
         self.FolderIcon.Parent = self.Button
     end
     
     -- Title
-    local titleOffset = self.Config.Icon and 50 or 28
+    local titleOffset = self.Config.Icon and 56 or 32
     self.Title = Instance.new("TextLabel")
     self.Title.BackgroundTransparency = 1
     self.Title.Size = UDim2.new(1, -titleOffset, 1, 0)
@@ -965,7 +1016,7 @@ function Category:CreateUI()
     self.ItemsContainer = Instance.new("Frame")
     self.ItemsContainer.BackgroundTransparency = 1
     self.ItemsContainer.Size = UDim2.new(1, 0, 0, 0)
-    self.ItemsContainer.Position = UDim2.fromOffset(0, 32)
+    self.ItemsContainer.Position = UDim2.fromOffset(0, 40)
     self.ItemsContainer.ClipsDescendants = true
     self.ItemsContainer.Parent = self.Container
     
@@ -1018,7 +1069,7 @@ function Category:Expand(instant)
     -- Calculate total height
     local totalHeight = 0
     for _, item in ipairs(self.Items) do
-        totalHeight = totalHeight + 28
+        totalHeight = totalHeight + 36
     end
     
     -- Expand container
@@ -1027,7 +1078,7 @@ function Category:Expand(instant)
     }, duration)
     
     self.Utils.Tween(self.Container, {
-        Size = UDim2.new(1, 0, 0, 32 + totalHeight)
+        Size = UDim2.new(1, 0, 0, 40 + totalHeight)
     }, duration)
 end
 
@@ -1045,7 +1096,7 @@ function Category:Collapse()
     }, self.Theme.Animation.Duration)
     
     self.Utils.Tween(self.Container, {
-        Size = UDim2.new(1, 0, 0, 32)
+        Size = UDim2.new(1, 0, 0, 40)
     }, self.Theme.Animation.Duration)
 end
 
@@ -1407,7 +1458,7 @@ function Window:CreateUI()
     self.TabBar = Instance.new("Frame")
     self.TabBar.BackgroundColor3 = self.Theme.Colors.Panel
     self.TabBar.BorderSizePixel = 0
-    self.TabBar.Size = UDim2.new(0, 240, 1, -49)
+    self.TabBar.Size = UDim2.new(0, 280, 1, -49)
     self.TabBar.Position = UDim2.fromOffset(0, 49)
     self.TabBar.Parent = self.Container
     
@@ -1437,13 +1488,11 @@ function Window:CreateUI()
     self.SidebarList.ScrollBarThickness = 4
     self.SidebarList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.SidebarList.CanvasSize = UDim2.fromOffset(0, 0)
-    self.SidebarList.Parent = self.TabBar
-    
     self.Theme.CreatePadding(self.SidebarList, 4)
     
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, 2)
+    layout.Padding = UDim.new(0, 4)
     layout.Parent = self.SidebarList
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -1455,15 +1504,30 @@ function Window:CreateUI()
     vSeparator.BackgroundColor3 = self.Theme.Colors.Border
     vSeparator.BorderSizePixel = 0
     vSeparator.Size = UDim2.new(0, 1, 1, -49)
-    vSeparator.Position = UDim2.fromOffset(240, 49)
+    vSeparator.Position = UDim2.fromOffset(280, 49)
     vSeparator.Parent = self.Container
     
     -- Content Area
-    self.ContentArea = Instance.new("Frame")
-    self.ContentArea.BackgroundTransparency = 1
-    self.ContentArea.Size = UDim2.new(1, -241, 1, -49)
-    self.ContentArea.Position = UDim2.fromOffset(241, 49)
+    self.ContentArea = Instance.new("ScrollingFrame")
+    self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
+    self.ContentArea.BorderSizePixel = 0
+    self.ContentArea.Size = UDim2.new(1, -281, 1, -49)
+    self.ContentArea.Position = UDim2.fromOffset(281, 49)
+    self.ContentArea.ScrollBarThickness = 6
+    self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
+    self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
     self.ContentArea.Parent = self.Container
+    
+    self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Large)
+    
+    local contentLayout = Instance.new("UIListLayout")
+    contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    contentLayout.Padding = UDim.new(0, self.Theme.Spacing.Medium)
+    contentLayout.Parent = self.ContentArea
+    
+    contentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        self.ContentArea.CanvasSize = UDim2.fromOffset(0, contentLayout.AbsoluteContentSize.Y + 32)
+    end)
     
     -- Make draggable
     self.Utils.MakeDraggable(self.Container, self.TitleBar)
@@ -1496,6 +1560,14 @@ function Window:SelectTab(tab)
     
     self.CurrentTab = tab
     tab:Show()
+end
+
+function Window:ShowContent(contentFunc)
+    self.Utils.ClearChildren(self.ContentArea)
+    
+    if contentFunc then
+        pcall(contentFunc, self.ContentArea, self.Theme, self.Utils)
+    end
 end
 
 function Window:Toggle()

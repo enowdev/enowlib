@@ -219,4 +219,12 @@ function Utils.Throttle(func, delay)
     end
 end
 
+function Utils.ClearChildren(parent)
+    for _, child in ipairs(parent:GetChildren()) do
+        if not child:IsA("UIListLayout") and not child:IsA("UIPadding") then
+            child:Destroy()
+        end
+    end
+end
+
 return Utils
