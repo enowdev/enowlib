@@ -1,41 +1,52 @@
 -- EnowLib Theme System
--- Neo Brutalism Pastel Dark - Monochromatic Purple Scheme
+-- Y2K Aesthetic - Retro 2000s Pastel Style
 
 local Theme = {}
 
--- Color Palette - Cohesive Pastel Purple Dark
+-- Color Palette - Y2K Bright Pastels
 Theme.Colors = {
-    -- Background colors (Dark purple-gray base)
-    Background = Color3.fromRGB(24, 24, 37),         -- Deep purple-gray
-    BackgroundDark = Color3.fromRGB(18, 18, 28),     -- Darker purple-gray
-    BackgroundLight = Color3.fromRGB(32, 32, 48),    -- Lighter purple-gray
+    -- Background colors (Light pastel base)
+    Background = Color3.fromRGB(255, 182, 193),      -- Pastel pink
+    BackgroundDark = Color3.fromRGB(230, 150, 170),  -- Darker pink
+    BackgroundLight = Color3.fromRGB(255, 200, 210), -- Lighter pink
     
-    -- Primary colors (Pastel purple - main accent)
-    Primary = Color3.fromRGB(167, 139, 250),         -- Soft purple
-    PrimaryLight = Color3.fromRGB(196, 181, 253),    -- Light purple
-    PrimaryDark = Color3.fromRGB(139, 92, 246),      -- Deep purple
+    -- Primary colors (Bright cyan - Y2K signature)
+    Primary = Color3.fromRGB(0, 255, 255),           -- Bright cyan
+    PrimaryLight = Color3.fromRGB(128, 255, 255),    -- Light cyan
+    PrimaryDark = Color3.fromRGB(0, 200, 200),       -- Deep cyan
     
-    -- Secondary accent (Complementary pastel)
-    Secondary = Color3.fromRGB(134, 239, 172),       -- Soft mint green
-    SecondaryLight = Color3.fromRGB(187, 247, 208),  -- Light mint
+    -- Secondary colors (Bright purple)
+    Secondary = Color3.fromRGB(200, 162, 255),       -- Pastel purple
+    SecondaryLight = Color3.fromRGB(220, 190, 255),  -- Light purple
+    SecondaryDark = Color3.fromRGB(150, 100, 255),   -- Deep purple
+    
+    -- Accent colors (Y2K palette)
+    Yellow = Color3.fromRGB(255, 255, 0),            -- Bright yellow
+    Green = Color3.fromRGB(0, 255, 128),             -- Bright green
+    Orange = Color3.fromRGB(255, 165, 0),            -- Bright orange
     
     -- Text colors
-    Text = Color3.fromRGB(241, 245, 249),            -- Almost white
-    TextDim = Color3.fromRGB(148, 163, 184),         -- Muted slate
-    TextDisabled = Color3.fromRGB(100, 116, 139),    -- Dark slate
+    Text = Color3.fromRGB(0, 0, 0),                  -- Black text (Y2K style)
+    TextDim = Color3.fromRGB(80, 80, 80),            -- Dark gray
+    TextDisabled = Color3.fromRGB(150, 150, 150),    -- Light gray
+    TextWhite = Color3.fromRGB(255, 255, 255),       -- White text
     
-    -- State colors (Pastel versions)
-    Success = Color3.fromRGB(134, 239, 172),         -- Soft green
-    Warning = Color3.fromRGB(253, 224, 71),          -- Soft yellow
-    Error = Color3.fromRGB(248, 113, 113),           -- Soft red
-    Info = Color3.fromRGB(147, 197, 253),            -- Soft blue
+    -- State colors (Bright versions)
+    Success = Color3.fromRGB(0, 255, 128),           -- Bright green
+    Warning = Color3.fromRGB(255, 255, 0),           -- Bright yellow
+    Error = Color3.fromRGB(255, 100, 100),           -- Bright red
+    Info = Color3.fromRGB(0, 255, 255),              -- Bright cyan
     
-    -- UI Element colors (Neo brutalism)
-    Border = Color3.fromRGB(71, 85, 105),            -- Slate border
-    BorderAccent = Color3.fromRGB(139, 92, 246),     -- Purple border
-    Shadow = Color3.fromRGB(12, 12, 20),             -- Deep shadow
-    Hover = Color3.fromRGB(41, 41, 58),              -- Subtle hover
-    Active = Color3.fromRGB(51, 51, 68),             -- Active state
+    -- UI Element colors (Y2K style)
+    Border = Color3.fromRGB(0, 0, 0),                -- BLACK borders (signature Y2K)
+    BorderThick = Color3.fromRGB(0, 0, 0),           -- BLACK thick borders
+    Shadow = Color3.fromRGB(0, 0, 0),                -- Black shadow
+    Hover = Color3.fromRGB(255, 220, 230),           -- Light pink hover
+    Active = Color3.fromRGB(255, 240, 245),          -- Very light pink
+    
+    -- Window chrome colors (like Windows 95/2000)
+    TitleBar = Color3.fromRGB(0, 255, 255),          -- Cyan title bar
+    TitleBarInactive = Color3.fromRGB(128, 128, 128) -- Gray inactive
 }
 
 -- Transparency values
@@ -48,125 +59,123 @@ Theme.Transparency = {
     Invisible = 1
 }
 
--- Font settings
+-- Font settings (Y2K style - bold and playful)
 Theme.Font = {
-    Regular = Enum.Font.GothamMedium,
-    Bold = Enum.Font.GothamBold,
+    Regular = Enum.Font.GothamBold,      -- Bold for Y2K
+    Bold = Enum.Font.GothamBlack,        -- Extra bold
     Mono = Enum.Font.RobotoMono,
     Size = {
         Small = 13,
-        Regular = 14,
-        Medium = 16,
-        Large = 18,
-        Title = 22
+        Regular = 15,
+        Medium = 17,
+        Large = 19,
+        Title = 24
     }
 }
 
--- Spacing and sizing (Neo brutalism - more spacious)
+-- Spacing and sizing (Y2K - compact but playful)
 Theme.Spacing = {
-    Tiny = 6,
-    Small = 10,
-    Medium = 14,
-    Large = 18,
-    XLarge = 28
+    Tiny = 4,
+    Small = 8,
+    Medium = 12,
+    Large = 16,
+    XLarge = 24
 }
 
 Theme.Size = {
-    Border = 2,                    -- Thick borders
-    BorderThick = 3,               -- Extra thick
-    CornerRadius = 4,              -- Minimal rounding (more brutalist)
-    ScrollBarWidth = 6,
+    Border = 3,                    -- THICK black borders (Y2K signature)
+    BorderThick = 4,               -- Extra thick
+    CornerRadius = 0,              -- NO rounding (pure Y2K)
+    ScrollBarWidth = 8,
     
     -- Component sizes
-    ButtonHeight = 40,
+    ButtonHeight = 36,
     ToggleSize = 24,
-    SliderHeight = 24,             -- Square slider
-    InputHeight = 40,
-    DropdownHeight = 40,
+    SliderHeight = 20,
+    InputHeight = 36,
+    DropdownHeight = 36,
     
     -- Container sizes
-    WindowMinWidth = 450,
-    WindowMinHeight = 350,
-    TabWidth = 160,
-    SectionHeight = 32,
+    WindowMinWidth = 400,
+    WindowMinHeight = 300,
+    TabWidth = 140,
+    SectionHeight = 28,
     
-    -- Neo brutalism shadow offset
-    ShadowOffset = 4
+    -- Y2K shadow offset (thick shadow)
+    ShadowOffset = 5,
+    ShadowBlur = 0                 -- No blur, solid shadow
 }
 
 -- Responsive breakpoints
 Theme.Responsive = {
-    Mobile = 600,      -- Below this = mobile
-    Tablet = 900,      -- Below this = tablet
-    Desktop = 1200     -- Above this = desktop
+    Mobile = 600,
+    Tablet = 900,
+    Desktop = 1200
 }
 
--- Animation settings (Snappier for neo brutalism)
+-- Animation settings (Snappy Y2K style)
 Theme.Animation = {
     Speed = {
-        Fast = 0.12,
-        Normal = 0.2,
-        Slow = 0.35
+        Fast = 0.1,
+        Normal = 0.15,
+        Slow = 0.25
     },
-    Easing = Enum.EasingStyle.Quad,
+    Easing = Enum.EasingStyle.Linear,  -- Linear for retro feel
     Direction = Enum.EasingDirection.Out
 }
 
--- Neo brutalism shadow
-Theme.Shadow = {
-    Offset = Vector2.new(4, 4),
-    Color = Color3.fromRGB(15, 16, 23),
-    Transparency = 0.3
-}
-
--- Create gradient (subtle for neo brutalism)
+-- Y2K glossy gradient
 function Theme.CreateGradient(parent, rotation)
     rotation = rotation or 90
     
     local gradient = Instance.new("UIGradient")
     gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Theme.Colors.Primary),
-        ColorSequenceKeypoint.new(1, Theme.Colors.PrimaryLight)
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(0.5, parent.BackgroundColor3),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 200, 200))
     })
     gradient.Rotation = rotation
-    gradient.Transparency = NumberSequence.new(0.85) -- Very subtle
+    gradient.Transparency = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0.7),
+        NumberSequenceKeypoint.new(0.5, 1),
+        NumberSequenceKeypoint.new(1, 0.8)
+    })
     gradient.Parent = parent
     
     return gradient
 end
 
--- Create neo brutalism shadow
+-- Y2K thick shadow (solid, no blur)
 function Theme.CreateShadow(parent)
     local shadow = Instance.new("Frame")
     shadow.Name = "Shadow"
-    shadow.BackgroundColor3 = Theme.Shadow.Color
-    shadow.BackgroundTransparency = Theme.Shadow.Transparency
+    shadow.BackgroundColor3 = Theme.Colors.Shadow
+    shadow.BackgroundTransparency = 0  -- Solid shadow
     shadow.BorderSizePixel = 0
     shadow.Size = UDim2.new(1, 0, 1, 0)
-    shadow.Position = UDim2.fromOffset(Theme.Shadow.Offset.X, Theme.Shadow.Offset.Y)
+    shadow.Position = UDim2.fromOffset(Theme.Size.ShadowOffset, Theme.Size.ShadowOffset)
     shadow.ZIndex = parent.ZIndex - 1
     shadow.Parent = parent.Parent
-    
-    -- Match corner radius
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, Theme.Size.CornerRadius)
-    corner.Parent = shadow
     
     return shadow
 end
 
--- Create corner radius
+-- Create corner radius (Y2K = NO rounding)
 function Theme.CreateCorner(parent, radius)
+    -- Y2K style has NO rounded corners, but keep function for compatibility
     radius = radius or Theme.Size.CornerRadius
     
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, radius)
-    corner.Parent = parent
+    if radius > 0 then
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, radius)
+        corner.Parent = parent
+        return corner
+    end
     
-    return corner
+    return nil
 end
 
--- Create stroke/border (thicker for neo brutalism)
+-- Create stroke/border (THICK BLACK for Y2K)
 function Theme.CreateStroke(parent, color, thickness)
     color = color or Theme.Colors.Border
     thickness = thickness or Theme.Size.Border

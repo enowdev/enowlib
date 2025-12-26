@@ -24,13 +24,13 @@ function Button:CreateUI()
     -- Container
     self.Container = Instance.new("Frame")
     self.Container.Name = "Button"
-    self.Container.BackgroundColor3 = self.Theme.Colors.Primary
+    self.Container.BackgroundColor3 = self.Theme.Colors.Yellow  -- Bright yellow button
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 64 or 44)
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 56 or 40)
     self.Container.Parent = self.Tab.Container
     
-    self.Theme.CreateCorner(self.Container)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.BorderAccent, self.Theme.Size.BorderThick)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreateGradient(self.Container, 90)  -- Glossy effect
     
     -- Button
     self.Button = Instance.new("TextButton")
@@ -39,7 +39,7 @@ function Button:CreateUI()
     self.Button.Size = UDim2.new(1, 0, 1, 0)
     self.Button.Font = self.Theme.Font.Bold
     self.Button.Text = ""
-    self.Button.TextColor3 = self.Theme.Colors.Background
+    self.Button.TextColor3 = self.Theme.Colors.Text
     self.Button.TextSize = self.Theme.Font.Size.Regular
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Container
@@ -48,13 +48,14 @@ function Button:CreateUI()
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -28, 0, 22)
-    title.Position = UDim2.fromOffset(14, self.Config.Description and 10 or 11)
+    title.Size = UDim2.new(1, -16, 0, 20)
+    title.Position = UDim2.fromOffset(8, self.Config.Description and 8 or 10)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
-    title.TextColor3 = self.Theme.Colors.Background
+    title.TextColor3 = self.Theme.Colors.Text
     title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left
+    title.TextStrokeTransparency = 0.8
     title.Parent = self.Container
     
     -- Description
@@ -62,11 +63,11 @@ function Button:CreateUI()
         local desc = Instance.new("TextLabel")
         desc.Name = "Description"
         desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, -28, 0, 18)
-        desc.Position = UDim2.fromOffset(14, 32)
+        desc.Size = UDim2.new(1, -16, 0, 16)
+        desc.Position = UDim2.fromOffset(8, 28)
         desc.Font = self.Theme.Font.Regular
         desc.Text = self.Config.Description
-        desc.TextColor3 = self.Theme.Colors.BackgroundLight
+        desc.TextColor3 = self.Theme.Colors.TextDim
         desc.TextSize = self.Theme.Font.Size.Small
         desc.TextXAlignment = Enum.TextXAlignment.Left
         desc.Parent = self.Container
@@ -83,14 +84,14 @@ function Button:CreateUI()
     -- Hover effects
     self.Button.MouseEnter:Connect(function()
         self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.PrimaryLight
-        }, 0.15)
+            BackgroundColor3 = Color3.fromRGB(255, 255, 128)
+        }, 0.1)
     end)
     
     self.Button.MouseLeave:Connect(function()
         self.Utils.Tween(self.Container, {
-            BackgroundColor3 = self.Theme.Colors.Primary
-        }, 0.15)
+            BackgroundColor3 = self.Theme.Colors.Yellow
+        }, 0.1)
     end)
 end
 

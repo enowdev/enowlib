@@ -26,20 +26,19 @@ function Tab:CreateUI()
     -- Tab button
     self.Button = Instance.new("TextButton")
     self.Button.Name = "TabButton"
-    self.Button.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.Button.BackgroundColor3 = self.Theme.Colors.SecondaryLight
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 42)
+    self.Button.Size = UDim2.new(1, 0, 0, 32)
     self.Button.Font = self.Theme.Font.Bold
     self.Button.Text = self.Config.Title
-    self.Button.TextColor3 = self.Theme.Colors.TextDim
+    self.Button.TextColor3 = self.Theme.Colors.Text
     self.Button.TextSize = self.Theme.Font.Size.Regular
-    self.Button.TextXAlignment = Enum.TextXAlignment.Left
+    self.Button.TextXAlignment = Enum.TextXAlignment.Center
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Window.TabList
     
-    self.Theme.CreateCorner(self.Button, 6)
-    self.Theme.CreateStroke(self.Button, self.Theme.Colors.Border, self.Theme.Size.Border)
-    self.Theme.CreatePadding(self.Button, {14, 14, 0, 0})
+    self.Theme.CreateStroke(self.Button, self.Theme.Colors.Border, 3)
+    self.Theme.CreatePadding(self.Button, {8, 8, 0, 0})
     
     -- Tab content container
     self.Container = Instance.new("ScrollingFrame")
@@ -91,17 +90,17 @@ function Tab:Show()
     self.Container.Visible = true
     
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.Primary,
-        TextColor3 = self.Theme.Colors.Background
-    }, 0.2)
+        BackgroundColor3 = self.Theme.Colors.Primary,  -- Cyan when active
+        TextColor3 = self.Theme.Colors.Text
+    }, 0.15)
     
     -- Update stroke
     local stroke = self.Button:FindFirstChild("UIStroke")
     if stroke then
         self.Utils.Tween(stroke, {
-            Color = self.Theme.Colors.BorderAccent,
-            Thickness = self.Theme.Size.BorderThick
-        }, 0.2)
+            Color = self.Theme.Colors.Border,
+            Thickness = 4
+        }, 0.15)
     end
 end
 
@@ -110,17 +109,17 @@ function Tab:Hide()
     self.Container.Visible = false
     
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.BackgroundLight,
-        TextColor3 = self.Theme.Colors.TextDim
-    }, 0.2)
+        BackgroundColor3 = self.Theme.Colors.SecondaryLight,
+        TextColor3 = self.Theme.Colors.Text
+    }, 0.15)
     
     -- Reset stroke
     local stroke = self.Button:FindFirstChild("UIStroke")
     if stroke then
         self.Utils.Tween(stroke, {
             Color = self.Theme.Colors.Border,
-            Thickness = self.Theme.Size.Border
-        }, 0.2)
+            Thickness = 3
+        }, 0.15)
     end
 end
 
