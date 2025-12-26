@@ -240,6 +240,14 @@ function InterfaceManager:SetTheme(themeName)
     -- Refresh UI with new theme
     self:RefreshUI()
     
+    -- Re-select current item to refresh active state with new theme
+    if self.Window.CurrentItem then
+        local currentItem = self.Window.CurrentItem
+        currentItem:Deselect()
+        task.wait(0.05)
+        currentItem:Select()
+    end
+    
     return true
 end
 
