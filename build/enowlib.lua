@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 13:57:24
+-- Built: 2025-12-26 13:59:07
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1577,54 +1577,7 @@ function Window:ShowContent(contentFunc)
 end
 
 function Window:Toggle()
-    if self.Container.Visible then
-        self:Hide()
-    else
-        self:Show()
-    end
-end
-
-function Window:Hide()
-    -- Create shutter for hide animation
-    local shutter = Instance.new("Frame")
-    shutter.BackgroundColor3 = self.Theme.Colors.Accent
-    shutter.BorderSizePixel = 0
-    shutter.Size = UDim2.fromScale(0, 0)
-    shutter.Position = UDim2.fromScale(0, 0)
-    shutter.Rotation = 15
-    shutter.ZIndex = 100
-    shutter.Parent = self.Container
-    
-    -- Animate shutter diagonal expand to cover window
-    self.Utils.Tween(shutter, {
-        Size = UDim2.fromScale(1.5, 1.5),
-        Position = UDim2.fromScale(-0.25, -0.25)
-    }, 0.4, self.Theme.Animation.Style, self.Theme.Animation.Direction, function()
-        self.Container.Visible = false
-        shutter:Destroy()
-    end)
-end
-
-function Window:Show()
-    self.Container.Visible = true
-    
-    -- Create shutter for show animation
-    local shutter = Instance.new("Frame")
-    shutter.BackgroundColor3 = self.Theme.Colors.Accent
-    shutter.BorderSizePixel = 0
-    shutter.Size = UDim2.fromScale(1.5, 1.5)
-    shutter.Position = UDim2.fromScale(-0.25, -0.25)
-    shutter.Rotation = 15
-    shutter.ZIndex = 100
-    shutter.Parent = self.Container
-    
-    -- Animate shutter diagonal collapse to reveal window
-    self.Utils.Tween(shutter, {
-        Size = UDim2.fromScale(0, 0),
-        Position = UDim2.fromScale(1, 1)
-    }, 0.4, self.Theme.Animation.Style, self.Theme.Animation.Direction, function()
-        shutter:Destroy()
-    end)
+    self.Container.Visible = not self.Container.Visible
 end
 Window = Window
 assert(Window, "Failed to assign Window module")
