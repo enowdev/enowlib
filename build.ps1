@@ -54,12 +54,13 @@ function Get-LuaContent {
     # Remove require statements
     $content = $content -replace 'local\s+\w+\s*=\s*require\([^)]+\)', ''
     
-    # Remove return statement at end
-    $content = $content -replace 'return\s+\w+\s*$', ''
+    # Replace return statement with assignment
+    $content = $content -replace 'return\s+(\w+)\s*$', "$moduleName = `$1"
     
     return @"
 
 -- Module: $moduleName
+local $moduleName
 do
 $content
 end

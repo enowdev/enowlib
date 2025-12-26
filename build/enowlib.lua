@@ -1,11 +1,12 @@
--- EnowLib v2.0.0
+﻿-- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 14:14:08
+-- Built: 2025-12-26 14:16:15
 -- Author: EnowHub Development
 
 local EnowLib = {}
 
 -- Module: Theme
+local Theme
 do
 -- EnowLib Theme System
 -- Vaporwave Tech Dark Color Scheme
@@ -198,10 +199,11 @@ function Theme.CreatePadding(parent, padding)
     return uiPadding
 end
 
-
+Theme = Theme
 end
 
 -- Module: Utils
+local Utils
 do
 -- EnowLib Utility Functions
 
@@ -424,10 +426,11 @@ function Utils.Throttle(func, delay)
     end
 end
 
-
+Utils = Utils
 end
 
 -- Module: Section
+local Section
 do
 -- EnowLib Section Component
 
@@ -498,10 +501,11 @@ function Section:CreateUI()
     self.Theme.CreateGradient(rightLine, 90)
 end
 
-
+Section = Section
 end
 
 -- Module: Label
+local Label
 do
 -- EnowLib Label Component
 
@@ -577,10 +581,11 @@ function Label:SetColor(color)
     self.Label.TextColor3 = color
 end
 
-
+Label = Label
 end
 
 -- Module: Button
+local Button
 do
 -- EnowLib Button Component
 
@@ -701,10 +706,11 @@ function Button:SetCallback(callback)
     self.Config.Callback = callback
 end
 
-
+Button = Button
 end
 
 -- Module: Toggle
+local Toggle
 do
 -- EnowLib Toggle Component
 
@@ -871,10 +877,11 @@ function Toggle:UpdateVisual()
     end
 end
 
-
+Toggle = Toggle
 end
 
 -- Module: Slider
+local Slider
 do
 -- EnowLib Slider Component
 
@@ -1044,10 +1051,11 @@ function Slider:UpdateVisual()
     self.ValueLabel.Text = tostring(self.Value)
 end
 
-
+Slider = Slider
 end
 
 -- Module: Input
+local Input
 do
 -- EnowLib Input Component
 
@@ -1172,10 +1180,11 @@ function Input:GetValue()
     return self.InputBox.Text
 end
 
-
+Input = Input
 end
 
 -- Module: Dropdown
+local Dropdown
 do
 -- EnowLib Dropdown Component
 
@@ -1426,10 +1435,11 @@ function Dropdown:SetValue(value)
     self.ValueLabel.Text = value
 end
 
-
+Dropdown = Dropdown
 end
 
 -- Module: Keybind
+local Keybind
 do
 -- EnowLib Keybind Component
 
@@ -1610,10 +1620,11 @@ function Keybind:Destroy()
     self.Container:Destroy()
 end
 
-
+Keybind = Keybind
 end
 
 -- Module: ColorPicker
+local ColorPicker
 do
 -- EnowLib ColorPicker Component
 
@@ -2008,10 +2019,11 @@ function ColorPicker:SetValue(color)
     self:UpdateFromColor(color)
 end
 
-
+ColorPicker = ColorPicker
 end
 
 -- Module: MultiDropdown
+local MultiDropdown
 do
 -- EnowLib MultiDropdown Component (Checkbox List)
 
@@ -2356,10 +2368,11 @@ function MultiDropdown:SetValues(values)
     self.ValueLabel.Text = self:GetDisplayText()
 end
 
-
+MultiDropdown = MultiDropdown
 end
 
 -- Module: ProgressBar
+local ProgressBar
 do
 -- EnowLib ProgressBar Component
 
@@ -2525,10 +2538,11 @@ function ProgressBar:Reset()
     self:SetValue(self.Config.Min)
 end
 
-
+ProgressBar = ProgressBar
 end
 
 -- Module: Notification
+local Notification
 do
 -- EnowLib Notification System
 
@@ -2718,10 +2732,11 @@ function Notification.GetTypeColor(type)
     return colors[type] or Notification.Theme.Colors.Primary
 end
 
-
+Notification = Notification
 end
 
 -- Module: Tab
+local Tab
 do
 -- EnowLib Tab Component
 
@@ -2918,10 +2933,11 @@ function Tab:AddProgressBar(config)
     return progressbar
 end
 
-
+Tab = Tab
 end
 
 -- Module: Window
+local Window
 do
 -- EnowLib Window Component
 
@@ -3141,10 +3157,11 @@ function Window:Destroy()
     self.ScreenGui:Destroy()
 end
 
-
+Window = Window
 end
 
 -- Module: SaveManager
+local SaveManager
 do
 -- EnowLib SaveManager
 -- Handles configuration persistence
@@ -3495,10 +3512,11 @@ function SaveManager.CreateUI(tab)
     })
 end
 
-
+SaveManager = SaveManager
 end
 
 -- Module: InterfaceManager
+local InterfaceManager
 do
 -- EnowLib InterfaceManager
 -- Handles UI state and theme management
@@ -3811,7 +3829,7 @@ function InterfaceManager.CreateUI(tab)
     })
 end
 
-
+InterfaceManager = InterfaceManager
 end
 
 -- Initialize EnowLib
