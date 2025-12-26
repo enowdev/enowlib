@@ -425,41 +425,44 @@ function InterfaceManager:RefreshCategories()
         if category.Container then
             category.Container.BackgroundColor3 = theme.Colors.Secondary
             
-            if category.TitleLabel then
-                category.TitleLabel.TextColor3 = theme.Colors.Text
+            if category.Title then
+                category.Title.TextColor3 = theme.Colors.Text
             end
             
-            if category.Icon then
-                category.Icon.ImageColor3 = theme.Colors.Accent
+            if category.FolderIcon then
+                category.FolderIcon.ImageColor3 = theme.Colors.Accent
             end
             
             if category.ChevronIcon then
-                category.ChevronIcon.ImageColor3 = theme.Colors.TextDim
+                category.ChevronIcon.ImageColor3 = theme.Colors.Accent
             end
         end
         
         -- Refresh items in category
         if category.Items then
             for _, item in ipairs(category.Items) do
-                if item.Container then
-                    if item.Active then
+                if item.Button then
+                    -- Check if this is the active item
+                    local isActive = (self.Window.CurrentItem == item)
+                    
+                    if isActive then
                         -- Active item - highlight with accent
-                        item.Container.BackgroundColor3 = theme.Colors.Accent
-                        item.Container.BackgroundTransparency = 0.85
+                        item.Button.BackgroundColor3 = theme.Colors.Accent
+                        item.Button.BackgroundTransparency = 0.85
                         
-                        if item.TitleLabel then
-                            item.TitleLabel.TextColor3 = theme.Colors.Text
+                        if item.Title then
+                            item.Title.TextColor3 = theme.Colors.Text
                         end
                         if item.Icon then
                             item.Icon.ImageColor3 = theme.Colors.Text
                         end
                     else
                         -- Inactive item
-                        item.Container.BackgroundColor3 = theme.Colors.Secondary
-                        item.Container.BackgroundTransparency = 1
+                        item.Button.BackgroundColor3 = theme.Colors.Secondary
+                        item.Button.BackgroundTransparency = 1
                         
-                        if item.TitleLabel then
-                            item.TitleLabel.TextColor3 = theme.Colors.TextDim
+                        if item.Title then
+                            item.Title.TextColor3 = theme.Colors.TextDim
                         end
                         if item.Icon then
                             item.Icon.ImageColor3 = theme.Colors.TextDim
