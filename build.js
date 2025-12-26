@@ -12,7 +12,6 @@ const config = {
     modules: [
         { path: 'src/core/theme.lua', name: 'Theme' },
         { path: 'src/core/utils.lua', name: 'Utils' },
-        { path: 'src/components/section.lua', name: 'Section' },
         { path: 'src/components/label.lua', name: 'Label' },
         { path: 'src/components/button.lua', name: 'Button' },
         { path: 'src/components/toggle.lua', name: 'Toggle' },
@@ -23,6 +22,7 @@ const config = {
         { path: 'src/components/colorpicker.lua', name: 'ColorPicker' },
         { path: 'src/components/multidropdown.lua', name: 'MultiDropdown' },
         { path: 'src/components/progressbar.lua', name: 'ProgressBar' },
+        { path: 'src/components/section.lua', name: 'Section' },
         { path: 'src/components/notification.lua', name: 'Notification' },
         { path: 'src/components/tab.lua', name: 'Tab' },
         { path: 'src/components/window.lua', name: 'Window' },
