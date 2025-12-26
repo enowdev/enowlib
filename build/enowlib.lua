@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 07:42:48
+-- Built: 2025-12-26 07:47:42
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -10,46 +10,43 @@ local EnowLib = {}
 local Theme
 do
 -- EnowLib Theme System
--- Neo Brutalism Pastel Dark Color Scheme
+-- Neo Brutalism Pastel Dark - Monochromatic Purple Scheme
 
 Theme = {}
 
--- Color Palette - Neo Brutalism Pastel Dark
+-- Color Palette - Cohesive Pastel Purple Dark
 Theme.Colors = {
-    -- Background colors (Dark pastel base)
-    Background = Color3.fromRGB(26, 27, 38),        -- Deep navy blue
-    BackgroundDark = Color3.fromRGB(20, 21, 30),    -- Darker navy
-    BackgroundLight = Color3.fromRGB(32, 34, 46),   -- Lighter navy
+    -- Background colors (Dark purple-gray base)
+    Background = Color3.fromRGB(24, 24, 37),         -- Deep purple-gray
+    BackgroundDark = Color3.fromRGB(18, 18, 28),     -- Darker purple-gray
+    BackgroundLight = Color3.fromRGB(32, 32, 48),    -- Lighter purple-gray
     
-    -- Primary colors (Pastel purple/lavender)
-    Primary = Color3.fromRGB(159, 122, 234),        -- Soft lavender
-    PrimaryLight = Color3.fromRGB(189, 162, 244),   -- Light lavender
-    PrimaryDark = Color3.fromRGB(129, 92, 204),     -- Deep lavender
+    -- Primary colors (Pastel purple - main accent)
+    Primary = Color3.fromRGB(167, 139, 250),         -- Soft purple
+    PrimaryLight = Color3.fromRGB(196, 181, 253),    -- Light purple
+    PrimaryDark = Color3.fromRGB(139, 92, 246),      -- Deep purple
     
-    -- Accent colors (Pastel complementary)
-    Accent = Color3.fromRGB(130, 204, 221),         -- Soft cyan
-    AccentPink = Color3.fromRGB(244, 143, 177),     -- Soft pink
-    AccentGreen = Color3.fromRGB(166, 226, 188),    -- Soft mint
+    -- Secondary accent (Complementary pastel)
+    Secondary = Color3.fromRGB(134, 239, 172),       -- Soft mint green
+    SecondaryLight = Color3.fromRGB(187, 247, 208),  -- Light mint
     
     -- Text colors
-    Text = Color3.fromRGB(226, 232, 240),           -- Soft white
-    TextDim = Color3.fromRGB(148, 163, 184),        -- Muted gray
-    TextDisabled = Color3.fromRGB(100, 116, 139),   -- Dark gray
+    Text = Color3.fromRGB(241, 245, 249),            -- Almost white
+    TextDim = Color3.fromRGB(148, 163, 184),         -- Muted slate
+    TextDisabled = Color3.fromRGB(100, 116, 139),    -- Dark slate
     
     -- State colors (Pastel versions)
-    Success = Color3.fromRGB(134, 239, 172),        -- Soft green
-    Warning = Color3.fromRGB(253, 224, 71),         -- Soft yellow
-    Error = Color3.fromRGB(252, 165, 165),          -- Soft red
+    Success = Color3.fromRGB(134, 239, 172),         -- Soft green
+    Warning = Color3.fromRGB(253, 224, 71),          -- Soft yellow
+    Error = Color3.fromRGB(248, 113, 113),           -- Soft red
+    Info = Color3.fromRGB(147, 197, 253),            -- Soft blue
     
-    -- UI Element colors (Neo brutalism style)
-    Border = Color3.fromRGB(71, 85, 105),           -- Slate border
-    BorderAccent = Color3.fromRGB(159, 122, 234),   -- Primary border
-    Shadow = Color3.fromRGB(15, 16, 23),            -- Deep shadow
-    Hover = Color3.fromRGB(41, 44, 58),             -- Subtle hover
-    Active = Color3.fromRGB(51, 54, 68),            -- Active state
-    
-    -- Transparency
-    Transparent = Color3.fromRGB(0, 0, 0)
+    -- UI Element colors (Neo brutalism)
+    Border = Color3.fromRGB(71, 85, 105),            -- Slate border
+    BorderAccent = Color3.fromRGB(139, 92, 246),     -- Purple border
+    Shadow = Color3.fromRGB(12, 12, 20),             -- Deep shadow
+    Hover = Color3.fromRGB(41, 41, 58),              -- Subtle hover
+    Active = Color3.fromRGB(51, 51, 68),             -- Active state
 }
 
 -- Transparency values
@@ -86,17 +83,17 @@ Theme.Spacing = {
 }
 
 Theme.Size = {
-    Border = 2,                    -- Thicker borders for neo brutalism
-    BorderThick = 3,               -- Extra thick for emphasis
-    CornerRadius = 8,              -- Slightly rounded
+    Border = 2,                    -- Thick borders
+    BorderThick = 3,               -- Extra thick
+    CornerRadius = 4,              -- Minimal rounding (more brutalist)
     ScrollBarWidth = 6,
     
     -- Component sizes
-    ButtonHeight = 38,
-    ToggleSize = 22,
-    SliderHeight = 8,
-    InputHeight = 38,
-    DropdownHeight = 38,
+    ButtonHeight = 40,
+    ToggleSize = 24,
+    SliderHeight = 24,             -- Square slider
+    InputHeight = 40,
+    DropdownHeight = 40,
     
     -- Container sizes
     WindowMinWidth = 450,
@@ -106,6 +103,13 @@ Theme.Size = {
     
     -- Neo brutalism shadow offset
     ShadowOffset = 4
+}
+
+-- Responsive breakpoints
+Theme.Responsive = {
+    Mobile = 600,      -- Below this = mobile
+    Tablet = 900,      -- Below this = tablet
+    Desktop = 1200     -- Above this = desktop
 }
 
 -- Animation settings (Snappier for neo brutalism)
@@ -464,48 +468,33 @@ function Section:CreateUI()
     self.Container = Instance.new("Frame")
     self.Container.Name = "Section"
     self.Container.BackgroundTransparency = 1
-    self.Container.Size = UDim2.new(1, 0, 0, 30)
+    self.Container.Size = UDim2.new(1, 0, 0, 36)
     self.Container.Parent = self.Tab.Container
     
-    -- Left line
-    local leftLine = Instance.new("Frame")
-    leftLine.Name = "LeftLine"
-    leftLine.BackgroundColor3 = self.Theme.Colors.Border
-    leftLine.BorderSizePixel = 0
-    leftLine.Size = UDim2.new(0.3, -40, 0, 1)
-    leftLine.Position = UDim2.fromOffset(0, 15)
-    leftLine.Parent = self.Container
+    -- Section header with background
+    local header = Instance.new("Frame")
+    header.Name = "Header"
+    header.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    header.BorderSizePixel = 0
+    header.Size = UDim2.new(1, 0, 0, 32)
+    header.Position = UDim2.fromOffset(0, 2)
+    header.Parent = self.Container
     
-    self.Theme.CreateGradient(leftLine, 90)
+    self.Theme.CreateCorner(header, 4)
+    self.Theme.CreateStroke(header, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.fromOffset(0, 30)
-    title.Position = UDim2.new(0.5, 0, 0, 0)
-    title.AnchorPoint = Vector2.new(0.5, 0)
+    title.Size = UDim2.new(1, -28, 1, 0)
+    title.Position = UDim2.fromOffset(14, 0)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Primary
-    title.TextSize = self.Theme.Font.Size.Small
-    title.TextXAlignment = Enum.TextXAlignment.Center
-    title.Parent = self.Container
-    
-    -- Auto-size title
-    title.Size = UDim2.fromOffset(title.TextBounds.X + 20, 30)
-    
-    -- Right line
-    local rightLine = Instance.new("Frame")
-    rightLine.Name = "RightLine"
-    rightLine.BackgroundColor3 = self.Theme.Colors.Border
-    rightLine.BorderSizePixel = 0
-    rightLine.Size = UDim2.new(0.3, -40, 0, 1)
-    rightLine.Position = UDim2.new(1, 0, 0, 15)
-    rightLine.AnchorPoint = Vector2.new(1, 0)
-    rightLine.Parent = self.Container
-    
-    self.Theme.CreateGradient(rightLine, 90)
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = header
 end
 Section = Section
 assert(Section, "Failed to assign Section module")
@@ -774,29 +763,29 @@ function Toggle:CreateUI()
         desc.Parent = self.Container
     end
     
-    -- Toggle switch background
+    -- Toggle switch background (SQUARE for neo brutalism)
     self.Switch = Instance.new("Frame")
     self.Switch.Name = "Switch"
     self.Switch.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.Switch.BorderSizePixel = 0
-    self.Switch.Size = UDim2.fromOffset(48, 26)
-    self.Switch.Position = UDim2.new(1, -56, 0.5, 0)
+    self.Switch.Size = UDim2.fromOffset(52, 26)
+    self.Switch.Position = UDim2.new(1, -60, 0.5, 0)
     self.Switch.AnchorPoint = Vector2.new(0, 0.5)
     self.Switch.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Switch, 13)
+    self.Theme.CreateCorner(self.Switch, 4)  -- Minimal rounding
     self.Theme.CreateStroke(self.Switch, self.Theme.Colors.Border, self.Theme.Size.Border)
     
-    -- Toggle knob
+    -- Toggle knob (SQUARE)
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(20, 20)
-    self.Knob.Position = UDim2.fromOffset(3, 3)
+    self.Knob.Size = UDim2.fromOffset(22, 22)
+    self.Knob.Position = UDim2.fromOffset(2, 2)
     self.Knob.Parent = self.Switch
     
-    self.Theme.CreateCorner(self.Knob, 10)
+    self.Theme.CreateCorner(self.Knob, 2)  -- Very minimal rounding
     self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Click button
@@ -844,7 +833,7 @@ function Toggle:UpdateVisual()
         }, 0.2)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(25, 3),
+            Position = UDim2.fromOffset(28, 2),
             BackgroundColor3 = self.Theme.Colors.Background
         }, 0.2)
         
@@ -868,7 +857,7 @@ function Toggle:UpdateVisual()
         }, 0.2)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(3, 3),
+            Position = UDim2.fromOffset(2, 2),
             BackgroundColor3 = self.Theme.Colors.Text
         }, 0.2)
         
@@ -963,19 +952,19 @@ function Slider:CreateUI()
     self.ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
     self.ValueLabel.Parent = self.Container
     
-    -- Slider track
+    -- Slider track (SQUARE)
     self.Track = Instance.new("Frame")
     self.Track.Name = "Track"
     self.Track.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.Track.BorderSizePixel = 0
-    self.Track.Size = UDim2.new(1, -28, 0, 10)
+    self.Track.Size = UDim2.new(1, -28, 0, self.Theme.Size.SliderHeight)
     self.Track.Position = UDim2.fromOffset(14, 44)
     self.Track.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Track, 5)
+    self.Theme.CreateCorner(self.Track, 4)
     self.Theme.CreateStroke(self.Track, self.Theme.Colors.Border, self.Theme.Size.Border)
     
-    -- Slider fill
+    -- Slider fill (SQUARE)
     self.Fill = Instance.new("Frame")
     self.Fill.Name = "Fill"
     self.Fill.BackgroundColor3 = self.Theme.Colors.Primary
@@ -983,19 +972,19 @@ function Slider:CreateUI()
     self.Fill.Size = UDim2.new(0, 0, 1, 0)
     self.Fill.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Fill, 5)
+    self.Theme.CreateCorner(self.Fill, 2)
     
-    -- Slider knob
+    -- Slider knob (SQUARE)
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(18, 18)
+    self.Knob.Size = UDim2.fromOffset(self.Theme.Size.SliderHeight, self.Theme.Size.SliderHeight)
     self.Knob.Position = UDim2.new(0, 0, 0.5, 0)
     self.Knob.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Knob.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Knob, 9)
+    self.Theme.CreateCorner(self.Knob, 2)
     self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Primary, self.Theme.Size.BorderThick)
     
     -- Input handling
@@ -2979,11 +2968,21 @@ function Window.new(config, theme, utils, enowlib)
     self.Theme = theme
     self.Utils = utils
     self.EnowLib = enowlib
+    
+    -- Get viewport size for responsive
+    local ViewportSize = workspace.CurrentCamera.ViewportSize
+    local isMobile = ViewportSize.X < theme.Responsive.Mobile
+    local isTablet = ViewportSize.X < theme.Responsive.Tablet and not isMobile
+    
+    -- Responsive default size
+    local defaultWidth = isMobile and ViewportSize.X * 0.95 or (isTablet and 450 or 520)
+    local defaultHeight = isMobile and ViewportSize.Y * 0.85 or (isTablet and 380 or 420)
+    
     self.Config = utils.Merge({
         Title = "EnowLib",
-        Size = UDim2.fromOffset(500, 400),
-        MinSize = Vector2.new(400, 300),
-        Draggable = true,
+        Size = UDim2.fromOffset(defaultWidth, defaultHeight),
+        MinSize = Vector2.new(320, 280),
+        Draggable = not isMobile,  -- Disable drag on mobile
         Resizable = false,
         CloseButton = true
     }, config or {})
@@ -2991,6 +2990,8 @@ function Window.new(config, theme, utils, enowlib)
     self.Tabs = {}
     self.CurrentTab = nil
     self.Visible = true
+    self.IsMobile = isMobile
+    self.IsTablet = isTablet
     
     self:CreateUI()
     
@@ -3097,12 +3098,16 @@ function Window:CreateTitleBar()
 end
 
 function Window:CreateTabBar()
+    -- Responsive tab bar width
+    local tabBarWidth = self.IsMobile and 0 or (self.IsTablet and 140 or 160)
+    
     self.TabBar = Instance.new("Frame")
     self.TabBar.Name = "TabBar"
     self.TabBar.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.TabBar.BorderSizePixel = 0
-    self.TabBar.Size = UDim2.new(0, 160, 1, -48)
+    self.TabBar.Size = UDim2.new(0, tabBarWidth, 1, -48)
     self.TabBar.Position = UDim2.fromOffset(0, 48)
+    self.TabBar.Visible = not self.IsMobile  -- Hide on mobile, use dropdown instead
     self.TabBar.Parent = self.Container
     
     self.Theme.CreateStroke(self.TabBar, self.Theme.Colors.Border, 2)
@@ -3132,16 +3137,19 @@ function Window:CreateTabBar()
 end
 
 function Window:CreateContentArea()
+    -- Responsive content area
+    local contentOffset = self.IsMobile and 0 or (self.IsTablet and 140 or 160)
+    
     self.ContentArea = Instance.new("Frame")
     self.ContentArea.Name = "ContentArea"
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(1, -160, 1, -48)
-    self.ContentArea.Position = UDim2.fromOffset(160, 48)
+    self.ContentArea.Size = UDim2.new(1, -contentOffset, 1, -48)
+    self.ContentArea.Position = UDim2.fromOffset(contentOffset, 48)
     self.ContentArea.ClipsDescendants = true
     self.ContentArea.Parent = self.Container
     
-    self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Large)
+    self.Theme.CreatePadding(self.ContentArea, self.IsMobile and self.Theme.Spacing.Medium or self.Theme.Spacing.Large)
 end
 
 function Window:AddTab(config)

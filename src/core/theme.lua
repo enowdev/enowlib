@@ -1,44 +1,41 @@
 -- EnowLib Theme System
--- Neo Brutalism Pastel Dark Color Scheme
+-- Neo Brutalism Pastel Dark - Monochromatic Purple Scheme
 
 local Theme = {}
 
--- Color Palette - Neo Brutalism Pastel Dark
+-- Color Palette - Cohesive Pastel Purple Dark
 Theme.Colors = {
-    -- Background colors (Dark pastel base)
-    Background = Color3.fromRGB(26, 27, 38),        -- Deep navy blue
-    BackgroundDark = Color3.fromRGB(20, 21, 30),    -- Darker navy
-    BackgroundLight = Color3.fromRGB(32, 34, 46),   -- Lighter navy
+    -- Background colors (Dark purple-gray base)
+    Background = Color3.fromRGB(24, 24, 37),         -- Deep purple-gray
+    BackgroundDark = Color3.fromRGB(18, 18, 28),     -- Darker purple-gray
+    BackgroundLight = Color3.fromRGB(32, 32, 48),    -- Lighter purple-gray
     
-    -- Primary colors (Pastel purple/lavender)
-    Primary = Color3.fromRGB(159, 122, 234),        -- Soft lavender
-    PrimaryLight = Color3.fromRGB(189, 162, 244),   -- Light lavender
-    PrimaryDark = Color3.fromRGB(129, 92, 204),     -- Deep lavender
+    -- Primary colors (Pastel purple - main accent)
+    Primary = Color3.fromRGB(167, 139, 250),         -- Soft purple
+    PrimaryLight = Color3.fromRGB(196, 181, 253),    -- Light purple
+    PrimaryDark = Color3.fromRGB(139, 92, 246),      -- Deep purple
     
-    -- Accent colors (Pastel complementary)
-    Accent = Color3.fromRGB(130, 204, 221),         -- Soft cyan
-    AccentPink = Color3.fromRGB(244, 143, 177),     -- Soft pink
-    AccentGreen = Color3.fromRGB(166, 226, 188),    -- Soft mint
+    -- Secondary accent (Complementary pastel)
+    Secondary = Color3.fromRGB(134, 239, 172),       -- Soft mint green
+    SecondaryLight = Color3.fromRGB(187, 247, 208),  -- Light mint
     
     -- Text colors
-    Text = Color3.fromRGB(226, 232, 240),           -- Soft white
-    TextDim = Color3.fromRGB(148, 163, 184),        -- Muted gray
-    TextDisabled = Color3.fromRGB(100, 116, 139),   -- Dark gray
+    Text = Color3.fromRGB(241, 245, 249),            -- Almost white
+    TextDim = Color3.fromRGB(148, 163, 184),         -- Muted slate
+    TextDisabled = Color3.fromRGB(100, 116, 139),    -- Dark slate
     
     -- State colors (Pastel versions)
-    Success = Color3.fromRGB(134, 239, 172),        -- Soft green
-    Warning = Color3.fromRGB(253, 224, 71),         -- Soft yellow
-    Error = Color3.fromRGB(252, 165, 165),          -- Soft red
+    Success = Color3.fromRGB(134, 239, 172),         -- Soft green
+    Warning = Color3.fromRGB(253, 224, 71),          -- Soft yellow
+    Error = Color3.fromRGB(248, 113, 113),           -- Soft red
+    Info = Color3.fromRGB(147, 197, 253),            -- Soft blue
     
-    -- UI Element colors (Neo brutalism style)
-    Border = Color3.fromRGB(71, 85, 105),           -- Slate border
-    BorderAccent = Color3.fromRGB(159, 122, 234),   -- Primary border
-    Shadow = Color3.fromRGB(15, 16, 23),            -- Deep shadow
-    Hover = Color3.fromRGB(41, 44, 58),             -- Subtle hover
-    Active = Color3.fromRGB(51, 54, 68),            -- Active state
-    
-    -- Transparency
-    Transparent = Color3.fromRGB(0, 0, 0)
+    -- UI Element colors (Neo brutalism)
+    Border = Color3.fromRGB(71, 85, 105),            -- Slate border
+    BorderAccent = Color3.fromRGB(139, 92, 246),     -- Purple border
+    Shadow = Color3.fromRGB(12, 12, 20),             -- Deep shadow
+    Hover = Color3.fromRGB(41, 41, 58),              -- Subtle hover
+    Active = Color3.fromRGB(51, 51, 68),             -- Active state
 }
 
 -- Transparency values
@@ -75,17 +72,17 @@ Theme.Spacing = {
 }
 
 Theme.Size = {
-    Border = 2,                    -- Thicker borders for neo brutalism
-    BorderThick = 3,               -- Extra thick for emphasis
-    CornerRadius = 8,              -- Slightly rounded
+    Border = 2,                    -- Thick borders
+    BorderThick = 3,               -- Extra thick
+    CornerRadius = 4,              -- Minimal rounding (more brutalist)
     ScrollBarWidth = 6,
     
     -- Component sizes
-    ButtonHeight = 38,
-    ToggleSize = 22,
-    SliderHeight = 8,
-    InputHeight = 38,
-    DropdownHeight = 38,
+    ButtonHeight = 40,
+    ToggleSize = 24,
+    SliderHeight = 24,             -- Square slider
+    InputHeight = 40,
+    DropdownHeight = 40,
     
     -- Container sizes
     WindowMinWidth = 450,
@@ -95,6 +92,13 @@ Theme.Size = {
     
     -- Neo brutalism shadow offset
     ShadowOffset = 4
+}
+
+-- Responsive breakpoints
+Theme.Responsive = {
+    Mobile = 600,      -- Below this = mobile
+    Tablet = 900,      -- Below this = tablet
+    Desktop = 1200     -- Above this = desktop
 }
 
 -- Animation settings (Snappier for neo brutalism)

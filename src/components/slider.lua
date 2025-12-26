@@ -66,19 +66,19 @@ function Slider:CreateUI()
     self.ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
     self.ValueLabel.Parent = self.Container
     
-    -- Slider track
+    -- Slider track (SQUARE)
     self.Track = Instance.new("Frame")
     self.Track.Name = "Track"
     self.Track.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.Track.BorderSizePixel = 0
-    self.Track.Size = UDim2.new(1, -28, 0, 10)
+    self.Track.Size = UDim2.new(1, -28, 0, self.Theme.Size.SliderHeight)
     self.Track.Position = UDim2.fromOffset(14, 44)
     self.Track.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Track, 5)
+    self.Theme.CreateCorner(self.Track, 4)
     self.Theme.CreateStroke(self.Track, self.Theme.Colors.Border, self.Theme.Size.Border)
     
-    -- Slider fill
+    -- Slider fill (SQUARE)
     self.Fill = Instance.new("Frame")
     self.Fill.Name = "Fill"
     self.Fill.BackgroundColor3 = self.Theme.Colors.Primary
@@ -86,19 +86,19 @@ function Slider:CreateUI()
     self.Fill.Size = UDim2.new(0, 0, 1, 0)
     self.Fill.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Fill, 5)
+    self.Theme.CreateCorner(self.Fill, 2)
     
-    -- Slider knob
+    -- Slider knob (SQUARE)
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(18, 18)
+    self.Knob.Size = UDim2.fromOffset(self.Theme.Size.SliderHeight, self.Theme.Size.SliderHeight)
     self.Knob.Position = UDim2.new(0, 0, 0.5, 0)
     self.Knob.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Knob.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Knob, 9)
+    self.Theme.CreateCorner(self.Knob, 2)
     self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Primary, self.Theme.Size.BorderThick)
     
     -- Input handling

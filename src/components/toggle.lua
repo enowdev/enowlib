@@ -64,29 +64,29 @@ function Toggle:CreateUI()
         desc.Parent = self.Container
     end
     
-    -- Toggle switch background
+    -- Toggle switch background (SQUARE for neo brutalism)
     self.Switch = Instance.new("Frame")
     self.Switch.Name = "Switch"
     self.Switch.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.Switch.BorderSizePixel = 0
-    self.Switch.Size = UDim2.fromOffset(48, 26)
-    self.Switch.Position = UDim2.new(1, -56, 0.5, 0)
+    self.Switch.Size = UDim2.fromOffset(52, 26)
+    self.Switch.Position = UDim2.new(1, -60, 0.5, 0)
     self.Switch.AnchorPoint = Vector2.new(0, 0.5)
     self.Switch.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Switch, 13)
+    self.Theme.CreateCorner(self.Switch, 4)  -- Minimal rounding
     self.Theme.CreateStroke(self.Switch, self.Theme.Colors.Border, self.Theme.Size.Border)
     
-    -- Toggle knob
+    -- Toggle knob (SQUARE)
     self.Knob = Instance.new("Frame")
     self.Knob.Name = "Knob"
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(20, 20)
-    self.Knob.Position = UDim2.fromOffset(3, 3)
+    self.Knob.Size = UDim2.fromOffset(22, 22)
+    self.Knob.Position = UDim2.fromOffset(2, 2)
     self.Knob.Parent = self.Switch
     
-    self.Theme.CreateCorner(self.Knob, 10)
+    self.Theme.CreateCorner(self.Knob, 2)  -- Very minimal rounding
     self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Border, self.Theme.Size.Border)
     
     -- Click button
@@ -134,7 +134,7 @@ function Toggle:UpdateVisual()
         }, 0.2)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(25, 3),
+            Position = UDim2.fromOffset(28, 2),
             BackgroundColor3 = self.Theme.Colors.Background
         }, 0.2)
         
@@ -158,7 +158,7 @@ function Toggle:UpdateVisual()
         }, 0.2)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(3, 3),
+            Position = UDim2.fromOffset(2, 2),
             BackgroundColor3 = self.Theme.Colors.Text
         }, 0.2)
         

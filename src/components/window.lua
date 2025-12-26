@@ -9,11 +9,21 @@ function Window.new(config, theme, utils, enowlib)
     self.Theme = theme
     self.Utils = utils
     self.EnowLib = enowlib
+    
+    -- Get viewport size for responsive
+    local ViewportSize = workspace.CurrentCamera.ViewportSize
+    local isMobile = ViewportSize.X < theme.Responsive.Mobile
+    local isTablet = ViewportSize.X < theme.Responsive.Tablet and not isMobile
+    
+    -- Responsive default size
+    local defaultWidth = isMobile and ViewportSize.X * 0.95 or (isTablet and 450 or 520)
+    local defaultHeight = isMobile and ViewportSize.Y * 0.85 or (isTablet and 380 or 420)
+    
     self.Config = utils.Merge({
         Title = "EnowLib",
-        Size = UDim2.fromOffset(500, 400),
-        MinSize = Vector2.new(400, 300),
-        Draggable = true,
+        Size = UDim2.fromOffset(defaultWidth, defaultHeight),
+        MinSize = Vector2.new(320, 280),
+        Draggable = not isMobile,  -- Disable drag on mobile
         Resizable = false,
         CloseButton = true
     }, config or {})
@@ -21,6 +31,8 @@ function Window.new(config, theme, utils, enowlib)
     self.Tabs = {}
     self.CurrentTab = nil
     self.Visible = true
+    self.IsMobile = isMobile
+    self.IsTablet = isTablet
     
     self:CreateUI()
     
@@ -127,12 +139,16 @@ function Window:CreateTitleBar()
 end
 
 function Window:CreateTabBar()
+    -- Responsive tab bar width
+    local tabBarWidth = self.IsMobile and 0 or (self.IsTablet and 140 or 160)
+    
     self.TabBar = Instance.new("Frame")
     self.TabBar.Name = "TabBar"
     self.TabBar.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.TabBar.BorderSizePixel = 0
-    self.TabBar.Size = UDim2.new(0, 160, 1, -48)
+    self.TabBar.Size = UDim2.new(0, tabBarWidth, 1, -48)
     self.TabBar.Position = UDim2.fromOffset(0, 48)
+    self.TabBar.Visible = not self.IsMobile  -- Hide on mobile, use dropdown instead
     self.TabBar.Parent = self.Container
     
     self.Theme.CreateStroke(self.TabBar, self.Theme.Colors.Border, 2)
@@ -162,16 +178,19 @@ function Window:CreateTabBar()
 end
 
 function Window:CreateContentArea()
+    -- Responsive content area
+    local contentOffset = self.IsMobile and 0 or (self.IsTablet and 140 or 160)
+    
     self.ContentArea = Instance.new("Frame")
     self.ContentArea.Name = "ContentArea"
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(1, -160, 1, -48)
-    self.ContentArea.Position = UDim2.fromOffset(160, 48)
+    self.ContentArea.Size = UDim2.new(1, -contentOffset, 1, -48)
+    self.ContentArea.Position = UDim2.fromOffset(contentOffset, 48)
     self.ContentArea.ClipsDescendants = true
     self.ContentArea.Parent = self.Container
     
-    self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Large)
+    self.Theme.CreatePadding(self.ContentArea, self.IsMobile and self.Theme.Spacing.Medium or self.Theme.Spacing.Large)
 end
 
 function Window:AddTab(config)
