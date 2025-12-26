@@ -62,12 +62,18 @@ function processModule(modulePath, moduleName) {
             if (match) {
                 returnedVar = match[1];
                 lines[i] = ''; // Remove this line
-                break;
+                break
+;
             }
         }
     }
     
     content = lines.join('\n').trimEnd();
+    
+    // CRITICAL FIX: Remove the first "local ModuleName = " declaration to prevent shadowing
+    // This regex finds "local ModuleName = {}" or "local ModuleName = value" at the start of lines
+    const localDeclPattern = new RegExp(`^local\\s+${returnedVar}\\s*=`, 'gm');
+    content = content.replace(localDeclPattern, `${returnedVar} =`);
     
     // Wrap in module block with proper assignment
     return `

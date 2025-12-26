@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 07:23:50
+-- Built: 2025-12-26 07:28:29
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -12,7 +12,7 @@ do
 -- EnowLib Theme System
 -- Vaporwave Tech Dark Color Scheme
 
-local Theme = {}
+Theme = {}
 
 -- Color Palette
 Theme.Colors = {
@@ -208,7 +208,7 @@ local Utils
 do
 -- EnowLib Utility Functions
 
-local Utils = {}
+Utils = {}
 
 -- Tween utility
 function Utils.Tween(instance, properties, duration, easingStyle, easingDirection, callback)
@@ -435,7 +435,7 @@ local Section
 do
 -- EnowLib Section Component
 
-local Section = {}
+Section = {}
 Section.__index = Section
 
 function Section.new(config, tab, theme, utils)
@@ -510,7 +510,7 @@ local Label
 do
 -- EnowLib Label Component
 
-local Label = {}
+Label = {}
 Label.__index = Label
 
 function Label.new(config, tab, theme, utils)
@@ -590,7 +590,7 @@ local Button
 do
 -- EnowLib Button Component
 
-local Button = {}
+Button = {}
 Button.__index = Button
 
 function Button.new(config, tab, theme, utils)
@@ -715,7 +715,7 @@ local Toggle
 do
 -- EnowLib Toggle Component
 
-local Toggle = {}
+Toggle = {}
 Toggle.__index = Toggle
 
 function Toggle.new(config, tab, theme, utils)
@@ -886,7 +886,7 @@ local Slider
 do
 -- EnowLib Slider Component
 
-local Slider = {}
+Slider = {}
 Slider.__index = Slider
 
 function Slider.new(config, tab, theme, utils)
@@ -1060,7 +1060,7 @@ local Input
 do
 -- EnowLib Input Component
 
-local Input = {}
+Input = {}
 Input.__index = Input
 
 function Input.new(config, tab, theme, utils)
@@ -1189,7 +1189,7 @@ local Dropdown
 do
 -- EnowLib Dropdown Component
 
-local Dropdown = {}
+Dropdown = {}
 Dropdown.__index = Dropdown
 
 function Dropdown.new(config, tab, theme, utils)
@@ -1444,7 +1444,7 @@ local Keybind
 do
 -- EnowLib Keybind Component
 
-local Keybind = {}
+Keybind = {}
 Keybind.__index = Keybind
 
 function Keybind.new(config, tab, theme, utils)
@@ -1629,7 +1629,7 @@ local ColorPicker
 do
 -- EnowLib ColorPicker Component
 
-local ColorPicker = {}
+ColorPicker = {}
 ColorPicker.__index = ColorPicker
 
 function ColorPicker.new(config, tab, theme, utils)
@@ -2028,7 +2028,7 @@ local MultiDropdown
 do
 -- EnowLib MultiDropdown Component (Checkbox List)
 
-local MultiDropdown = {}
+MultiDropdown = {}
 MultiDropdown.__index = MultiDropdown
 
 function MultiDropdown.new(config, tab, theme, utils)
@@ -2377,7 +2377,7 @@ local ProgressBar
 do
 -- EnowLib ProgressBar Component
 
-local ProgressBar = {}
+ProgressBar = {}
 ProgressBar.__index = ProgressBar
 
 function ProgressBar.new(config, tab, theme, utils)
@@ -2547,7 +2547,7 @@ local Notification
 do
 -- EnowLib Notification System
 
-local Notification = {}
+Notification = {}
 Notification.Queue = {}
 Notification.Active = {}
 Notification.Container = nil
@@ -2741,7 +2741,7 @@ local Tab
 do
 -- EnowLib Tab Component
 
-local Tab = {}
+Tab = {}
 Tab.__index = Tab
 
 function Tab.new(config, window, theme, utils)
@@ -2942,7 +2942,7 @@ local Window
 do
 -- EnowLib Window Component
 
-local Window = {}
+Window = {}
 Window.__index = Window
 
 function Window.new(config, theme, utils, enowlib)
@@ -3167,7 +3167,7 @@ do
 -- EnowLib SaveManager
 -- Handles configuration persistence
 
-local SaveManager = {}
+SaveManager = {}
 SaveManager.Folder = "EnowLib"
 SaveManager.FileName = "config.json"
 SaveManager.Configs = {}
@@ -3522,7 +3522,7 @@ do
 -- EnowLib InterfaceManager
 -- Handles UI state and theme management
 
-local InterfaceManager = {}
+InterfaceManager = {}
 InterfaceManager.Settings = {
     theme = "Vaporwave",
     transparency = 0,
