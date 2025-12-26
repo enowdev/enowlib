@@ -1,13 +1,13 @@
-﻿-- VaporUI v1.0.0
+﻿-- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 13:51:32
+-- Built: 2025-12-26 14:08:51
 -- Author: EnowHub Development
 
-local VaporUI = {}
+local EnowLib = {}
 
 -- Module: Theme
 do
--- VaporUI Theme System
+-- EnowLib Theme System
 -- Vaporwave Tech Dark Color Scheme
 
 local Theme = {}
@@ -203,7 +203,7 @@ end
 
 -- Module: Utils
 do
--- VaporUI Utility Functions
+-- EnowLib Utility Functions
 
 local Utils = {}
 
@@ -429,7 +429,7 @@ end
 
 -- Module: Section
 do
--- VaporUI Section Component
+-- EnowLib Section Component
 
 local Section = {}
 Section.__index = Section
@@ -503,7 +503,7 @@ end
 
 -- Module: Label
 do
--- VaporUI Label Component
+-- EnowLib Label Component
 
 local Label = {}
 Label.__index = Label
@@ -582,7 +582,7 @@ end
 
 -- Module: Button
 do
--- VaporUI Button Component
+-- EnowLib Button Component
 
 local Button = {}
 Button.__index = Button
@@ -706,7 +706,7 @@ end
 
 -- Module: Toggle
 do
--- VaporUI Toggle Component
+-- EnowLib Toggle Component
 
 local Toggle = {}
 Toggle.__index = Toggle
@@ -876,7 +876,7 @@ end
 
 -- Module: Slider
 do
--- VaporUI Slider Component
+-- EnowLib Slider Component
 
 local Slider = {}
 Slider.__index = Slider
@@ -1049,7 +1049,7 @@ end
 
 -- Module: Input
 do
--- VaporUI Input Component
+-- EnowLib Input Component
 
 local Input = {}
 Input.__index = Input
@@ -1177,7 +1177,7 @@ end
 
 -- Module: Dropdown
 do
--- VaporUI Dropdown Component
+-- EnowLib Dropdown Component
 
 local Dropdown = {}
 Dropdown.__index = Dropdown
@@ -1429,9 +1429,1108 @@ end
 
 end
 
+-- Module: Keybind
+do
+-- EnowLib Keybind Component
+
+local Keybind = {}
+Keybind.__index = Keybind
+
+function Keybind.new(config, tab, theme, utils)
+    local self = setmetatable({}, Keybind)
+    
+    self.Tab = tab
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Keybind",
+        Description = nil,
+        Default = Enum.KeyCode.E,
+        Callback = function(key) end
+    }, config or {})
+    
+    self.Value = self.Config.Default
+    self.Listening = false
+    
+    self:CreateUI()
+    self:SetupListener()
+    
+    return self
+end
+
+function Keybind:CreateUI()
+    -- Container
+    self.Container = Instance.new("Frame")
+    self.Container.Name = "Keybind"
+    self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.Container.BorderSizePixel = 0
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 56 or 40)
+    self.Container.Parent = self.Tab.Container
+    
+    self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.Name = "Title"
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, -100, 0, 20)
+    title.Position = UDim2.fromOffset(12, self.Config.Description and 8 or 10)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Description
+    if self.Config.Description then
+        local desc = Instance.new("TextLabel")
+        desc.Name = "Description"
+        desc.BackgroundTransparency = 1
+        desc.Size = UDim2.new(1, -100, 0, 16)
+        desc.Position = UDim2.fromOffset(12, 28)
+        desc.Font = self.Theme.Font.Regular
+        desc.Text = self.Config.Description
+        desc.TextColor3 = self.Theme.Colors.TextDim
+        desc.TextSize = self.Theme.Font.Size.Small
+        desc.TextXAlignment = Enum.TextXAlignment.Left
+        desc.Parent = self.Container
+    end
+    
+    -- Keybind button
+    self.Button = Instance.new("TextButton")
+    self.Button.Name = "KeybindButton"
+    self.Button.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.Button.BorderSizePixel = 0
+    self.Button.Size = UDim2.fromOffset(80, 24)
+    self.Button.Position = UDim2.new(1, -88, 0.5, 0)
+    self.Button.AnchorPoint = Vector2.new(0, 0.5)
+    self.Button.Font = self.Theme.Font.Mono
+    self.Button.Text = self:GetKeyName(self.Value)
+    self.Button.TextColor3 = self.Theme.Colors.Text
+    self.Button.TextSize = self.Theme.Font.Size.Small
+    self.Button.AutoButtonColor = false
+    self.Button.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.Button, 4)
+    self.Theme.CreateStroke(self.Button, self.Theme.Colors.Border)
+    
+    -- Click handler
+    self.Button.MouseButton1Click:Connect(function()
+        self:StartListening()
+    end)
+    
+    -- Hover effects
+    self.Button.MouseEnter:Connect(function()
+        if not self.Listening then
+            self.Utils.Tween(self.Button, {
+                BackgroundColor3 = self.Theme.Colors.Hover
+            }, 0.15)
+        end
+    end)
+    
+    self.Button.MouseLeave:Connect(function()
+        if not self.Listening then
+            self.Utils.Tween(self.Button, {
+                BackgroundColor3 = self.Theme.Colors.BackgroundDark
+            }, 0.15)
+        end
+    end)
+end
+
+function Keybind:SetupListener()
+    local UserInputService = game:GetService("UserInputService")
+    
+    self.Connection = UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if gameProcessed then return end
+        
+        if self.Listening then
+            if input.UserInputType == Enum.UserInputType.Keyboard then
+                self:SetKey(input.KeyCode)
+                self:StopListening()
+            end
+        else
+            if input.KeyCode == self.Value then
+                pcall(self.Config.Callback, self.Value)
+            end
+        end
+    end)
+end
+
+function Keybind:StartListening()
+    self.Listening = true
+    self.Button.Text = "..."
+    
+    self.Utils.Tween(self.Button, {
+        BackgroundColor3 = self.Theme.Colors.Primary
+    }, 0.15)
+    
+    local stroke = self.Button:FindFirstChild("UIStroke")
+    if stroke then
+        self.Utils.Tween(stroke, {
+            Color = self.Theme.Colors.Primary
+        }, 0.15)
+    end
+end
+
+function Keybind:StopListening()
+    self.Listening = false
+    
+    self.Utils.Tween(self.Button, {
+        BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    }, 0.15)
+    
+    local stroke = self.Button:FindFirstChild("UIStroke")
+    if stroke then
+        self.Utils.Tween(stroke, {
+            Color = self.Theme.Colors.Border
+        }, 0.15)
+    end
+end
+
+function Keybind:SetKey(keyCode)
+    self.Value = keyCode
+    self.Button.Text = self:GetKeyName(keyCode)
+end
+
+function Keybind:GetKeyName(keyCode)
+    local name = keyCode.Name
+    
+    -- Simplify common key names
+    name = name:gsub("Key", "")
+    
+    return name
+end
+
+function Keybind:Destroy()
+    if self.Connection then
+        self.Connection:Disconnect()
+    end
+    self.Container:Destroy()
+end
+
+
+end
+
+-- Module: ColorPicker
+do
+-- EnowLib ColorPicker Component
+
+local ColorPicker = {}
+ColorPicker.__index = ColorPicker
+
+function ColorPicker.new(config, tab, theme, utils)
+    local self = setmetatable({}, ColorPicker)
+    
+    self.Tab = tab
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Color Picker",
+        Description = nil,
+        Default = Color3.fromRGB(138, 43, 226),
+        Callback = function(value) end
+    }, config or {})
+    
+    self.Value = self.Config.Default
+    self.Open = false
+    self.Hue = 0
+    self.Saturation = 1
+    self.Value = 1
+    
+    self:CreateUI()
+    self:UpdateFromColor(self.Config.Default)
+    
+    return self
+end
+
+function ColorPicker:CreateUI()
+    -- Container
+    self.Container = Instance.new("Frame")
+    self.Container.Name = "ColorPicker"
+    self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.Container.BorderSizePixel = 0
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 56 or 40)
+    self.Container.Parent = self.Tab.Container
+    self.Container.ClipsDescendants = false
+    
+    self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.Name = "Title"
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, -60, 0, 20)
+    title.Position = UDim2.fromOffset(12, self.Config.Description and 8 or 10)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Description
+    if self.Config.Description then
+        local desc = Instance.new("TextLabel")
+        desc.Name = "Description"
+        desc.BackgroundTransparency = 1
+        desc.Size = UDim2.new(1, -60, 0, 16)
+        desc.Position = UDim2.fromOffset(12, 28)
+        desc.Font = self.Theme.Font.Regular
+        desc.Text = self.Config.Description
+        desc.TextColor3 = self.Theme.Colors.TextDim
+        desc.TextSize = self.Theme.Font.Size.Small
+        desc.TextXAlignment = Enum.TextXAlignment.Left
+        desc.Parent = self.Container
+    end
+    
+    -- Color preview button
+    self.PreviewButton = Instance.new("TextButton")
+    self.PreviewButton.Name = "Preview"
+    self.PreviewButton.BackgroundColor3 = self.Value
+    self.PreviewButton.BorderSizePixel = 0
+    self.PreviewButton.Size = UDim2.fromOffset(32, 24)
+    self.PreviewButton.Position = UDim2.new(1, -40, 0.5, 0)
+    self.PreviewButton.AnchorPoint = Vector2.new(0, 0.5)
+    self.PreviewButton.Text = ""
+    self.PreviewButton.AutoButtonColor = false
+    self.PreviewButton.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.PreviewButton, 4)
+    self.Theme.CreateStroke(self.PreviewButton, self.Theme.Colors.Border)
+    
+    -- Picker panel
+    self.PickerPanel = Instance.new("Frame")
+    self.PickerPanel.Name = "PickerPanel"
+    self.PickerPanel.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.PickerPanel.BorderSizePixel = 0
+    self.PickerPanel.Size = UDim2.new(0, 200, 0, 0)
+    self.PickerPanel.Position = UDim2.new(1, -208, 1, 8)
+    self.PickerPanel.Visible = false
+    self.PickerPanel.ZIndex = 100
+    self.PickerPanel.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.PickerPanel)
+    self.Theme.CreateStroke(self.PickerPanel, self.Theme.Colors.Primary, 2)
+    
+    -- SV Picker (Saturation/Value)
+    self.SVPicker = Instance.new("ImageButton")
+    self.SVPicker.Name = "SVPicker"
+    self.SVPicker.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    self.SVPicker.BorderSizePixel = 0
+    self.SVPicker.Size = UDim2.new(1, -16, 0, 150)
+    self.SVPicker.Position = UDim2.fromOffset(8, 8)
+    self.SVPicker.Image = "rbxassetid://4155801252"
+    self.SVPicker.AutoButtonColor = false
+    self.SVPicker.Parent = self.PickerPanel
+    
+    self.Theme.CreateCorner(self.SVPicker, 4)
+    
+    -- SV Cursor
+    self.SVCursor = Instance.new("Frame")
+    self.SVCursor.Name = "Cursor"
+    self.SVCursor.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    self.SVCursor.BorderSizePixel = 0
+    self.SVCursor.Size = UDim2.fromOffset(8, 8)
+    self.SVCursor.AnchorPoint = Vector2.new(0.5, 0.5)
+    self.SVCursor.Parent = self.SVPicker
+    
+    self.Theme.CreateCorner(self.SVCursor, 4)
+    self.Theme.CreateStroke(self.SVCursor, Color3.fromRGB(0, 0, 0), 2)
+    
+    -- Hue slider
+    self.HueSlider = Instance.new("ImageButton")
+    self.HueSlider.Name = "HueSlider"
+    self.HueSlider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    self.HueSlider.BorderSizePixel = 0
+    self.HueSlider.Size = UDim2.new(1, -16, 0, 12)
+    self.HueSlider.Position = UDim2.fromOffset(8, 166)
+    self.HueSlider.Image = "rbxassetid://3641079629"
+    self.HueSlider.ImageColor3 = Color3.fromRGB(255, 255, 255)
+    self.HueSlider.ScaleType = Enum.ScaleType.Crop
+    self.HueSlider.AutoButtonColor = false
+    self.HueSlider.Parent = self.PickerPanel
+    
+    self.Theme.CreateCorner(self.HueSlider, 6)
+    
+    -- Hue cursor
+    self.HueCursor = Instance.new("Frame")
+    self.HueCursor.Name = "Cursor"
+    self.HueCursor.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    self.HueCursor.BorderSizePixel = 0
+    self.HueCursor.Size = UDim2.fromOffset(4, 16)
+    self.HueCursor.Position = UDim2.fromOffset(0, -2)
+    self.HueCursor.AnchorPoint = Vector2.new(0.5, 0)
+    self.HueCursor.Parent = self.HueSlider
+    
+    self.Theme.CreateCorner(self.HueCursor, 2)
+    self.Theme.CreateStroke(self.HueCursor, Color3.fromRGB(0, 0, 0), 1)
+    
+    -- RGB inputs
+    local rgbContainer = Instance.new("Frame")
+    rgbContainer.Name = "RGB"
+    rgbContainer.BackgroundTransparency = 1
+    rgbContainer.Size = UDim2.new(1, -16, 0, 28)
+    rgbContainer.Position = UDim2.fromOffset(8, 186)
+    rgbContainer.Parent = self.PickerPanel
+    
+    local rgbLabels = {"R", "G", "B"}
+    for i, label in ipairs(rgbLabels) do
+        local input = Instance.new("TextBox")
+        input.Name = label
+        input.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+        input.BorderSizePixel = 0
+        input.Size = UDim2.new(0.3, -4, 1, 0)
+        input.Position = UDim2.new((i - 1) * 0.333, 0, 0, 0)
+        input.Font = self.Theme.Font.Mono
+        input.Text = "255"
+        input.TextColor3 = self.Theme.Colors.Text
+        input.TextSize = self.Theme.Font.Size.Small
+        input.PlaceholderText = label
+        input.Parent = rgbContainer
+        
+        self.Theme.CreateCorner(input, 4)
+        
+        input.FocusLost:Connect(function()
+            self:UpdateFromRGB()
+        end)
+    end
+    
+    -- Hex input
+    self.HexInput = Instance.new("TextBox")
+    self.HexInput.Name = "Hex"
+    self.HexInput.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.HexInput.BorderSizePixel = 0
+    self.HexInput.Size = UDim2.new(1, -16, 0, 28)
+    self.HexInput.Position = UDim2.fromOffset(8, 222)
+    self.HexInput.Font = self.Theme.Font.Mono
+    self.HexInput.Text = "#8A2BE2"
+    self.HexInput.TextColor3 = self.Theme.Colors.Text
+    self.HexInput.TextSize = self.Theme.Font.Size.Small
+    self.HexInput.PlaceholderText = "#RRGGBB"
+    self.HexInput.Parent = self.PickerPanel
+    
+    self.Theme.CreateCorner(self.HexInput, 4)
+    
+    self.HexInput.FocusLost:Connect(function()
+        self:UpdateFromHex()
+    end)
+    
+    -- Event handlers
+    local UserInputService = game:GetService("UserInputService")
+    local draggingSV = false
+    local draggingHue = false
+    
+    self.SVPicker.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingSV = true
+            self:UpdateSVFromInput(input.Position)
+        end
+    end)
+    
+    self.SVPicker.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingSV = false
+        end
+    end)
+    
+    self.HueSlider.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingHue = true
+            self:UpdateHueFromInput(input.Position)
+        end
+    end)
+    
+    self.HueSlider.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingHue = false
+        end
+    end)
+    
+    UserInputService.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            if draggingSV then
+                self:UpdateSVFromInput(input.Position)
+            elseif draggingHue then
+                self:UpdateHueFromInput(input.Position)
+            end
+        end
+    end)
+    
+    -- Preview button click
+    self.PreviewButton.MouseButton1Click:Connect(function()
+        self:Toggle()
+    end)
+    
+    -- Hover effects
+    self.PreviewButton.MouseEnter:Connect(function()
+        local stroke = self.PreviewButton:FindFirstChild("UIStroke")
+        if stroke then
+            self.Utils.Tween(stroke, {
+                Color = self.Theme.Colors.Primary
+            }, 0.15)
+        end
+    end)
+    
+    self.PreviewButton.MouseLeave:Connect(function()
+        local stroke = self.PreviewButton:FindFirstChild("UIStroke")
+        if stroke then
+            self.Utils.Tween(stroke, {
+                Color = self.Theme.Colors.Border
+            }, 0.15)
+        end
+    end)
+end
+
+function ColorPicker:UpdateSVFromInput(mousePos)
+    local pos = self.SVPicker.AbsolutePosition
+    local size = self.SVPicker.AbsoluteSize
+    
+    local relativeX = math.clamp(mousePos.X - pos.X, 0, size.X)
+    local relativeY = math.clamp(mousePos.Y - pos.Y, 0, size.Y)
+    
+    self.Saturation = relativeX / size.X
+    self.Brightness = 1 - (relativeY / size.Y)
+    
+    self:UpdateColor()
+end
+
+function ColorPicker:UpdateHueFromInput(mousePos)
+    local pos = self.HueSlider.AbsolutePosition
+    local size = self.HueSlider.AbsoluteSize
+    
+    local relativeX = math.clamp(mousePos.X - pos.X, 0, size.X)
+    self.Hue = relativeX / size.X
+    
+    self:UpdateColor()
+end
+
+function ColorPicker:UpdateColor()
+    local color = Color3.fromHSV(self.Hue, self.Saturation, self.Brightness)
+    self.Value = color
+    
+    -- Update preview
+    self.PreviewButton.BackgroundColor3 = color
+    
+    -- Update SV picker background
+    self.SVPicker.BackgroundColor3 = Color3.fromHSV(self.Hue, 1, 1)
+    
+    -- Update cursors
+    self.SVCursor.Position = UDim2.new(self.Saturation, 0, 1 - self.Brightness, 0)
+    self.HueCursor.Position = UDim2.new(self.Hue, 0, 0, -2)
+    
+    -- Update RGB inputs
+    local r = math.floor(color.R * 255)
+    local g = math.floor(color.G * 255)
+    local b = math.floor(color.B * 255)
+    
+    local rgbContainer = self.PickerPanel:FindFirstChild("RGB")
+    if rgbContainer then
+        rgbContainer.R.Text = tostring(r)
+        rgbContainer.G.Text = tostring(g)
+        rgbContainer.B.Text = tostring(b)
+    end
+    
+    -- Update hex input
+    self.HexInput.Text = string.format("#%02X%02X%02X", r, g, b)
+    
+    -- Callback
+    pcall(self.Config.Callback, color)
+end
+
+function ColorPicker:UpdateFromColor(color)
+    local h, s, v = color:ToHSV()
+    self.Hue = h
+    self.Saturation = s
+    self.Brightness = v
+    self:UpdateColor()
+end
+
+function ColorPicker:UpdateFromRGB()
+    local rgbContainer = self.PickerPanel:FindFirstChild("RGB")
+    if not rgbContainer then return end
+    
+    local r = tonumber(rgbContainer.R.Text) or 0
+    local g = tonumber(rgbContainer.G.Text) or 0
+    local b = tonumber(rgbContainer.B.Text) or 0
+    
+    r = math.clamp(r, 0, 255)
+    g = math.clamp(g, 0, 255)
+    b = math.clamp(b, 0, 255)
+    
+    local color = Color3.fromRGB(r, g, b)
+    self:UpdateFromColor(color)
+end
+
+function ColorPicker:UpdateFromHex()
+    local hex = self.HexInput.Text:gsub("#", "")
+    
+    if #hex ~= 6 then return end
+    
+    local r = tonumber(hex:sub(1, 2), 16) or 0
+    local g = tonumber(hex:sub(3, 4), 16) or 0
+    local b = tonumber(hex:sub(5, 6), 16) or 0
+    
+    local color = Color3.fromRGB(r, g, b)
+    self:UpdateFromColor(color)
+end
+
+function ColorPicker:Toggle()
+    if self.Open then
+        self:Close()
+    else
+        self:Open()
+    end
+end
+
+function ColorPicker:Open()
+    self.Open = true
+    self.PickerPanel.Visible = true
+    
+    self.Utils.Tween(self.PickerPanel, {
+        Size = UDim2.new(0, 200, 0, 258)
+    }, 0.2)
+end
+
+function ColorPicker:Close()
+    self.Open = false
+    
+    self.Utils.Tween(self.PickerPanel, {
+        Size = UDim2.new(0, 200, 0, 0)
+    }, 0.2, nil, nil, function()
+        self.PickerPanel.Visible = false
+    end)
+end
+
+function ColorPicker:SetValue(color)
+    self:UpdateFromColor(color)
+end
+
+
+end
+
+-- Module: MultiDropdown
+do
+-- EnowLib MultiDropdown Component (Checkbox List)
+
+local MultiDropdown = {}
+MultiDropdown.__index = MultiDropdown
+
+function MultiDropdown.new(config, tab, theme, utils)
+    local self = setmetatable({}, MultiDropdown)
+    
+    self.Tab = tab
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Multi Select",
+        Description = nil,
+        Options = {"Option 1", "Option 2", "Option 3"},
+        Default = {},
+        Callback = function(values) end
+    }, config or {})
+    
+    self.Values = {}
+    for _, v in ipairs(self.Config.Default) do
+        self.Values[v] = true
+    end
+    
+    self.Open = false
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function MultiDropdown:CreateUI()
+    -- Container
+    self.Container = Instance.new("Frame")
+    self.Container.Name = "MultiDropdown"
+    self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.Container.BorderSizePixel = 0
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 72 or 56)
+    self.Container.Parent = self.Tab.Container
+    self.Container.ClipsDescendants = false
+    
+    self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.Name = "Title"
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, -24, 0, 20)
+    title.Position = UDim2.fromOffset(12, 8)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Description
+    if self.Config.Description then
+        local desc = Instance.new("TextLabel")
+        desc.Name = "Description"
+        desc.BackgroundTransparency = 1
+        desc.Size = UDim2.new(1, -24, 0, 14)
+        desc.Position = UDim2.fromOffset(12, 26)
+        desc.Font = self.Theme.Font.Regular
+        desc.Text = self.Config.Description
+        desc.TextColor3 = self.Theme.Colors.TextDim
+        desc.TextSize = self.Theme.Font.Size.Small
+        desc.TextXAlignment = Enum.TextXAlignment.Left
+        desc.Parent = self.Container
+    end
+    
+    -- Dropdown button
+    self.Button = Instance.new("TextButton")
+    self.Button.Name = "DropdownButton"
+    self.Button.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.Button.BorderSizePixel = 0
+    self.Button.Size = UDim2.new(1, -24, 0, 28)
+    self.Button.Position = UDim2.fromOffset(12, self.Config.Description and 40 or 24)
+    self.Button.Font = self.Theme.Font.Regular
+    self.Button.Text = ""
+    self.Button.TextColor3 = self.Theme.Colors.Text
+    self.Button.TextSize = self.Theme.Font.Size.Regular
+    self.Button.AutoButtonColor = false
+    self.Button.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.Button, 4)
+    self.Theme.CreateStroke(self.Button, self.Theme.Colors.Border)
+    
+    -- Selected count text
+    self.ValueLabel = Instance.new("TextLabel")
+    self.ValueLabel.Name = "Value"
+    self.ValueLabel.BackgroundTransparency = 1
+    self.ValueLabel.Size = UDim2.new(1, -32, 1, 0)
+    self.ValueLabel.Position = UDim2.fromOffset(8, 0)
+    self.ValueLabel.Font = self.Theme.Font.Regular
+    self.ValueLabel.Text = self:GetDisplayText()
+    self.ValueLabel.TextColor3 = self.Theme.Colors.TextDim
+    self.ValueLabel.TextSize = self.Theme.Font.Size.Regular
+    self.ValueLabel.TextXAlignment = Enum.TextXAlignment.Left
+    self.ValueLabel.Parent = self.Button
+    
+    -- Arrow icon
+    local arrow = Instance.new("TextLabel")
+    arrow.Name = "Arrow"
+    arrow.BackgroundTransparency = 1
+    arrow.Size = UDim2.fromOffset(20, 20)
+    arrow.Position = UDim2.new(1, -24, 0.5, 0)
+    arrow.AnchorPoint = Vector2.new(0, 0.5)
+    arrow.Font = self.Theme.Font.Bold
+    arrow.Text = "â–¼"
+    arrow.TextColor3 = self.Theme.Colors.TextDim
+    arrow.TextSize = 10
+    arrow.Parent = self.Button
+    
+    self.Arrow = arrow
+    
+    -- Options list
+    self.OptionsList = Instance.new("Frame")
+    self.OptionsList.Name = "OptionsList"
+    self.OptionsList.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.OptionsList.BorderSizePixel = 0
+    self.OptionsList.Size = UDim2.new(1, -24, 0, 0)
+    self.OptionsList.Position = UDim2.fromOffset(12, self.Config.Description and 72 or 56)
+    self.OptionsList.Visible = false
+    self.OptionsList.ZIndex = 100
+    self.OptionsList.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.OptionsList, 4)
+    self.Theme.CreateStroke(self.OptionsList, self.Theme.Colors.Primary)
+    
+    -- Options scroll
+    local optionsScroll = Instance.new("ScrollingFrame")
+    optionsScroll.Name = "Scroll"
+    optionsScroll.BackgroundTransparency = 1
+    optionsScroll.BorderSizePixel = 0
+    optionsScroll.Size = UDim2.new(1, 0, 1, 0)
+    optionsScroll.ScrollBarThickness = 4
+    optionsScroll.ScrollBarImageColor3 = self.Theme.Colors.Primary
+    optionsScroll.CanvasSize = UDim2.fromOffset(0, 0)
+    optionsScroll.Parent = self.OptionsList
+    
+    -- Options layout
+    local layout = Instance.new("UIListLayout")
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.Parent = optionsScroll
+    
+    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        optionsScroll.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y)
+    end)
+    
+    -- Create option checkboxes
+    for _, option in ipairs(self.Config.Options) do
+        self:CreateOption(option, optionsScroll)
+    end
+    
+    -- Button click
+    self.Button.MouseButton1Click:Connect(function()
+        self:Toggle()
+    end)
+    
+    -- Hover effects
+    self.Button.MouseEnter:Connect(function()
+        self.Utils.Tween(self.Button, {
+            BackgroundColor3 = self.Theme.Colors.Hover
+        }, 0.15)
+    end)
+    
+    self.Button.MouseLeave:Connect(function()
+        self.Utils.Tween(self.Button, {
+            BackgroundColor3 = self.Theme.Colors.BackgroundDark
+        }, 0.15)
+    end)
+end
+
+function MultiDropdown:CreateOption(option, parent)
+    local optionContainer = Instance.new("Frame")
+    optionContainer.Name = "Option"
+    optionContainer.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    optionContainer.BorderSizePixel = 0
+    optionContainer.Size = UDim2.new(1, 0, 0, 32)
+    optionContainer.Parent = parent
+    
+    -- Checkbox
+    local checkbox = Instance.new("Frame")
+    checkbox.Name = "Checkbox"
+    checkbox.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    checkbox.BorderSizePixel = 0
+    checkbox.Size = UDim2.fromOffset(18, 18)
+    checkbox.Position = UDim2.fromOffset(8, 7)
+    checkbox.Parent = optionContainer
+    
+    self.Theme.CreateCorner(checkbox, 4)
+    self.Theme.CreateStroke(checkbox, self.Theme.Colors.Border)
+    
+    -- Checkmark
+    local checkmark = Instance.new("TextLabel")
+    checkmark.Name = "Checkmark"
+    checkmark.BackgroundTransparency = 1
+    checkmark.Size = UDim2.new(1, 0, 1, 0)
+    checkmark.Font = self.Theme.Font.Bold
+    checkmark.Text = "âœ“"
+    checkmark.TextColor3 = self.Theme.Colors.Primary
+    checkmark.TextSize = 14
+    checkmark.Visible = self.Values[option] or false
+    checkmark.Parent = checkbox
+    
+    -- Label
+    local label = Instance.new("TextLabel")
+    label.Name = "Label"
+    label.BackgroundTransparency = 1
+    label.Size = UDim2.new(1, -34, 1, 0)
+    label.Position = UDim2.fromOffset(30, 0)
+    label.Font = self.Theme.Font.Regular
+    label.Text = option
+    label.TextColor3 = self.Theme.Colors.Text
+    label.TextSize = self.Theme.Font.Size.Regular
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = optionContainer
+    
+    -- Click button
+    local button = Instance.new("TextButton")
+    button.Name = "Button"
+    button.BackgroundTransparency = 1
+    button.Size = UDim2.new(1, 0, 1, 0)
+    button.Text = ""
+    button.Parent = optionContainer
+    
+    button.MouseButton1Click:Connect(function()
+        self:ToggleOption(option, checkmark)
+    end)
+    
+    button.MouseEnter:Connect(function()
+        self.Utils.Tween(optionContainer, {
+            BackgroundColor3 = self.Theme.Colors.Hover
+        }, 0.15)
+    end)
+    
+    button.MouseLeave:Connect(function()
+        self.Utils.Tween(optionContainer, {
+            BackgroundColor3 = self.Theme.Colors.BackgroundDark
+        }, 0.15)
+    end)
+end
+
+function MultiDropdown:ToggleOption(option, checkmark)
+    self.Values[option] = not self.Values[option]
+    checkmark.Visible = self.Values[option]
+    
+    self.ValueLabel.Text = self:GetDisplayText()
+    
+    local selected = {}
+    for opt, enabled in pairs(self.Values) do
+        if enabled then
+            table.insert(selected, opt)
+        end
+    end
+    
+    pcall(self.Config.Callback, selected)
+end
+
+function MultiDropdown:GetDisplayText()
+    local count = 0
+    for _, enabled in pairs(self.Values) do
+        if enabled then
+            count = count + 1
+        end
+    end
+    
+    if count == 0 then
+        return "None selected"
+    elseif count == 1 then
+        for opt, enabled in pairs(self.Values) do
+            if enabled then
+                return opt
+            end
+        end
+    else
+        return string.format("%d selected", count)
+    end
+end
+
+function MultiDropdown:Toggle()
+    if self.Open then
+        self:Close()
+    else
+        self:OpenList()
+    end
+end
+
+function MultiDropdown:OpenList()
+    self.Open = true
+    
+    local optionCount = math.min(#self.Config.Options, 5)
+    local height = optionCount * 32
+    
+    self.OptionsList.Visible = true
+    self.Utils.Tween(self.OptionsList, {
+        Size = UDim2.new(1, -24, 0, height)
+    }, 0.2)
+    
+    self.Utils.Tween(self.Arrow, {
+        Rotation = 180
+    }, 0.2)
+end
+
+function MultiDropdown:Close()
+    self.Open = false
+    
+    self.Utils.Tween(self.OptionsList, {
+        Size = UDim2.new(1, -24, 0, 0)
+    }, 0.2, nil, nil, function()
+        self.OptionsList.Visible = false
+    end)
+    
+    self.Utils.Tween(self.Arrow, {
+        Rotation = 0
+    }, 0.2)
+end
+
+function MultiDropdown:SetValues(values)
+    self.Values = {}
+    for _, v in ipairs(values) do
+        self.Values[v] = true
+    end
+    
+    -- Update checkmarks
+    local scroll = self.OptionsList:FindFirstChild("Scroll")
+    if scroll then
+        for _, child in ipairs(scroll:GetChildren()) do
+            if child:IsA("Frame") and child.Name == "Option" then
+                local label = child:FindFirstChild("Label")
+                local checkmark = child:FindFirstChild("Checkbox"):FindFirstChild("Checkmark")
+                if label and checkmark then
+                    checkmark.Visible = self.Values[label.Text] or false
+                end
+            end
+        end
+    end
+    
+    self.ValueLabel.Text = self:GetDisplayText()
+end
+
+
+end
+
+-- Module: ProgressBar
+do
+-- EnowLib ProgressBar Component
+
+local ProgressBar = {}
+ProgressBar.__index = ProgressBar
+
+function ProgressBar.new(config, tab, theme, utils)
+    local self = setmetatable({}, ProgressBar)
+    
+    self.Tab = tab
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Progress",
+        Description = nil,
+        Min = 0,
+        Max = 100,
+        Value = 0,
+        ShowPercentage = true,
+        Animated = true
+    }, config or {})
+    
+    self.Value = self.Config.Value
+    
+    self:CreateUI()
+    self:UpdateVisual()
+    
+    return self
+end
+
+function ProgressBar:CreateUI()
+    -- Container
+    self.Container = Instance.new("Frame")
+    self.Container.Name = "ProgressBar"
+    self.Container.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.Container.BorderSizePixel = 0
+    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 72 or 56)
+    self.Container.Parent = self.Tab.Container
+    
+    self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.Name = "Title"
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, -60, 0, 20)
+    title.Position = UDim2.fromOffset(12, 8)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Percentage display
+    if self.Config.ShowPercentage then
+        self.PercentLabel = Instance.new("TextLabel")
+        self.PercentLabel.Name = "Percent"
+        self.PercentLabel.BackgroundTransparency = 1
+        self.PercentLabel.Size = UDim2.fromOffset(50, 20)
+        self.PercentLabel.Position = UDim2.new(1, -58, 0, 8)
+        self.PercentLabel.Font = self.Theme.Font.Mono
+        self.PercentLabel.Text = "0%"
+        self.PercentLabel.TextColor3 = self.Theme.Colors.Primary
+        self.PercentLabel.TextSize = self.Theme.Font.Size.Regular
+        self.PercentLabel.TextXAlignment = Enum.TextXAlignment.Right
+        self.PercentLabel.Parent = self.Container
+    end
+    
+    -- Description
+    if self.Config.Description then
+        local desc = Instance.new("TextLabel")
+        desc.Name = "Description"
+        desc.BackgroundTransparency = 1
+        desc.Size = UDim2.new(1, -24, 0, 14)
+        desc.Position = UDim2.fromOffset(12, 26)
+        desc.Font = self.Theme.Font.Regular
+        desc.Text = self.Config.Description
+        desc.TextColor3 = self.Theme.Colors.TextDim
+        desc.TextSize = self.Theme.Font.Size.Small
+        desc.TextXAlignment = Enum.TextXAlignment.Left
+        desc.Parent = self.Container
+    end
+    
+    -- Progress track
+    self.Track = Instance.new("Frame")
+    self.Track.Name = "Track"
+    self.Track.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.Track.BorderSizePixel = 0
+    self.Track.Size = UDim2.new(1, -24, 0, 8)
+    self.Track.Position = UDim2.fromOffset(12, self.Config.Description and 48 or 36)
+    self.Track.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.Track, 4)
+    
+    -- Progress fill
+    self.Fill = Instance.new("Frame")
+    self.Fill.Name = "Fill"
+    self.Fill.BackgroundColor3 = self.Theme.Colors.Primary
+    self.Fill.BorderSizePixel = 0
+    self.Fill.Size = UDim2.new(0, 0, 1, 0)
+    self.Fill.Parent = self.Track
+    
+    self.Theme.CreateCorner(self.Fill, 4)
+    self.Theme.CreateGradient(self.Fill, 0)
+    
+    -- Glow effect
+    if self.Config.Animated then
+        local glow = Instance.new("Frame")
+        glow.Name = "Glow"
+        glow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        glow.BackgroundTransparency = 0.5
+        glow.BorderSizePixel = 0
+        glow.Size = UDim2.new(0.3, 0, 1, 0)
+        glow.Position = UDim2.new(0, 0, 0, 0)
+        glow.Parent = self.Fill
+        
+        self.Theme.CreateCorner(glow, 4)
+        
+        -- Animate glow
+        local function animateGlow()
+            while self.Fill and self.Fill.Parent do
+                self.Utils.Tween(glow, {
+                    Position = UDim2.new(1, 0, 0, 0)
+                }, 1.5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, function()
+                    glow.Position = UDim2.new(-0.3, 0, 0, 0)
+                end)
+                task.wait(1.5)
+            end
+        end
+        
+        task.spawn(animateGlow)
+    end
+end
+
+function ProgressBar:SetValue(value)
+    self.Value = self.Utils.Clamp(value, self.Config.Min, self.Config.Max)
+    self:UpdateVisual()
+end
+
+function ProgressBar:UpdateVisual()
+    local percentage = (self.Value - self.Config.Min) / (self.Config.Max - self.Config.Min)
+    
+    if self.Config.Animated then
+        self.Utils.Tween(self.Fill, {
+            Size = UDim2.new(percentage, 0, 1, 0)
+        }, 0.3)
+    else
+        self.Fill.Size = UDim2.new(percentage, 0, 1, 0)
+    end
+    
+    if self.PercentLabel then
+        self.PercentLabel.Text = string.format("%d%%", math.floor(percentage * 100))
+    end
+end
+
+function ProgressBar:Increment(amount)
+    self:SetValue(self.Value + amount)
+end
+
+function ProgressBar:Reset()
+    self:SetValue(self.Config.Min)
+end
+
+
+end
+
 -- Module: Notification
 do
--- VaporUI Notification System
+-- EnowLib Notification System
 
 local Notification = {}
 Notification.Queue = {}
@@ -1446,7 +2545,7 @@ function Notification.Initialize(theme, utils)
     
     -- Create notification container
     local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "VaporUI_Notifications"
+    screenGui.Name = "EnowLib_Notifications"
     screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     screenGui.ResetOnSpawn = false
     screenGui.Parent = game:GetService("CoreGui")
@@ -1624,7 +2723,7 @@ end
 
 -- Module: Tab
 do
--- VaporUI Tab Component
+-- EnowLib Tab Component
 
 local Tab = {}
 Tab.__index = Tab
@@ -1791,23 +2890,52 @@ function Tab:AddSection(config)
     return section
 end
 
+function Tab:AddKeybind(config)
+    
+    local keybind = Keybind.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Components, keybind)
+    return keybind
+end
+
+function Tab:AddColorPicker(config)
+    
+    local colorpicker = ColorPicker.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Components, colorpicker)
+    return colorpicker
+end
+
+function Tab:AddMultiDropdown(config)
+    
+    local multidropdown = MultiDropdown.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Components, multidropdown)
+    return multidropdown
+end
+
+function Tab:AddProgressBar(config)
+    
+    local progressbar = ProgressBar.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Components, progressbar)
+    return progressbar
+end
+
 
 end
 
 -- Module: Window
 do
--- VaporUI Window Component
+-- EnowLib Window Component
 
 local Window = {}
 Window.__index = Window
 
-function Window.new(config, theme, utils)
+function Window.new(config, theme, utils, enowlib)
     local self = setmetatable({}, Window)
     
     self.Theme = theme
     self.Utils = utils
+    self.EnowLib = enowlib
     self.Config = utils.Merge({
-        Title = "VaporUI",
+        Title = "EnowLib",
         Size = UDim2.fromOffset(500, 400),
         MinSize = Vector2.new(400, 300),
         Draggable = true,
@@ -1827,7 +2955,7 @@ end
 function Window:CreateUI()
     -- Screen GUI
     self.ScreenGui = Instance.new("ScreenGui")
-    self.ScreenGui.Name = "VaporUI"
+    self.ScreenGui.Name = "EnowLib"
     self.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     self.ScreenGui.ResetOnSpawn = false
     
@@ -2016,34 +3144,725 @@ end
 
 end
 
--- Initialize VaporUI
-VaporUI.Version = "1.0.0"
-VaporUI.Author = "EnowHub Development"
+-- Module: SaveManager
+do
+-- EnowLib SaveManager
+-- Handles configuration persistence
+
+local SaveManager = {}
+SaveManager.Folder = "EnowLib"
+SaveManager.FileName = "config.json"
+SaveManager.Configs = {}
+
+function SaveManager.Initialize(window)
+    SaveManager.Window = window
+    
+    -- Create folder if not exists
+    if not isfolder(SaveManager.Folder) then
+        pcall(makefolder, SaveManager.Folder)
+    end
+    
+    -- Load existing configs
+    SaveManager.LoadConfigList()
+end
+
+function SaveManager.LoadConfigList()
+    if not isfolder(SaveManager.Folder) then
+        return
+    end
+    
+    local success, files = pcall(listfiles, SaveManager.Folder)
+    if not success then return end
+    
+    SaveManager.Configs = {}
+    
+    for _, file in ipairs(files) do
+        if file:match("%.json$") then
+            local name = file:match("([^/\\]+)%.json$")
+            table.insert(SaveManager.Configs, name)
+        end
+    end
+end
+
+function SaveManager.Save(configName)
+    if not writefile then
+        warn("[SaveManager] Executor does not support file operations")
+        return false
+    end
+    
+    configName = configName or SaveManager.FileName:gsub("%.json$", "")
+    local filePath = SaveManager.Folder .. "/" .. configName .. ".json"
+    
+    local data = SaveManager.BuildConfigData()
+    local json = game:GetService("HttpService"):JSONEncode(data)
+    
+    local success, err = pcall(function()
+        writefile(filePath, json)
+    end)
+    
+    if success then
+        if not table.find(SaveManager.Configs, configName) then
+            table.insert(SaveManager.Configs, configName)
+        end
+        return true
+    else
+        warn("[SaveManager] Failed to save config:", err)
+        return false
+    end
+end
+
+function SaveManager.Load(configName)
+    if not readfile then
+        warn("[SaveManager] Executor does not support file operations")
+        return false
+    end
+    
+    configName = configName or SaveManager.FileName:gsub("%.json$", "")
+    local filePath = SaveManager.Folder .. "/" .. configName .. ".json"
+    
+    if not isfile(filePath) then
+        warn("[SaveManager] Config file not found:", configName)
+        return false
+    end
+    
+    local success, content = pcall(readfile, filePath)
+    if not success then
+        warn("[SaveManager] Failed to read config:", content)
+        return false
+    end
+    
+    local data
+    success, data = pcall(function()
+        return game:GetService("HttpService"):JSONDecode(content)
+    end)
+    
+    if not success then
+        warn("[SaveManager] Failed to parse config:", data)
+        return false
+    end
+    
+    SaveManager.ApplyConfigData(data)
+    return true
+end
+
+function SaveManager.Delete(configName)
+    if not delfile then
+        warn("[SaveManager] Executor does not support file operations")
+        return false
+    end
+    
+    local filePath = SaveManager.Folder .. "/" .. configName .. ".json"
+    
+    if not isfile(filePath) then
+        return false
+    end
+    
+    local success = pcall(delfile, filePath)
+    
+    if success then
+        for i, name in ipairs(SaveManager.Configs) do
+            if name == configName then
+                table.remove(SaveManager.Configs, i)
+                break
+            end
+        end
+    end
+    
+    return success
+end
+
+function SaveManager.BuildConfigData()
+    local data = {
+        version = SaveManager.Window.EnowLib.Version,
+        timestamp = os.time(),
+        components = {}
+    }
+    
+    -- Iterate through all tabs and components
+    for _, tab in ipairs(SaveManager.Window.Tabs) do
+        for _, component in ipairs(tab.Components) do
+            local componentData = SaveManager.GetComponentData(component)
+            if componentData then
+                table.insert(data.components, componentData)
+            end
+        end
+    end
+    
+    return data
+end
+
+function SaveManager.GetComponentData(component)
+    local componentType = tostring(component):match("table: ")
+    
+    if not component.Config or not component.Config.Title then
+        return nil
+    end
+    
+    local data = {
+        type = componentType,
+        title = component.Config.Title,
+        value = nil
+    }
+    
+    -- Get value based on component type
+    if component.Value ~= nil then
+        if typeof(component.Value) == "Color3" then
+            data.value = {
+                R = component.Value.R,
+                G = component.Value.G,
+                B = component.Value.B
+            }
+        elseif typeof(component.Value) == "EnumItem" then
+            data.value = component.Value.Name
+        else
+            data.value = component.Value
+        end
+    elseif component.Values then
+        -- MultiDropdown
+        local selected = {}
+        for opt, enabled in pairs(component.Values) do
+            if enabled then
+                table.insert(selected, opt)
+            end
+        end
+        data.value = selected
+    end
+    
+    return data
+end
+
+function SaveManager.ApplyConfigData(data)
+    if not data.components then return end
+    
+    -- Apply each component's saved value
+    for _, savedComponent in ipairs(data.components) do
+        SaveManager.ApplyComponentData(savedComponent)
+    end
+end
+
+function SaveManager.ApplyComponentData(savedData)
+    -- Find matching component by title
+    for _, tab in ipairs(SaveManager.Window.Tabs) do
+        for _, component in ipairs(tab.Components) do
+            if component.Config and component.Config.Title == savedData.title then
+                SaveManager.SetComponentValue(component, savedData.value)
+                break
+            end
+        end
+    end
+end
+
+function SaveManager.SetComponentValue(component, value)
+    if value == nil then return end
+    
+    -- Handle different component types
+    if component.SetValue then
+        -- Color3 reconstruction
+        if type(value) == "table" and value.R then
+            value = Color3.new(value.R, value.G, value.B)
+        end
+        
+        -- KeyCode reconstruction
+        if type(value) == "string" and component.Config.Default and typeof(component.Config.Default) == "EnumItem" then
+            value = Enum.KeyCode[value]
+        end
+        
+        component:SetValue(value)
+    elseif component.SetValues then
+        -- MultiDropdown
+        component:SetValues(value)
+    elseif component.Toggle then
+        -- Toggle component
+        if component.Value ~= value then
+            component:Toggle()
+        end
+    end
+end
+
+function SaveManager.AutoSave(interval)
+    interval = interval or 60
+    
+    task.spawn(function()
+        while SaveManager.Window do
+            task.wait(interval)
+            SaveManager.Save("autosave")
+        end
+    end)
+end
+
+function SaveManager.CreateUI(tab)
+    if not tab then return end
+    
+    tab:AddSection({Title = "CONFIGURATION"})
+    
+    -- Config name input
+    local configName = "config"
+    
+    tab:AddInput({
+        Title = "Config Name",
+        Placeholder = "Enter config name...",
+        Default = configName,
+        Callback = function(value)
+            configName = value
+        end
+    })
+    
+    -- Save button
+    tab:AddButton({
+        Title = "Save Config",
+        Description = "Save current settings",
+        Callback = function()
+            local success = SaveManager.Save(configName)
+            if success then
+                SaveManager.Window.EnowLib:Notify({
+                    Title = "Config Saved",
+                    Content = "Configuration saved as: " .. configName,
+                    Duration = 2,
+                    Type = "Success"
+                })
+            else
+                SaveManager.Window.EnowLib:Notify({
+                    Title = "Save Failed",
+                    Content = "Failed to save configuration",
+                    Duration = 2,
+                    Type = "Error"
+                })
+            end
+        end
+    })
+    
+    -- Load dropdown
+    tab:AddDropdown({
+        Title = "Load Config",
+        Description = "Select config to load",
+        Options = SaveManager.Configs,
+        Callback = function(value)
+            local success = SaveManager.Load(value)
+            if success then
+                SaveManager.Window.EnowLib:Notify({
+                    Title = "Config Loaded",
+                    Content = "Configuration loaded: " .. value,
+                    Duration = 2,
+                    Type = "Success"
+                })
+            else
+                SaveManager.Window.EnowLib:Notify({
+                    Title = "Load Failed",
+                    Content = "Failed to load configuration",
+                    Duration = 2,
+                    Type = "Error"
+                })
+            end
+        end
+    })
+    
+    -- Delete dropdown
+    tab:AddDropdown({
+        Title = "Delete Config",
+        Description = "Select config to delete",
+        Options = SaveManager.Configs,
+        Callback = function(value)
+            local success = SaveManager.Delete(value)
+            if success then
+                SaveManager.LoadConfigList()
+                SaveManager.Window.EnowLib:Notify({
+                    Title = "Config Deleted",
+                    Content = "Configuration deleted: " .. value,
+                    Duration = 2,
+                    Type = "Success"
+                })
+            else
+                SaveManager.Window.EnowLib:Notify({
+                    Title = "Delete Failed",
+                    Content = "Failed to delete configuration",
+                    Duration = 2,
+                    Type = "Error"
+                })
+            end
+        end
+    })
+    
+    -- Auto-save toggle
+    tab:AddToggle({
+        Title = "Auto Save",
+        Description = "Automatically save every 60 seconds",
+        Default = false,
+        Callback = function(value)
+            if value then
+                SaveManager.AutoSave(60)
+            end
+        end
+    })
+end
+
+
+end
+
+-- Module: InterfaceManager
+do
+-- EnowLib InterfaceManager
+-- Handles UI state and theme management
+
+local InterfaceManager = {}
+InterfaceManager.Settings = {
+    theme = "Vaporwave",
+    transparency = 0,
+    acrylic = true,
+    minimizeKey = Enum.KeyCode.LeftControl
+}
+
+function InterfaceManager.Initialize(window)
+    InterfaceManager.Window = window
+    InterfaceManager.SetupMinimizeKey()
+end
+
+function InterfaceManager.SetupMinimizeKey()
+    local UserInputService = game:GetService("UserInputService")
+    
+    UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if gameProcessed then return end
+        
+        if input.KeyCode == InterfaceManager.Settings.minimizeKey then
+            InterfaceManager.Window:Toggle()
+        end
+    end)
+end
+
+function InterfaceManager.SetTheme(themeName)
+    InterfaceManager.Settings.theme = themeName
+    
+    -- Apply theme colors
+    local themes = {
+        Vaporwave = {
+            Primary = Color3.fromRGB(138, 43, 226),
+            Accent = Color3.fromRGB(0, 255, 255),
+            AccentPink = Color3.fromRGB(255, 20, 147)
+        },
+        Dark = {
+            Primary = Color3.fromRGB(100, 100, 100),
+            Accent = Color3.fromRGB(150, 150, 150),
+            AccentPink = Color3.fromRGB(120, 120, 120)
+        },
+        Light = {
+            Primary = Color3.fromRGB(70, 130, 180),
+            Accent = Color3.fromRGB(100, 149, 237),
+            AccentPink = Color3.fromRGB(135, 206, 250)
+        },
+        Cyberpunk = {
+            Primary = Color3.fromRGB(255, 0, 255),
+            Accent = Color3.fromRGB(0, 255, 255),
+            AccentPink = Color3.fromRGB(255, 0, 128)
+        },
+        Neon = {
+            Primary = Color3.fromRGB(57, 255, 20),
+            Accent = Color3.fromRGB(255, 20, 147),
+            AccentPink = Color3.fromRGB(0, 255, 255)
+        }
+    }
+    
+    local theme = themes[themeName]
+    if theme then
+        for key, color in pairs(theme) do
+            InterfaceManager.Window.Theme.Colors[key] = color
+        end
+        
+        InterfaceManager.RefreshUI()
+    end
+end
+
+function InterfaceManager.SetTransparency(value)
+    InterfaceManager.Settings.transparency = value
+    
+    -- Apply transparency to main container
+    if InterfaceManager.Window.Container then
+        InterfaceManager.Window.Container.BackgroundTransparency = value
+    end
+end
+
+function InterfaceManager.SetAcrylic(enabled)
+    InterfaceManager.Settings.acrylic = enabled
+    
+    -- Toggle blur effect
+    if InterfaceManager.Window.Container then
+        local blur = InterfaceManager.Window.Container:FindFirstChild("BlurEffect")
+        
+        if enabled and not blur then
+            blur = Instance.new("BlurEffect")
+            blur.Size = 10
+            blur.Parent = InterfaceManager.Window.Container
+        elseif not enabled and blur then
+            blur:Destroy()
+        end
+    end
+end
+
+function InterfaceManager.SetMinimizeKey(keyCode)
+    InterfaceManager.Settings.minimizeKey = keyCode
+end
+
+function InterfaceManager.RefreshUI()
+    -- Refresh all UI elements with new theme
+    if not InterfaceManager.Window then return end
+    
+    local theme = InterfaceManager.Window.Theme
+    
+    -- Update window
+    if InterfaceManager.Window.Container then
+        InterfaceManager.Window.Container.BackgroundColor3 = theme.Colors.Background
+        
+        local stroke = InterfaceManager.Window.Container:FindFirstChild("UIStroke")
+        if stroke then
+            stroke.Color = theme.Colors.BorderGlow
+        end
+    end
+    
+    -- Update all tabs and components
+    for _, tab in ipairs(InterfaceManager.Window.Tabs) do
+        InterfaceManager.RefreshTab(tab)
+    end
+end
+
+function InterfaceManager.RefreshTab(tab)
+    local theme = InterfaceManager.Window.Theme
+    
+    -- Update tab button
+    if tab.Button then
+        if tab.Visible then
+            tab.Button.BackgroundColor3 = theme.Colors.Active
+            tab.Button.TextColor3 = theme.Colors.Text
+        else
+            tab.Button.BackgroundColor3 = theme.Colors.BackgroundLight
+            tab.Button.TextColor3 = theme.Colors.TextDim
+        end
+    end
+    
+    -- Update components
+    for _, component in ipairs(tab.Components) do
+        InterfaceManager.RefreshComponent(component)
+    end
+end
+
+function InterfaceManager.RefreshComponent(component)
+    local theme = InterfaceManager.Window.Theme
+    
+    if not component.Container then return end
+    
+    -- Update container colors
+    component.Container.BackgroundColor3 = theme.Colors.BackgroundLight
+    
+    local stroke = component.Container:FindFirstChild("UIStroke")
+    if stroke then
+        stroke.Color = theme.Colors.Border
+    end
+    
+    -- Update component-specific elements
+    if component.Fill then
+        component.Fill.BackgroundColor3 = theme.Colors.Primary
+    end
+    
+    if component.Switch then
+        if component.Value then
+            component.Switch.BackgroundColor3 = theme.Colors.Primary
+        end
+    end
+end
+
+function InterfaceManager.SaveSettings()
+    if not writefile then return end
+    
+    local data = game:GetService("HttpService"):JSONEncode(InterfaceManager.Settings)
+    
+    pcall(function()
+        if not isfolder("EnowLib") then
+            makefolder("EnowLib")
+        end
+        writefile("EnowLib/interface.json", data)
+    end)
+end
+
+function InterfaceManager.LoadSettings()
+    if not readfile or not isfile("EnowLib/interface.json") then
+        return
+    end
+    
+    local success, content = pcall(readfile, "EnowLib/interface.json")
+    if not success then return end
+    
+    local data
+    success, data = pcall(function()
+        return game:GetService("HttpService"):JSONDecode(content)
+    end)
+    
+    if success and data then
+        InterfaceManager.Settings = data
+        InterfaceManager.ApplySettings()
+    end
+end
+
+function InterfaceManager.ApplySettings()
+    if InterfaceManager.Settings.theme then
+        InterfaceManager.SetTheme(InterfaceManager.Settings.theme)
+    end
+    
+    if InterfaceManager.Settings.transparency then
+        InterfaceManager.SetTransparency(InterfaceManager.Settings.transparency)
+    end
+    
+    if InterfaceManager.Settings.acrylic ~= nil then
+        InterfaceManager.SetAcrylic(InterfaceManager.Settings.acrylic)
+    end
+    
+    if InterfaceManager.Settings.minimizeKey then
+        InterfaceManager.SetMinimizeKey(InterfaceManager.Settings.minimizeKey)
+    end
+end
+
+function InterfaceManager.CreateUI(tab)
+    if not tab then return end
+    
+    tab:AddSection({Title = "INTERFACE"})
+    
+    -- Theme selector
+    tab:AddDropdown({
+        Title = "Theme",
+        Description = "Select UI theme",
+        Options = {"Vaporwave", "Dark", "Light", "Cyberpunk", "Neon"},
+        Default = InterfaceManager.Settings.theme,
+        Callback = function(value)
+            InterfaceManager.SetTheme(value)
+            InterfaceManager.SaveSettings()
+        end
+    })
+    
+    -- Transparency slider
+    tab:AddSlider({
+        Title = "Transparency",
+        Description = "UI background transparency",
+        Min = 0,
+        Max = 1,
+        Default = InterfaceManager.Settings.transparency,
+        Increment = 0.1,
+        Callback = function(value)
+            InterfaceManager.SetTransparency(value)
+            InterfaceManager.SaveSettings()
+        end
+    })
+    
+    -- Acrylic toggle
+    tab:AddToggle({
+        Title = "Acrylic Effect",
+        Description = "Enable blur effect",
+        Default = InterfaceManager.Settings.acrylic,
+        Callback = function(value)
+            InterfaceManager.SetAcrylic(value)
+            InterfaceManager.SaveSettings()
+        end
+    })
+    
+    -- Minimize key
+    tab:AddKeybind({
+        Title = "Minimize Key",
+        Description = "Key to toggle UI visibility",
+        Default = InterfaceManager.Settings.minimizeKey,
+        Callback = function(value)
+            InterfaceManager.SetMinimizeKey(value)
+            InterfaceManager.SaveSettings()
+        end
+    })
+    
+    tab:AddSection({Title = "ACTIONS"})
+    
+    -- Refresh UI button
+    tab:AddButton({
+        Title = "Refresh UI",
+        Description = "Reload UI with current theme",
+        Callback = function()
+            InterfaceManager.RefreshUI()
+            InterfaceManager.Window.EnowLib:Notify({
+                Title = "UI Refreshed",
+                Content = "Interface has been refreshed",
+                Duration = 2,
+                Type = "Success"
+            })
+        end
+    })
+    
+    -- Reset settings button
+    tab:AddButton({
+        Title = "Reset Settings",
+        Description = "Reset to default settings",
+        Callback = function()
+            InterfaceManager.Settings = {
+                theme = "Vaporwave",
+                transparency = 0,
+                acrylic = true,
+                minimizeKey = Enum.KeyCode.LeftControl
+            }
+            InterfaceManager.ApplySettings()
+            InterfaceManager.SaveSettings()
+            
+            InterfaceManager.Window.EnowLib:Notify({
+                Title = "Settings Reset",
+                Content = "Interface settings have been reset",
+                Duration = 2,
+                Type = "Success"
+            })
+        end
+    })
+end
+
+
+end
+
+-- Initialize EnowLib
+EnowLib.Version = "2.0.0"
+EnowLib.Author = "EnowHub Development"
 
 -- Initialize notification system
 Notification.Initialize(Theme, Utils)
 
 -- Create window
-function VaporUI:CreateWindow(config)
-    local window = Window.new(config, Theme, Utils)
+function EnowLib:CreateWindow(config)
+    local window = Window.new(config, Theme, Utils, EnowLib)
+    
+    -- Initialize managers
+    SaveManager.Initialize(window)
+    InterfaceManager.Initialize(window)
+    
+    -- Load saved interface settings
+    InterfaceManager.LoadSettings()
+    
+    window.SaveManager = SaveManager
+    window.InterfaceManager = InterfaceManager
+    
     return window
 end
 
 -- Show notification
-function VaporUI:Notify(config)
+function EnowLib:Notify(config)
     config.Theme = Theme
     config.Utils = Utils
     return Notification.Show(config)
 end
 
 -- Get theme
-function VaporUI:GetTheme()
+function EnowLib:GetTheme()
     return Theme
 end
 
 -- Get utils
-function VaporUI:GetUtils()
+function EnowLib:GetUtils()
     return Utils
 end
 
-return VaporUI
+-- Get SaveManager
+function EnowLib:GetSaveManager()
+    return SaveManager
+end
+
+-- Get InterfaceManager
+function EnowLib:GetInterfaceManager()
+    return InterfaceManager
+end
+
+return EnowLib

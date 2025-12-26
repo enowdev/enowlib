@@ -1,4 +1,4 @@
--- VaporUI Button Component
+-- EnowLib Button Component
 
 local Button = {}
 Button.__index = Button

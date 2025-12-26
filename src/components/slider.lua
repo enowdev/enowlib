@@ -1,4 +1,4 @@
--- VaporUI Slider Component
+-- EnowLib Slider Component
 
 local Slider = {}
 Slider.__index = Slider

@@ -1,4 +1,4 @@
--- VaporUI Label Component
+-- EnowLib Label Component
 
 local Label = {}
 Label.__index = Label

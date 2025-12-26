@@ -1,4 +1,4 @@
--- VaporUI Toggle Component
+-- EnowLib Toggle Component
 
 local Toggle = {}
 Toggle.__index = Toggle

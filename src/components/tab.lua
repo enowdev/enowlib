@@ -1,4 +1,4 @@
--- VaporUI Tab Component
+-- EnowLib Tab Component
 
 local Tab = {}
 Tab.__index = Tab
@@ -163,6 +163,34 @@ function Tab:AddSection(config)
     local section = Section.new(config, self, self.Theme, self.Utils)
     table.insert(self.Components, section)
     return section
+end
+
+function Tab:AddKeybind(config)
+    local Keybind = require(script.Parent.keybind)
+    local keybind = Keybind.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Components, keybind)
+    return keybind
+end
+
+function Tab:AddColorPicker(config)
+    local ColorPicker = require(script.Parent.colorpicker)
+    local colorpicker = ColorPicker.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Components, colorpicker)
+    return colorpicker
+end
+
+function Tab:AddMultiDropdown(config)
+    local MultiDropdown = require(script.Parent.multidropdown)
+    local multidropdown = MultiDropdown.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Components, multidropdown)
+    return multidropdown
+end
+
+function Tab:AddProgressBar(config)
+    local ProgressBar = require(script.Parent.progressbar)
+    local progressbar = ProgressBar.new(config, self, self.Theme, self.Utils)
+    table.insert(self.Components, progressbar)
+    return progressbar
 end
 
 return Tab

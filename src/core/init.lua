@@ -1,8 +1,8 @@
--- VaporUI Main Library
+-- EnowLib Main Library
 -- Vaporwave Tech Dark UI Library for Roblox
 
-local VaporUI = {
-    Version = "1.0.0",
+local EnowLib = {
+    Version = "2.0.0",
     Author = "EnowHub Development"
 }
 
@@ -14,30 +14,55 @@ local Utils = require(script.Parent.utils)
 local Window = require(script.Parent.Parent.components.window)
 local Notification = require(script.Parent.Parent.components.notification)
 
+-- Load managers
+local SaveManager = require(script.Parent.Parent.managers.savemanager)
+local InterfaceManager = require(script.Parent.Parent.managers.interfacemanager)
+
 -- Initialize notification system
 Notification.Initialize(Theme, Utils)
 
 -- Create window
-function VaporUI:CreateWindow(config)
-    local window = Window.new(config, Theme, Utils)
+function EnowLib:CreateWindow(config)
+    local window = Window.new(config, Theme, Utils, self)
+    
+    -- Initialize managers
+    SaveManager.Initialize(window)
+    InterfaceManager.Initialize(window)
+    
+    -- Load saved interface settings
+    InterfaceManager.LoadSettings()
+    
+    window.SaveManager = SaveManager
+    window.InterfaceManager = InterfaceManager
+    
     return window
 end
 
 -- Show notification
-function VaporUI:Notify(config)
+function EnowLib:Notify(config)
     config.Theme = Theme
     config.Utils = Utils
     return Notification.Show(config)
 end
 
 -- Get theme
-function VaporUI:GetTheme()
+function EnowLib:GetTheme()
     return Theme
 end
 
 -- Get utils
-function VaporUI:GetUtils()
+function EnowLib:GetUtils()
     return Utils
 end
 
-return VaporUI
+-- Get SaveManager
+function EnowLib:GetSaveManager()
+    return SaveManager
+end
+
+-- Get InterfaceManager
+function EnowLib:GetInterfaceManager()
+    return InterfaceManager
+end
+
+return EnowLib

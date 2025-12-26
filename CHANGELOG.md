@@ -1,6 +1,53 @@
 # Changelog
 
-All notable changes to VaporUI will be documented in this file.
+All notable changes to EnowLib will be documented in this file.
+
+## [2.0.0] - 2025-12-26
+
+### Added
+- **New Components:**
+  - Keybind component with key listener
+  - ColorPicker with HSV picker, RGB/Hex input
+  - MultiDropdown for multi-selection
+  - ProgressBar with animated fill
+  
+- **Managers:**
+  - SaveManager for config persistence (JSON-based)
+  - InterfaceManager for theme & UI management
+  
+- **Themes:**
+  - 5 built-in themes (Vaporwave, Dark, Light, Cyberpunk, Neon)
+  - Dynamic theme switching
+  - Custom theme support
+  
+- **Features:**
+  - Auto-save functionality (configurable interval)
+  - Config import/export system
+  - UI transparency control
+  - Acrylic blur effect
+  - Customizable minimize key
+  - Component value persistence
+  - Theme refresh system
+  
+### Changed
+- Updated Window component to support managers
+- Enhanced Tab component with new component methods
+- Improved build script with new modules
+- Updated example with all features
+- Comprehensive README documentation
+- Version bumped to 2.0.0
+
+### Performance
+- Optimized rendering pipeline
+- Reduced memory footprint
+- Improved animation smoothness
+- Better event handling with pcall
+- Cached game services
+
+### Fixed
+- Component cleanup on destroy
+- Memory leaks in event connections
+- Theme consistency across components
 
 ## [1.0.0] - 2024-12-26
 

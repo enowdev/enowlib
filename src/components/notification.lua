@@ -1,4 +1,4 @@
--- VaporUI Notification System
+-- EnowLib Notification System
 
 local Notification = {}
 Notification.Queue = {}
@@ -13,7 +13,7 @@ function Notification.Initialize(theme, utils)
     
     -- Create notification container
     local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "VaporUI_Notifications"
+    screenGui.Name = "EnowLib_Notifications"
     screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     screenGui.ResetOnSpawn = false
     screenGui.Parent = game:GetService("CoreGui")

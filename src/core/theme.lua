@@ -1,4 +1,4 @@
--- VaporUI Theme System
+-- EnowLib Theme System
 -- Vaporwave Tech Dark Color Scheme
 
 local Theme = {}

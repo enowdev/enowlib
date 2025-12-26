@@ -1,4 +1,4 @@
--- VaporUI Section Component
+-- EnowLib Section Component
 
 local Section = {}
 Section.__index = Section

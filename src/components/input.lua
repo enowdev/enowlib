@@ -1,4 +1,4 @@
--- VaporUI Input Component
+-- EnowLib Input Component
 
 local Input = {}
 Input.__index = Input

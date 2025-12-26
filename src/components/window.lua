@@ -1,15 +1,16 @@
--- VaporUI Window Component
+-- EnowLib Window Component
 
 local Window = {}
 Window.__index = Window
 
-function Window.new(config, theme, utils)
+function Window.new(config, theme, utils, enowlib)
     local self = setmetatable({}, Window)
     
     self.Theme = theme
     self.Utils = utils
+    self.EnowLib = enowlib
     self.Config = utils.Merge({
-        Title = "VaporUI",
+        Title = "EnowLib",
         Size = UDim2.fromOffset(500, 400),
         MinSize = Vector2.new(400, 300),
         Draggable = true,
@@ -29,7 +30,7 @@ end
 function Window:CreateUI()
     -- Screen GUI
     self.ScreenGui = Instance.new("ScreenGui")
-    self.ScreenGui.Name = "VaporUI"
+    self.ScreenGui.Name = "EnowLib"
     self.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     self.ScreenGui.ResetOnSpawn = false
     

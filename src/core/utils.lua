@@ -1,4 +1,4 @@
--- VaporUI Utility Functions
+-- EnowLib Utility Functions
 
 local Utils = {}
 

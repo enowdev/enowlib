@@ -1,4 +1,4 @@
-# VaporUI Build Script
+# EnowLib Build Script
 # Builds modular Lua files into single output file
 
 param(
@@ -6,16 +6,16 @@ param(
 )
 
 if ($Help) {
-    Write-Host "VaporUI Build Script" -ForegroundColor Cyan
+    Write-Host "EnowLib Build Script" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "Usage: ./build.ps1" -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "This script builds all modular source files into a single vaporui.lua file."
+    Write-Host "This script builds all modular source files into a single enowlib.lua file."
     Write-Host ""
     exit
 }
 
-Write-Host "Building VaporUI..." -ForegroundColor Cyan
+Write-Host "Building EnowLib..." -ForegroundColor Cyan
 
 # Create build directory
 if (-not (Test-Path "build")) {
@@ -23,16 +23,16 @@ if (-not (Test-Path "build")) {
 }
 
 # Output file
-$outputFile = "build/vaporui.lua"
+$outputFile = "build/enowlib.lua"
 
 # Start building
 $output = @"
--- VaporUI v1.0.0
+-- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
 -- Built: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 -- Author: EnowHub Development
 
-local VaporUI = {}
+local EnowLib = {}
 
 "@
 
@@ -78,9 +78,15 @@ $modules = @(
     @{Path="src/components/slider.lua"; Name="Slider"},
     @{Path="src/components/input.lua"; Name="Input"},
     @{Path="src/components/dropdown.lua"; Name="Dropdown"},
+    @{Path="src/components/keybind.lua"; Name="Keybind"},
+    @{Path="src/components/colorpicker.lua"; Name="ColorPicker"},
+    @{Path="src/components/multidropdown.lua"; Name="MultiDropdown"},
+    @{Path="src/components/progressbar.lua"; Name="ProgressBar"},
     @{Path="src/components/notification.lua"; Name="Notification"},
     @{Path="src/components/tab.lua"; Name="Tab"},
-    @{Path="src/components/window.lua"; Name="Window"}
+    @{Path="src/components/window.lua"; Name="Window"},
+    @{Path="src/managers/savemanager.lua"; Name="SaveManager"},
+    @{Path="src/managers/interfacemanager.lua"; Name="InterfaceManager"}
 )
 
 foreach ($module in $modules) {
@@ -92,37 +98,58 @@ Write-Host "Adding main initialization..." -ForegroundColor Yellow
 
 $output += @"
 
--- Initialize VaporUI
-VaporUI.Version = "1.0.0"
-VaporUI.Author = "EnowHub Development"
+-- Initialize EnowLib
+EnowLib.Version = "2.0.0"
+EnowLib.Author = "EnowHub Development"
 
 -- Initialize notification system
 Notification.Initialize(Theme, Utils)
 
 -- Create window
-function VaporUI:CreateWindow(config)
-    local window = Window.new(config, Theme, Utils)
+function EnowLib:CreateWindow(config)
+    local window = Window.new(config, Theme, Utils, EnowLib)
+    
+    -- Initialize managers
+    SaveManager.Initialize(window)
+    InterfaceManager.Initialize(window)
+    
+    -- Load saved interface settings
+    InterfaceManager.LoadSettings()
+    
+    window.SaveManager = SaveManager
+    window.InterfaceManager = InterfaceManager
+    
     return window
 end
 
 -- Show notification
-function VaporUI:Notify(config)
+function EnowLib:Notify(config)
     config.Theme = Theme
     config.Utils = Utils
     return Notification.Show(config)
 end
 
 -- Get theme
-function VaporUI:GetTheme()
+function EnowLib:GetTheme()
     return Theme
 end
 
 -- Get utils
-function VaporUI:GetUtils()
+function EnowLib:GetUtils()
     return Utils
 end
 
-return VaporUI
+-- Get SaveManager
+function EnowLib:GetSaveManager()
+    return SaveManager
+end
+
+-- Get InterfaceManager
+function EnowLib:GetInterfaceManager()
+    return InterfaceManager
+end
+
+return EnowLib
 "@
 
 # Write output
