@@ -185,6 +185,7 @@ function Window:CreateUI()
     self.ContentArea.ScrollBarThickness = 6
     self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
+    self.ContentArea.ClipsDescendants = true
     self.ContentArea.Parent = self.Container
     
     self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Large)
@@ -232,11 +233,48 @@ function Window:SelectTab(tab)
 end
 
 function Window:ShowContent(contentFunc)
-    self.Utils.ClearChildren(self.ContentArea)
+    -- Shutter out animation (close)
+    local shutter = Instance.new("Frame")
+    shutter.BackgroundColor3 = self.Theme.Colors.Accent
+    shutter.BorderSizePixel = 0
+    shutter.Size = UDim2.fromScale(0, 0)
+    shutter.Position = UDim2.fromScale(0, 0)
+    shutter.ZIndex = 10
+    shutter.Parent = self.ContentArea
     
-    if contentFunc then
-        pcall(contentFunc, self.ContentArea, self.Theme, self.Utils)
-    end
+    -- Animate shutter diagonal expand
+    self.Utils.Tween(shutter, {
+        Size = UDim2.fromScale(1.5, 1.5),
+        Position = UDim2.fromScale(-0.25, -0.25),
+        Rotation = 15
+    }, 0.3, self.Theme.Animation.Style, self.Theme.Animation.Direction, function()
+        -- Clear old content
+        self.Utils.ClearChildren(self.ContentArea)
+        
+        -- Load new content
+        if contentFunc then
+            pcall(contentFunc, self.ContentArea, self.Theme, self.Utils)
+        end
+        
+        -- Create new shutter for in animation
+        local shutterIn = Instance.new("Frame")
+        shutterIn.BackgroundColor3 = self.Theme.Colors.Accent
+        shutterIn.BorderSizePixel = 0
+        shutterIn.Size = UDim2.fromScale(1.5, 1.5)
+        shutterIn.Position = UDim2.fromScale(-0.25, -0.25)
+        shutterIn.Rotation = 15
+        shutterIn.ZIndex = 10
+        shutterIn.Parent = self.ContentArea
+        
+        -- Animate shutter diagonal collapse
+        self.Utils.Tween(shutterIn, {
+            Size = UDim2.fromScale(0, 0),
+            Position = UDim2.fromScale(1, 1),
+            Rotation = 15
+        }, 0.3, self.Theme.Animation.Style, self.Theme.Animation.Direction, function()
+            shutterIn:Destroy()
+        end)
+    end)
 end
 
 function Window:Toggle()
