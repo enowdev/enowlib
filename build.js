@@ -62,8 +62,7 @@ function processModule(modulePath, moduleName) {
             if (match) {
                 returnedVar = match[1];
                 lines[i] = ''; // Remove this line
-                break
-;
+                break;
             }
         }
     }
