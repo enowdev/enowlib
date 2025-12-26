@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 14:31:50
+-- Built: 2025-12-26 14:33:56
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2068,11 +2068,12 @@ function Window:CreateUI()
     self.Container = Instance.new("Frame")
     self.Container.Name = "Container"
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
-    self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
+    self.Container.BackgroundTransparency = 0.15
     self.Container.BorderSizePixel = 0
     self.Container.Size = self.Config.Size
     self.Container.Position = UDim2.fromScale(0.5, 0.5)
     self.Container.AnchorPoint = Vector2.new(0.5, 0.5)
+    self.Container.ClipsDescendants = true
     self.Container.Parent = self.ScreenGui
     
     self.Theme.CreateCorner(self.Container, 12)
@@ -2154,14 +2155,11 @@ function Window:CreateUI()
     -- Tab Bar
     self.TabBar = Instance.new("Frame")
     self.TabBar.BackgroundColor3 = self.Theme.Colors.Panel
-    self.TabBar.BackgroundTransparency = self.Theme.Transparency.Glass
+    self.TabBar.BackgroundTransparency = 0.2
     self.TabBar.BorderSizePixel = 0
     self.TabBar.Size = UDim2.new(0, 280, 1, -49)
     self.TabBar.Position = UDim2.fromOffset(0, 49)
-    self.TabBar.ClipsDescendants = true
     self.TabBar.Parent = self.Container
-    
-    self.Theme.CreateCorner(self.TabBar, 12)
     
     -- Sidebar Header
     local sidebarHeader = Instance.new("Frame")
@@ -2214,17 +2212,14 @@ function Window:CreateUI()
     -- Content Area
     self.ContentArea = Instance.new("ScrollingFrame")
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
-    self.ContentArea.BackgroundTransparency = self.Theme.Transparency.Glass
+    self.ContentArea.BackgroundTransparency = 0.2
     self.ContentArea.BorderSizePixel = 0
     self.ContentArea.Size = UDim2.new(1, -281, 1, -49)
     self.ContentArea.Position = UDim2.fromOffset(281, 49)
     self.ContentArea.ScrollBarThickness = 6
     self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
-    self.ContentArea.ClipsDescendants = true
     self.ContentArea.Parent = self.Container
-    
-    self.Theme.CreateCorner(self.ContentArea, 12)
     
     self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Large)
     
