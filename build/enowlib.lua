@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 07:34:21
+-- Built: 2025-12-26 07:39:16
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -10,42 +10,43 @@ local EnowLib = {}
 local Theme
 do
 -- EnowLib Theme System
--- Vaporwave Tech Dark Color Scheme
+-- Neo Brutalism Pastel Dark Color Scheme
 
 Theme = {}
 
--- Color Palette
+-- Color Palette - Neo Brutalism Pastel Dark
 Theme.Colors = {
-    -- Background colors
-    Background = Color3.fromRGB(15, 15, 25),
-    BackgroundDark = Color3.fromRGB(10, 10, 18),
-    BackgroundLight = Color3.fromRGB(20, 20, 30),
+    -- Background colors (Dark pastel base)
+    Background = Color3.fromRGB(26, 27, 38),        -- Deep navy blue
+    BackgroundDark = Color3.fromRGB(20, 21, 30),    -- Darker navy
+    BackgroundLight = Color3.fromRGB(32, 34, 46),   -- Lighter navy
     
-    -- Primary colors (Vaporwave gradient)
-    Primary = Color3.fromRGB(138, 43, 226), -- Purple
-    PrimaryLight = Color3.fromRGB(186, 85, 211), -- Light purple
-    PrimaryDark = Color3.fromRGB(75, 0, 130), -- Dark purple
+    -- Primary colors (Pastel purple/lavender)
+    Primary = Color3.fromRGB(159, 122, 234),        -- Soft lavender
+    PrimaryLight = Color3.fromRGB(189, 162, 244),   -- Light lavender
+    PrimaryDark = Color3.fromRGB(129, 92, 204),     -- Deep lavender
     
-    -- Accent colors
-    Accent = Color3.fromRGB(0, 255, 255), -- Cyan
-    AccentPink = Color3.fromRGB(255, 20, 147), -- Deep pink
-    AccentGlow = Color3.fromRGB(57, 255, 255), -- Bright cyan
+    -- Accent colors (Pastel complementary)
+    Accent = Color3.fromRGB(130, 204, 221),         -- Soft cyan
+    AccentPink = Color3.fromRGB(244, 143, 177),     -- Soft pink
+    AccentGreen = Color3.fromRGB(166, 226, 188),    -- Soft mint
     
     -- Text colors
-    Text = Color3.fromRGB(240, 240, 255),
-    TextDim = Color3.fromRGB(150, 150, 170),
-    TextDisabled = Color3.fromRGB(80, 80, 100),
+    Text = Color3.fromRGB(226, 232, 240),           -- Soft white
+    TextDim = Color3.fromRGB(148, 163, 184),        -- Muted gray
+    TextDisabled = Color3.fromRGB(100, 116, 139),   -- Dark gray
     
-    -- State colors
-    Success = Color3.fromRGB(0, 255, 150),
-    Warning = Color3.fromRGB(255, 200, 0),
-    Error = Color3.fromRGB(255, 50, 100),
+    -- State colors (Pastel versions)
+    Success = Color3.fromRGB(134, 239, 172),        -- Soft green
+    Warning = Color3.fromRGB(253, 224, 71),         -- Soft yellow
+    Error = Color3.fromRGB(252, 165, 165),          -- Soft red
     
-    -- UI Element colors
-    Border = Color3.fromRGB(100, 50, 150),
-    BorderGlow = Color3.fromRGB(138, 43, 226),
-    Hover = Color3.fromRGB(25, 25, 40),
-    Active = Color3.fromRGB(30, 30, 50),
+    -- UI Element colors (Neo brutalism style)
+    Border = Color3.fromRGB(71, 85, 105),           -- Slate border
+    BorderAccent = Color3.fromRGB(159, 122, 234),   -- Primary border
+    Shadow = Color3.fromRGB(15, 16, 23),            -- Deep shadow
+    Hover = Color3.fromRGB(41, 44, 58),             -- Subtle hover
+    Active = Color3.fromRGB(51, 54, 68),            -- Active state
     
     -- Transparency
     Transparent = Color3.fromRGB(0, 0, 0)
@@ -63,99 +64,102 @@ Theme.Transparency = {
 
 -- Font settings
 Theme.Font = {
-    Regular = Enum.Font.Gotham,
+    Regular = Enum.Font.GothamMedium,
     Bold = Enum.Font.GothamBold,
     Mono = Enum.Font.RobotoMono,
     Size = {
-        Small = 12,
+        Small = 13,
         Regular = 14,
         Medium = 16,
         Large = 18,
-        Title = 20
+        Title = 22
     }
 }
 
--- Spacing and sizing
+-- Spacing and sizing (Neo brutalism - more spacious)
 Theme.Spacing = {
-    Tiny = 4,
-    Small = 8,
-    Medium = 12,
-    Large = 16,
-    XLarge = 24
+    Tiny = 6,
+    Small = 10,
+    Medium = 14,
+    Large = 18,
+    XLarge = 28
 }
 
 Theme.Size = {
-    Border = 1,
-    BorderGlow = 2,
-    CornerRadius = 6,
-    ScrollBarWidth = 4,
+    Border = 2,                    -- Thicker borders for neo brutalism
+    BorderThick = 3,               -- Extra thick for emphasis
+    CornerRadius = 8,              -- Slightly rounded
+    ScrollBarWidth = 6,
     
     -- Component sizes
-    ButtonHeight = 32,
-    ToggleSize = 20,
-    SliderHeight = 6,
-    InputHeight = 32,
-    DropdownHeight = 32,
+    ButtonHeight = 38,
+    ToggleSize = 22,
+    SliderHeight = 8,
+    InputHeight = 38,
+    DropdownHeight = 38,
     
     -- Container sizes
-    WindowMinWidth = 400,
-    WindowMinHeight = 300,
-    TabWidth = 140,
-    SectionHeight = 30
+    WindowMinWidth = 450,
+    WindowMinHeight = 350,
+    TabWidth = 160,
+    SectionHeight = 32,
+    
+    -- Neo brutalism shadow offset
+    ShadowOffset = 4
 }
 
--- Animation settings
+-- Animation settings (Snappier for neo brutalism)
 Theme.Animation = {
     Speed = {
-        Fast = 0.15,
-        Normal = 0.25,
-        Slow = 0.4
+        Fast = 0.12,
+        Normal = 0.2,
+        Slow = 0.35
     },
     Easing = Enum.EasingStyle.Quad,
     Direction = Enum.EasingDirection.Out
 }
 
--- Glow effect settings
-Theme.Glow = {
-    Intensity = 0.8,
-    Size = 20,
-    Color = Color3.fromRGB(138, 43, 226)
+-- Neo brutalism shadow
+Theme.Shadow = {
+    Offset = Vector2.new(4, 4),
+    Color = Color3.fromRGB(15, 16, 23),
+    Transparency = 0.3
 }
 
--- Create gradient for vaporwave effect
+-- Create gradient (subtle for neo brutalism)
 function Theme.CreateGradient(parent, rotation)
-    rotation = rotation or 45
+    rotation = rotation or 90
     
     local gradient = Instance.new("UIGradient")
     gradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Theme.Colors.Primary),
-        ColorSequenceKeypoint.new(0.5, Theme.Colors.AccentPink),
-        ColorSequenceKeypoint.new(1, Theme.Colors.Accent)
+        ColorSequenceKeypoint.new(1, Theme.Colors.PrimaryLight)
     })
     gradient.Rotation = rotation
+    gradient.Transparency = NumberSequence.new(0.85) -- Very subtle
     gradient.Parent = parent
     
     return gradient
 end
 
--- Create glow effect
-function Theme.CreateGlow(parent, color)
-    color = color or Theme.Glow.Color
+-- Create neo brutalism shadow
+function Theme.CreateShadow(parent)
+    local shadow = Instance.new("Frame")
+    shadow.Name = "Shadow"
+    shadow.BackgroundColor3 = Theme.Shadow.Color
+    shadow.BackgroundTransparency = Theme.Shadow.Transparency
+    shadow.BorderSizePixel = 0
+    shadow.Size = UDim2.new(1, 0, 1, 0)
+    shadow.Position = UDim2.fromOffset(Theme.Shadow.Offset.X, Theme.Shadow.Offset.Y)
+    shadow.ZIndex = parent.ZIndex - 1
+    shadow.Parent = parent.Parent
     
-    local glow = Instance.new("ImageLabel")
-    glow.Name = "Glow"
-    glow.BackgroundTransparency = 1
-    glow.Image = "rbxassetid://4996891970"
-    glow.ImageColor3 = color
-    glow.ImageTransparency = 0.7
-    glow.ScaleType = Enum.ScaleType.Slice
-    glow.SliceCenter = Rect.new(128, 128, 128, 128)
-    glow.Size = UDim2.new(1, Theme.Glow.Size, 1, Theme.Glow.Size)
-    glow.Position = UDim2.fromOffset(-Theme.Glow.Size / 2, -Theme.Glow.Size / 2)
-    glow.ZIndex = parent.ZIndex - 1
-    glow.Parent = parent
+    -- Match corner radius
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, Theme.Size.CornerRadius)
+    corner.Parent = shadow
     
-    return glow
+    return shadow
 end
 
 -- Create corner radius
@@ -169,7 +173,7 @@ function Theme.CreateCorner(parent, radius)
     return corner
 end
 
--- Create stroke/border
+-- Create stroke/border (thicker for neo brutalism)
 function Theme.CreateStroke(parent, color, thickness)
     color = color or Theme.Colors.Border
     thickness = thickness or Theme.Size.Border
@@ -2783,8 +2787,8 @@ function Tab:CreateUI()
     self.Button.Name = "TabButton"
     self.Button.BackgroundColor3 = self.Theme.Colors.BackgroundLight
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 36)
-    self.Button.Font = self.Theme.Font.Regular
+    self.Button.Size = UDim2.new(1, 0, 0, 42)
+    self.Button.Font = self.Theme.Font.Bold
     self.Button.Text = self.Config.Title
     self.Button.TextColor3 = self.Theme.Colors.TextDim
     self.Button.TextSize = self.Theme.Font.Size.Regular
@@ -2792,8 +2796,9 @@ function Tab:CreateUI()
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Window.TabList
     
-    self.Theme.CreateCorner(self.Button, 4)
-    self.Theme.CreatePadding(self.Button, {12, 12, 0, 0})
+    self.Theme.CreateCorner(self.Button, 6)
+    self.Theme.CreateStroke(self.Button, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreatePadding(self.Button, {14, 14, 0, 0})
     
     -- Tab content container
     self.Container = Instance.new("ScrollingFrame")
@@ -2845,13 +2850,17 @@ function Tab:Show()
     self.Container.Visible = true
     
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.Active,
-        TextColor3 = self.Theme.Colors.Text
+        BackgroundColor3 = self.Theme.Colors.Primary,
+        TextColor3 = self.Theme.Colors.Background
     }, 0.2)
     
-    -- Add glow effect
-    if not self.Button:FindFirstChild("Stroke") then
-        self.Theme.CreateStroke(self.Button, self.Theme.Colors.Primary, 1)
+    -- Update stroke
+    local stroke = self.Button:FindFirstChild("UIStroke")
+    if stroke then
+        self.Utils.Tween(stroke, {
+            Color = self.Theme.Colors.BorderAccent,
+            Thickness = self.Theme.Size.BorderThick
+        }, 0.2)
     end
 end
 
@@ -2864,10 +2873,13 @@ function Tab:Hide()
         TextColor3 = self.Theme.Colors.TextDim
     }, 0.2)
     
-    -- Remove glow
+    -- Reset stroke
     local stroke = self.Button:FindFirstChild("UIStroke")
     if stroke then
-        stroke:Destroy()
+        self.Utils.Tween(stroke, {
+            Color = self.Theme.Colors.Border,
+            Thickness = self.Theme.Size.Border
+        }, 0.2)
     end
 end
 
@@ -3002,8 +3014,8 @@ function Window:CreateUI()
     self.Container.Parent = self.ScreenGui
     
     self.Theme.CreateCorner(self.Container)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.BorderGlow, 2)
-    self.Theme.CreateGlow(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.BorderAccent, self.Theme.Size.BorderThick)
+    self.Theme.CreateShadow(self.Container)
     
     -- Title bar
     self:CreateTitleBar()
@@ -3026,28 +3038,26 @@ end
 function Window:CreateTitleBar()
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
-    self.TitleBar.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.TitleBar.BackgroundColor3 = self.Theme.Colors.Primary
     self.TitleBar.BorderSizePixel = 0
-    self.TitleBar.Size = UDim2.new(1, 0, 0, 40)
+    self.TitleBar.Size = UDim2.new(1, 0, 0, 48)
     self.TitleBar.Parent = self.Container
     
-    self.Theme.CreateCorner(self.TitleBar, 6)
+    self.Theme.CreateCorner(self.TitleBar, 8)
+    self.Theme.CreateStroke(self.TitleBar, self.Theme.Colors.BorderAccent, self.Theme.Size.Border)
     
     -- Title text
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -100, 1, 0)
-    title.Position = UDim2.fromOffset(16, 0)
+    title.Position = UDim2.fromOffset(18, 0)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
-    title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Large
+    title.TextColor3 = self.Theme.Colors.Background
+    title.TextSize = self.Theme.Font.Size.Title
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.TitleBar
-    
-    -- Add gradient to title
-    self.Theme.CreateGradient(title, 90)
     
     -- Close button
     if self.Config.CloseButton then
@@ -3055,16 +3065,17 @@ function Window:CreateTitleBar()
         closeBtn.Name = "CloseButton"
         closeBtn.BackgroundColor3 = self.Theme.Colors.Error
         closeBtn.BorderSizePixel = 0
-        closeBtn.Size = UDim2.fromOffset(24, 24)
-        closeBtn.Position = UDim2.new(1, -32, 0.5, 0)
+        closeBtn.Size = UDim2.fromOffset(32, 32)
+        closeBtn.Position = UDim2.new(1, -40, 0.5, 0)
         closeBtn.AnchorPoint = Vector2.new(0, 0.5)
         closeBtn.Font = self.Theme.Font.Bold
         closeBtn.Text = "×"
-        closeBtn.TextColor3 = self.Theme.Colors.Text
-        closeBtn.TextSize = 20
+        closeBtn.TextColor3 = self.Theme.Colors.Background
+        closeBtn.TextSize = 24
         closeBtn.Parent = self.TitleBar
         
-        self.Theme.CreateCorner(closeBtn, 4)
+        self.Theme.CreateCorner(closeBtn, 6)
+        self.Theme.CreateStroke(closeBtn, self.Theme.Colors.Background, self.Theme.Size.Border)
         
         closeBtn.MouseButton1Click:Connect(function()
             self:Toggle()
@@ -3072,7 +3083,7 @@ function Window:CreateTitleBar()
         
         closeBtn.MouseEnter:Connect(function()
             self.Utils.Tween(closeBtn, {
-                BackgroundColor3 = Color3.fromRGB(255, 70, 120)
+                BackgroundColor3 = Color3.fromRGB(239, 68, 68)
             }, 0.15)
         end)
         
@@ -3087,11 +3098,13 @@ end
 function Window:CreateTabBar()
     self.TabBar = Instance.new("Frame")
     self.TabBar.Name = "TabBar"
-    self.TabBar.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.TabBar.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.TabBar.BorderSizePixel = 0
-    self.TabBar.Size = UDim2.new(0, 140, 1, -40)
-    self.TabBar.Position = UDim2.fromOffset(0, 40)
+    self.TabBar.Size = UDim2.new(0, 160, 1, -48)
+    self.TabBar.Position = UDim2.fromOffset(0, 48)
     self.TabBar.Parent = self.Container
+    
+    self.Theme.CreateStroke(self.TabBar, self.Theme.Colors.Border, 2)
     
     -- Tab list
     self.TabList = Instance.new("ScrollingFrame")
@@ -3122,12 +3135,12 @@ function Window:CreateContentArea()
     self.ContentArea.Name = "ContentArea"
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(1, -140, 1, -40)
-    self.ContentArea.Position = UDim2.fromOffset(140, 40)
+    self.ContentArea.Size = UDim2.new(1, -160, 1, -48)
+    self.ContentArea.Position = UDim2.fromOffset(160, 48)
     self.ContentArea.ClipsDescendants = true
     self.ContentArea.Parent = self.Container
     
-    self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Medium)
+    self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Large)
 end
 
 function Window:AddTab(config)

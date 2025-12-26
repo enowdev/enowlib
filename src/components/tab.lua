@@ -28,8 +28,8 @@ function Tab:CreateUI()
     self.Button.Name = "TabButton"
     self.Button.BackgroundColor3 = self.Theme.Colors.BackgroundLight
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 36)
-    self.Button.Font = self.Theme.Font.Regular
+    self.Button.Size = UDim2.new(1, 0, 0, 42)
+    self.Button.Font = self.Theme.Font.Bold
     self.Button.Text = self.Config.Title
     self.Button.TextColor3 = self.Theme.Colors.TextDim
     self.Button.TextSize = self.Theme.Font.Size.Regular
@@ -37,8 +37,9 @@ function Tab:CreateUI()
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Window.TabList
     
-    self.Theme.CreateCorner(self.Button, 4)
-    self.Theme.CreatePadding(self.Button, {12, 12, 0, 0})
+    self.Theme.CreateCorner(self.Button, 6)
+    self.Theme.CreateStroke(self.Button, self.Theme.Colors.Border, self.Theme.Size.Border)
+    self.Theme.CreatePadding(self.Button, {14, 14, 0, 0})
     
     -- Tab content container
     self.Container = Instance.new("ScrollingFrame")
@@ -90,13 +91,17 @@ function Tab:Show()
     self.Container.Visible = true
     
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.Active,
-        TextColor3 = self.Theme.Colors.Text
+        BackgroundColor3 = self.Theme.Colors.Primary,
+        TextColor3 = self.Theme.Colors.Background
     }, 0.2)
     
-    -- Add glow effect
-    if not self.Button:FindFirstChild("Stroke") then
-        self.Theme.CreateStroke(self.Button, self.Theme.Colors.Primary, 1)
+    -- Update stroke
+    local stroke = self.Button:FindFirstChild("UIStroke")
+    if stroke then
+        self.Utils.Tween(stroke, {
+            Color = self.Theme.Colors.BorderAccent,
+            Thickness = self.Theme.Size.BorderThick
+        }, 0.2)
     end
 end
 
@@ -109,10 +114,13 @@ function Tab:Hide()
         TextColor3 = self.Theme.Colors.TextDim
     }, 0.2)
     
-    -- Remove glow
+    -- Reset stroke
     local stroke = self.Button:FindFirstChild("UIStroke")
     if stroke then
-        stroke:Destroy()
+        self.Utils.Tween(stroke, {
+            Color = self.Theme.Colors.Border,
+            Thickness = self.Theme.Size.Border
+        }, 0.2)
     end
 end
 

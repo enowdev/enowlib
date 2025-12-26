@@ -1,40 +1,41 @@
 -- EnowLib Theme System
--- Vaporwave Tech Dark Color Scheme
+-- Neo Brutalism Pastel Dark Color Scheme
 
 local Theme = {}
 
--- Color Palette
+-- Color Palette - Neo Brutalism Pastel Dark
 Theme.Colors = {
-    -- Background colors
-    Background = Color3.fromRGB(15, 15, 25),
-    BackgroundDark = Color3.fromRGB(10, 10, 18),
-    BackgroundLight = Color3.fromRGB(20, 20, 30),
+    -- Background colors (Dark pastel base)
+    Background = Color3.fromRGB(26, 27, 38),        -- Deep navy blue
+    BackgroundDark = Color3.fromRGB(20, 21, 30),    -- Darker navy
+    BackgroundLight = Color3.fromRGB(32, 34, 46),   -- Lighter navy
     
-    -- Primary colors (Vaporwave gradient)
-    Primary = Color3.fromRGB(138, 43, 226), -- Purple
-    PrimaryLight = Color3.fromRGB(186, 85, 211), -- Light purple
-    PrimaryDark = Color3.fromRGB(75, 0, 130), -- Dark purple
+    -- Primary colors (Pastel purple/lavender)
+    Primary = Color3.fromRGB(159, 122, 234),        -- Soft lavender
+    PrimaryLight = Color3.fromRGB(189, 162, 244),   -- Light lavender
+    PrimaryDark = Color3.fromRGB(129, 92, 204),     -- Deep lavender
     
-    -- Accent colors
-    Accent = Color3.fromRGB(0, 255, 255), -- Cyan
-    AccentPink = Color3.fromRGB(255, 20, 147), -- Deep pink
-    AccentGlow = Color3.fromRGB(57, 255, 255), -- Bright cyan
+    -- Accent colors (Pastel complementary)
+    Accent = Color3.fromRGB(130, 204, 221),         -- Soft cyan
+    AccentPink = Color3.fromRGB(244, 143, 177),     -- Soft pink
+    AccentGreen = Color3.fromRGB(166, 226, 188),    -- Soft mint
     
     -- Text colors
-    Text = Color3.fromRGB(240, 240, 255),
-    TextDim = Color3.fromRGB(150, 150, 170),
-    TextDisabled = Color3.fromRGB(80, 80, 100),
+    Text = Color3.fromRGB(226, 232, 240),           -- Soft white
+    TextDim = Color3.fromRGB(148, 163, 184),        -- Muted gray
+    TextDisabled = Color3.fromRGB(100, 116, 139),   -- Dark gray
     
-    -- State colors
-    Success = Color3.fromRGB(0, 255, 150),
-    Warning = Color3.fromRGB(255, 200, 0),
-    Error = Color3.fromRGB(255, 50, 100),
+    -- State colors (Pastel versions)
+    Success = Color3.fromRGB(134, 239, 172),        -- Soft green
+    Warning = Color3.fromRGB(253, 224, 71),         -- Soft yellow
+    Error = Color3.fromRGB(252, 165, 165),          -- Soft red
     
-    -- UI Element colors
-    Border = Color3.fromRGB(100, 50, 150),
-    BorderGlow = Color3.fromRGB(138, 43, 226),
-    Hover = Color3.fromRGB(25, 25, 40),
-    Active = Color3.fromRGB(30, 30, 50),
+    -- UI Element colors (Neo brutalism style)
+    Border = Color3.fromRGB(71, 85, 105),           -- Slate border
+    BorderAccent = Color3.fromRGB(159, 122, 234),   -- Primary border
+    Shadow = Color3.fromRGB(15, 16, 23),            -- Deep shadow
+    Hover = Color3.fromRGB(41, 44, 58),             -- Subtle hover
+    Active = Color3.fromRGB(51, 54, 68),            -- Active state
     
     -- Transparency
     Transparent = Color3.fromRGB(0, 0, 0)
@@ -52,99 +53,102 @@ Theme.Transparency = {
 
 -- Font settings
 Theme.Font = {
-    Regular = Enum.Font.Gotham,
+    Regular = Enum.Font.GothamMedium,
     Bold = Enum.Font.GothamBold,
     Mono = Enum.Font.RobotoMono,
     Size = {
-        Small = 12,
+        Small = 13,
         Regular = 14,
         Medium = 16,
         Large = 18,
-        Title = 20
+        Title = 22
     }
 }
 
--- Spacing and sizing
+-- Spacing and sizing (Neo brutalism - more spacious)
 Theme.Spacing = {
-    Tiny = 4,
-    Small = 8,
-    Medium = 12,
-    Large = 16,
-    XLarge = 24
+    Tiny = 6,
+    Small = 10,
+    Medium = 14,
+    Large = 18,
+    XLarge = 28
 }
 
 Theme.Size = {
-    Border = 1,
-    BorderGlow = 2,
-    CornerRadius = 6,
-    ScrollBarWidth = 4,
+    Border = 2,                    -- Thicker borders for neo brutalism
+    BorderThick = 3,               -- Extra thick for emphasis
+    CornerRadius = 8,              -- Slightly rounded
+    ScrollBarWidth = 6,
     
     -- Component sizes
-    ButtonHeight = 32,
-    ToggleSize = 20,
-    SliderHeight = 6,
-    InputHeight = 32,
-    DropdownHeight = 32,
+    ButtonHeight = 38,
+    ToggleSize = 22,
+    SliderHeight = 8,
+    InputHeight = 38,
+    DropdownHeight = 38,
     
     -- Container sizes
-    WindowMinWidth = 400,
-    WindowMinHeight = 300,
-    TabWidth = 140,
-    SectionHeight = 30
+    WindowMinWidth = 450,
+    WindowMinHeight = 350,
+    TabWidth = 160,
+    SectionHeight = 32,
+    
+    -- Neo brutalism shadow offset
+    ShadowOffset = 4
 }
 
--- Animation settings
+-- Animation settings (Snappier for neo brutalism)
 Theme.Animation = {
     Speed = {
-        Fast = 0.15,
-        Normal = 0.25,
-        Slow = 0.4
+        Fast = 0.12,
+        Normal = 0.2,
+        Slow = 0.35
     },
     Easing = Enum.EasingStyle.Quad,
     Direction = Enum.EasingDirection.Out
 }
 
--- Glow effect settings
-Theme.Glow = {
-    Intensity = 0.8,
-    Size = 20,
-    Color = Color3.fromRGB(138, 43, 226)
+-- Neo brutalism shadow
+Theme.Shadow = {
+    Offset = Vector2.new(4, 4),
+    Color = Color3.fromRGB(15, 16, 23),
+    Transparency = 0.3
 }
 
--- Create gradient for vaporwave effect
+-- Create gradient (subtle for neo brutalism)
 function Theme.CreateGradient(parent, rotation)
-    rotation = rotation or 45
+    rotation = rotation or 90
     
     local gradient = Instance.new("UIGradient")
     gradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Theme.Colors.Primary),
-        ColorSequenceKeypoint.new(0.5, Theme.Colors.AccentPink),
-        ColorSequenceKeypoint.new(1, Theme.Colors.Accent)
+        ColorSequenceKeypoint.new(1, Theme.Colors.PrimaryLight)
     })
     gradient.Rotation = rotation
+    gradient.Transparency = NumberSequence.new(0.85) -- Very subtle
     gradient.Parent = parent
     
     return gradient
 end
 
--- Create glow effect
-function Theme.CreateGlow(parent, color)
-    color = color or Theme.Glow.Color
+-- Create neo brutalism shadow
+function Theme.CreateShadow(parent)
+    local shadow = Instance.new("Frame")
+    shadow.Name = "Shadow"
+    shadow.BackgroundColor3 = Theme.Shadow.Color
+    shadow.BackgroundTransparency = Theme.Shadow.Transparency
+    shadow.BorderSizePixel = 0
+    shadow.Size = UDim2.new(1, 0, 1, 0)
+    shadow.Position = UDim2.fromOffset(Theme.Shadow.Offset.X, Theme.Shadow.Offset.Y)
+    shadow.ZIndex = parent.ZIndex - 1
+    shadow.Parent = parent.Parent
     
-    local glow = Instance.new("ImageLabel")
-    glow.Name = "Glow"
-    glow.BackgroundTransparency = 1
-    glow.Image = "rbxassetid://4996891970"
-    glow.ImageColor3 = color
-    glow.ImageTransparency = 0.7
-    glow.ScaleType = Enum.ScaleType.Slice
-    glow.SliceCenter = Rect.new(128, 128, 128, 128)
-    glow.Size = UDim2.new(1, Theme.Glow.Size, 1, Theme.Glow.Size)
-    glow.Position = UDim2.fromOffset(-Theme.Glow.Size / 2, -Theme.Glow.Size / 2)
-    glow.ZIndex = parent.ZIndex - 1
-    glow.Parent = parent
+    -- Match corner radius
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, Theme.Size.CornerRadius)
+    corner.Parent = shadow
     
-    return glow
+    return shadow
 end
 
 -- Create corner radius
@@ -158,7 +162,7 @@ function Theme.CreateCorner(parent, radius)
     return corner
 end
 
--- Create stroke/border
+-- Create stroke/border (thicker for neo brutalism)
 function Theme.CreateStroke(parent, color, thickness)
     color = color or Theme.Colors.Border
     thickness = thickness or Theme.Size.Border

@@ -45,8 +45,8 @@ function Window:CreateUI()
     self.Container.Parent = self.ScreenGui
     
     self.Theme.CreateCorner(self.Container)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.BorderGlow, 2)
-    self.Theme.CreateGlow(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.BorderAccent, self.Theme.Size.BorderThick)
+    self.Theme.CreateShadow(self.Container)
     
     -- Title bar
     self:CreateTitleBar()
@@ -69,28 +69,26 @@ end
 function Window:CreateTitleBar()
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
-    self.TitleBar.BackgroundColor3 = self.Theme.Colors.BackgroundDark
+    self.TitleBar.BackgroundColor3 = self.Theme.Colors.Primary
     self.TitleBar.BorderSizePixel = 0
-    self.TitleBar.Size = UDim2.new(1, 0, 0, 40)
+    self.TitleBar.Size = UDim2.new(1, 0, 0, 48)
     self.TitleBar.Parent = self.Container
     
-    self.Theme.CreateCorner(self.TitleBar, 6)
+    self.Theme.CreateCorner(self.TitleBar, 8)
+    self.Theme.CreateStroke(self.TitleBar, self.Theme.Colors.BorderAccent, self.Theme.Size.Border)
     
     -- Title text
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -100, 1, 0)
-    title.Position = UDim2.fromOffset(16, 0)
+    title.Position = UDim2.fromOffset(18, 0)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
-    title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Large
+    title.TextColor3 = self.Theme.Colors.Background
+    title.TextSize = self.Theme.Font.Size.Title
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.TitleBar
-    
-    -- Add gradient to title
-    self.Theme.CreateGradient(title, 90)
     
     -- Close button
     if self.Config.CloseButton then
@@ -98,16 +96,17 @@ function Window:CreateTitleBar()
         closeBtn.Name = "CloseButton"
         closeBtn.BackgroundColor3 = self.Theme.Colors.Error
         closeBtn.BorderSizePixel = 0
-        closeBtn.Size = UDim2.fromOffset(24, 24)
-        closeBtn.Position = UDim2.new(1, -32, 0.5, 0)
+        closeBtn.Size = UDim2.fromOffset(32, 32)
+        closeBtn.Position = UDim2.new(1, -40, 0.5, 0)
         closeBtn.AnchorPoint = Vector2.new(0, 0.5)
         closeBtn.Font = self.Theme.Font.Bold
         closeBtn.Text = "×"
-        closeBtn.TextColor3 = self.Theme.Colors.Text
-        closeBtn.TextSize = 20
+        closeBtn.TextColor3 = self.Theme.Colors.Background
+        closeBtn.TextSize = 24
         closeBtn.Parent = self.TitleBar
         
-        self.Theme.CreateCorner(closeBtn, 4)
+        self.Theme.CreateCorner(closeBtn, 6)
+        self.Theme.CreateStroke(closeBtn, self.Theme.Colors.Background, self.Theme.Size.Border)
         
         closeBtn.MouseButton1Click:Connect(function()
             self:Toggle()
@@ -115,7 +114,7 @@ function Window:CreateTitleBar()
         
         closeBtn.MouseEnter:Connect(function()
             self.Utils.Tween(closeBtn, {
-                BackgroundColor3 = Color3.fromRGB(255, 70, 120)
+                BackgroundColor3 = Color3.fromRGB(239, 68, 68)
             }, 0.15)
         end)
         
@@ -130,11 +129,13 @@ end
 function Window:CreateTabBar()
     self.TabBar = Instance.new("Frame")
     self.TabBar.Name = "TabBar"
-    self.TabBar.BackgroundColor3 = self.Theme.Colors.BackgroundLight
+    self.TabBar.BackgroundColor3 = self.Theme.Colors.BackgroundDark
     self.TabBar.BorderSizePixel = 0
-    self.TabBar.Size = UDim2.new(0, 140, 1, -40)
-    self.TabBar.Position = UDim2.fromOffset(0, 40)
+    self.TabBar.Size = UDim2.new(0, 160, 1, -48)
+    self.TabBar.Position = UDim2.fromOffset(0, 48)
     self.TabBar.Parent = self.Container
+    
+    self.Theme.CreateStroke(self.TabBar, self.Theme.Colors.Border, 2)
     
     -- Tab list
     self.TabList = Instance.new("ScrollingFrame")
@@ -165,12 +166,12 @@ function Window:CreateContentArea()
     self.ContentArea.Name = "ContentArea"
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(1, -140, 1, -40)
-    self.ContentArea.Position = UDim2.fromOffset(140, 40)
+    self.ContentArea.Size = UDim2.new(1, -160, 1, -48)
+    self.ContentArea.Position = UDim2.fromOffset(160, 48)
     self.ContentArea.ClipsDescendants = true
     self.ContentArea.Parent = self.Container
     
-    self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Medium)
+    self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Large)
 end
 
 function Window:AddTab(config)
