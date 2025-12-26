@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 16:14:03
+-- Built: 2025-12-26 16:18:04
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1217,7 +1217,7 @@ function Dropdown:FilterOptions(searchText)
             local baseHeight = self.Config.Searchable and 32 or 0
             local optionsHeight = math.min(#self.AllOptions * 34, 150)
             self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
-            self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 8)
+            self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 16)
         end
         return
     end
@@ -1239,7 +1239,7 @@ function Dropdown:FilterOptions(searchText)
         local baseHeight = self.Config.Searchable and 32 or 0
         local optionsHeight = visibleCount > 0 and math.min(visibleCount * 34, 150) or 32
         self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
-        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 8)
+        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 16)
     end
 end
 
@@ -1251,7 +1251,7 @@ function Dropdown:Toggle()
         local optionsHeight = math.min(#self.Config.Options * 34, 150)
         self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
         self.OptionsList.Visible = true
-        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 8)
+        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 16)
         self.ChevronIcon.Rotation = 180
         
         -- Focus search box if searchable
