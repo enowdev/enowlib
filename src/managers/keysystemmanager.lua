@@ -82,7 +82,7 @@ function KeySystemManager:CreateUI()
     container.BackgroundColor3 = theme.Panel
     container.BackgroundTransparency = 0.1
     container.BorderSizePixel = 0
-    container.Size = UDim2.fromOffset(400, 350)
+    container.Size = UDim2.fromOffset(400, 400)
     container.Position = UDim2.fromScale(0.5, 0.5)
     container.AnchorPoint = Vector2.new(0.5, 0.5)
     container.Parent = self.ScreenGui
