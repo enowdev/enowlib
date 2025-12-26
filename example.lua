@@ -9,7 +9,7 @@ print("Creating window...")
 
 local Window = EnowLib:CreateWindow({
     Title = "EnowLib v2.0",
-    Size = UDim2.fromOffset(750, 450)
+    Size = UDim2.fromOffset(800, 400)
 })
 
 -- Main Tab
