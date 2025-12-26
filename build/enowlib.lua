@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 13:59:07
+-- Built: 2025-12-26 14:03:16
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -405,6 +405,122 @@ assert(Label, "Failed to assign Label module")
 end
 
 
+-- Module: Paragraph
+local Paragraph
+do
+-- EnowLib Paragraph Component
+
+Paragraph = {}
+Paragraph.__index = Paragraph
+
+function Paragraph.new(config, parent, theme, utils)
+    local self = setmetatable({}, Paragraph)
+    
+    self.Parent = parent
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Text = "Paragraph text here..."
+    }, config or {})
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function Paragraph:CreateUI()
+    self.Container = Instance.new("TextLabel")
+    self.Container.BackgroundTransparency = 1
+    self.Container.Size = UDim2.new(1, 0, 0, 0)
+    self.Container.Font = self.Theme.Font.Mono
+    self.Container.Text = self.Config.Text
+    self.Container.TextColor3 = self.Theme.Colors.TextDim
+    self.Container.TextSize = self.Theme.Font.Size.Regular
+    self.Container.TextXAlignment = Enum.TextXAlignment.Left
+    self.Container.TextYAlignment = Enum.TextYAlignment.Top
+    self.Container.TextWrapped = true
+    self.Container.Parent = self.Parent.Container or self.Parent
+    
+    -- Auto-size based on text
+    self.Container.Size = UDim2.new(1, 0, 0, self.Container.TextBounds.Y + 4)
+    
+    self.Container:GetPropertyChangedSignal("TextBounds"):Connect(function()
+        self.Container.Size = UDim2.new(1, 0, 0, self.Container.TextBounds.Y + 4)
+    end)
+end
+Paragraph = Paragraph
+assert(Paragraph, "Failed to assign Paragraph module")
+end
+
+
+-- Module: Divider
+local Divider
+do
+-- EnowLib Divider Component
+
+Divider = {}
+Divider.__index = Divider
+
+function Divider.new(config, parent, theme, utils)
+    local self = setmetatable({}, Divider)
+    
+    self.Parent = parent
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Text = nil
+    }, config or {})
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function Divider:CreateUI()
+    if self.Config.Text then
+        -- Divider with text
+        self.Container = Instance.new("Frame")
+        self.Container.BackgroundTransparency = 1
+        self.Container.Size = UDim2.new(1, 0, 0, 30)
+        self.Container.Parent = self.Parent.Container or self.Parent
+        
+        local leftLine = Instance.new("Frame")
+        leftLine.BackgroundColor3 = self.Theme.Colors.Border
+        leftLine.BorderSizePixel = 0
+        leftLine.Size = UDim2.new(0.5, -40, 0, 1)
+        leftLine.Position = UDim2.new(0, 0, 0.5, 0)
+        leftLine.Parent = self.Container
+        
+        local text = Instance.new("TextLabel")
+        text.BackgroundTransparency = 1
+        text.Size = UDim2.fromOffset(70, 30)
+        text.Position = UDim2.new(0.5, -35, 0, 0)
+        text.Font = self.Theme.Font.Bold
+        text.Text = self.Config.Text
+        text.TextColor3 = self.Theme.Colors.TextDim
+        text.TextSize = self.Theme.Font.Size.Small
+        text.Parent = self.Container
+        
+        local rightLine = Instance.new("Frame")
+        rightLine.BackgroundColor3 = self.Theme.Colors.Border
+        rightLine.BorderSizePixel = 0
+        rightLine.Size = UDim2.new(0.5, -40, 0, 1)
+        rightLine.Position = UDim2.new(0.5, 40, 0.5, 0)
+        rightLine.Parent = self.Container
+    else
+        -- Simple line
+        self.Container = Instance.new("Frame")
+        self.Container.BackgroundColor3 = self.Theme.Colors.Border
+        self.Container.BorderSizePixel = 0
+        self.Container.Size = UDim2.new(1, 0, 0, 1)
+        self.Container.Parent = self.Parent.Container or self.Parent
+    end
+end
+Divider = Divider
+assert(Divider, "Failed to assign Divider module")
+end
+
+
 -- Module: Button
 local Button
 do
@@ -789,6 +905,523 @@ function Slider:Destroy()
 end
 Slider = Slider
 assert(Slider, "Failed to assign Slider module")
+end
+
+
+-- Module: TextBox
+local TextBox
+do
+-- EnowLib TextBox Component
+
+TextBox = {}
+TextBox.__index = TextBox
+
+function TextBox.new(config, parent, theme, utils)
+    local self = setmetatable({}, TextBox)
+    
+    self.Parent = parent
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "TextBox",
+        Placeholder = "Enter text...",
+        Default = "",
+        Callback = function(value) end
+    }, config or {})
+    
+    self.Value = self.Config.Default
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function TextBox:CreateUI()
+    self.Container = Instance.new("Frame")
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
+    self.Container.BorderSizePixel = 0
+    self.Container.Size = UDim2.new(1, 0, 0, 70)
+    self.Container.Parent = self.Parent.Container or self.Parent
+    
+    self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    self.Theme.CreatePadding(self.Container, 12)
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, 0, 0, 20)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Input Box
+    self.InputBox = Instance.new("TextBox")
+    self.InputBox.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.InputBox.BorderSizePixel = 0
+    self.InputBox.Size = UDim2.new(1, 0, 0, 32)
+    self.InputBox.Position = UDim2.fromOffset(0, 26)
+    self.InputBox.Font = self.Theme.Font.Mono
+    self.InputBox.Text = self.Value
+    self.InputBox.PlaceholderText = self.Config.Placeholder
+    self.InputBox.TextColor3 = self.Theme.Colors.Text
+    self.InputBox.PlaceholderColor3 = self.Theme.Colors.TextDim
+    self.InputBox.TextSize = self.Theme.Font.Size.Regular
+    self.InputBox.TextXAlignment = Enum.TextXAlignment.Left
+    self.InputBox.ClearTextOnFocus = false
+    self.InputBox.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.InputBox, 6)
+    self.Theme.CreatePadding(self.InputBox, 10)
+    
+    -- Events
+    self.InputBox.FocusLost:Connect(function(enterPressed)
+        self.Value = self.InputBox.Text
+        pcall(self.Config.Callback, self.Value)
+    end)
+end
+TextBox = TextBox
+assert(TextBox, "Failed to assign TextBox module")
+end
+
+
+-- Module: Dropdown
+local Dropdown
+do
+-- EnowLib Dropdown Component
+
+Dropdown = {}
+Dropdown.__index = Dropdown
+
+function Dropdown.new(config, parent, theme, utils)
+    local self = setmetatable({}, Dropdown)
+    
+    self.Parent = parent
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Dropdown",
+        Options = {"Option 1", "Option 2", "Option 3"},
+        Default = "Option 1",
+        Callback = function(value) end
+    }, config or {})
+    
+    self.Value = self.Config.Default
+    self.Open = false
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function Dropdown:CreateUI()
+    self.Container = Instance.new("Frame")
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
+    self.Container.BorderSizePixel = 0
+    self.Container.Size = UDim2.new(1, 0, 0, 70)
+    self.Container.Parent = self.Parent.Container or self.Parent
+    
+    self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    self.Theme.CreatePadding(self.Container, 12)
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, 0, 0, 20)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Dropdown Button
+    self.Button = Instance.new("TextButton")
+    self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.Button.BorderSizePixel = 0
+    self.Button.Size = UDim2.new(1, 0, 0, 32)
+    self.Button.Position = UDim2.fromOffset(0, 26)
+    self.Button.Font = self.Theme.Font.Mono
+    self.Button.Text = ""
+    self.Button.TextColor3 = self.Theme.Colors.Text
+    self.Button.TextSize = self.Theme.Font.Size.Regular
+    self.Button.TextXAlignment = Enum.TextXAlignment.Left
+    self.Button.AutoButtonColor = false
+    self.Button.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.Button, 6)
+    self.Theme.CreatePadding(self.Button, 10)
+    
+    -- Selected Text
+    self.SelectedText = Instance.new("TextLabel")
+    self.SelectedText.BackgroundTransparency = 1
+    self.SelectedText.Size = UDim2.new(1, -30, 1, 0)
+    self.SelectedText.Font = self.Theme.Font.Mono
+    self.SelectedText.Text = self.Value
+    self.SelectedText.TextColor3 = self.Theme.Colors.Text
+    self.SelectedText.TextSize = self.Theme.Font.Size.Regular
+    self.SelectedText.TextXAlignment = Enum.TextXAlignment.Left
+    self.SelectedText.Parent = self.Button
+    
+    -- Chevron Icon
+    self.ChevronIcon = Instance.new("ImageLabel")
+    self.ChevronIcon.BackgroundTransparency = 1
+    self.ChevronIcon.Size = UDim2.fromOffset(16, 16)
+    self.ChevronIcon.Position = UDim2.new(1, -16, 0.5, -8)
+    self.ChevronIcon.Image = self.Theme.Icons.ChevronDown
+    self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
+    self.ChevronIcon.Parent = self.Button
+    
+    -- Options List
+    self.OptionsList = Instance.new("ScrollingFrame")
+    self.OptionsList.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.OptionsList.BorderSizePixel = 0
+    self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
+    self.OptionsList.Position = UDim2.fromOffset(0, 60)
+    self.OptionsList.ScrollBarThickness = 4
+    self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
+    self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
+    self.OptionsList.Visible = false
+    self.OptionsList.ZIndex = 5
+    self.OptionsList.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.OptionsList, 6)
+    
+    local layout = Instance.new("UIListLayout")
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.Padding = UDim.new(0, 2)
+    layout.Parent = self.OptionsList
+    
+    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        local maxHeight = math.min(layout.AbsoluteContentSize.Y, 150)
+        self.OptionsList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y)
+    end)
+    
+    -- Create options
+    for _, option in ipairs(self.Config.Options) do
+        self:CreateOption(option)
+    end
+    
+    -- Events
+    self.Button.MouseButton1Click:Connect(function()
+        self:Toggle()
+    end)
+end
+
+function Dropdown:CreateOption(optionText)
+    local option = Instance.new("TextButton")
+    option.BackgroundColor3 = self.Theme.Colors.Panel
+    option.BackgroundTransparency = 1
+    option.BorderSizePixel = 0
+    option.Size = UDim2.new(1, 0, 0, 32)
+    option.Font = self.Theme.Font.Mono
+    option.Text = optionText
+    option.TextColor3 = self.Theme.Colors.TextDim
+    option.TextSize = self.Theme.Font.Size.Regular
+    option.TextXAlignment = Enum.TextXAlignment.Left
+    option.AutoButtonColor = false
+    option.Parent = self.OptionsList
+    
+    self.Theme.CreatePadding(option, 10)
+    
+    option.MouseButton1Click:Connect(function()
+        self:Select(optionText)
+    end)
+    
+    option.MouseEnter:Connect(function()
+        option.BackgroundTransparency = 0.9
+        option.TextColor3 = self.Theme.Colors.Accent
+    end)
+    
+    option.MouseLeave:Connect(function()
+        option.BackgroundTransparency = 1
+        option.TextColor3 = self.Theme.Colors.TextDim
+    end)
+end
+
+function Dropdown:Toggle()
+    self.Open = not self.Open
+    
+    if self.Open then
+        local optionsHeight = math.min(#self.Config.Options * 34, 150)
+        self.OptionsList.Size = UDim2.new(1, 0, 0, optionsHeight)
+        self.OptionsList.Visible = true
+        self.Container.Size = UDim2.new(1, 0, 0, 70 + optionsHeight + 4)
+        self.ChevronIcon.Rotation = 180
+    else
+        self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
+        self.OptionsList.Visible = false
+        self.Container.Size = UDim2.new(1, 0, 0, 70)
+        self.ChevronIcon.Rotation = 0
+    end
+end
+
+function Dropdown:Select(value)
+    self.Value = value
+    self.SelectedText.Text = value
+    self:Toggle()
+    pcall(self.Config.Callback, value)
+end
+Dropdown = Dropdown
+assert(Dropdown, "Failed to assign Dropdown module")
+end
+
+
+-- Module: ColorPicker
+local ColorPicker
+do
+-- EnowLib ColorPicker Component
+
+ColorPicker = {}
+ColorPicker.__index = ColorPicker
+
+function ColorPicker.new(config, parent, theme, utils)
+    local self = setmetatable({}, ColorPicker)
+    
+    self.Parent = parent
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Color Picker",
+        Default = Color3.fromRGB(46, 204, 113),
+        Callback = function(color) end
+    }, config or {})
+    
+    self.Value = self.Config.Default
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function ColorPicker:CreateUI()
+    self.Container = Instance.new("Frame")
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
+    self.Container.BorderSizePixel = 0
+    self.Container.Size = UDim2.new(1, 0, 0, 48)
+    self.Container.Parent = self.Parent.Container or self.Parent
+    
+    self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    self.Theme.CreatePadding(self.Container, 12)
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, -60, 1, 0)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Color Display
+    self.ColorDisplay = Instance.new("TextButton")
+    self.ColorDisplay.BackgroundColor3 = self.Value
+    self.ColorDisplay.BorderSizePixel = 0
+    self.ColorDisplay.Size = UDim2.fromOffset(44, 24)
+    self.ColorDisplay.Position = UDim2.new(1, 0, 0.5, 0)
+    self.ColorDisplay.AnchorPoint = Vector2.new(1, 0.5)
+    self.ColorDisplay.Text = ""
+    self.ColorDisplay.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.ColorDisplay, 6)
+    self.Theme.CreateStroke(self.ColorDisplay, self.Theme.Colors.Border)
+    
+    -- Simple color picker (click to cycle through preset colors)
+    local presetColors = {
+        Color3.fromRGB(46, 204, 113),  -- Green
+        Color3.fromRGB(52, 152, 219),  -- Blue
+        Color3.fromRGB(155, 89, 182),  -- Purple
+        Color3.fromRGB(241, 196, 15),  -- Yellow
+        Color3.fromRGB(231, 76, 60),   -- Red
+        Color3.fromRGB(230, 126, 34),  -- Orange
+        Color3.fromRGB(255, 255, 255), -- White
+        Color3.fromRGB(149, 165, 166)  -- Gray
+    }
+    
+    local currentIndex = 1
+    
+    self.ColorDisplay.MouseButton1Click:Connect(function()
+        currentIndex = currentIndex % #presetColors + 1
+        self.Value = presetColors[currentIndex]
+        self.ColorDisplay.BackgroundColor3 = self.Value
+        pcall(self.Config.Callback, self.Value)
+    end)
+end
+ColorPicker = ColorPicker
+assert(ColorPicker, "Failed to assign ColorPicker module")
+end
+
+
+-- Module: Keybind
+local Keybind
+do
+-- EnowLib Keybind Component
+
+Keybind = {}
+Keybind.__index = Keybind
+
+function Keybind.new(config, parent, theme, utils)
+    local self = setmetatable({}, Keybind)
+    
+    self.Parent = parent
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Keybind",
+        Default = "None",
+        Callback = function(key) end
+    }, config or {})
+    
+    self.Value = self.Config.Default
+    self.Listening = false
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function Keybind:CreateUI()
+    local UserInputService = game:GetService("UserInputService")
+    
+    self.Container = Instance.new("Frame")
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
+    self.Container.BorderSizePixel = 0
+    self.Container.Size = UDim2.new(1, 0, 0, 48)
+    self.Container.Parent = self.Parent.Container or self.Parent
+    
+    self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    self.Theme.CreatePadding(self.Container, 12)
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, -100, 1, 0)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Text
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Keybind Button
+    self.Button = Instance.new("TextButton")
+    self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.Button.BorderSizePixel = 0
+    self.Button.Size = UDim2.fromOffset(80, 24)
+    self.Button.Position = UDim2.new(1, 0, 0.5, 0)
+    self.Button.AnchorPoint = Vector2.new(1, 0.5)
+    self.Button.Font = self.Theme.Font.Mono
+    self.Button.Text = self.Value
+    self.Button.TextColor3 = self.Theme.Colors.Text
+    self.Button.TextSize = self.Theme.Font.Size.Small
+    self.Button.AutoButtonColor = false
+    self.Button.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.Button, 6)
+    
+    -- Events
+    self.Button.MouseButton1Click:Connect(function()
+        if not self.Listening then
+            self.Listening = true
+            self.Button.Text = "..."
+            self.Button.BackgroundColor3 = self.Theme.Colors.Accent
+        end
+    end)
+    
+    UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if self.Listening and not gameProcessed then
+            if input.UserInputType == Enum.UserInputType.Keyboard then
+                local key = input.KeyCode.Name
+                self.Value = key
+                self.Button.Text = key
+                self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
+                self.Listening = false
+                pcall(self.Config.Callback, key)
+            end
+        end
+    end)
+end
+Keybind = Keybind
+assert(Keybind, "Failed to assign Keybind module")
+end
+
+
+-- Module: Section
+local Section
+do
+-- EnowLib Section Component
+
+Section = {}
+Section.__index = Section
+
+function Section.new(config, parent, theme, utils)
+    local self = setmetatable({}, Section)
+    
+    self.Parent = parent
+    self.Theme = theme
+    self.Utils = utils
+    self.Config = utils.Merge({
+        Title = "Section"
+    }, config or {})
+    
+    self:CreateUI()
+    
+    return self
+end
+
+function Section:CreateUI()
+    self.Container = Instance.new("Frame")
+    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Subtle
+    self.Container.BorderSizePixel = 0
+    self.Container.Size = UDim2.new(1, 0, 0, 0)
+    self.Container.Parent = self.Parent.Container or self.Parent
+    
+    self.Theme.CreateCorner(self.Container)
+    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
+    self.Theme.CreatePadding(self.Container, 12)
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, 0, 0, 24)
+    title.Font = self.Theme.Font.Bold
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.Accent
+    title.TextSize = self.Theme.Font.Size.Large
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Container
+    
+    -- Content Container
+    self.ContentContainer = Instance.new("Frame")
+    self.ContentContainer.BackgroundTransparency = 1
+    self.ContentContainer.Size = UDim2.new(1, 0, 1, -28)
+    self.ContentContainer.Position = UDim2.fromOffset(0, 28)
+    self.ContentContainer.Parent = self.Container
+    
+    local layout = Instance.new("UIListLayout")
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.Padding = UDim.new(0, 8)
+    layout.Parent = self.ContentContainer
+    
+    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        self.Container.Size = UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y + 52)
+    end)
+end
+Section = Section
+assert(Section, "Failed to assign Section module")
 end
 
 
