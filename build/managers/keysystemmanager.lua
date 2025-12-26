@@ -245,43 +245,23 @@ function KeySystemManager:CreateUI()
         self:ValidateKey(key, false)
     end)
     
-    -- Bottom links container
-    local linksContainer = Instance.new("Frame")
-    linksContainer.BackgroundTransparency = 1
-    linksContainer.Size = UDim2.new(1, -40, 0, 70)
-    linksContainer.Position = UDim2.fromOffset(20, 340)
-    linksContainer.Parent = container
-    
-    -- "Don't have a key?" text
-    local noKeyText = Instance.new("TextLabel")
-    noKeyText.BackgroundTransparency = 1
-    noKeyText.Size = UDim2.new(1, 0, 0, 20)
-    noKeyText.Position = UDim2.fromOffset(0, 0)
-    noKeyText.Font = Enum.Font.RobotoMono
-    noKeyText.Text = "Don't have a key?"
-    noKeyText.TextColor3 = theme.TextDim
-    noKeyText.TextSize = 11
-    noKeyText.TextXAlignment = Enum.TextXAlignment.Center
-    noKeyText.Parent = linksContainer
-    
-    -- Links row container
-    local linksRow = Instance.new("Frame")
-    linksRow.BackgroundTransparency = 1
-    linksRow.Size = UDim2.new(1, 0, 0, 20)
-    linksRow.Position = UDim2.fromOffset(0, 25)
-    linksRow.Parent = linksContainer
-    
-    -- Get Key button
+    -- Get Key Button (Left)
     if self.Config.GetKeyUrl then
         local getKeyBtn = Instance.new("TextButton")
-        getKeyBtn.BackgroundTransparency = 1
-        getKeyBtn.Size = UDim2.new(0.5, -10, 1, 0)
-        getKeyBtn.Position = UDim2.fromOffset(0, 0)
-        getKeyBtn.Font = Enum.Font.RobotoMono
-        getKeyBtn.Text = "Get Key Here"
-        getKeyBtn.TextColor3 = theme.Accent
-        getKeyBtn.TextSize = 11
-        getKeyBtn.Parent = linksRow
+        getKeyBtn.BackgroundColor3 = theme.Secondary
+        getKeyBtn.BorderSizePixel = 0
+        getKeyBtn.Size = UDim2.new(0.5, -25, 0, 36)
+        getKeyBtn.Position = UDim2.fromOffset(20, 340)
+        getKeyBtn.Font = Enum.Font.GothamBold
+        getKeyBtn.Text = "GET KEY"
+        getKeyBtn.TextColor3 = theme.Text
+        getKeyBtn.TextSize = 12
+        getKeyBtn.AutoButtonColor = false
+        getKeyBtn.Parent = container
+        
+        local getKeyCorner = Instance.new("UICorner")
+        getKeyCorner.CornerRadius = UDim.new(0, 6)
+        getKeyCorner.Parent = getKeyBtn
         
         getKeyBtn.MouseButton1Click:Connect(function()
             local success = pcall(function()
@@ -293,25 +273,35 @@ function KeySystemManager:CreateUI()
         end)
         
         getKeyBtn.MouseEnter:Connect(function()
-            getKeyBtn.TextColor3 = theme.AccentHover
+            TweenService:Create(getKeyBtn, TweenInfo.new(0.2), {
+                BackgroundColor3 = theme.Border
+            }):Play()
         end)
         
         getKeyBtn.MouseLeave:Connect(function()
-            getKeyBtn.TextColor3 = theme.Accent
+            TweenService:Create(getKeyBtn, TweenInfo.new(0.2), {
+                BackgroundColor3 = theme.Secondary
+            }):Play()
         end)
     end
     
-    -- Discord button
+    -- Discord Button (Right)
     if self.Config.DiscordUrl then
         local discordBtn = Instance.new("TextButton")
-        discordBtn.BackgroundTransparency = 1
-        discordBtn.Size = UDim2.new(0.5, -10, 1, 0)
-        discordBtn.Position = UDim2.new(0.5, 10, 0, 0)
-        discordBtn.Font = Enum.Font.RobotoMono
-        discordBtn.Text = "Join Discord"
-        discordBtn.TextColor3 = theme.Accent
-        discordBtn.TextSize = 11
-        discordBtn.Parent = linksRow
+        discordBtn.BackgroundColor3 = theme.Secondary
+        discordBtn.BorderSizePixel = 0
+        discordBtn.Size = UDim2.new(0.5, -25, 0, 36)
+        discordBtn.Position = UDim2.new(0.5, 5, 0, 340)
+        discordBtn.Font = Enum.Font.GothamBold
+        discordBtn.Text = "JOIN DISCORD"
+        discordBtn.TextColor3 = theme.Text
+        discordBtn.TextSize = 12
+        discordBtn.AutoButtonColor = false
+        discordBtn.Parent = container
+        
+        local discordCorner = Instance.new("UICorner")
+        discordCorner.CornerRadius = UDim.new(0, 6)
+        discordCorner.Parent = discordBtn
         
         discordBtn.MouseButton1Click:Connect(function()
             local success = pcall(function()
@@ -323,11 +313,15 @@ function KeySystemManager:CreateUI()
         end)
         
         discordBtn.MouseEnter:Connect(function()
-            discordBtn.TextColor3 = theme.AccentHover
+            TweenService:Create(discordBtn, TweenInfo.new(0.2), {
+                BackgroundColor3 = theme.Border
+            }):Play()
         end)
         
         discordBtn.MouseLeave:Connect(function()
-            discordBtn.TextColor3 = theme.Accent
+            TweenService:Create(discordBtn, TweenInfo.new(0.2), {
+                BackgroundColor3 = theme.Secondary
+            }):Play()
         end)
     end
     
