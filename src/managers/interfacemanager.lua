@@ -421,6 +421,10 @@ function InterfaceManager:RefreshCategories()
                 category.TitleLabel.TextColor3 = theme.Colors.Text
             end
             
+            if category.Icon then
+                category.Icon.ImageColor3 = theme.Colors.Accent
+            end
+            
             if category.ChevronIcon then
                 category.ChevronIcon.ImageColor3 = theme.Colors.TextDim
             end
@@ -431,6 +435,7 @@ function InterfaceManager:RefreshCategories()
             for _, item in ipairs(category.Items) do
                 if item.Container then
                     if item.Active then
+                        -- Active item - highlight with accent
                         item.Container.BackgroundColor3 = theme.Colors.Accent
                         item.Container.BackgroundTransparency = 0.85
                         
@@ -441,6 +446,7 @@ function InterfaceManager:RefreshCategories()
                             item.Icon.ImageColor3 = theme.Colors.Text
                         end
                     else
+                        -- Inactive item
                         item.Container.BackgroundColor3 = theme.Colors.Secondary
                         item.Container.BackgroundTransparency = 1
                         
