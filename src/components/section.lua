@@ -28,7 +28,14 @@ function Section:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 12)
+    
+    -- Custom padding: 8px horizontal (match non-box sections), 12px top, 16px bottom
+    local padding = Instance.new("UIPadding")
+    padding.PaddingLeft = UDim.new(0, 8)
+    padding.PaddingRight = UDim.new(0, 8)
+    padding.PaddingTop = UDim.new(0, 12)
+    padding.PaddingBottom = UDim.new(0, 16)
+    padding.Parent = self.Container
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -54,7 +61,7 @@ function Section:CreateUI()
     layout.Parent = self.ContentContainer
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        self.Container.Size = UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y + 52)
+        self.Container.Size = UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y + 56)
     end)
 end
 

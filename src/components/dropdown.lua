@@ -86,12 +86,12 @@ function Dropdown:CreateUI()
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
     
-    -- Options List
+    -- Options List - positioned directly below button (no gap)
     self.OptionsList = Instance.new("ScrollingFrame")
     self.OptionsList.BackgroundColor3 = self.Theme.Colors.Secondary
     self.OptionsList.BorderSizePixel = 0
     self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
-    self.OptionsList.Position = UDim2.fromOffset(0, 60)
+    self.OptionsList.Position = UDim2.fromOffset(0, 58)
     self.OptionsList.ScrollBarThickness = 4
     self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
@@ -100,19 +100,19 @@ function Dropdown:CreateUI()
     self.OptionsList.Parent = self.Container
     
     self.Theme.CreateCorner(self.OptionsList, 6)
+    self.Theme.CreatePadding(self.OptionsList, 4)
     
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
     layout.Padding = UDim.new(0, 2)
     layout.Parent = self.OptionsList
     
-    -- Search Box (optional) - positioned at top
+    -- Search Box (optional) - positioned at top, no extra spacing
     if self.Config.Searchable then
         self.SearchBox = Instance.new("TextBox")
         self.SearchBox.BackgroundColor3 = self.Theme.Colors.Panel
         self.SearchBox.BorderSizePixel = 0
-        self.SearchBox.Size = UDim2.new(1, -8, 0, 28)
-        self.SearchBox.Position = UDim2.fromOffset(4, 4)
+        self.SearchBox.Size = UDim2.new(1, 0, 0, 28)
         self.SearchBox.Font = self.Theme.Font.Mono
         self.SearchBox.PlaceholderText = "Search..."
         self.SearchBox.Text = ""
@@ -127,13 +127,6 @@ function Dropdown:CreateUI()
         
         self.Theme.CreateCorner(self.SearchBox, 4)
         self.Theme.CreatePadding(self.SearchBox, 8)
-        
-        -- Add spacing after search box
-        local spacer = Instance.new("Frame")
-        spacer.BackgroundTransparency = 1
-        spacer.Size = UDim2.new(1, 0, 0, 4)
-        spacer.LayoutOrder = 0
-        spacer.Parent = self.OptionsList
         
         self.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
             self:FilterOptions(self.SearchBox.Text)
@@ -203,10 +196,10 @@ function Dropdown:FilterOptions(searchText)
         end
         
         if self.Open then
-            local baseHeight = self.Config.Searchable and 36 or 0
+            local baseHeight = self.Config.Searchable and 32 or 0
             local optionsHeight = math.min(#self.AllOptions * 34, 150)
-            self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight)
-            self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 4)
+            self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
+            self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 8)
         end
         return
     end
@@ -225,10 +218,10 @@ function Dropdown:FilterOptions(searchText)
     
     -- Update height based on visible options
     if self.Open then
-        local baseHeight = self.Config.Searchable and 36 or 0
+        local baseHeight = self.Config.Searchable and 32 or 0
         local optionsHeight = visibleCount > 0 and math.min(visibleCount * 34, 150) or 32
-        self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight)
-        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 4)
+        self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
+        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 8)
     end
 end
 
@@ -236,11 +229,11 @@ function Dropdown:Toggle()
     self.Open = not self.Open
     
     if self.Open then
-        local baseHeight = self.Config.Searchable and 36 or 0
+        local baseHeight = self.Config.Searchable and 32 or 0
         local optionsHeight = math.min(#self.Config.Options * 34, 150)
-        self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight)
+        self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
         self.OptionsList.Visible = true
-        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 4)
+        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 8)
         self.ChevronIcon.Rotation = 180
         
         -- Focus search box if searchable
