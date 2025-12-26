@@ -109,13 +109,6 @@ function Tab:Hide()
         TextColor3 = self.Theme.Colors.TextSecondary
     }, 0.2)
 end
-    if stroke then
-        self.Utils.Tween(stroke, {
-            Color = self.Theme.Colors.Border,
-            Thickness = 3
-        }, 0.15)
-    end
-end
 
 function Tab:AddButton(config)
     local Button = require(script.Parent.button)

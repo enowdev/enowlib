@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 12:22:50
+-- Built: 2025-12-26 12:27:50
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2962,13 +2962,6 @@ function Tab:Hide()
         BackgroundColor3 = self.Theme.Colors.Background,
         TextColor3 = self.Theme.Colors.TextSecondary
     }, 0.2)
-end
-    if stroke then
-        self.Utils.Tween(stroke, {
-            Color = self.Theme.Colors.Border,
-            Thickness = 3
-        }, 0.15)
-    end
 end
 
 function Tab:AddButton(config)
