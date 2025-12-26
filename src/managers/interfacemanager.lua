@@ -417,29 +417,42 @@ function InterfaceManager:RefreshContentComponents()
 end
 
 function InterfaceManager:RefreshCategories()
-    if not self.Window or not self.Window.Categories then return end
+    if not self.Window or not self.Window.Categories then 
+        warn("[InterfaceManager] No categories found")
+        return 
+    end
     
     local theme = self.Window.Theme
     
-    for _, category in ipairs(self.Window.Categories) do
+    print("[InterfaceManager] Refreshing", #self.Window.Categories, "categories")
+    
+    for i, category in ipairs(self.Window.Categories) do
+        print("[InterfaceManager] Category", i, ":", category.Config.Title)
+        
         if category.Container then
             category.Container.BackgroundColor3 = theme.Colors.Secondary
-            
-            if category.Title then
-                category.Title.TextColor3 = theme.Colors.Text
-            end
-            
-            if category.FolderIcon then
-                category.FolderIcon.ImageColor3 = theme.Colors.Accent
-            end
-            
-            if category.ChevronIcon then
-                category.ChevronIcon.ImageColor3 = theme.Colors.Accent
-            end
+        end
+        
+        if category.Title then
+            category.Title.TextColor3 = theme.Colors.Text
+            print("  - Title refreshed")
+        end
+        
+        if category.FolderIcon then
+            category.FolderIcon.ImageColor3 = theme.Colors.Accent
+            print("  - FolderIcon refreshed to", theme.Colors.Accent)
+        else
+            print("  - No FolderIcon found")
+        end
+        
+        if category.ChevronIcon then
+            category.ChevronIcon.ImageColor3 = theme.Colors.Accent
+            print("  - ChevronIcon refreshed")
         end
         
         -- Refresh items in category
         if category.Items then
+            print("  - Refreshing", #category.Items, "items")
             for _, item in ipairs(category.Items) do
                 if item.Button then
                     -- Check if this is the active item
