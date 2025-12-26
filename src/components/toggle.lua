@@ -11,7 +11,6 @@ function Toggle.new(config, tab, theme, utils)
     self.Utils = utils
     self.Config = utils.Merge({
         Title = "Toggle",
-        Description = nil,
         Default = false,
         Callback = function(value) end
     }, config or {})
@@ -25,24 +24,20 @@ function Toggle.new(config, tab, theme, utils)
 end
 
 function Toggle:CreateUI()
-    -- Container (Radix UI style)
     self.Container = Instance.new("Frame")
-    self.Container.Name = "Toggle"
-    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Subtle
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Config.Description and 60 or 40)
+    self.Container.Size = UDim2.new(1, 0, 0, 48)
     self.Container.Parent = self.Tab.Container
     
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, 1)
-    self.Theme.CreateCorner(self.Container, 6)
+    self.Theme.CreateCorner(self.Container)
     self.Theme.CreatePadding(self.Container, 12)
     
     -- Title
     local title = Instance.new("TextLabel")
-    title.Name = "Title"
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 0, 18)
-    title.Position = UDim2.fromOffset(0, self.Config.Description and 4 or 11)
+    title.Size = UDim2.new(1, -60, 1, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -50,25 +45,9 @@ function Toggle:CreateUI()
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
     
-    -- Description
-    if self.Config.Description then
-        local desc = Instance.new("TextLabel")
-        desc.Name = "Description"
-        desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, -60, 0, 14)
-        desc.Position = UDim2.fromOffset(0, 24)
-        desc.Font = self.Theme.Font.Regular
-        desc.Text = self.Config.Description
-        desc.TextColor3 = self.Theme.Colors.TextSecondary
-        desc.TextSize = self.Theme.Font.Size.Small
-        desc.TextXAlignment = Enum.TextXAlignment.Left
-        desc.Parent = self.Container
-    end
-    
-    -- Radix UI Switch (rounded pill)
+    -- Switch
     self.Switch = Instance.new("Frame")
-    self.Switch.Name = "Switch"
-    self.Switch.BackgroundColor3 = self.Theme.Colors.SecondaryDark
+    self.Switch.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Switch.BorderSizePixel = 0
     self.Switch.Size = UDim2.fromOffset(44, 24)
     self.Switch.Position = UDim2.new(1, 0, 0.5, 0)
@@ -77,10 +56,9 @@ function Toggle:CreateUI()
     
     self.Theme.CreateCorner(self.Switch, 12)
     
-    -- Toggle knob (circle)
+    -- Knob
     self.Knob = Instance.new("Frame")
-    self.Knob.Name = "Knob"
-    self.Knob.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
     self.Knob.Size = UDim2.fromOffset(20, 20)
     self.Knob.Position = UDim2.fromOffset(2, 2)
@@ -88,29 +66,15 @@ function Toggle:CreateUI()
     
     self.Theme.CreateCorner(self.Knob, 10)
     
-    -- Click button
+    -- Button
     local button = Instance.new("TextButton")
-    button.Name = "ToggleButton"
     button.BackgroundTransparency = 1
+    button.Size = UDim2.new(1, 0, 1, 0)
+    button.Text = ""
+    button.Parent = self.Container
+    
     button.MouseButton1Click:Connect(function()
         self:Toggle()
-    end)
-    
-    -- Hover effects (Dark mode smooth)
-    button.MouseEnter:Connect(function()
-        if not self.Value then
-            self.Utils.Tween(self.Switch, {
-                BackgroundColor3 = self.Theme.Colors.Secondary
-            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
-        end
-    end)
-    
-    button.MouseLeave:Connect(function()
-        if not self.Value then
-            self.Utils.Tween(self.Switch, {
-                BackgroundColor3 = self.Theme.Colors.SecondaryDark
-            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
-        end
     end)
 end
 
@@ -120,32 +84,23 @@ function Toggle:Toggle()
     pcall(self.Config.Callback, self.Value)
 end
 
-function Toggle:SetValue(value)
-    self.Value = value
-    self:UpdateVisual()
-end
-
 function Toggle:UpdateVisual()
     if self.Value then
-        -- On state (Dark mode bright accent)
         self.Utils.Tween(self.Switch, {
             BackgroundColor3 = self.Theme.Colors.Accent
-        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
+        }, self.Theme.Animation.Duration)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(22, 2),
-            BackgroundColor3 = self.Theme.Colors.Panel
-        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
+            Position = UDim2.fromOffset(22, 2)
+        }, self.Theme.Animation.Duration)
     else
-        -- Off state (Dark mode neutral)
         self.Utils.Tween(self.Switch, {
-            BackgroundColor3 = self.Theme.Colors.SecondaryDark
-        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
+            BackgroundColor3 = self.Theme.Colors.Secondary
+        }, self.Theme.Animation.Duration)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(2, 2),
-            BackgroundColor3 = self.Theme.Colors.Panel
-        }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
+            Position = UDim2.fromOffset(2, 2)
+        }, self.Theme.Animation.Duration)
     end
 end
 

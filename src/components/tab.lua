@@ -10,8 +10,7 @@ function Tab.new(config, window, theme, utils)
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Title = "Tab",
-        Icon = nil
+        Title = "Tab"
     }, config or {})
     
     self.Components = {}
@@ -23,26 +22,25 @@ function Tab.new(config, window, theme, utils)
 end
 
 function Tab:CreateUI()
-    -- Tab button (Radix UI - minimal pill style)
+    -- Tab Button
     self.Button = Instance.new("TextButton")
-    self.Button.Name = "TabButton"
-    self.Button.BackgroundColor3 = self.Theme.Colors.Background
+    self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.Button.BackgroundTransparency = self.Theme.Transparency.Subtle
     self.Button.BorderSizePixel = 0
     self.Button.Size = UDim2.new(1, 0, 0, 36)
     self.Button.Font = self.Theme.Font.Regular
     self.Button.Text = self.Config.Title
-    self.Button.TextColor3 = self.Theme.Colors.TextSecondary
+    self.Button.TextColor3 = self.Theme.Colors.TextDim
     self.Button.TextSize = self.Theme.Font.Size.Regular
     self.Button.TextXAlignment = Enum.TextXAlignment.Left
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Window.TabList
     
     self.Theme.CreateCorner(self.Button, 6)
-    self.Theme.CreatePadding(self.Button, {12, 12, 0, 0})
+    self.Theme.CreatePadding(self.Button, 12)
     
-    -- Tab content container
+    -- Tab Content
     self.Container = Instance.new("ScrollingFrame")
-    self.Container.Name = "TabContent"
     self.Container.BackgroundTransparency = 1
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 1, 0)
@@ -50,40 +48,38 @@ function Tab:CreateUI()
     self.Container.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.Container.CanvasSize = UDim2.fromOffset(0, 0)
     self.Container.Visible = false
-    self.Container.ClipsDescendants = true
     self.Container.Parent = self.Window.ContentArea
     
     self.Theme.CreatePadding(self.Container, self.Theme.Spacing.Large)
     
-    -- List layout
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
     layout.Padding = UDim.new(0, self.Theme.Spacing.Medium)
     layout.Parent = self.Container
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        self.Container.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + self.Theme.Spacing.Large)
+        self.Container.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 32)
     end)
     
-    -- Button click
+    -- Events
     self.Button.MouseButton1Click:Connect(function()
         self.Window:SelectTab(self)
     end)
     
-    -- Hover effects (Dark mode smooth)
     self.Button.MouseEnter:Connect(function()
         if not self.Visible then
             self.Utils.Tween(self.Button, {
-                BackgroundColor3 = self.Theme.Colors.Secondary
-            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
+                BackgroundColor3 = self.Theme.Colors.Secondary,
+                BackgroundTransparency = self.Theme.Transparency.None
+            }, self.Theme.Animation.Duration)
         end
     end)
     
     self.Button.MouseLeave:Connect(function()
         if not self.Visible then
             self.Utils.Tween(self.Button, {
-                BackgroundColor3 = self.Theme.Colors.Background
-            }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
+                BackgroundTransparency = self.Theme.Transparency.Subtle
+            }, self.Theme.Animation.Duration)
         end
     end)
 end
@@ -92,99 +88,46 @@ function Tab:Show()
     self.Visible = true
     self.Container.Visible = true
     
-    -- Dark mode active state with smooth animation
     self.Utils.Tween(self.Button, {
         BackgroundColor3 = self.Theme.Colors.Accent,
-        TextColor3 = self.Theme.Colors.TextWhite
-    }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
+        BackgroundTransparency = self.Theme.Transparency.None,
+        TextColor3 = self.Theme.Colors.Text
+    }, self.Theme.Animation.Duration)
 end
 
 function Tab:Hide()
     self.Visible = false
     self.Container.Visible = false
     
-    -- Dark mode inactive state with smooth animation
     self.Utils.Tween(self.Button, {
-        BackgroundColor3 = self.Theme.Colors.Background,
-        TextColor3 = self.Theme.Colors.TextSecondary
-    }, self.Theme.Animation.Speed.Normal, self.Theme.Animation.Easing)
+        BackgroundColor3 = self.Theme.Colors.Secondary,
+        BackgroundTransparency = self.Theme.Transparency.Subtle,
+        TextColor3 = self.Theme.Colors.TextDim
+    }, self.Theme.Animation.Duration)
 end
 
 function Tab:AddButton(config)
-    local Button = require(script.Parent.button)
     local button = Button.new(config, self, self.Theme, self.Utils)
     table.insert(self.Components, button)
     return button
 end
 
 function Tab:AddToggle(config)
-    local Toggle = require(script.Parent.toggle)
     local toggle = Toggle.new(config, self, self.Theme, self.Utils)
     table.insert(self.Components, toggle)
     return toggle
 end
 
 function Tab:AddSlider(config)
-    local Slider = require(script.Parent.slider)
     local slider = Slider.new(config, self, self.Theme, self.Utils)
     table.insert(self.Components, slider)
     return slider
 end
 
-function Tab:AddDropdown(config)
-    local Dropdown = require(script.Parent.dropdown)
-    local dropdown = Dropdown.new(config, self, self.Theme, self.Utils)
-    table.insert(self.Components, dropdown)
-    return dropdown
-end
-
-function Tab:AddInput(config)
-    local Input = require(script.Parent.input)
-    local input = Input.new(config, self, self.Theme, self.Utils)
-    table.insert(self.Components, input)
-    return input
-end
-
 function Tab:AddLabel(config)
-    local Label = require(script.Parent.label)
     local label = Label.new(config, self, self.Theme, self.Utils)
     table.insert(self.Components, label)
     return label
-end
-
-function Tab:AddSection(config)
-    local Section = require(script.Parent.section)
-    local section = Section.new(config, self, self.Theme, self.Utils)
-    table.insert(self.Components, section)
-    return section
-end
-
-function Tab:AddKeybind(config)
-    local Keybind = require(script.Parent.keybind)
-    local keybind = Keybind.new(config, self, self.Theme, self.Utils)
-    table.insert(self.Components, keybind)
-    return keybind
-end
-
-function Tab:AddColorPicker(config)
-    local ColorPicker = require(script.Parent.colorpicker)
-    local colorpicker = ColorPicker.new(config, self, self.Theme, self.Utils)
-    table.insert(self.Components, colorpicker)
-    return colorpicker
-end
-
-function Tab:AddMultiDropdown(config)
-    local MultiDropdown = require(script.Parent.multidropdown)
-    local multidropdown = MultiDropdown.new(config, self, self.Theme, self.Utils)
-    table.insert(self.Components, multidropdown)
-    return multidropdown
-end
-
-function Tab:AddProgressBar(config)
-    local ProgressBar = require(script.Parent.progressbar)
-    local progressbar = ProgressBar.new(config, self, self.Theme, self.Utils)
-    table.insert(self.Components, progressbar)
-    return progressbar
 end
 
 return Tab

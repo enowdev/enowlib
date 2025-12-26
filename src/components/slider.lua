@@ -11,11 +11,9 @@ function Slider.new(config, tab, theme, utils)
     self.Utils = utils
     self.Config = utils.Merge({
         Title = "Slider",
-        Description = nil,
         Min = 0,
         Max = 100,
         Default = 50,
-        Increment = 1,
         Callback = function(value) end
     }, config or {})
     
@@ -29,24 +27,20 @@ function Slider.new(config, tab, theme, utils)
 end
 
 function Slider:CreateUI()
-    -- Container (Radix UI style)
     self.Container = Instance.new("Frame")
-    self.Container.Name = "Slider"
-    self.Container.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Container.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.Container.BackgroundTransparency = self.Theme.Transparency.Subtle
     self.Container.BorderSizePixel = 0
     self.Container.Size = UDim2.new(1, 0, 0, 60)
     self.Container.Parent = self.Tab.Container
     
-    self.Theme.CreateCorner(self.Container, 6)
-    self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border, 1)
+    self.Theme.CreateCorner(self.Container)
     self.Theme.CreatePadding(self.Container, 12)
     
     -- Title
     local title = Instance.new("TextLabel")
-    title.Name = "Title"
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -60, 0, 18)
-    title.Position = UDim2.fromOffset(0, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -54,9 +48,8 @@ function Slider:CreateUI()
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
     
-    -- Value display
+    -- Value
     self.ValueLabel = Instance.new("TextLabel")
-    self.ValueLabel.Name = "Value"
     self.ValueLabel.BackgroundTransparency = 1
     self.ValueLabel.Size = UDim2.fromOffset(50, 18)
     self.ValueLabel.Position = UDim2.new(1, -50, 0, 0)
@@ -67,105 +60,71 @@ function Slider:CreateUI()
     self.ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
     self.ValueLabel.Parent = self.Container
     
-    -- Slider track (Radix UI rounded)
+    -- Track
     self.Track = Instance.new("Frame")
-    self.Track.Name = "Track"
-    self.Track.BackgroundColor3 = self.Theme.Colors.SecondaryDark
+    self.Track.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Track.BorderSizePixel = 0
-    self.Track.Size = UDim2.new(1, 0, 0, 8)
-    self.Track.Position = UDim2.fromOffset(0, 28)
+    self.Track.Size = UDim2.new(1, 0, 0, 6)
+    self.Track.Position = UDim2.fromOffset(0, 30)
     self.Track.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Track, 4)
+    self.Theme.CreateCorner(self.Track, 3)
     
-    -- Slider fill (Radix UI accent)
+    -- Fill
     self.Fill = Instance.new("Frame")
-    self.Fill.Name = "Fill"
     self.Fill.BackgroundColor3 = self.Theme.Colors.Accent
     self.Fill.BorderSizePixel = 0
     self.Fill.Size = UDim2.new(0, 0, 1, 0)
     self.Fill.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Fill, 4)
+    self.Theme.CreateCorner(self.Fill, 3)
     
-    -- Slider knob (Radix UI circle)
+    -- Knob
     self.Knob = Instance.new("Frame")
-    self.Knob.Name = "Knob"
-    self.Knob.BackgroundColor3 = self.Theme.Colors.Panel
+    self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(18, 18)
+    self.Knob.Size = UDim2.fromOffset(16, 16)
     self.Knob.Position = UDim2.new(0, 0, 0.5, 0)
     self.Knob.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Knob.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Knob, 9)
-    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Accent, 2)
+    self.Theme.CreateCorner(self.Knob, 8)
     
-    self.Theme.CreateCorner(self.Knob, 2)
-    self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Primary, self.Theme.Size.BorderThick)
+    -- Input
+    local input = Instance.new("TextButton")
+    input.BackgroundTransparency = 1
+    input.Size = self.Track.Size
+    input.Position = self.Track.Position
+    input.Text = ""
+    input.Parent = self.Container
     
-    -- Input handling
-    local UserInputService = game:GetService("UserInputService")
+    local function updateValue(input)
+        local pos = math.clamp((input.Position.X - self.Track.AbsolutePosition.X) / self.Track.AbsoluteSize.X, 0, 1)
+        self.Value = math.floor(self.Config.Min + (self.Config.Max - self.Config.Min) * pos)
+        self:UpdateVisual()
+        pcall(self.Config.Callback, self.Value)
+    end
     
-    self.Track.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            self.Dragging = true
-            self:UpdateFromInput(input.Position.X)
+    input.MouseButton1Down:Connect(function()
+        self.Dragging = true
+    end)
+    
+    input.MouseButton1Up:Connect(function()
+        self.Dragging = false
+    end)
+    
+    input.MouseMoved:Connect(function(x, y)
+        if self.Dragging then
+            updateValue({Position = Vector2.new(x, y)})
         end
     end)
-    
-    self.Track.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            self.Dragging = false
-        end
-    end)
-    
-    UserInputService.InputChanged:Connect(function(input)
-        if self.Dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            self:UpdateFromInput(input.Position.X)
-        end
-    end)
-    
-    -- Hover effects
-    self.Track.MouseEnter:Connect(function()
-        self.Utils.Tween(self.Knob, {
-            Size = UDim2.fromOffset(22, 22)
-        }, 0.15)
-    end)
-    
-    self.Track.MouseLeave:Connect(function()
-        if not self.Dragging then
-            self.Utils.Tween(self.Knob, {
-                Size = UDim2.fromOffset(18, 18)
-            }, 0.15)
-        end
-    end)
-end
-
-function Slider:UpdateFromInput(mouseX)
-    local trackPos = self.Track.AbsolutePosition.X
-    local trackSize = self.Track.AbsoluteSize.X
-    local relativeX = math.clamp(mouseX - trackPos, 0, trackSize)
-    local percentage = relativeX / trackSize
-    
-    local range = self.Config.Max - self.Config.Min
-    local rawValue = self.Config.Min + (range * percentage)
-    local value = math.floor(rawValue / self.Config.Increment + 0.5) * self.Config.Increment
-    
-    self:SetValue(value)
-    pcall(self.Config.Callback, self.Value)
-end
-
-function Slider:SetValue(value)
-    self.Value = self.Utils.Clamp(value, self.Config.Min, self.Config.Max)
-    self:UpdateVisual()
 end
 
 function Slider:UpdateVisual()
-    local percentage = (self.Value - self.Config.Min) / (self.Config.Max - self.Config.Min)
+    local percent = (self.Value - self.Config.Min) / (self.Config.Max - self.Config.Min)
     
-    self.Fill.Size = UDim2.new(percentage, 0, 1, 0)
-    self.Knob.Position = UDim2.new(percentage, 0, 0.5, 0)
+    self.Fill.Size = UDim2.new(percent, 0, 1, 0)
+    self.Knob.Position = UDim2.new(percent, 0, 0.5, 0)
     self.ValueLabel.Text = tostring(self.Value)
 end
 

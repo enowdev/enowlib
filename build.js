@@ -16,18 +16,8 @@ const config = {
         { path: 'src/components/button.lua', name: 'Button' },
         { path: 'src/components/toggle.lua', name: 'Toggle' },
         { path: 'src/components/slider.lua', name: 'Slider' },
-        { path: 'src/components/input.lua', name: 'Input' },
-        { path: 'src/components/dropdown.lua', name: 'Dropdown' },
-        { path: 'src/components/keybind.lua', name: 'Keybind' },
-        { path: 'src/components/colorpicker.lua', name: 'ColorPicker' },
-        { path: 'src/components/multidropdown.lua', name: 'MultiDropdown' },
-        { path: 'src/components/progressbar.lua', name: 'ProgressBar' },
-        { path: 'src/components/section.lua', name: 'Section' },
-        { path: 'src/components/notification.lua', name: 'Notification' },
         { path: 'src/components/tab.lua', name: 'Tab' },
-        { path: 'src/components/window.lua', name: 'Window' },
-        { path: 'src/managers/savemanager.lua', name: 'SaveManager' },
-        { path: 'src/managers/interfacemanager.lua', name: 'InterfaceManager' }
+        { path: 'src/components/window.lua', name: 'Window' }
     ]
 };
 
@@ -105,67 +95,13 @@ EnowLib.Author = "EnowHub Development"
 
 -- Create window
 function EnowLib:CreateWindow(config)
-    -- Verify all required modules are loaded
     assert(Theme, "Theme module not loaded")
     assert(Utils, "Utils module not loaded")
     assert(Window, "Window module not loaded")
     assert(Tab, "Tab module not loaded")
     
-    -- Initialize notification system (lazy init)
-    if Notification and Notification.Initialize and not Notification.Initialized then
-        Notification.Initialize(Theme, Utils)
-        Notification.Initialized = true
-    end
-    
     local window = Window.new(config, Theme, Utils, EnowLib)
-    
-    -- Initialize managers
-    if SaveManager and SaveManager.Initialize then
-        SaveManager.Initialize(window)
-    end
-    
-    if InterfaceManager and InterfaceManager.Initialize then
-        InterfaceManager.Initialize(window)
-        InterfaceManager.LoadSettings()
-    end
-    
-    window.SaveManager = SaveManager
-    window.InterfaceManager = InterfaceManager
-    
     return window
-end
-
--- Show notification
-function EnowLib:Notify(config)
-    -- Initialize notification system if not already done
-    if Notification and Notification.Initialize and not Notification.Initialized then
-        Notification.Initialize(Theme, Utils)
-        Notification.Initialized = true
-    end
-    
-    config.Theme = Theme
-    config.Utils = Utils
-    return Notification.Show(config)
-end
-
--- Get theme
-function EnowLib:GetTheme()
-    return Theme
-end
-
--- Get utils
-function EnowLib:GetUtils()
-    return Utils
-end
-
--- Get SaveManager
-function EnowLib:GetSaveManager()
-    return SaveManager
-end
-
--- Get InterfaceManager
-function EnowLib:GetInterfaceManager()
-    return InterfaceManager
 end
 
 return EnowLib

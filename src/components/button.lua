@@ -11,7 +11,6 @@ function Button.new(config, tab, theme, utils)
     self.Utils = utils
     self.Config = utils.Merge({
         Title = "Button",
-        Description = nil,
         Callback = function() end
     }, config or {})
     
@@ -21,47 +20,34 @@ function Button.new(config, tab, theme, utils)
 end
 
 function Button:CreateUI()
-    -- Container (Radix UI button style)
     self.Container = Instance.new("TextButton")
-    self.Container.Name = "Button"
     self.Container.BackgroundColor3 = self.Theme.Colors.Accent
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Theme.Size.ComponentHeight)
+    self.Container.Size = UDim2.new(1, 0, 0, self.Theme.Size.Component)
     self.Container.Font = self.Theme.Font.Regular
     self.Container.Text = self.Config.Title
-    self.Container.TextColor3 = self.Theme.Colors.TextWhite
+    self.Container.TextColor3 = self.Theme.Colors.Text
     self.Container.TextSize = self.Theme.Font.Size.Regular
     self.Container.AutoButtonColor = false
     self.Container.Parent = self.Tab.Container
     
-    self.Theme.CreateCorner(self.Container, 6)
+    self.Theme.CreateCorner(self.Container)
     
-    -- Click handler
     self.Container.MouseButton1Click:Connect(function()
         pcall(self.Config.Callback)
     end)
     
-    -- Hover effects (Dark mode smooth)
     self.Container.MouseEnter:Connect(function()
         self.Utils.Tween(self.Container, {
             BackgroundColor3 = self.Theme.Colors.AccentHover
-        }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
+        }, self.Theme.Animation.Duration)
     end)
     
     self.Container.MouseLeave:Connect(function()
         self.Utils.Tween(self.Container, {
             BackgroundColor3 = self.Theme.Colors.Accent
-        }, self.Theme.Animation.Speed.Fast, self.Theme.Animation.Easing)
+        }, self.Theme.Animation.Duration)
     end)
-end
-
-function Button:SetTitle(title)
-    self.Config.Title = title
-    self.Container.Text = title
-end
-
-function Button:SetCallback(callback)
-    self.Config.Callback = callback
 end
 
 return Button
