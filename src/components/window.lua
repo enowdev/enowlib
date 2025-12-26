@@ -125,7 +125,10 @@ function Window:CreateUI()
     self.TabBar.BorderSizePixel = 0
     self.TabBar.Size = UDim2.new(0, 280, 1, -49)
     self.TabBar.Position = UDim2.fromOffset(0, 49)
+    self.TabBar.ClipsDescendants = true
     self.TabBar.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.TabBar, 12)
     
     -- Sidebar Header
     local sidebarHeader = Instance.new("Frame")
@@ -188,6 +191,8 @@ function Window:CreateUI()
     self.ContentArea.ClipsDescendants = true
     self.ContentArea.Parent = self.Container
     
+    self.Theme.CreateCorner(self.ContentArea, 12)
+    
     self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Large)
     
     local contentLayout = Instance.new("UIListLayout")
@@ -236,12 +241,57 @@ function Window:ShowContent(contentFunc)
     self.Utils.ClearChildren(self.ContentArea)
     
     if contentFunc then
-        pcall(contentFunc, self.ContentArea, self.Theme, self.Utils)
+        pcall(contentFunc, self)
     end
 end
 
 function Window:Toggle()
     self.Container.Visible = not self.Container.Visible
+end
+
+-- Component Factory Methods (for use in Content functions)
+function Window:AddButton(config)
+    return Button.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
+function Window:AddToggle(config)
+    return Toggle.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
+function Window:AddSlider(config)
+    return Slider.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
+function Window:AddLabel(config)
+    return Label.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
+function Window:AddTextBox(config)
+    return TextBox.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
+function Window:AddDropdown(config)
+    return Dropdown.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
+function Window:AddColorPicker(config)
+    return ColorPicker.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
+function Window:AddKeybind(config)
+    return Keybind.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
+function Window:AddSection(config)
+    return Section.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
+function Window:AddParagraph(config)
+    return Paragraph.new(config, self.ContentArea, self.Theme, self.Utils)
+end
+
+function Window:AddDivider(config)
+    return Divider.new(config, self.ContentArea, self.Theme, self.Utils)
 end
 
 return Window

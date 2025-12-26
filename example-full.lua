@@ -30,51 +30,109 @@ local ComponentsCategory = Window:AddCategory({
 ComponentsCategory:AddItem({
     Title = "AllComponents.lua",
     Icon = Icons.FileCode,
-    Content = function(parent, theme, utils)
+    Content = function(window)
         -- Header
-        local header = Instance.new("TextLabel")
-        header.BackgroundTransparency = 1
-        header.Size = UDim2.new(1, 0, 0, 30)
-        header.Font = theme.Font.Bold
-        header.Text = "> All Components Test"
-        header.TextColor3 = theme.Colors.Accent
-        header.TextSize = 18
-        header.TextXAlignment = Enum.TextXAlignment.Left
-        header.Parent = parent
+        window:AddLabel({
+            Text = "> All Components Test",
+            Size = 18,
+            Color = window.Theme.Colors.Accent,
+            Font = window.Theme.Font.Bold
+        })
         
         -- Description
-        local desc = Instance.new("TextLabel")
-        desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, 0, 0, 60)
-        desc.Font = theme.Font.Mono
-        desc.Text = "This tab demonstrates all available components in EnowLib.\nTest each component to ensure responsive design works on all devices."
-        desc.TextColor3 = theme.Colors.TextDim
-        desc.TextSize = 13
-        desc.TextXAlignment = Enum.TextXAlignment.Left
-        desc.TextYAlignment = Enum.TextYAlignment.Top
-        desc.TextWrapped = true
-        desc.Parent = parent
+        window:AddParagraph({
+            Title = "Component Testing",
+            Content = "This tab demonstrates all available components in EnowLib. Test each component to ensure responsive design works on all devices."
+        })
         
-        -- Divider
-        local divider1 = Instance.new("Frame")
-        divider1.BackgroundColor3 = theme.Colors.Border
-        divider1.BorderSizePixel = 0
-        divider1.Size = UDim2.new(1, 0, 0, 1)
-        divider1.Parent = parent
+        window:AddDivider()
         
-        -- Section Label
-        local sectionLabel = Instance.new("TextLabel")
-        sectionLabel.BackgroundTransparency = 1
-        sectionLabel.Size = UDim2.new(1, 0, 0, 24)
-        sectionLabel.Font = theme.Font.Bold
-        sectionLabel.Text = "INPUT COMPONENTS"
-        sectionLabel.TextColor3 = theme.Colors.Accent
-        sectionLabel.TextSize = 14
-        sectionLabel.TextXAlignment = Enum.TextXAlignment.Left
-        sectionLabel.Parent = parent
+        -- Section: Input Components
+        local inputSection = window:AddSection({
+            Title = "Input Components"
+        })
         
-        -- Note: Components will be added via Window methods
-        -- This is just a visual demo showing the layout works
+        -- Button
+        inputSection:AddButton({
+            Text = "Test Button",
+            Callback = function()
+                print("Button clicked!")
+            end
+        })
+        
+        -- Toggle
+        inputSection:AddToggle({
+            Text = "Enable Feature",
+            Default = false,
+            Callback = function(value)
+                print("Toggle:", value)
+            end
+        })
+        
+        -- Slider
+        inputSection:AddSlider({
+            Text = "Speed Multiplier",
+            Min = 1,
+            Max = 10,
+            Default = 5,
+            Callback = function(value)
+                print("Slider:", value)
+            end
+        })
+        
+        -- TextBox
+        inputSection:AddTextBox({
+            Text = "Player Name",
+            Placeholder = "Enter name...",
+            Default = "",
+            Callback = function(value)
+                print("TextBox:", value)
+            end
+        })
+        
+        -- Dropdown
+        inputSection:AddDropdown({
+            Text = "Select Mode",
+            Options = {"Normal", "Fast", "Extreme"},
+            Default = "Normal",
+            Callback = function(value)
+                print("Dropdown:", value)
+            end
+        })
+        
+        -- ColorPicker
+        inputSection:AddColorPicker({
+            Text = "ESP Color",
+            Default = Color3.fromRGB(46, 204, 113),
+            Callback = function(color)
+                print("ColorPicker:", color)
+            end
+        })
+        
+        -- Keybind
+        inputSection:AddKeybind({
+            Text = "Toggle Menu",
+            Default = Enum.KeyCode.RightShift,
+            Callback = function(key)
+                print("Keybind:", key)
+            end
+        })
+        
+        window:AddDivider({Text = "Layout Components"})
+        
+        -- Paragraph
+        window:AddParagraph({
+            Title = "About EnowLib",
+            Content = "EnowLib is a modern UI library for Roblox with responsive design, smooth animations, and a hacker-style IDE theme. All components are optimized for PC, tablet, and mobile devices."
+        })
+        
+        window:AddDivider()
+        
+        -- Label
+        window:AddLabel({
+            Text = "All components are fully responsive and touch-friendly!",
+            Color = window.Theme.Colors.Success
+        })
     end
 })
 
@@ -88,28 +146,50 @@ local SettingsCategory = Window:AddCategory({
 SettingsCategory:AddItem({
     Title = "General.lua",
     Icon = Icons.FileCode,
-    Content = function(parent, theme, utils)
-        local header = Instance.new("TextLabel")
-        header.BackgroundTransparency = 1
-        header.Size = UDim2.new(1, 0, 0, 30)
-        header.Font = theme.Font.Bold
-        header.Text = "> General Settings"
-        header.TextColor3 = theme.Colors.Accent
-        header.TextSize = 18
-        header.TextXAlignment = Enum.TextXAlignment.Left
-        header.Parent = parent
+    Content = function(window)
+        window:AddLabel({
+            Text = "> General Settings",
+            Size = 18,
+            Color = window.Theme.Colors.Accent,
+            Font = window.Theme.Font.Bold
+        })
         
-        local desc = Instance.new("TextLabel")
-        desc.BackgroundTransparency = 1
-        desc.Size = UDim2.new(1, 0, 0, 40)
-        desc.Font = theme.Font.Mono
-        desc.Text = "Configure general application settings"
-        desc.TextColor3 = theme.Colors.TextDim
-        desc.TextSize = 13
-        desc.TextXAlignment = Enum.TextXAlignment.Left
-        desc.TextYAlignment = Enum.TextYAlignment.Top
-        desc.TextWrapped = true
-        desc.Parent = parent
+        window:AddParagraph({
+            Title = "Configuration",
+            Content = "Configure general application settings and preferences."
+        })
+        
+        window:AddDivider()
+        
+        local generalSection = window:AddSection({
+            Title = "General Options"
+        })
+        
+        generalSection:AddToggle({
+            Text = "Auto Save",
+            Default = true,
+            Callback = function(value)
+                print("Auto Save:", value)
+            end
+        })
+        
+        generalSection:AddToggle({
+            Text = "Notifications",
+            Default = true,
+            Callback = function(value)
+                print("Notifications:", value)
+            end
+        })
+        
+        generalSection:AddSlider({
+            Text = "UI Scale",
+            Min = 80,
+            Max = 120,
+            Default = 100,
+            Callback = function(value)
+                print("UI Scale:", value .. "%")
+            end
+        })
     end
 })
 
