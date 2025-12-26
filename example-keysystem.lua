@@ -135,6 +135,7 @@ local function githubFileValidation()
         end,
         
         GetKeyUrl = "https://github.com/enowdev/enowlib/blob/main/build/keysample.txt",
+        DiscordUrl = "https://discord.gg/yourdiscord",
         SaveKey = true,
         
         OnSuccess = function()

@@ -203,38 +203,38 @@ function KeySystemManager:CreateUI()
     self.StatusLabel.TextXAlignment = Enum.TextXAlignment.Center
     self.StatusLabel.Parent = container
     
-    -- Validate Button
-    local validateBtn = Instance.new("TextButton")
-    validateBtn.BackgroundColor3 = theme.Accent
-    validateBtn.BorderSizePixel = 0
-    validateBtn.Size = UDim2.new(1, -40, 0, 40)
-    validateBtn.Position = UDim2.fromOffset(20, 290)
-    validateBtn.Font = Enum.Font.GothamBold
-    validateBtn.Text = "VALIDATE"
-    validateBtn.TextColor3 = Color3.new(0, 0, 0)
-    validateBtn.TextSize = 14
-    validateBtn.AutoButtonColor = false
-    validateBtn.Parent = container
+    -- Login Button
+    local loginBtn = Instance.new("TextButton")
+    loginBtn.BackgroundColor3 = theme.Accent
+    loginBtn.BorderSizePixel = 0
+    loginBtn.Size = UDim2.new(1, -40, 0, 40)
+    loginBtn.Position = UDim2.fromOffset(20, 290)
+    loginBtn.Font = Enum.Font.GothamBold
+    loginBtn.Text = "LOGIN"
+    loginBtn.TextColor3 = Color3.new(0, 0, 0)
+    loginBtn.TextSize = 14
+    loginBtn.AutoButtonColor = false
+    loginBtn.Parent = container
     
-    local validateCorner = Instance.new("UICorner")
-    validateCorner.CornerRadius = UDim.new(0, 6)
-    validateCorner.Parent = validateBtn
+    local loginCorner = Instance.new("UICorner")
+    loginCorner.CornerRadius = UDim.new(0, 6)
+    loginCorner.Parent = loginBtn
     
     -- Button hover effect
-    validateBtn.MouseEnter:Connect(function()
-        TweenService:Create(validateBtn, TweenInfo.new(0.2), {
+    loginBtn.MouseEnter:Connect(function()
+        TweenService:Create(loginBtn, TweenInfo.new(0.2), {
             BackgroundColor3 = theme.AccentHover
         }):Play()
     end)
     
-    validateBtn.MouseLeave:Connect(function()
-        TweenService:Create(validateBtn, TweenInfo.new(0.2), {
+    loginBtn.MouseLeave:Connect(function()
+        TweenService:Create(loginBtn, TweenInfo.new(0.2), {
             BackgroundColor3 = theme.Accent
         }):Play()
     end)
     
-    -- Validate button click
-    validateBtn.MouseButton1Click:Connect(function()
+    -- Login button click
+    loginBtn.MouseButton1Click:Connect(function()
         local key = keyBox.Text
         
         if key == "" then
@@ -245,17 +245,36 @@ function KeySystemManager:CreateUI()
         self:ValidateKey(key, false)
     end)
     
-    -- Get Key link (optional)
+    -- Bottom links container
+    local linksContainer = Instance.new("Frame")
+    linksContainer.BackgroundTransparency = 1
+    linksContainer.Size = UDim2.new(1, 0, 0, 60)
+    linksContainer.Position = UDim2.new(0, 0, 1, -60)
+    linksContainer.Parent = container
+    
+    -- "Don't have a key?" text
+    local noKeyText = Instance.new("TextLabel")
+    noKeyText.BackgroundTransparency = 1
+    noKeyText.Size = UDim2.new(1, 0, 0, 20)
+    noKeyText.Position = UDim2.fromOffset(0, 0)
+    noKeyText.Font = Enum.Font.RobotoMono
+    noKeyText.Text = "Don't have a key?"
+    noKeyText.TextColor3 = theme.TextDim
+    noKeyText.TextSize = 11
+    noKeyText.TextXAlignment = Enum.TextXAlignment.Center
+    noKeyText.Parent = linksContainer
+    
+    -- Get Key button
     if self.Config.GetKeyUrl then
         local getKeyBtn = Instance.new("TextButton")
         getKeyBtn.BackgroundTransparency = 1
-        getKeyBtn.Size = UDim2.new(1, 0, 0, 20)
-        getKeyBtn.Position = UDim2.new(0, 0, 1, -30)
+        getKeyBtn.Size = UDim2.new(0.5, -5, 0, 20)
+        getKeyBtn.Position = UDim2.fromOffset(0, 25)
         getKeyBtn.Font = Enum.Font.RobotoMono
-        getKeyBtn.Text = "Get Key"
+        getKeyBtn.Text = "Get Key Here"
         getKeyBtn.TextColor3 = theme.Accent
         getKeyBtn.TextSize = 11
-        getKeyBtn.Parent = container
+        getKeyBtn.Parent = linksContainer
         
         getKeyBtn.MouseButton1Click:Connect(function()
             local success = pcall(function()
@@ -272,6 +291,36 @@ function KeySystemManager:CreateUI()
         
         getKeyBtn.MouseLeave:Connect(function()
             getKeyBtn.TextColor3 = theme.Accent
+        end)
+    end
+    
+    -- Discord button
+    if self.Config.DiscordUrl then
+        local discordBtn = Instance.new("TextButton")
+        discordBtn.BackgroundTransparency = 1
+        discordBtn.Size = UDim2.new(0.5, -5, 0, 20)
+        discordBtn.Position = UDim2.new(0.5, 5, 0, 25)
+        discordBtn.Font = Enum.Font.RobotoMono
+        discordBtn.Text = "Join Discord"
+        discordBtn.TextColor3 = theme.Accent
+        discordBtn.TextSize = 11
+        discordBtn.Parent = linksContainer
+        
+        discordBtn.MouseButton1Click:Connect(function()
+            local success = pcall(function()
+                if setclipboard then
+                    setclipboard(self.Config.DiscordUrl)
+                    self:UpdateStatus("Discord link copied!", "success")
+                end
+            end)
+        end)
+        
+        discordBtn.MouseEnter:Connect(function()
+            discordBtn.TextColor3 = theme.AccentHover
+        end)
+        
+        discordBtn.MouseLeave:Connect(function()
+            discordBtn.TextColor3 = theme.Accent
         end)
     end
     
