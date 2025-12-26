@@ -86,12 +86,12 @@ function Dropdown:CreateUI()
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
     
-    -- Options List - positioned directly below button (no gap)
+    -- Options List - positioned below button with gap
     self.OptionsList = Instance.new("ScrollingFrame")
     self.OptionsList.BackgroundColor3 = self.Theme.Colors.Secondary
     self.OptionsList.BorderSizePixel = 0
     self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
-    self.OptionsList.Position = UDim2.fromOffset(0, 58)
+    self.OptionsList.Position = UDim2.fromOffset(0, 62)
     self.OptionsList.ScrollBarThickness = 4
     self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
