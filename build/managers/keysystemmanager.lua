@@ -248,8 +248,8 @@ function KeySystemManager:CreateUI()
     -- Bottom links container
     local linksContainer = Instance.new("Frame")
     linksContainer.BackgroundTransparency = 1
-    linksContainer.Size = UDim2.new(1, 0, 0, 60)
-    linksContainer.Position = UDim2.new(0, 0, 1, -60)
+    linksContainer.Size = UDim2.new(1, -40, 0, 70)
+    linksContainer.Position = UDim2.fromOffset(20, 340)
     linksContainer.Parent = container
     
     -- "Don't have a key?" text
@@ -264,17 +264,24 @@ function KeySystemManager:CreateUI()
     noKeyText.TextXAlignment = Enum.TextXAlignment.Center
     noKeyText.Parent = linksContainer
     
+    -- Links row container
+    local linksRow = Instance.new("Frame")
+    linksRow.BackgroundTransparency = 1
+    linksRow.Size = UDim2.new(1, 0, 0, 20)
+    linksRow.Position = UDim2.fromOffset(0, 25)
+    linksRow.Parent = linksContainer
+    
     -- Get Key button
     if self.Config.GetKeyUrl then
         local getKeyBtn = Instance.new("TextButton")
         getKeyBtn.BackgroundTransparency = 1
-        getKeyBtn.Size = UDim2.new(0.5, -5, 0, 20)
-        getKeyBtn.Position = UDim2.fromOffset(0, 25)
+        getKeyBtn.Size = UDim2.new(0.5, -10, 1, 0)
+        getKeyBtn.Position = UDim2.fromOffset(0, 0)
         getKeyBtn.Font = Enum.Font.RobotoMono
         getKeyBtn.Text = "Get Key Here"
         getKeyBtn.TextColor3 = theme.Accent
         getKeyBtn.TextSize = 11
-        getKeyBtn.Parent = linksContainer
+        getKeyBtn.Parent = linksRow
         
         getKeyBtn.MouseButton1Click:Connect(function()
             local success = pcall(function()
@@ -298,13 +305,13 @@ function KeySystemManager:CreateUI()
     if self.Config.DiscordUrl then
         local discordBtn = Instance.new("TextButton")
         discordBtn.BackgroundTransparency = 1
-        discordBtn.Size = UDim2.new(0.5, -5, 0, 20)
-        discordBtn.Position = UDim2.new(0.5, 5, 0, 25)
+        discordBtn.Size = UDim2.new(0.5, -10, 1, 0)
+        discordBtn.Position = UDim2.new(0.5, 10, 0, 0)
         discordBtn.Font = Enum.Font.RobotoMono
         discordBtn.Text = "Join Discord"
         discordBtn.TextColor3 = theme.Accent
         discordBtn.TextSize = 11
-        discordBtn.Parent = linksContainer
+        discordBtn.Parent = linksRow
         
         discordBtn.MouseButton1Click:Connect(function()
             local success = pcall(function()
