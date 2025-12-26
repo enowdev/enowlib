@@ -21,6 +21,7 @@ function Slider.new(config, tab, theme, utils)
     
     self.Value = self.Config.Default
     self.Dragging = false
+    self.Connections = {}
     
     self:CreateUI()
     self:UpdateVisual()
@@ -112,39 +113,49 @@ function Slider:CreateUI()
         pcall(self.Config.Callback, self.Value)
     end
     
-    input.MouseButton1Down:Connect(function()
+    -- Mouse down on slider
+    table.insert(self.Connections, input.MouseButton1Down:Connect(function()
         self.Dragging = true
         local mousePos = UserInputService:GetMouseLocation()
         updateValue(mousePos.X)
-    end)
+    end))
     
-    UserInputService.InputEnded:Connect(function(input)
+    -- Global mouse release
+    table.insert(self.Connections, UserInputService.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            self.Dragging = false
+            if self.Dragging then
+                self.Dragging = false
+                self.Utils.Tween(self.Knob, {
+                    Size = UDim2.fromOffset(16, 16)
+                }, 0.15)
+            end
         end
-    end)
+    end))
     
-    UserInputService.InputChanged:Connect(function(input)
-        if self.Dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local mousePos = UserInputService:GetMouseLocation()
-            updateValue(mousePos.X)
+    -- Global mouse move (only when dragging)
+    table.insert(self.Connections, UserInputService.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            if self.Dragging then
+                local mousePos = UserInputService:GetMouseLocation()
+                updateValue(mousePos.X)
+            end
         end
-    end)
+    end))
     
     -- Hover effect on knob
-    input.MouseEnter:Connect(function()
+    table.insert(self.Connections, input.MouseEnter:Connect(function()
         self.Utils.Tween(self.Knob, {
             Size = UDim2.fromOffset(18, 18)
         }, 0.15)
-    end)
+    end))
     
-    input.MouseLeave:Connect(function()
+    table.insert(self.Connections, input.MouseLeave:Connect(function()
         if not self.Dragging then
             self.Utils.Tween(self.Knob, {
                 Size = UDim2.fromOffset(16, 16)
             }, 0.15)
         end
-    end)
+    end))
 end
 
 function Slider:UpdateVisual()
@@ -153,6 +164,13 @@ function Slider:UpdateVisual()
     self.Fill.Size = UDim2.new(percent, 0, 1, 0)
     self.Knob.Position = UDim2.new(percent, 0, 0.5, 0)
     self.ValueLabel.Text = tostring(self.Value)
+end
+
+function Slider:Destroy()
+    for _, connection in ipairs(self.Connections) do
+        connection:Disconnect()
+    end
+    self.Container:Destroy()
 end
 
 return Slider

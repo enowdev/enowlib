@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 12:54:42
+-- Built: 2025-12-26 12:59:11
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -24,17 +24,17 @@ Theme.Icons = {
 
 -- Dark Mode Color Palette
 Theme.Colors = {
-    Background = Color3.fromRGB(10, 10, 10),
-    Panel = Color3.fromRGB(24, 24, 27),
-    Secondary = Color3.fromRGB(39, 39, 42),
+    Background = Color3.fromRGB(9, 9, 11),
+    Panel = Color3.fromRGB(39, 39, 42),
+    Secondary = Color3.fromRGB(63, 63, 70),
     
-    Accent = Color3.fromRGB(139, 92, 246),
-    AccentHover = Color3.fromRGB(167, 139, 250),
+    Accent = Color3.fromRGB(168, 85, 247),
+    AccentHover = Color3.fromRGB(192, 132, 252),
     
     Text = Color3.fromRGB(250, 250, 250),
     TextDim = Color3.fromRGB(161, 161, 170),
     
-    Border = Color3.fromRGB(63, 63, 70),
+    Border = Color3.fromRGB(82, 82, 91),
     
     Success = Color3.fromRGB(74, 222, 128),
     Error = Color3.fromRGB(248, 113, 113)
@@ -43,8 +43,8 @@ Theme.Colors = {
 -- Transparency
 Theme.Transparency = {
     None = 0,
-    Glass = 0.15,
-    Subtle = 0.3
+    Glass = 0.1,
+    Subtle = 0.2
 }
 
 -- Typography
@@ -598,6 +598,7 @@ function Slider.new(config, tab, theme, utils)
     
     self.Value = self.Config.Default
     self.Dragging = false
+    self.Connections = {}
     
     self:CreateUI()
     self:UpdateVisual()
@@ -689,39 +690,49 @@ function Slider:CreateUI()
         pcall(self.Config.Callback, self.Value)
     end
     
-    input.MouseButton1Down:Connect(function()
+    -- Mouse down on slider
+    table.insert(self.Connections, input.MouseButton1Down:Connect(function()
         self.Dragging = true
         local mousePos = UserInputService:GetMouseLocation()
         updateValue(mousePos.X)
-    end)
+    end))
     
-    UserInputService.InputEnded:Connect(function(input)
+    -- Global mouse release
+    table.insert(self.Connections, UserInputService.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            self.Dragging = false
+            if self.Dragging then
+                self.Dragging = false
+                self.Utils.Tween(self.Knob, {
+                    Size = UDim2.fromOffset(16, 16)
+                }, 0.15)
+            end
         end
-    end)
+    end))
     
-    UserInputService.InputChanged:Connect(function(input)
-        if self.Dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local mousePos = UserInputService:GetMouseLocation()
-            updateValue(mousePos.X)
+    -- Global mouse move (only when dragging)
+    table.insert(self.Connections, UserInputService.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            if self.Dragging then
+                local mousePos = UserInputService:GetMouseLocation()
+                updateValue(mousePos.X)
+            end
         end
-    end)
+    end))
     
     -- Hover effect on knob
-    input.MouseEnter:Connect(function()
+    table.insert(self.Connections, input.MouseEnter:Connect(function()
         self.Utils.Tween(self.Knob, {
             Size = UDim2.fromOffset(18, 18)
         }, 0.15)
-    end)
+    end))
     
-    input.MouseLeave:Connect(function()
+    table.insert(self.Connections, input.MouseLeave:Connect(function()
         if not self.Dragging then
             self.Utils.Tween(self.Knob, {
                 Size = UDim2.fromOffset(16, 16)
             }, 0.15)
         end
-    end)
+    end))
 end
 
 function Slider:UpdateVisual()
@@ -730,6 +741,13 @@ function Slider:UpdateVisual()
     self.Fill.Size = UDim2.new(percent, 0, 1, 0)
     self.Knob.Position = UDim2.new(percent, 0, 0.5, 0)
     self.ValueLabel.Text = tostring(self.Value)
+end
+
+function Slider:Destroy()
+    for _, connection in ipairs(self.Connections) do
+        connection:Disconnect()
+    end
+    self.Container:Destroy()
 end
 Slider = Slider
 assert(Slider, "Failed to assign Slider module")
@@ -789,6 +807,8 @@ function Tab:CreateUI()
     self.Container.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.Container.CanvasSize = UDim2.fromOffset(0, 0)
     self.Container.Visible = false
+    self.Container.ClipsDescendants = true
+    self.Container.ZIndex = 1
     self.Container.Parent = self.Window.ContentArea
     
     self.Theme.CreatePadding(self.Container, self.Theme.Spacing.Large)

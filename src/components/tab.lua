@@ -48,6 +48,8 @@ function Tab:CreateUI()
     self.Container.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.Container.CanvasSize = UDim2.fromOffset(0, 0)
     self.Container.Visible = false
+    self.Container.ClipsDescendants = true
+    self.Container.ZIndex = 1
     self.Container.Parent = self.Window.ContentArea
     
     self.Theme.CreatePadding(self.Container, self.Theme.Spacing.Large)
