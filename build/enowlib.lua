@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 07:30:46
+-- Built: 2025-12-26 07:34:21
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -200,6 +200,7 @@ function Theme.CreatePadding(parent, padding)
     return uiPadding
 end
 Theme = Theme
+assert(Theme, "Failed to assign Theme module")
 end
 
 
@@ -427,6 +428,7 @@ function Utils.Throttle(func, delay)
     end
 end
 Utils = Utils
+assert(Utils, "Failed to assign Utils module")
 end
 
 
@@ -502,6 +504,7 @@ function Section:CreateUI()
     self.Theme.CreateGradient(rightLine, 90)
 end
 Section = Section
+assert(Section, "Failed to assign Section module")
 end
 
 
@@ -582,6 +585,7 @@ function Label:SetColor(color)
     self.Label.TextColor3 = color
 end
 Label = Label
+assert(Label, "Failed to assign Label module")
 end
 
 
@@ -707,6 +711,7 @@ function Button:SetCallback(callback)
     self.Config.Callback = callback
 end
 Button = Button
+assert(Button, "Failed to assign Button module")
 end
 
 
@@ -878,6 +883,7 @@ function Toggle:UpdateVisual()
     end
 end
 Toggle = Toggle
+assert(Toggle, "Failed to assign Toggle module")
 end
 
 
@@ -1052,6 +1058,7 @@ function Slider:UpdateVisual()
     self.ValueLabel.Text = tostring(self.Value)
 end
 Slider = Slider
+assert(Slider, "Failed to assign Slider module")
 end
 
 
@@ -1181,6 +1188,7 @@ function Input:GetValue()
     return self.InputBox.Text
 end
 Input = Input
+assert(Input, "Failed to assign Input module")
 end
 
 
@@ -1436,6 +1444,7 @@ function Dropdown:SetValue(value)
     self.ValueLabel.Text = value
 end
 Dropdown = Dropdown
+assert(Dropdown, "Failed to assign Dropdown module")
 end
 
 
@@ -1621,6 +1630,7 @@ function Keybind:Destroy()
     self.Container:Destroy()
 end
 Keybind = Keybind
+assert(Keybind, "Failed to assign Keybind module")
 end
 
 
@@ -2020,6 +2030,7 @@ function ColorPicker:SetValue(color)
     self:UpdateFromColor(color)
 end
 ColorPicker = ColorPicker
+assert(ColorPicker, "Failed to assign ColorPicker module")
 end
 
 
@@ -2369,6 +2380,7 @@ function MultiDropdown:SetValues(values)
     self.ValueLabel.Text = self:GetDisplayText()
 end
 MultiDropdown = MultiDropdown
+assert(MultiDropdown, "Failed to assign MultiDropdown module")
 end
 
 
@@ -2539,6 +2551,7 @@ function ProgressBar:Reset()
     self:SetValue(self.Config.Min)
 end
 ProgressBar = ProgressBar
+assert(ProgressBar, "Failed to assign ProgressBar module")
 end
 
 
@@ -2733,6 +2746,7 @@ function Notification.GetTypeColor(type)
     return colors[type] or Notification.Theme.Colors.Primary
 end
 Notification = Notification
+assert(Notification, "Failed to assign Notification module")
 end
 
 
@@ -2934,6 +2948,7 @@ function Tab:AddProgressBar(config)
     return progressbar
 end
 Tab = Tab
+assert(Tab, "Failed to assign Tab module")
 end
 
 
@@ -3158,6 +3173,7 @@ function Window:Destroy()
     self.ScreenGui:Destroy()
 end
 Window = Window
+assert(Window, "Failed to assign Window module")
 end
 
 
@@ -3513,6 +3529,7 @@ function SaveManager.CreateUI(tab)
     })
 end
 SaveManager = SaveManager
+assert(SaveManager, "Failed to assign SaveManager module")
 end
 
 
@@ -3830,6 +3847,7 @@ function InterfaceManager.CreateUI(tab)
     })
 end
 InterfaceManager = InterfaceManager
+assert(InterfaceManager, "Failed to assign InterfaceManager module")
 end
 
 

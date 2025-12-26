@@ -70,10 +70,10 @@ function processModule(modulePath, moduleName) {
     
     content = lines.join('\n').trimEnd();
     
-    // CRITICAL FIX: Remove the first "local ModuleName = " declaration to prevent shadowing
-    // This regex finds "local ModuleName = {}" or "local ModuleName = value" at the start of lines
-    const localDeclPattern = new RegExp(`^local\\s+${returnedVar}\\s*=`, 'gm');
-    content = content.replace(localDeclPattern, `${returnedVar} =`);
+    // CRITICAL FIX: Remove ONLY the first "local ModuleName = {}" declaration to prevent shadowing
+    // Use a more specific regex that only matches the module table declaration
+    const localDeclPattern = new RegExp(`^local\\s+${returnedVar}\\s*=\\s*\\{`, 'm');
+    content = content.replace(localDeclPattern, `${returnedVar} = {`);
     
     // Wrap in module block with proper assignment
     return `
@@ -82,6 +82,7 @@ local ${moduleName}
 do
 ${content}
 ${moduleName} = ${returnedVar}
+assert(${moduleName}, "Failed to assign ${moduleName} module")
 end
 
 `;
