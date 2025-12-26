@@ -311,6 +311,86 @@ function InterfaceManager:RefreshUI()
     
     -- Refresh all categories and items
     self:RefreshCategories()
+    
+    -- Refresh content area components
+    self:RefreshContentComponents()
+end
+
+function InterfaceManager:RefreshContentComponents()
+    if not self.Window or not self.Window.ContentArea then return end
+    
+    local theme = self.Window.Theme
+    
+    -- Recursively refresh all descendants
+    for _, child in ipairs(self.Window.ContentArea:GetDescendants()) do
+        -- Refresh frames (sections, components)
+        if child:IsA("Frame") then
+            if child.Name == "Container" or child.Name:match("Section") then
+                -- Section/Component containers
+                if child.BackgroundTransparency < 1 then
+                    child.BackgroundColor3 = theme.Colors.Panel
+                end
+                
+                local stroke = child:FindFirstChildOfClass("UIStroke")
+                if stroke then
+                    stroke.Color = theme.Colors.Border
+                end
+            elseif child.Name:match("Button") or child.Name:match("Dropdown") or child.Name:match("TextBox") then
+                -- Interactive elements
+                if child.BackgroundTransparency < 1 then
+                    child.BackgroundColor3 = theme.Colors.Secondary
+                end
+            end
+        end
+        
+        -- Refresh text labels
+        if child:IsA("TextLabel") then
+            if child.TextColor3 ~= theme.Colors.Accent and child.TextColor3 ~= Color3.new(0, 0, 0) then
+                -- Don't change accent colors or black text (buttons)
+                if child.Name:match("Title") or child.Font == theme.Font.Bold then
+                    child.TextColor3 = theme.Colors.Accent
+                else
+                    child.TextColor3 = theme.Colors.Text
+                end
+            end
+        end
+        
+        -- Refresh text boxes
+        if child:IsA("TextBox") then
+            child.TextColor3 = theme.Colors.Text
+            child.PlaceholderColor3 = theme.Colors.TextDim
+            if child.BackgroundTransparency < 1 then
+                child.BackgroundColor3 = theme.Colors.Secondary
+            end
+        end
+        
+        -- Refresh text buttons
+        if child:IsA("TextButton") then
+            if child.Name == "Button" then
+                -- Main buttons
+                child.BackgroundColor3 = theme.Colors.Accent
+                child.TextColor3 = Color3.new(0, 0, 0)
+            elseif child.BackgroundTransparency < 1 then
+                child.BackgroundColor3 = theme.Colors.Secondary
+                child.TextColor3 = theme.Colors.Text
+            end
+        end
+        
+        -- Refresh image labels (icons)
+        if child:IsA("ImageLabel") then
+            if child.ImageColor3 ~= theme.Colors.Accent then
+                child.ImageColor3 = theme.Colors.TextDim
+            end
+        end
+        
+        -- Refresh scrolling frames
+        if child:IsA("ScrollingFrame") then
+            if child.BackgroundTransparency < 1 then
+                child.BackgroundColor3 = theme.Colors.Secondary
+            end
+            child.ScrollBarImageColor3 = theme.Colors.Border
+        end
+    end
 end
 
 function InterfaceManager:RefreshCategories()
