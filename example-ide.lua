@@ -17,7 +17,7 @@ local Icons = {
 print("Creating IDE window...")
 
 local Window = EnowLib:CreateWindow({
-    Title = "ScriptHub IDE",
+    Title = "EnowHub UI Testing",
     Size = UDim2.fromOffset(900, 600)
 })
 

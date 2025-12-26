@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 13:42:25
+-- Built: 2025-12-26 13:48:59
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1457,6 +1457,7 @@ function Window:CreateUI()
     -- Tab Bar
     self.TabBar = Instance.new("Frame")
     self.TabBar.BackgroundColor3 = self.Theme.Colors.Panel
+    self.TabBar.BackgroundTransparency = self.Theme.Transparency.Glass
     self.TabBar.BorderSizePixel = 0
     self.TabBar.Size = UDim2.new(0, 280, 1, -49)
     self.TabBar.Position = UDim2.fromOffset(0, 49)
@@ -1465,6 +1466,7 @@ function Window:CreateUI()
     -- Sidebar Header
     local sidebarHeader = Instance.new("Frame")
     sidebarHeader.BackgroundColor3 = self.Theme.Colors.Secondary
+    sidebarHeader.BackgroundTransparency = self.Theme.Transparency.Subtle
     sidebarHeader.BorderSizePixel = 0
     sidebarHeader.Size = UDim2.new(1, 0, 0, 32)
     sidebarHeader.Parent = self.TabBar
@@ -1488,6 +1490,8 @@ function Window:CreateUI()
     self.SidebarList.ScrollBarThickness = 4
     self.SidebarList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.SidebarList.CanvasSize = UDim2.fromOffset(0, 0)
+    self.SidebarList.Parent = self.TabBar
+    
     self.Theme.CreatePadding(self.SidebarList, 4)
     
     local layout = Instance.new("UIListLayout")
@@ -1510,6 +1514,7 @@ function Window:CreateUI()
     -- Content Area
     self.ContentArea = Instance.new("ScrollingFrame")
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
+    self.ContentArea.BackgroundTransparency = self.Theme.Transparency.Glass
     self.ContentArea.BorderSizePixel = 0
     self.ContentArea.Size = UDim2.new(1, -281, 1, -49)
     self.ContentArea.Position = UDim2.fromOffset(281, 49)
