@@ -1,45 +1,49 @@
-# EnowLib - Vaporwave Tech Dark UI Library
+# EnowLib - Modern Roblox UI Library
 
-Modern Roblox UI library dengan aesthetic vaporwave tech dark minimal.
+Modern Roblox UI library with hacker IDE aesthetic and dark theme.
 
 ## Version 2.0.0
 
-Complete rewrite dengan advanced features, managers, dan 13 komponen.
+Complete rewrite with IDE-style interface, responsive design, and modular managers.
 
 ## Features
 
-- **13 UI Components** - Button, Toggle, Slider, Input, Dropdown, Keybind, ColorPicker, MultiDropdown, ProgressBar, Label, Section, Notification, Tab
-- **SaveManager** - Automatic config save/load system
-- **InterfaceManager** - Theme switching & UI customization
-- **5 Built-in Themes** - Vaporwave, Dark, Light, Cyberpunk, Neon
-- **Modular Architecture** - Clean, maintainable code structure
-- **Smooth Animations** - Tween-based animations with callbacks
-- **Responsive Design** - Auto-sizing and adaptive layouts
-- **Single File Build** - One file, zero dependencies
-- **Performance Optimized** - Efficient rendering and memory management
+- **IDE-Style Interface** - VS Code-like tree structure with categories and items
+- **12 UI Components** - Button, Toggle, Slider, Label, TextBox, Dropdown, MultiSelect, ColorPicker, Keybind, Section, Paragraph, Divider
+- **Modular Managers** - Separate InterfaceManager and SaveManager modules
+- **Responsive Design** - Touch and mouse input support for PC, tablet, mobile
+- **Hacker Theme** - Green accent (#2ecc71), dark backgrounds, monospace font
+- **Smooth Animations** - Quint easing with 0.3s duration
+- **Single File Build** - Main library in one file (~84KB)
+- **Separate Manager Builds** - Load managers only when needed
+- **Performance Optimized** - Cached services, proper error handling
 
 ## Components
 
-### Basic Components
-- **Button** - Interactive button with ripple effect
-- **Toggle** - Animated switch component
-- **Slider** - Value slider with live preview
-- **Input** - Text input with focus effects
-- **Dropdown** - Single selection menu
-- **Label** - Text display with auto-sizing
-- **Section** - Visual divider with gradient
+### Layout Components
+- **Window** - Main container with draggable titlebar
+- **Category** - Collapsible folder in sidebar tree
+- **Item** - Clickable file in sidebar tree
+- **Section** - Grouped component container
+- **Divider** - Visual separator with optional text
 
-### Advanced Components
-- **Keybind** - Key binding with listener
-- **ColorPicker** - Full HSV color picker with RGB/Hex input
-- **MultiDropdown** - Multi-selection checkbox list
-- **ProgressBar** - Animated progress indicator
-- **Notification** - Toast notification system
-- **Tab** - Tab navigation system
+### Input Components
+- **Button** - Click action with callback
+- **Toggle** - On/off switch with check icon
+- **Slider** - Value slider with touch support
+- **TextBox** - Text input field
+- **Dropdown** - Single selection with optional search
+- **MultiSelect** - Multiple selection with highlight
+- **ColorPicker** - RGB color selector
+- **Keybind** - Key binding selector
 
-### Managers
-- **SaveManager** - Config persistence with JSON
-- **InterfaceManager** - Theme & UI state management
+### Display Components
+- **Label** - Simple text display
+- **Paragraph** - Title + content text block
+
+### Managers (Separate Modules)
+- **InterfaceManager** - UI visibility and keybind management
+- **SaveManager** - Component value persistence with JSON
 
 ## Project Structure
 
@@ -47,170 +51,200 @@ Complete rewrite dengan advanced features, managers, dan 13 komponen.
 src/
 ├── core/
 │   ├── init.lua          # Main library entry
-│   ├── theme.lua         # Color scheme & styling
-│   └── utils.lua         # Utility functions
+│   ├── theme.lua         # Hacker theme with Lucide icons
+│   └── utils.lua         # Utility functions (Tween, Merge, etc)
 ├── components/
-│   ├── window.lua        # Main window container
-│   ├── tab.lua           # Tab system
+│   ├── window.lua        # Main window with titlebar
+│   ├── category.lua      # Sidebar folder (collapsible)
+│   ├── item.lua          # Sidebar file (clickable tab)
+│   ├── tab.lua           # Content area container
 │   ├── button.lua        # Button component
 │   ├── toggle.lua        # Toggle switch
-│   ├── slider.lua        # Slider component
-│   ├── dropdown.lua      # Dropdown menu
-│   ├── input.lua         # Text input
+│   ├── slider.lua        # Slider with touch support
 │   ├── label.lua         # Text label
-│   ├── section.lua       # Section divider
-│   ├── keybind.lua       # Keybind selector
+│   ├── textbox.lua       # Text input
+│   ├── dropdown.lua      # Dropdown with search
+│   ├── multiselect.lua   # Multi-selection
 │   ├── colorpicker.lua   # Color picker
-│   ├── multidropdown.lua # Multi-select dropdown
-│   ├── progressbar.lua   # Progress bar
-│   └── notification.lua  # Notification system
+│   ├── keybind.lua       # Keybind selector
+│   ├── section.lua       # Component grouping
+│   ├── paragraph.lua     # Title + content
+│   └── divider.lua       # Visual separator
 └── managers/
-    ├── savemanager.lua   # Config save/load
-    └── interfacemanager.lua # Theme & UI management
+    ├── interfacemanager.lua  # UI visibility management
+    └── savemanager.lua       # Config persistence
 
 build/
-└── enowlib.lua           # Built single file
+├── enowlib.lua           # Main library (~84KB)
+└── managers/
+    ├── interfacemanager.lua  # Interface manager (~2KB)
+    └── savemanager.lua       # Save manager (~7KB)
 
-build.ps1                 # Build script
-example.lua               # Complete usage example
+build.js                  # Main build script
+build-managers.js         # Managers build script
+example.lua               # Main library example
+example-managers.lua      # Managers usage example
 ```
 
 ## Usage
 
+### Basic Usage
+
 ```lua
-local EnowLib = loadstring(game:HttpGet("your-url/enowlib.lua"))()
+-- Load library
+local EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua"))()
 
 -- Create window
 local Window = EnowLib:CreateWindow({
-    Title = "EnowLib Demo",
-    Size = UDim2.fromOffset(580, 460)
+    Title = "My Script Hub",
+    Size = UDim2.fromOffset(900, 600)
 })
 
--- Create tab
-local Tab = Window:AddTab({Title = "Main"})
+-- Add category (folder in sidebar)
+local MainCategory = Window:AddCategory({
+    Title = "Main",
+    Icon = "rbxassetid://10723387563",
+    Expanded = true
+})
 
--- Add components
-Tab:AddButton({
-    Title = "Click Me",
-    Description = "Button with callback",
-    Callback = function()
-        print("Clicked!")
+-- Add item (tab in sidebar)
+MainCategory:AddItem({
+    Title = "Features.lua",
+    Icon = "rbxassetid://10723356507",
+    Content = function(window)
+        -- Add components to content area
+        window:AddButton({
+            Text = "Click Me",
+            Callback = function()
+                print("Button clicked!")
+            end
+        })
+        
+        window:AddToggle({
+            Text = "Enable Feature",
+            Default = false,
+            Callback = function(value)
+                print("Toggle:", value)
+            end
+        })
+        
+        window:AddSlider({
+            Text = "Speed",
+            Min = 1,
+            Max = 100,
+            Default = 50,
+            Callback = function(value)
+                print("Speed:", value)
+            end
+        })
+        
+        window:AddDropdown({
+            Text = "Select Mode",
+            Options = {"Mode A", "Mode B", "Mode C"},
+            Default = "Mode A",
+            Searchable = true,
+            Callback = function(value)
+                print("Mode:", value)
+            end
+        })
     end
 })
+```
 
-Tab:AddToggle({
-    Title = "Enable Feature",
+### Using Managers
+
+```lua
+-- Load main library
+local EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua"))()
+
+-- Load managers (optional)
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/interfacemanager.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/savemanager.lua"))()
+
+-- Create window
+local Window = EnowLib:CreateWindow({
+    Title = "Script Hub",
+    Size = UDim2.fromOffset(900, 600)
+})
+
+-- Initialize managers
+InterfaceManager:Initialize(Window)
+SaveManager:Initialize(Window)
+
+-- Interface Manager - Toggle UI visibility
+InterfaceManager:SetMinimizeKey(Enum.KeyCode.RightControl)
+InterfaceManager:Toggle()  -- Hide/show UI
+InterfaceManager:Hide()    -- Hide UI
+InterfaceManager:Show()    -- Show UI
+
+-- Save Manager - Register components
+local toggle = window:AddToggle({
+    Text = "My Setting",
     Default = false,
-    Callback = function(value)
-        print("Toggle:", value)
-    end
+    Callback = function(value) end
 })
+SaveManager:RegisterComponent("my_toggle", toggle)
 
-Tab:AddSlider({
-    Title = "Speed",
-    Min = 0,
-    Max = 100,
-    Default = 50,
-    Increment = 1,
-    Callback = function(value)
-        print("Slider:", value)
-    end
-})
+-- Save/Load configs
+SaveManager:Save("myconfig")
+SaveManager:Load("myconfig")
+SaveManager:Delete("myconfig")
+SaveManager:ListConfigs()
 
-Tab:AddKeybind({
-    Title = "Toggle Key",
-    Default = Enum.KeyCode.E,
-    Callback = function(key)
-        print("Key:", key.Name)
-    end
-})
-
-Tab:AddColorPicker({
-    Title = "Theme Color",
-    Default = Color3.fromRGB(138, 43, 226),
-    Callback = function(color)
-        print("Color:", color)
-    end
-})
-
-Tab:AddMultiDropdown({
-    Title = "Select Features",
-    Options = {"Feature 1", "Feature 2", "Feature 3"},
-    Default = {"Feature 1"},
-    Callback = function(values)
-        print("Selected:", values)
-    end
-})
-
-local progress = Tab:AddProgressBar({
-    Title = "Loading",
-    Min = 0,
-    Max = 100,
-    Value = 0
-})
-
--- Update progress
-progress:SetValue(50)
-progress:Increment(10)
-
--- Notifications
-EnowLib:Notify({
-    Title = "Success",
-    Content = "Operation completed!",
-    Duration = 3,
-    Type = "Success"
-})
-
--- SaveManager
-local ConfigTab = Window:AddTab({Title = "Config"})
-Window.SaveManager.CreateUI(ConfigTab)
-
--- InterfaceManager
-Window.InterfaceManager.CreateUI(ConfigTab)
+-- Auto-save every 60 seconds
+SaveManager:EnableAutoSave(60)
+SaveManager:DisableAutoSave()
 ```
 
 ## Build
 
-```powershell
-# Build single file
-./build.ps1
+```bash
+# Build main library
+node build.js
+# Output: build/enowlib.lua (~84KB)
 
-# Output: build/enowlib.lua (~115KB)
+# Build managers
+node build-managers.js
+# Output: build/managers/interfacemanager.lua (~2KB)
+#         build/managers/savemanager.lua (~7KB)
 ```
 
-## Themes
+## Theme
 
-EnowLib includes 5 built-in themes:
+EnowLib uses a hacker/terminal aesthetic:
 
-- **Vaporwave** (Default) - Purple/Cyan/Pink gradient
-- **Dark** - Monochrome dark theme
-- **Light** - Blue-tinted light theme
-- **Cyberpunk** - Magenta/Cyan neon
-- **Neon** - Green/Pink/Cyan bright
+- **Colors**: Green accent (#2ecc71), dark backgrounds
+- **Font**: RobotoMono (monospace)
+- **Icons**: Lucide icon set
+- **Animations**: Quint easing, 0.3s duration
+- **Transparency**: Glass morphism effect
 
-Change theme via InterfaceManager:
-```lua
-Window.InterfaceManager.SetTheme("Cyberpunk")
-```
-
-## Configuration
-
-### SaveManager
-Automatically saves component values to JSON files:
-```lua
-Window.SaveManager.Save("myconfig")
-Window.SaveManager.Load("myconfig")
-Window.SaveManager.Delete("myconfig")
-Window.SaveManager.AutoSave(60) -- Auto-save every 60 seconds
-```
+## Manager APIs
 
 ### InterfaceManager
-Manage UI appearance and behavior:
+
 ```lua
-Window.InterfaceManager.SetTheme("Dark")
-Window.InterfaceManager.SetTransparency(0.2)
-Window.InterfaceManager.SetAcrylic(true)
-Window.InterfaceManager.SetMinimizeKey(Enum.KeyCode.RightControl)
+InterfaceManager:Initialize(window)
+InterfaceManager:Toggle()
+InterfaceManager:Show()
+InterfaceManager:Hide()
+InterfaceManager:SetMinimizeKey(Enum.KeyCode.RightControl)
+InterfaceManager:Destroy()
+```
+
+### SaveManager
+
+```lua
+SaveManager:Initialize(window)
+SaveManager:RegisterComponent(id, component)
+SaveManager:UnregisterComponent(id)
+SaveManager:Save(configName)
+SaveManager:Load(configName)
+SaveManager:Delete(configName)
+SaveManager:ListConfigs()
+SaveManager:EnableAutoSave(interval)
+SaveManager:DisableAutoSave()
+SaveManager:Destroy()
 ```
 
 ## Development
