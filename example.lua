@@ -4,13 +4,16 @@
 
 print("Loading EnowLib from GitHub...")
 
-local EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua"))()
+-- Add cache buster to force fresh download
+local cacheBuster = tostring(os.time())
+local EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua?" .. cacheBuster))()
 
 if not EnowLib then
     error("Failed to load EnowLib!")
 end
 
 print("EnowLib loaded successfully!")
+print("Version:", EnowLib.Version)
 
 -- Create window
 local Window = EnowLib:CreateWindow({
