@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 14:49:59
+-- Built: 2025-12-26 14:53:15
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -965,12 +965,12 @@ function TextBox:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 78)
+    self.Container.Size = UDim2.new(1, 0, 0, 82)
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 16)
+    self.Theme.CreatePadding(self.Container, 18)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -1047,12 +1047,12 @@ function Dropdown:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 78)
+    self.Container.Size = UDim2.new(1, 0, 0, 82)
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 16)
+    self.Theme.CreatePadding(self.Container, 18)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -1176,12 +1176,12 @@ function Dropdown:Toggle()
         local optionsHeight = math.min(#self.Config.Options * 34, 150)
         self.OptionsList.Size = UDim2.new(1, 0, 0, optionsHeight)
         self.OptionsList.Visible = true
-        self.Container.Size = UDim2.new(1, 0, 0, 78 + optionsHeight + 4)
+        self.Container.Size = UDim2.new(1, 0, 0, 82 + optionsHeight + 4)
         self.ChevronIcon.Rotation = 180
     else
         self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
         self.OptionsList.Visible = false
-        self.Container.Size = UDim2.new(1, 0, 0, 78)
+        self.Container.Size = UDim2.new(1, 0, 0, 82)
         self.ChevronIcon.Rotation = 0
     end
 end
@@ -1235,12 +1235,12 @@ function MultiSelect:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 78)
+    self.Container.Size = UDim2.new(1, 0, 0, 82)
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 16)
+    self.Theme.CreatePadding(self.Container, 18)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -1339,33 +1339,10 @@ function MultiSelect:CreateOption(optionText)
     
     self.Theme.CreatePadding(option, 8)
     
-    -- Checkbox
-    local checkbox = Instance.new("Frame")
-    checkbox.BackgroundColor3 = self.Theme.Colors.Secondary
-    checkbox.BorderSizePixel = 0
-    checkbox.Size = UDim2.fromOffset(16, 16)
-    checkbox.Position = UDim2.fromOffset(0, 6)
-    checkbox.Parent = option
-    
-    self.Theme.CreateCorner(checkbox, 3)
-    self.Theme.CreateStroke(checkbox, self.Theme.Colors.Border)
-    
-    -- Check Icon
-    local checkIcon = Instance.new("ImageLabel")
-    checkIcon.BackgroundTransparency = 1
-    checkIcon.Size = UDim2.fromOffset(12, 12)
-    checkIcon.Position = UDim2.fromScale(0.5, 0.5)
-    checkIcon.AnchorPoint = Vector2.new(0.5, 0.5)
-    checkIcon.Image = self.Theme.Icons.Check
-    checkIcon.ImageColor3 = self.Theme.Colors.Text
-    checkIcon.ImageTransparency = 1
-    checkIcon.Parent = checkbox
-    
     -- Option Text
     local optionLabel = Instance.new("TextLabel")
     optionLabel.BackgroundTransparency = 1
-    optionLabel.Size = UDim2.new(1, -24, 1, 0)
-    optionLabel.Position = UDim2.fromOffset(24, 0)
+    optionLabel.Size = UDim2.new(1, 0, 1, 0)
     optionLabel.Font = self.Theme.Font.Mono
     optionLabel.Text = optionText
     optionLabel.TextColor3 = self.Theme.Colors.TextDim
@@ -1375,49 +1352,44 @@ function MultiSelect:CreateOption(optionText)
     
     -- Update visual if already selected
     if self.Values[optionText] then
-        checkbox.BackgroundColor3 = self.Theme.Colors.Accent
-        checkIcon.ImageTransparency = 0
-        optionLabel.TextColor3 = self.Theme.Colors.Text
+        option.BackgroundColor3 = self.Theme.Colors.Accent
+        option.BackgroundTransparency = 0.9
+        optionLabel.TextColor3 = self.Theme.Colors.Accent
     end
     
     option.MouseButton1Click:Connect(function()
-        self:ToggleOption(optionText, checkbox, checkIcon, optionLabel)
+        self:ToggleOption(optionText, option, optionLabel)
     end)
     
     option.MouseEnter:Connect(function()
-        option.BackgroundTransparency = 0.9
         if not self.Values[optionText] then
+            option.BackgroundTransparency = 0.95
             optionLabel.TextColor3 = self.Theme.Colors.Accent
         end
     end)
     
     option.MouseLeave:Connect(function()
-        option.BackgroundTransparency = 1
         if not self.Values[optionText] then
+            option.BackgroundTransparency = 1
             optionLabel.TextColor3 = self.Theme.Colors.TextDim
         end
     end)
 end
 
-function MultiSelect:ToggleOption(optionText, checkbox, checkIcon, optionLabel)
+function MultiSelect:ToggleOption(optionText, option, optionLabel)
     self.Values[optionText] = not self.Values[optionText]
     
     if self.Values[optionText] then
-        self.Utils.Tween(checkbox, {
-            BackgroundColor3 = self.Theme.Colors.Accent
-        }, 0.15)
-        self.Utils.Tween(checkIcon, {
-            ImageTransparency = 0
+        self.Utils.Tween(option, {
+            BackgroundColor3 = self.Theme.Colors.Accent,
+            BackgroundTransparency = 0.9
         }, 0.15)
         self.Utils.Tween(optionLabel, {
-            TextColor3 = self.Theme.Colors.Text
+            TextColor3 = self.Theme.Colors.Accent
         }, 0.15)
     else
-        self.Utils.Tween(checkbox, {
-            BackgroundColor3 = self.Theme.Colors.Secondary
-        }, 0.15)
-        self.Utils.Tween(checkIcon, {
-            ImageTransparency = 1
+        self.Utils.Tween(option, {
+            BackgroundTransparency = 1
         }, 0.15)
         self.Utils.Tween(optionLabel, {
             TextColor3 = self.Theme.Colors.TextDim
@@ -1466,12 +1438,12 @@ function MultiSelect:Toggle()
         local optionsHeight = math.min(#self.Config.Options * 30, 150)
         self.OptionsList.Size = UDim2.new(1, 0, 0, optionsHeight)
         self.OptionsList.Visible = true
-        self.Container.Size = UDim2.new(1, 0, 0, 78 + optionsHeight + 4)
+        self.Container.Size = UDim2.new(1, 0, 0, 82 + optionsHeight + 4)
         self.ChevronIcon.Rotation = 180
     else
         self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
         self.OptionsList.Visible = false
-        self.Container.Size = UDim2.new(1, 0, 0, 78)
+        self.Container.Size = UDim2.new(1, 0, 0, 82)
         self.ChevronIcon.Rotation = 0
     end
 end
