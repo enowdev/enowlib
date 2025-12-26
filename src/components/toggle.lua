@@ -67,6 +67,17 @@ function Toggle:CreateUI()
     
     self.Theme.CreateCorner(self.Knob, 10)
     
+    -- Check icon
+    self.CheckIcon = Instance.new("ImageLabel")
+    self.CheckIcon.BackgroundTransparency = 1
+    self.CheckIcon.Size = UDim2.fromOffset(14, 14)
+    self.CheckIcon.Position = UDim2.fromScale(0.5, 0.5)
+    self.CheckIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    self.CheckIcon.Image = self.Theme.Icons.Check
+    self.CheckIcon.ImageColor3 = self.Theme.Colors.Accent
+    self.CheckIcon.ImageTransparency = 1
+    self.CheckIcon.Parent = self.Knob
+    
     -- Button
     local button = Instance.new("TextButton")
     button.BackgroundTransparency = 1
@@ -107,6 +118,10 @@ function Toggle:UpdateVisual()
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(22, 2)
         }, self.Theme.Animation.Duration)
+        
+        self.Utils.Tween(self.CheckIcon, {
+            ImageTransparency = 0
+        }, self.Theme.Animation.Duration)
     else
         self.Utils.Tween(self.Switch, {
             BackgroundColor3 = self.Theme.Colors.Secondary
@@ -114,6 +129,10 @@ function Toggle:UpdateVisual()
         
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(2, 2)
+        }, self.Theme.Animation.Duration)
+        
+        self.Utils.Tween(self.CheckIcon, {
+            ImageTransparency = 1
         }, self.Theme.Animation.Duration)
     end
 end

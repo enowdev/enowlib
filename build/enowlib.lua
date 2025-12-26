@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-26 13:08:16
+-- Built: 2025-12-26 13:25:00
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -14,12 +14,14 @@ do
 
 Theme = {}
 
--- Radix Icons (minimal set)
+-- Lucide Icons (minimal set)
 Theme.Icons = {
-    ChevronDown = "rbxassetid://84943167918420",
-    ChevronRight = "rbxassetid://107730842937250",
-    Cross = "rbxassetid://103469834740951",
-    Check = "rbxassetid://112055175771712"
+    ChevronDown = "rbxassetid://10709790948",
+    ChevronRight = "rbxassetid://10709791437",
+    X = "rbxassetid://10747384394",
+    Check = "rbxassetid://10709790644",
+    Settings = "rbxassetid://10734950309",
+    Home = "rbxassetid://10723407389"
 }
 
 -- Dark Mode Color Palette
@@ -517,6 +519,17 @@ function Toggle:CreateUI()
     
     self.Theme.CreateCorner(self.Knob, 10)
     
+    -- Check icon
+    self.CheckIcon = Instance.new("ImageLabel")
+    self.CheckIcon.BackgroundTransparency = 1
+    self.CheckIcon.Size = UDim2.fromOffset(14, 14)
+    self.CheckIcon.Position = UDim2.fromScale(0.5, 0.5)
+    self.CheckIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    self.CheckIcon.Image = self.Theme.Icons.Check
+    self.CheckIcon.ImageColor3 = self.Theme.Colors.Accent
+    self.CheckIcon.ImageTransparency = 1
+    self.CheckIcon.Parent = self.Knob
+    
     -- Button
     local button = Instance.new("TextButton")
     button.BackgroundTransparency = 1
@@ -557,6 +570,10 @@ function Toggle:UpdateVisual()
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(22, 2)
         }, self.Theme.Animation.Duration)
+        
+        self.Utils.Tween(self.CheckIcon, {
+            ImageTransparency = 0
+        }, self.Theme.Animation.Duration)
     else
         self.Utils.Tween(self.Switch, {
             BackgroundColor3 = self.Theme.Colors.Secondary
@@ -564,6 +581,10 @@ function Toggle:UpdateVisual()
         
         self.Utils.Tween(self.Knob, {
             Position = UDim2.fromOffset(2, 2)
+        }, self.Theme.Animation.Duration)
+        
+        self.Utils.Tween(self.CheckIcon, {
+            ImageTransparency = 1
         }, self.Theme.Animation.Duration)
     end
 end
@@ -769,7 +790,8 @@ function Tab.new(config, window, theme, utils)
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Title = "Tab"
+        Title = "Tab",
+        Icon = nil
     }, config or {})
     
     self.Components = {}
@@ -788,15 +810,49 @@ function Tab:CreateUI()
     self.Button.BorderSizePixel = 0
     self.Button.Size = UDim2.new(1, 0, 0, 36)
     self.Button.Font = self.Theme.Font.Regular
-    self.Button.Text = self.Config.Title
+    self.Button.Text = ""
     self.Button.TextColor3 = self.Theme.Colors.TextDim
     self.Button.TextSize = self.Theme.Font.Size.Regular
-    self.Button.TextXAlignment = Enum.TextXAlignment.Left
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Window.TabList
     
     self.Theme.CreateCorner(self.Button, 6)
     self.Theme.CreatePadding(self.Button, 12)
+    
+    -- Tab Icon (optional)
+    if self.Config.Icon then
+        self.TabIcon = Instance.new("ImageLabel")
+        self.TabIcon.BackgroundTransparency = 1
+        self.TabIcon.Size = UDim2.fromOffset(16, 16)
+        self.TabIcon.Position = UDim2.fromOffset(0, 10)
+        self.TabIcon.Image = self.Config.Icon
+        self.TabIcon.ImageColor3 = self.Theme.Colors.TextDim
+        self.TabIcon.Parent = self.Button
+    end
+    
+    -- Chevron Icon
+    self.ChevronIcon = Instance.new("ImageLabel")
+    self.ChevronIcon.BackgroundTransparency = 1
+    self.ChevronIcon.Size = UDim2.fromOffset(14, 14)
+    self.ChevronIcon.Position = UDim2.new(1, -14, 0.5, -7)
+    self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
+    self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
+    self.ChevronIcon.Parent = self.Button
+    
+    -- Title
+    local titleOffset = self.Config.Icon and 20 or 0
+    local title = Instance.new("TextLabel")
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, -(titleOffset + 20), 1, 0)
+    title.Position = UDim2.fromOffset(titleOffset, 0)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.TextDim
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Button
+    
+    self.Title = title
     
     -- Tab Content
     self.Container = Instance.new("ScrollingFrame")
@@ -851,9 +907,24 @@ function Tab:Show()
     
     self.Utils.Tween(self.Button, {
         BackgroundColor3 = self.Theme.Colors.Accent,
-        BackgroundTransparency = self.Theme.Transparency.None,
+        BackgroundTransparency = self.Theme.Transparency.None
+    }, self.Theme.Animation.Duration)
+    
+    self.Utils.Tween(self.Title, {
         TextColor3 = self.Theme.Colors.Text
     }, self.Theme.Animation.Duration)
+    
+    if self.TabIcon then
+        self.Utils.Tween(self.TabIcon, {
+            ImageColor3 = self.Theme.Colors.Text
+        }, self.Theme.Animation.Duration)
+    end
+    
+    self.Utils.Tween(self.ChevronIcon, {
+        ImageColor3 = self.Theme.Colors.Text
+    }, self.Theme.Animation.Duration)
+    
+    self.ChevronIcon.Image = self.Theme.Icons.ChevronDown
 end
 
 function Tab:Hide()
@@ -862,9 +933,24 @@ function Tab:Hide()
     
     self.Utils.Tween(self.Button, {
         BackgroundColor3 = self.Theme.Colors.Secondary,
-        BackgroundTransparency = self.Theme.Transparency.Subtle,
+        BackgroundTransparency = self.Theme.Transparency.Subtle
+    }, self.Theme.Animation.Duration)
+    
+    self.Utils.Tween(self.Title, {
         TextColor3 = self.Theme.Colors.TextDim
     }, self.Theme.Animation.Duration)
+    
+    if self.TabIcon then
+        self.Utils.Tween(self.TabIcon, {
+            ImageColor3 = self.Theme.Colors.TextDim
+        }, self.Theme.Animation.Duration)
+    end
+    
+    self.Utils.Tween(self.ChevronIcon, {
+        ImageColor3 = self.Theme.Colors.TextDim
+    }, self.Theme.Animation.Duration)
+    
+    self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
 end
 
 function Tab:AddButton(config)
@@ -974,23 +1060,38 @@ function Window:CreateUI()
     
     self.Theme.CreateCorner(closeBtn, 6)
     
-    local icon = self.Theme.CreateIcon(closeBtn, self.Theme.Icons.Cross, 14)
-    icon.Position = UDim2.fromScale(0.5, 0.5)
-    icon.AnchorPoint = Vector2.new(0.5, 0.5)
-    icon.ImageColor3 = self.Theme.Colors.TextDim
+    -- Close Icon
+    local closeIcon = Instance.new("ImageLabel")
+    closeIcon.BackgroundTransparency = 1
+    closeIcon.Size = UDim2.fromOffset(16, 16)
+    closeIcon.Position = UDim2.fromScale(0.5, 0.5)
+    closeIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    closeIcon.Image = self.Theme.Icons.X
+    closeIcon.ImageColor3 = self.Theme.Colors.TextDim
+    closeIcon.Parent = closeBtn
     
     closeBtn.MouseButton1Click:Connect(function()
         self:Toggle()
     end)
     
     closeBtn.MouseEnter:Connect(function()
-        self.Utils.Tween(closeBtn, {BackgroundColor3 = self.Theme.Colors.Error}, self.Theme.Animation.Duration)
-        self.Utils.Tween(icon, {ImageColor3 = self.Theme.Colors.Text}, self.Theme.Animation.Duration)
+        self.Utils.Tween(closeBtn, {
+            BackgroundColor3 = self.Theme.Colors.Error,
+            BackgroundTransparency = self.Theme.Transparency.None
+        }, self.Theme.Animation.Duration)
+        self.Utils.Tween(closeIcon, {
+            ImageColor3 = self.Theme.Colors.Text
+        }, self.Theme.Animation.Duration)
     end)
     
     closeBtn.MouseLeave:Connect(function()
-        self.Utils.Tween(closeBtn, {BackgroundColor3 = self.Theme.Colors.Secondary}, self.Theme.Animation.Duration)
-        self.Utils.Tween(icon, {ImageColor3 = self.Theme.Colors.TextDim}, self.Theme.Animation.Duration)
+        self.Utils.Tween(closeBtn, {
+            BackgroundColor3 = self.Theme.Colors.Secondary,
+            BackgroundTransparency = self.Theme.Transparency.Subtle
+        }, self.Theme.Animation.Duration)
+        self.Utils.Tween(closeIcon, {
+            ImageColor3 = self.Theme.Colors.TextDim
+        }, self.Theme.Animation.Duration)
     end)
     
     -- Separator

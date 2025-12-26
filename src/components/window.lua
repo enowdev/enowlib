@@ -74,23 +74,38 @@ function Window:CreateUI()
     
     self.Theme.CreateCorner(closeBtn, 6)
     
-    local icon = self.Theme.CreateIcon(closeBtn, self.Theme.Icons.Cross, 14)
-    icon.Position = UDim2.fromScale(0.5, 0.5)
-    icon.AnchorPoint = Vector2.new(0.5, 0.5)
-    icon.ImageColor3 = self.Theme.Colors.TextDim
+    -- Close Icon
+    local closeIcon = Instance.new("ImageLabel")
+    closeIcon.BackgroundTransparency = 1
+    closeIcon.Size = UDim2.fromOffset(16, 16)
+    closeIcon.Position = UDim2.fromScale(0.5, 0.5)
+    closeIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    closeIcon.Image = self.Theme.Icons.X
+    closeIcon.ImageColor3 = self.Theme.Colors.TextDim
+    closeIcon.Parent = closeBtn
     
     closeBtn.MouseButton1Click:Connect(function()
         self:Toggle()
     end)
     
     closeBtn.MouseEnter:Connect(function()
-        self.Utils.Tween(closeBtn, {BackgroundColor3 = self.Theme.Colors.Error}, self.Theme.Animation.Duration)
-        self.Utils.Tween(icon, {ImageColor3 = self.Theme.Colors.Text}, self.Theme.Animation.Duration)
+        self.Utils.Tween(closeBtn, {
+            BackgroundColor3 = self.Theme.Colors.Error,
+            BackgroundTransparency = self.Theme.Transparency.None
+        }, self.Theme.Animation.Duration)
+        self.Utils.Tween(closeIcon, {
+            ImageColor3 = self.Theme.Colors.Text
+        }, self.Theme.Animation.Duration)
     end)
     
     closeBtn.MouseLeave:Connect(function()
-        self.Utils.Tween(closeBtn, {BackgroundColor3 = self.Theme.Colors.Secondary}, self.Theme.Animation.Duration)
-        self.Utils.Tween(icon, {ImageColor3 = self.Theme.Colors.TextDim}, self.Theme.Animation.Duration)
+        self.Utils.Tween(closeBtn, {
+            BackgroundColor3 = self.Theme.Colors.Secondary,
+            BackgroundTransparency = self.Theme.Transparency.Subtle
+        }, self.Theme.Animation.Duration)
+        self.Utils.Tween(closeIcon, {
+            ImageColor3 = self.Theme.Colors.TextDim
+        }, self.Theme.Animation.Duration)
     end)
     
     -- Separator

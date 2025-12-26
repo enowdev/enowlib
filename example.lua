@@ -5,6 +5,14 @@ print("Loading EnowLib...")
 
 local EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua"))()
 
+-- Lucide Icons
+local Icons = {
+    Home = "rbxassetid://10723407389",
+    Settings = "rbxassetid://10734950309",
+    User = "rbxassetid://10747373176",
+    Shield = "rbxassetid://10734951847"
+}
+
 print("Creating window...")
 
 local Window = EnowLib:CreateWindow({
@@ -12,8 +20,11 @@ local Window = EnowLib:CreateWindow({
     Size = UDim2.fromOffset(800, 500)
 })
 
--- Main Tab
-local MainTab = Window:AddTab({Title = "Main"})
+-- Main Tab with Home Icon
+local MainTab = Window:AddTab({
+    Title = "Main",
+    Icon = Icons.Home
+})
 
 MainTab:AddLabel({Text = "Welcome to EnowLib v2.0"})
 
@@ -42,8 +53,11 @@ MainTab:AddSlider({
     end
 })
 
--- Settings Tab
-local SettingsTab = Window:AddTab({Title = "Settings"})
+-- Settings Tab with Settings Icon
+local SettingsTab = Window:AddTab({
+    Title = "Settings",
+    Icon = Icons.Settings
+})
 
 SettingsTab:AddLabel({Text = "Configuration"})
 
@@ -56,3 +70,4 @@ SettingsTab:AddToggle({
 })
 
 print("EnowLib loaded successfully!")
+

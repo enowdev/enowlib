@@ -3,12 +3,14 @@
 
 local Theme = {}
 
--- Radix Icons (minimal set)
+-- Lucide Icons (minimal set)
 Theme.Icons = {
-    ChevronDown = "rbxassetid://84943167918420",
-    ChevronRight = "rbxassetid://107730842937250",
-    Cross = "rbxassetid://103469834740951",
-    Check = "rbxassetid://112055175771712"
+    ChevronDown = "rbxassetid://10709790948",
+    ChevronRight = "rbxassetid://10709791437",
+    X = "rbxassetid://10747384394",
+    Check = "rbxassetid://10709790644",
+    Settings = "rbxassetid://10734950309",
+    Home = "rbxassetid://10723407389"
 }
 
 -- Dark Mode Color Palette

@@ -10,7 +10,8 @@ function Tab.new(config, window, theme, utils)
     self.Theme = theme
     self.Utils = utils
     self.Config = utils.Merge({
-        Title = "Tab"
+        Title = "Tab",
+        Icon = nil
     }, config or {})
     
     self.Components = {}
@@ -29,15 +30,49 @@ function Tab:CreateUI()
     self.Button.BorderSizePixel = 0
     self.Button.Size = UDim2.new(1, 0, 0, 36)
     self.Button.Font = self.Theme.Font.Regular
-    self.Button.Text = self.Config.Title
+    self.Button.Text = ""
     self.Button.TextColor3 = self.Theme.Colors.TextDim
     self.Button.TextSize = self.Theme.Font.Size.Regular
-    self.Button.TextXAlignment = Enum.TextXAlignment.Left
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Window.TabList
     
     self.Theme.CreateCorner(self.Button, 6)
     self.Theme.CreatePadding(self.Button, 12)
+    
+    -- Tab Icon (optional)
+    if self.Config.Icon then
+        self.TabIcon = Instance.new("ImageLabel")
+        self.TabIcon.BackgroundTransparency = 1
+        self.TabIcon.Size = UDim2.fromOffset(16, 16)
+        self.TabIcon.Position = UDim2.fromOffset(0, 10)
+        self.TabIcon.Image = self.Config.Icon
+        self.TabIcon.ImageColor3 = self.Theme.Colors.TextDim
+        self.TabIcon.Parent = self.Button
+    end
+    
+    -- Chevron Icon
+    self.ChevronIcon = Instance.new("ImageLabel")
+    self.ChevronIcon.BackgroundTransparency = 1
+    self.ChevronIcon.Size = UDim2.fromOffset(14, 14)
+    self.ChevronIcon.Position = UDim2.new(1, -14, 0.5, -7)
+    self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
+    self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
+    self.ChevronIcon.Parent = self.Button
+    
+    -- Title
+    local titleOffset = self.Config.Icon and 20 or 0
+    local title = Instance.new("TextLabel")
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, -(titleOffset + 20), 1, 0)
+    title.Position = UDim2.fromOffset(titleOffset, 0)
+    title.Font = self.Theme.Font.Regular
+    title.Text = self.Config.Title
+    title.TextColor3 = self.Theme.Colors.TextDim
+    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Parent = self.Button
+    
+    self.Title = title
     
     -- Tab Content
     self.Container = Instance.new("ScrollingFrame")
@@ -92,9 +127,24 @@ function Tab:Show()
     
     self.Utils.Tween(self.Button, {
         BackgroundColor3 = self.Theme.Colors.Accent,
-        BackgroundTransparency = self.Theme.Transparency.None,
+        BackgroundTransparency = self.Theme.Transparency.None
+    }, self.Theme.Animation.Duration)
+    
+    self.Utils.Tween(self.Title, {
         TextColor3 = self.Theme.Colors.Text
     }, self.Theme.Animation.Duration)
+    
+    if self.TabIcon then
+        self.Utils.Tween(self.TabIcon, {
+            ImageColor3 = self.Theme.Colors.Text
+        }, self.Theme.Animation.Duration)
+    end
+    
+    self.Utils.Tween(self.ChevronIcon, {
+        ImageColor3 = self.Theme.Colors.Text
+    }, self.Theme.Animation.Duration)
+    
+    self.ChevronIcon.Image = self.Theme.Icons.ChevronDown
 end
 
 function Tab:Hide()
@@ -103,9 +153,24 @@ function Tab:Hide()
     
     self.Utils.Tween(self.Button, {
         BackgroundColor3 = self.Theme.Colors.Secondary,
-        BackgroundTransparency = self.Theme.Transparency.Subtle,
+        BackgroundTransparency = self.Theme.Transparency.Subtle
+    }, self.Theme.Animation.Duration)
+    
+    self.Utils.Tween(self.Title, {
         TextColor3 = self.Theme.Colors.TextDim
     }, self.Theme.Animation.Duration)
+    
+    if self.TabIcon then
+        self.Utils.Tween(self.TabIcon, {
+            ImageColor3 = self.Theme.Colors.TextDim
+        }, self.Theme.Animation.Duration)
+    end
+    
+    self.Utils.Tween(self.ChevronIcon, {
+        ImageColor3 = self.Theme.Colors.TextDim
+    }, self.Theme.Animation.Duration)
+    
+    self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
 end
 
 function Tab:AddButton(config)
