@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Vaporwave Tech Dark UI Library
--- Built: 2025-12-26 08:26:02
+-- Built: 2025-12-26 08:32:19
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -600,9 +600,9 @@ function Section:UpdateSize()
     self.Container.Size = UDim2.new(1, 0, 0, totalHeight)
 end
 
--- Add component to section
+-- Add component to section (components will be added directly to Content frame)
 function Section:AddButton(config)
-    
+    -- Components are loaded globally in build, no need to require
     local button = Button.new(config, {Container = self.Content}, self.Theme, self.Utils)
     table.insert(self.Components, button)
     self:UpdateSize()
@@ -610,7 +610,6 @@ function Section:AddButton(config)
 end
 
 function Section:AddToggle(config)
-    
     local toggle = Toggle.new(config, {Container = self.Content}, self.Theme, self.Utils)
     table.insert(self.Components, toggle)
     self:UpdateSize()
@@ -618,7 +617,6 @@ function Section:AddToggle(config)
 end
 
 function Section:AddSlider(config)
-    
     local slider = Slider.new(config, {Container = self.Content}, self.Theme, self.Utils)
     table.insert(self.Components, slider)
     self:UpdateSize()
@@ -626,7 +624,6 @@ function Section:AddSlider(config)
 end
 
 function Section:AddInput(config)
-    
     local input = Input.new(config, {Container = self.Content}, self.Theme, self.Utils)
     table.insert(self.Components, input)
     self:UpdateSize()
@@ -634,7 +631,6 @@ function Section:AddInput(config)
 end
 
 function Section:AddDropdown(config)
-    
     local dropdown = Dropdown.new(config, {Container = self.Content}, self.Theme, self.Utils)
     table.insert(self.Components, dropdown)
     self:UpdateSize()
@@ -642,7 +638,6 @@ function Section:AddDropdown(config)
 end
 
 function Section:AddLabel(config)
-    
     local label = Label.new(config, {Container = self.Content}, self.Theme, self.Utils)
     table.insert(self.Components, label)
     self:UpdateSize()
