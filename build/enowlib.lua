@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 13:50:58
+-- Built: 2025-12-27 13:56:02
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1115,12 +1115,12 @@ function Dropdown:CreateUI()
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
     
-    -- Options List - positioned below button with gap
+    -- Options List - positioned below button with gap, same size as button
     self.OptionsList = Instance.new("ScrollingFrame")
     self.OptionsList.BackgroundColor3 = self.Theme.Colors.Secondary
     self.OptionsList.BorderSizePixel = 0
-    self.OptionsList.Size = UDim2.new(1, -20, 0, 0)  -- Extra space for scrollbar (8 left + 8 right + 4 scrollbar)
-    self.OptionsList.Position = UDim2.fromOffset(8, 74)
+    self.OptionsList.Size = UDim2.new(1, -16, 0, 0)  -- Same as button
+    self.OptionsList.Position = UDim2.fromOffset(8, 74)  -- Right below button
     self.OptionsList.ScrollBarThickness = 4
     self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
@@ -1390,12 +1390,12 @@ function MultiSelect:CreateUI()
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
     
-    -- Options List
+    -- Options List - same size as button
     self.OptionsList = Instance.new("ScrollingFrame")
     self.OptionsList.BackgroundColor3 = self.Theme.Colors.Secondary
     self.OptionsList.BorderSizePixel = 0
-    self.OptionsList.Size = UDim2.new(1, -20, 0, 0)  -- Extra space for scrollbar (8 left + 8 right + 4 scrollbar)
-    self.OptionsList.Position = UDim2.fromOffset(8, 74)
+    self.OptionsList.Size = UDim2.new(1, -16, 0, 0)  -- Same as button
+    self.OptionsList.Position = UDim2.fromOffset(8, 74)  -- Right below button
     self.OptionsList.ScrollBarThickness = 4
     self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
