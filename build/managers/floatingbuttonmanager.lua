@@ -97,37 +97,26 @@ function FloatingButtonManager:SetupDragging()
     end
     
     -- Mouse/Touch button down
-    table.insert(self.Connections, self.Button.MouseButton1Down:Connect(function()
-        isDragging = true
-        dragStart = self.UserInputService:GetMouseLocation()
-        startPos = self.Button.AbsolutePosition
-        
-        -- Scale down animation
-        local tween = self.TweenService:Create(self.Button, TweenInfo.new(0.1), {
-            Size = UDim2.fromOffset(
-                self.Config.Size.X.Offset * 0.9,
-                self.Config.Size.Y.Offset * 0.9
-            )
-        })
-        tween:Play()
+    table.insert(self.Connections, self.Button.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            isDragging = true
+            dragStart = self.UserInputService:GetMouseLocation()
+            startPos = self.Button.AbsolutePosition
+        end
     end))
     
     -- Mouse/Touch button up
-    table.insert(self.Connections, self.Button.MouseButton1Up:Connect(function()
-        if isDragging then
-            isDragging = false
-            
-            -- Scale back animation
-            local tween = self.TweenService:Create(self.Button, TweenInfo.new(0.1), {
-                Size = self.Config.Size
-            })
-            tween:Play()
-            
-            -- Check if it was a click (not drag)
-            local currentPos = self.UserInputService:GetMouseLocation()
-            local dragDistance = (currentPos - dragStart).Magnitude
-            if dragDistance < 5 then
-                pcall(self.Config.OnClick)
+    table.insert(self.Connections, self.Button.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            if isDragging then
+                isDragging = false
+                
+                -- Check if it was a click (not drag)
+                local currentPos = self.UserInputService:GetMouseLocation()
+                local dragDistance = (currentPos - dragStart).Magnitude
+                if dragDistance < 5 then
+                    pcall(self.Config.OnClick)
+                end
             end
         end
     end))
@@ -154,10 +143,7 @@ function FloatingButtonManager:SetupDragging()
             local currentPos = self.Button.AbsolutePosition
             local boundedPosition = checkBoundaries(currentPos)
             
-            local tween = self.TweenService:Create(self.Button, TweenInfo.new(0.3), {
-                Position = UDim2.fromOffset(boundedPosition.X, boundedPosition.Y)
-            })
-            tween:Play()
+            self.Button.Position = UDim2.fromOffset(boundedPosition.X, boundedPosition.Y)
         end
     end))
 end

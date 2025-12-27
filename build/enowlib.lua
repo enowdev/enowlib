@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 12:55:49
+-- Built: 2025-12-27 13:01:17
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2579,6 +2579,7 @@ function Window:CreateUI()
     -- Add Acrylic Blur Effect
     self.BlurEffect = Instance.new("BlurEffect")
     self.BlurEffect.Size = 24
+    self.BlurEffect.Enabled = true
     self.BlurEffect.Parent = game:GetService("Lighting")
     
     -- Title Bar

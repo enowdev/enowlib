@@ -77,6 +77,7 @@ function Window:CreateUI()
     -- Add Acrylic Blur Effect
     self.BlurEffect = Instance.new("BlurEffect")
     self.BlurEffect.Size = 24
+    self.BlurEffect.Enabled = true
     self.BlurEffect.Parent = game:GetService("Lighting")
     
     -- Title Bar
