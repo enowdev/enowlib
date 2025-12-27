@@ -154,7 +154,7 @@ function Window:CreateUI()
     local viewportSize = workspace.CurrentCamera.ViewportSize
     local isMobile = viewportSize.X < 1024
     
-    local sidebarWidth = isMobile and 0.25 or 0.3  -- 25% for mobile, 30% for desktop
+    local sidebarWidth = isMobile and 0.20 or 0.3  -- 20% for mobile, 30% for desktop
     
     -- Tab Bar (Sidebar) - Use proportional width
     self.Sidebar = Instance.new("Frame")
@@ -218,6 +218,7 @@ function Window:CreateUI()
     
     -- Content Area - Use remaining width
     local contentWidth = 1 - sidebarWidth
+    local contentPadding = isMobile and 4 or 8  -- Less padding on mobile
     self.ContentArea = Instance.new("ScrollingFrame")
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BackgroundTransparency = 0.2
@@ -229,7 +230,7 @@ function Window:CreateUI()
     self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
     self.ContentArea.Parent = self.Container
     
-    self.Theme.CreatePadding(self.ContentArea, 8)
+    self.Theme.CreatePadding(self.ContentArea, contentPadding)
     
     local contentLayout = Instance.new("UIListLayout")
     contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
