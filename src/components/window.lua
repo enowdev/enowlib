@@ -74,22 +74,28 @@ function Window:CreateUI()
     self.Theme.CreateCorner(self.Container, 12)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
     
+    -- Add Acrylic Blur Effect
+    self.BlurEffect = Instance.new("BlurEffect")
+    self.BlurEffect.Size = 24
+    self.BlurEffect.Enabled = true
+    self.BlurEffect.Parent = game:GetService("Lighting")
+    
     -- Title Bar
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
     self.TitleBar.BackgroundTransparency = 1
-    self.TitleBar.Size = UDim2.new(1, 0, 0, 36)
+    self.TitleBar.Size = UDim2.new(1, 0, 0, 44)
     self.TitleBar.Parent = self.Container
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -40, 1, 0)
-    title.Position = UDim2.fromOffset(12, 0)
+    title.Size = UDim2.new(1, -50, 1, 0)
+    title.Position = UDim2.fromOffset(16, 0)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextSize = self.Theme.Font.Size.Large
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.TitleBar
     
@@ -98,17 +104,17 @@ function Window:CreateUI()
     closeBtn.BackgroundColor3 = self.Theme.Colors.Secondary
     closeBtn.BackgroundTransparency = self.Theme.Transparency.Subtle
     closeBtn.BorderSizePixel = 0
-    closeBtn.Size = UDim2.fromOffset(24, 24)
-    closeBtn.Position = UDim2.new(1, -30, 0.5, -12)
+    closeBtn.Size = UDim2.fromOffset(28, 28)
+    closeBtn.Position = UDim2.new(1, -36, 0.5, -14)
     closeBtn.Text = ""
     closeBtn.Parent = self.TitleBar
     
-    self.Theme.CreateCorner(closeBtn, 4)
+    self.Theme.CreateCorner(closeBtn, 6)
     
     -- Close Icon
     local closeIcon = Instance.new("ImageLabel")
     closeIcon.BackgroundTransparency = 1
-    closeIcon.Size = UDim2.fromOffset(16, 16)
+    closeIcon.Size = UDim2.fromOffset(18, 18)
     closeIcon.Position = UDim2.fromScale(0.5, 0.5)
     closeIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     closeIcon.Image = self.Theme.Icons.X
@@ -145,7 +151,7 @@ function Window:CreateUI()
     separator.BackgroundColor3 = self.Theme.Colors.Border
     separator.BorderSizePixel = 0
     separator.Size = UDim2.new(1, 0, 0, 1)
-    separator.Position = UDim2.new(0, 0, 0, 36)
+    separator.Position = UDim2.new(0, 0, 0, 44)
     separator.Parent = self.Container
     
     self.HeaderSeparator = separator
@@ -162,8 +168,8 @@ function Window:CreateUI()
     self.Sidebar.BackgroundColor3 = self.Theme.Colors.Panel
     self.Sidebar.BackgroundTransparency = 0.2
     self.Sidebar.BorderSizePixel = 0
-    self.Sidebar.Size = UDim2.new(sidebarWidth, 0, 1, -61)
-    self.Sidebar.Position = UDim2.fromOffset(0, 37)
+    self.Sidebar.Size = UDim2.new(sidebarWidth, 0, 1, -77)
+    self.Sidebar.Position = UDim2.fromOffset(0, 45)
     self.Sidebar.Parent = self.Container
     
     -- Sidebar Header
@@ -212,8 +218,8 @@ function Window:CreateUI()
     self.VerticalSeparator.Name = "VerticalSeparator"
     self.VerticalSeparator.BackgroundColor3 = self.Theme.Colors.Border
     self.VerticalSeparator.BorderSizePixel = 0
-    self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -61)
-    self.VerticalSeparator.Position = UDim2.new(sidebarWidth, 0, 0, 37)
+    self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -77)
+    self.VerticalSeparator.Position = UDim2.new(sidebarWidth, 0, 0, 45)
     self.VerticalSeparator.Parent = self.Container
     
     -- Content Area - Use remaining width
@@ -223,8 +229,8 @@ function Window:CreateUI()
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BackgroundTransparency = 0.2
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(contentWidth, -1, 1, -61)
-    self.ContentArea.Position = UDim2.new(sidebarWidth, 1, 0, 37)
+    self.ContentArea.Size = UDim2.new(contentWidth, -1, 1, -77)
+    self.ContentArea.Position = UDim2.new(sidebarWidth, 1, 0, 45)
     self.ContentArea.ScrollBarThickness = 4
     self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
@@ -247,26 +253,26 @@ function Window:CreateUI()
     self.FooterSeparator.BackgroundColor3 = self.Theme.Colors.Border
     self.FooterSeparator.BorderSizePixel = 0
     self.FooterSeparator.Size = UDim2.new(1, 0, 0, 1)
-    self.FooterSeparator.Position = UDim2.new(0, 0, 1, -24)
+    self.FooterSeparator.Position = UDim2.new(0, 0, 1, -32)
     self.FooterSeparator.Parent = self.Container
     
     -- Footer
     self.Footer = Instance.new("Frame")
     self.Footer.Name = "Footer"
     self.Footer.BackgroundTransparency = 1
-    self.Footer.Size = UDim2.new(1, 0, 0, 24)
-    self.Footer.Position = UDim2.new(0, 0, 1, -24)
+    self.Footer.Size = UDim2.new(1, 0, 0, 32)
+    self.Footer.Position = UDim2.new(0, 0, 1, -32)
     self.Footer.Parent = self.Container
     
     -- Footer Text (read-only)
     self.FooterLabel = Instance.new("TextLabel")
     self.FooterLabel.BackgroundTransparency = 1
-    self.FooterLabel.Size = UDim2.new(1, -40, 1, 0)
-    self.FooterLabel.Position = UDim2.fromOffset(12, 0)
+    self.FooterLabel.Size = UDim2.new(1, -50, 1, 0)
+    self.FooterLabel.Position = UDim2.fromOffset(16, 0)
     self.FooterLabel.Font = self.Theme.Font.Mono
     self.FooterLabel.Text = "EnowLib v2.0.0"
     self.FooterLabel.TextColor3 = self.Theme.Colors.TextDim
-    self.FooterLabel.TextSize = 11
+    self.FooterLabel.TextSize = 12
     self.FooterLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.FooterLabel.Parent = self.Footer
     
@@ -275,18 +281,18 @@ function Window:CreateUI()
     self.ResizeHandle.BackgroundColor3 = self.Theme.Colors.Secondary
     self.ResizeHandle.BackgroundTransparency = 0.5
     self.ResizeHandle.BorderSizePixel = 0
-    self.ResizeHandle.Size = UDim2.fromOffset(20, 20)
-    self.ResizeHandle.Position = UDim2.new(1, -22, 0.5, -10)
+    self.ResizeHandle.Size = UDim2.fromOffset(28, 28)
+    self.ResizeHandle.Position = UDim2.new(1, -30, 0.5, -14)
     self.ResizeHandle.Text = ""
     self.ResizeHandle.ZIndex = 2
     self.ResizeHandle.Parent = self.Footer
     
-    self.Theme.CreateCorner(self.ResizeHandle, 4)
+    self.Theme.CreateCorner(self.ResizeHandle, 6)
     
     -- Resize Icon (diagonal arrows)
     local resizeIcon = Instance.new("ImageLabel")
     resizeIcon.BackgroundTransparency = 1
-    resizeIcon.Size = UDim2.fromOffset(12, 12)
+    resizeIcon.Size = UDim2.fromOffset(16, 16)
     resizeIcon.Position = UDim2.fromScale(0.5, 0.5)
     resizeIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     resizeIcon.Image = "rbxassetid://10734896206"
@@ -344,35 +350,41 @@ function Window:MakeResizable(handle)
     local dragging = false
     local dragStart = nil
     local startSize = nil
+    local connection = nil
     
     handle.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
             startSize = self.Container.AbsoluteSize
+            
+            -- Create connection for input changed
+            connection = UserInputService.InputChanged:Connect(function(changedInput)
+                if dragging and (changedInput.UserInputType == Enum.UserInputType.MouseMovement or changedInput.UserInputType == Enum.UserInputType.Touch) then
+                    local delta = changedInput.Position - dragStart
+                    
+                    -- Calculate new size
+                    local newWidth = startSize.X + delta.X
+                    local newHeight = startSize.Y + delta.Y
+                    
+                    -- Apply min/max constraints
+                    newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
+                    newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
+                    
+                    -- Update container size
+                    self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
+                end
+            end)
         end
     end)
     
     handle.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = false
-        end
-    end)
-    
-    UserInputService.InputChanged:Connect(function(input)
-        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-            local delta = input.Position - dragStart
-            
-            -- Calculate new size
-            local newWidth = startSize.X + delta.X
-            local newHeight = startSize.Y + delta.Y
-            
-            -- Apply min/max constraints
-            newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
-            newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
-            
-            -- Update container size
-            self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
+            if connection then
+                connection:Disconnect()
+                connection = nil
+            end
         end
     end)
 end
@@ -452,7 +464,7 @@ function Window:SetupAutoResize()
             newY = viewportSize.Y - newSize.Y
         end
         
-        -- Ensure at least header is visible (36px from top)
+        -- Ensure at least header is visible (44px from top)
         if newY < 0 then
             newY = 0
         end
@@ -531,6 +543,11 @@ end
 
 function Window:Toggle()
     self.Container.Visible = not self.Container.Visible
+    
+    -- Toggle blur effect
+    if self.BlurEffect then
+        self.BlurEffect.Enabled = self.Container.Visible
+    end
 end
 
 -- Component Factory Methods (for use in Content functions)
