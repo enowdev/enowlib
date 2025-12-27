@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 15:05:48
+-- Built: 2025-12-27 15:09:25
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2495,12 +2495,6 @@ function Window:CreateUI()
     self.Theme.CreateCorner(self.Container, 12)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
     
-    -- Add Acrylic Blur Effect
-    self.BlurEffect = Instance.new("BlurEffect")
-    self.BlurEffect.Size = 24
-    self.BlurEffect.Enabled = true
-    self.BlurEffect.Parent = game:GetService("Lighting")
-    
     -- Title Bar
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
@@ -2699,11 +2693,16 @@ function Window:CreateUI()
     
     -- Resize Handle Button
     self.ResizeHandle = Instance.new("TextButton")
-    self.ResizeHandle.BackgroundTransparency = 1
+    self.ResizeHandle.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.ResizeHandle.BackgroundTransparency = 0.5
+    self.ResizeHandle.BorderSizePixel = 0
     self.ResizeHandle.Size = UDim2.fromOffset(20, 20)
     self.ResizeHandle.Position = UDim2.new(1, -22, 0.5, -10)
     self.ResizeHandle.Text = ""
+    self.ResizeHandle.ZIndex = 2
     self.ResizeHandle.Parent = self.Footer
+    
+    self.Theme.CreateCorner(self.ResizeHandle, 4)
     
     -- Resize Icon (diagonal arrows)
     local resizeIcon = Instance.new("ImageLabel")
@@ -2715,6 +2714,25 @@ function Window:CreateUI()
     resizeIcon.ImageColor3 = self.Theme.Colors.TextDim
     resizeIcon.Rotation = 90
     resizeIcon.Parent = self.ResizeHandle
+    
+    -- Hover effect for resize handle
+    self.ResizeHandle.MouseEnter:Connect(function()
+        self.Utils.Tween(self.ResizeHandle, {
+            BackgroundTransparency = 0.2
+        }, 0.2)
+        self.Utils.Tween(resizeIcon, {
+            ImageColor3 = self.Theme.Colors.Accent
+        }, 0.2)
+    end)
+    
+    self.ResizeHandle.MouseLeave:Connect(function()
+        self.Utils.Tween(self.ResizeHandle, {
+            BackgroundTransparency = 0.5
+        }, 0.2)
+        self.Utils.Tween(resizeIcon, {
+            ImageColor3 = self.Theme.Colors.TextDim
+        }, 0.2)
+    end)
     
     -- Make resizable
     self:MakeResizable(self.ResizeHandle)
@@ -2934,11 +2952,6 @@ end
 
 function Window:Toggle()
     self.Container.Visible = not self.Container.Visible
-    
-    -- Toggle blur effect
-    if self.BlurEffect then
-        self.BlurEffect.Enabled = self.Container.Visible
-    end
 end
 
 -- Component Factory Methods (for use in Content functions)
