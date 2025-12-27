@@ -82,6 +82,7 @@ end
 function FloatingButtonManager:SetupDragging()
     local camera = workspace.CurrentCamera
     local isDragging = false
+    local dragInput = nil
     local dragStart = nil
     local startPos = nil
     
@@ -96,43 +97,59 @@ function FloatingButtonManager:SetupDragging()
         return Vector2.new(x, y)
     end
     
-    -- Mouse/Touch button down
+    -- Function to update position
+    local function updatePosition(input)
+        if not isDragging then return end
+        
+        local delta = input.Position - dragStart
+        local newPosition = startPos + Vector2.new(delta.X, delta.Y)
+        
+        -- Apply boundaries
+        local boundedPosition = checkBoundaries(newPosition)
+        
+        self.Button.Position = UDim2.fromOffset(boundedPosition.X, boundedPosition.Y)
+    end
+    
+    -- Input began (mouse or touch)
     table.insert(self.Connections, self.Button.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             isDragging = true
-            dragStart = self.UserInputService:GetMouseLocation()
+            dragInput = input
+            dragStart = input.Position
             startPos = self.Button.AbsolutePosition
+            
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    isDragging = false
+                end
+            end)
         end
     end))
     
-    -- Mouse/Touch button up
+    -- Input ended (mouse or touch)
     table.insert(self.Connections, self.Button.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            if isDragging then
+            if isDragging and dragInput == input then
                 isDragging = false
                 
                 -- Check if it was a click (not drag)
-                local currentPos = self.UserInputService:GetMouseLocation()
-                local dragDistance = (currentPos - dragStart).Magnitude
-                if dragDistance < 5 then
+                local delta = input.Position - dragStart
+                local dragDistance = math.sqrt(delta.X * delta.X + delta.Y * delta.Y)
+                
+                if dragDistance < 10 then  -- Increased threshold for touch
                     pcall(self.Config.OnClick)
                 end
+                
+                dragInput = nil
             end
         end
     end))
     
-    -- Mouse/Touch move
-    table.insert(self.Connections, self.UserInputService.InputChanged:Connect(function(input)
+    -- Input changed (mouse or touch movement)
+    table.insert(self.Connections, self.Button.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            if isDragging then
-                local currentPos = self.UserInputService:GetMouseLocation()
-                local delta = currentPos - dragStart
-                local newPosition = startPos + delta
-                
-                -- Apply boundaries
-                local boundedPosition = checkBoundaries(newPosition)
-                
-                self.Button.Position = UDim2.fromOffset(boundedPosition.X, boundedPosition.Y)
+            if isDragging and dragInput == input then
+                updatePosition(input)
             end
         end
     end))
