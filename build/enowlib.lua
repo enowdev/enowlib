@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 15:31:50
+-- Built: 2025-12-27 15:35:09
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2772,38 +2772,24 @@ function Window:MakeResizable(handle)
     local resizeStart = nil
     local startSize = nil
     
+    -- Mouse events
     handle.MouseButton1Down:Connect(function()
         resizing = true
         resizeStart = UserInputService:GetMouseLocation()
         startSize = self.Container.AbsoluteSize
     end)
     
-    handle.MouseButton1Up:Connect(function()
-        resizing = false
-    end)
-    
-    handle.TouchTap:Connect(function()
-        -- For touch, we'll use InputBegan/InputEnded
-    end)
-    
-    handle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.Touch then
-            resizing = true
-            resizeStart = input.Position
-            startSize = self.Container.AbsoluteSize
-        end
-    end)
-    
-    handle.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.Touch then
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
             resizing = false
         end
     end)
     
-    -- Mouse drag
-    handle.MouseMoved:Connect(function(x, y)
-        if resizing and resizeStart then
-            local currentPos = Vector2.new(x, y)
+    UserInputService.InputChanged:Connect(function(input)
+        if not resizing then return end
+        
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            local currentPos = UserInputService:GetMouseLocation()
             local delta = currentPos - resizeStart
             
             -- Calculate new size
@@ -2816,12 +2802,7 @@ function Window:MakeResizable(handle)
             
             -- Update container size
             self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
-        end
-    end)
-    
-    -- Touch drag
-    UserInputService.InputChanged:Connect(function(input)
-        if resizing and input.UserInputType == Enum.UserInputType.Touch and resizeStart then
+        elseif input.UserInputType == Enum.UserInputType.Touch then
             local delta = input.Position - resizeStart
             
             -- Calculate new size
@@ -2834,6 +2815,21 @@ function Window:MakeResizable(handle)
             
             -- Update container size
             self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
+        end
+    end)
+    
+    -- Touch events
+    handle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            resizing = true
+            resizeStart = input.Position
+            startSize = self.Container.AbsoluteSize
+        end
+    end)
+    
+    handle.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch then
+            resizing = false
         end
     end)
 end
