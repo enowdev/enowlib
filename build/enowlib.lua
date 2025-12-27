@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 12:21:06
+-- Built: 2025-12-27 12:26:34
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2652,13 +2652,19 @@ function Window:CreateUI()
     
     self.HeaderSeparator = separator
     
-    -- Tab Bar (Sidebar) - Use proportional width (30% of window)
+    -- Detect mobile/small screen and adjust layout
+    local viewportSize = workspace.CurrentCamera.ViewportSize
+    local isMobile = viewportSize.X < 1024
+    
+    local sidebarWidth = isMobile and 0.25 or 0.3  -- 25% for mobile, 30% for desktop
+    
+    -- Tab Bar (Sidebar) - Use proportional width
     self.Sidebar = Instance.new("Frame")
     self.Sidebar.Name = "Sidebar"
     self.Sidebar.BackgroundColor3 = self.Theme.Colors.Panel
     self.Sidebar.BackgroundTransparency = 0.2
     self.Sidebar.BorderSizePixel = 0
-    self.Sidebar.Size = UDim2.new(0.3, 0, 1, -47)  -- 30% width, proportional
+    self.Sidebar.Size = UDim2.new(sidebarWidth, 0, 1, -47)
     self.Sidebar.Position = UDim2.fromOffset(0, 29)
     self.Sidebar.Parent = self.Container
     
@@ -2703,22 +2709,23 @@ function Window:CreateUI()
         self.SidebarList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 4)
     end)
     
-    -- Vertical Separator - Position after sidebar (30%)
+    -- Vertical Separator - Position after sidebar
     self.VerticalSeparator = Instance.new("Frame")
     self.VerticalSeparator.Name = "VerticalSeparator"
     self.VerticalSeparator.BackgroundColor3 = self.Theme.Colors.Border
     self.VerticalSeparator.BorderSizePixel = 0
     self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -47)
-    self.VerticalSeparator.Position = UDim2.new(0.3, 0, 0, 29)  -- At 30% width
+    self.VerticalSeparator.Position = UDim2.new(sidebarWidth, 0, 0, 29)
     self.VerticalSeparator.Parent = self.Container
     
-    -- Content Area - Use remaining 70% width
+    -- Content Area - Use remaining width
+    local contentWidth = 1 - sidebarWidth
     self.ContentArea = Instance.new("ScrollingFrame")
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BackgroundTransparency = 0.2
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(0.7, -1, 1, -47)  -- 70% width minus separator
-    self.ContentArea.Position = UDim2.new(0.3, 1, 0, 29)  -- Start after separator
+    self.ContentArea.Size = UDim2.new(contentWidth, -1, 1, -47)
+    self.ContentArea.Position = UDim2.new(sidebarWidth, 1, 0, 29)
     self.ContentArea.ScrollBarThickness = 4
     self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
