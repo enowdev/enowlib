@@ -267,7 +267,7 @@ function Window:CreateUI()
     -- Footer Text (read-only)
     self.FooterLabel = Instance.new("TextLabel")
     self.FooterLabel.BackgroundTransparency = 1
-    self.FooterLabel.Size = UDim2.new(1, -16, 1, 0)
+    self.FooterLabel.Size = UDim2.new(1, -40, 1, 0)
     self.FooterLabel.Position = UDim2.fromOffset(12, 0)
     self.FooterLabel.Font = self.Theme.Font.Mono
     self.FooterLabel.Text = "EnowLib v2.0.0"
@@ -275,6 +275,28 @@ function Window:CreateUI()
     self.FooterLabel.TextSize = 11
     self.FooterLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.FooterLabel.Parent = self.Footer
+    
+    -- Resize Handle Button
+    self.ResizeHandle = Instance.new("TextButton")
+    self.ResizeHandle.BackgroundTransparency = 1
+    self.ResizeHandle.Size = UDim2.fromOffset(20, 20)
+    self.ResizeHandle.Position = UDim2.new(1, -22, 0.5, -10)
+    self.ResizeHandle.Text = ""
+    self.ResizeHandle.Parent = self.Footer
+    
+    -- Resize Icon (diagonal arrows)
+    local resizeIcon = Instance.new("ImageLabel")
+    resizeIcon.BackgroundTransparency = 1
+    resizeIcon.Size = UDim2.fromOffset(12, 12)
+    resizeIcon.Position = UDim2.fromScale(0.5, 0.5)
+    resizeIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    resizeIcon.Image = "rbxassetid://10734896206"
+    resizeIcon.ImageColor3 = self.Theme.Colors.TextDim
+    resizeIcon.Rotation = 90
+    resizeIcon.Parent = self.ResizeHandle
+    
+    -- Make resizable
+    self:MakeResizable(self.ResizeHandle)
     
     -- Make draggable
     self.Utils.MakeDraggable(self.Container, self.TitleBar)
@@ -296,6 +318,45 @@ function Window:CreateUI()
             self.Container.Position = UDim2.fromOffset(centerX, centerY)
         end)
     end
+end
+
+function Window:MakeResizable(handle)
+    local UserInputService = game:GetService("UserInputService")
+    
+    local dragging = false
+    local dragStart = nil
+    local startSize = nil
+    
+    handle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startSize = self.Container.AbsoluteSize
+        end
+    end)
+    
+    handle.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+    
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            
+            -- Calculate new size
+            local newWidth = startSize.X + delta.X
+            local newHeight = startSize.Y + delta.Y
+            
+            -- Apply min/max constraints
+            newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
+            newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
+            
+            -- Update container size
+            self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
+        end
+    end)
 end
 
 function Window:SetupAutoResize()
