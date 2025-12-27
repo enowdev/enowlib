@@ -58,15 +58,34 @@ end
 function Window:ApplyResponsiveScaling()
     self.ScaleFactor = self:CalculateScaleFactor()
     
-    -- Use UIScale to scale entire UI tree (simpler than updating each component)
-    if not self.UIScale then
-        self.UIScale = Instance.new("UIScale")
-        self.UIScale.Parent = self.Container
+    -- Apply UIScale to children only, not Container
+    -- This keeps window size intact while scaling components
+    
+    if not self.TitleBarScale then
+        self.TitleBarScale = Instance.new("UIScale")
+        self.TitleBarScale.Parent = self.TitleBar
     end
+    self.TitleBarScale.Scale = self.ScaleFactor
     
-    self.UIScale.Scale = self.ScaleFactor
+    if not self.SidebarScale then
+        self.SidebarScale = Instance.new("UIScale")
+        self.SidebarScale.Parent = self.Sidebar
+    end
+    self.SidebarScale.Scale = self.ScaleFactor
     
-    print("[EnowLib] Scale factor:", self.ScaleFactor, "UIScale applied to entire window")
+    if not self.ContentAreaScale then
+        self.ContentAreaScale = Instance.new("UIScale")
+        self.ContentAreaScale.Parent = self.ContentArea
+    end
+    self.ContentAreaScale.Scale = self.ScaleFactor
+    
+    if not self.FooterScale then
+        self.FooterScale = Instance.new("UIScale")
+        self.FooterScale.Parent = self.Footer
+    end
+    self.FooterScale.Scale = self.ScaleFactor
+    
+    print("[EnowLib] Scale factor:", self.ScaleFactor, "Applied to children only")
 end
 
 function Window:CreateUI()
@@ -309,25 +328,17 @@ function Window:SetupAutoResize()
     local function calculateScaledSize()
         local viewportSize = Camera.ViewportSize
         
-        -- For mobile/small screens, calculate target size then compensate for UIScale
+        -- For mobile/small screens, use direct percentage (no compensation needed)
         if viewportSize.X < 1024 then
-            -- Target: 80% width, 85% height of viewport (increased for better mobile UX)
-            local targetWidth = viewportSize.X * 0.8
-            local targetHeight = viewportSize.Y * 0.85
-            
-            -- Calculate scale factor that will be applied
-            local scaleFactor = targetWidth / 900
-            scaleFactor = math.clamp(scaleFactor, 0.4, 1.2)
-            
-            -- Compensate for UIScale by dividing target by scale factor
-            local newWidth = targetWidth / scaleFactor
-            local newHeight = targetHeight / scaleFactor
+            -- Direct: 80% width, 85% height of viewport
+            local newWidth = viewportSize.X * 0.8
+            local newHeight = viewportSize.Y * 0.85
             
             -- Apply min constraints
             newWidth = math.max(newWidth, 350)
             newHeight = math.max(newHeight, 250)
             
-            print("[EnowLib] Mobile mode - Viewport:", viewportSize.X, "x", viewportSize.Y, "Target:", targetWidth, "x", targetHeight, "Window:", newWidth, "x", newHeight, "Scale:", scaleFactor)
+            print("[EnowLib] Mobile mode - Viewport:", viewportSize.X, "x", viewportSize.Y, "Window:", newWidth, "x", newHeight)
             
             return Vector2.new(newWidth, newHeight)
         end
