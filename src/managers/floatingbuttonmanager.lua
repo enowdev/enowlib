@@ -81,7 +81,7 @@ end
 
 function FloatingButtonManager:SetupDragging()
     local camera = workspace.CurrentCamera
-    local isDragging = false
+    local dragging = false
     local dragInput = nil
     local dragStart = nil
     local startPos = nil
@@ -97,69 +97,65 @@ function FloatingButtonManager:SetupDragging()
         return Vector2.new(x, y)
     end
     
-    -- Function to update position
-    local function updatePosition(input)
-        if not isDragging then return end
-        
+    -- Function to update position during drag
+    local function update(input)
         local delta = input.Position - dragStart
         local newPosition = startPos + Vector2.new(delta.X, delta.Y)
-        
-        -- Apply boundaries
         local boundedPosition = checkBoundaries(newPosition)
-        
         self.Button.Position = UDim2.fromOffset(boundedPosition.X, boundedPosition.Y)
     end
     
-    -- Input began (mouse or touch)
+    -- Input began
     table.insert(self.Connections, self.Button.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            isDragging = true
+            dragging = true
             dragInput = input
             dragStart = input.Position
             startPos = self.Button.AbsolutePosition
-            
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    isDragging = false
-                end
-            end)
         end
     end))
     
-    -- Input ended (mouse or touch)
+    -- Input changed (dragging)
+    table.insert(self.Connections, self.Button.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            if dragging and input == dragInput then
+                update(input)
+            end
+        end
+    end))
+    
+    -- Input ended
     table.insert(self.Connections, self.Button.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            if isDragging and dragInput == input then
-                isDragging = false
-                
-                -- Check if it was a click (not drag)
+        if input == dragInput then
+            if dragging then
+                -- Calculate drag distance
                 local delta = input.Position - dragStart
-                local dragDistance = math.sqrt(delta.X * delta.X + delta.Y * delta.Y)
+                local distance = math.sqrt(delta.X * delta.X + delta.Y * delta.Y)
                 
-                if dragDistance < 10 then  -- Increased threshold for touch
+                -- If moved less than 10 pixels, treat as click
+                if distance < 10 then
                     pcall(self.Config.OnClick)
                 end
                 
+                dragging = false
                 dragInput = nil
             end
         end
     end))
     
-    -- Input changed (mouse or touch movement)
-    table.insert(self.Connections, self.Button.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            if isDragging and dragInput == input then
-                updatePosition(input)
-            end
+    -- Global input ended (fallback for when touch leaves button)
+    table.insert(self.Connections, self.UserInputService.InputEnded:Connect(function(input)
+        if input == dragInput then
+            dragging = false
+            dragInput = nil
         end
     end))
     
     -- Viewport size changed - recheck boundaries
     table.insert(self.Connections, camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
-        if not isDragging then
+        if not dragging then
             local currentPos = self.Button.AbsolutePosition
             local boundedPosition = checkBoundaries(currentPos)
-            
             self.Button.Position = UDim2.fromOffset(boundedPosition.X, boundedPosition.Y)
         end
     end))
