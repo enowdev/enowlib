@@ -347,43 +347,72 @@ end
 function Window:MakeResizable(handle)
     local UserInputService = game:GetService("UserInputService")
     
-    local dragging = false
-    local dragStart = nil
+    local resizing = false
+    local resizeStart = nil
     local startSize = nil
     
+    handle.MouseButton1Down:Connect(function()
+        resizing = true
+        resizeStart = UserInputService:GetMouseLocation()
+        startSize = self.Container.AbsoluteSize
+    end)
+    
+    handle.MouseButton1Up:Connect(function()
+        resizing = false
+    end)
+    
+    handle.TouchTap:Connect(function()
+        -- For touch, we'll use InputBegan/InputEnded
+    end)
+    
     handle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = input.Position
+        if input.UserInputType == Enum.UserInputType.Touch then
+            resizing = true
+            resizeStart = input.Position
             startSize = self.Container.AbsoluteSize
         end
     end)
     
     handle.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = false
+        if input.UserInputType == Enum.UserInputType.Touch then
+            resizing = false
         end
     end)
     
-    -- Use global InputChanged for both mouse and touch
+    -- Mouse drag
+    handle.MouseMoved:Connect(function(x, y)
+        if resizing and resizeStart then
+            local currentPos = Vector2.new(x, y)
+            local delta = currentPos - resizeStart
+            
+            -- Calculate new size
+            local newWidth = startSize.X + delta.X
+            local newHeight = startSize.Y + delta.Y
+            
+            -- Apply min/max constraints
+            newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
+            newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
+            
+            -- Update container size
+            self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
+        end
+    end)
+    
+    -- Touch drag
     UserInputService.InputChanged:Connect(function(input)
-        if dragging then
-            -- For mouse: check MouseMovement, for touch: check Touch
-            if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-                local currentPos = input.Position
-                local delta = currentPos - dragStart
-                
-                -- Calculate new size
-                local newWidth = startSize.X + delta.X
-                local newHeight = startSize.Y + delta.Y
-                
-                -- Apply min/max constraints
-                newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
-                newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
-                
-                -- Update container size
-                self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
-            end
+        if resizing and input.UserInputType == Enum.UserInputType.Touch and resizeStart then
+            local delta = input.Position - resizeStart
+            
+            -- Calculate new size
+            local newWidth = startSize.X + delta.X
+            local newHeight = startSize.Y + delta.Y
+            
+            -- Apply min/max constraints
+            newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
+            newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
+            
+            -- Update container size
+            self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
         end
     end)
 end
