@@ -124,8 +124,17 @@ function NotificationManager:CreateNotification(config)
     notification.Container.ClipsDescendants = true
     notification.Container.Parent = self.Container
     
-    theme.CreateCorner(notification.Container, 8)
-    theme.CreateStroke(notification.Container, getTypeColor())
+    -- Create corner manually
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 8)
+    corner.Parent = notification.Container
+    
+    -- Create stroke manually
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = getTypeColor()
+    stroke.Thickness = 1
+    stroke.Transparency = 0.5
+    stroke.Parent = notification.Container
     
     -- Icon
     if notification.Config.Icon then
