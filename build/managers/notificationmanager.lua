@@ -51,6 +51,11 @@ function NotificationManager:Notify(config)
         -- Create notification inline (since we can't require external component)
         local notification = self:CreateNotification(config)
         
+        if not notification then
+            warn("[NotificationManager] CreateNotification returned nil")
+            return
+        end
+        
         -- Add to queue
         table.insert(self.Notifications, notification)
         
@@ -72,6 +77,12 @@ function NotificationManager:Notify(config)
 end
 
 function NotificationManager:CreateNotification(config)
+    -- Validate window and theme
+    if not self.Window or not self.Window.Theme or not self.Window.Utils then
+        warn("[NotificationManager] Window, Theme, or Utils not initialized")
+        return nil
+    end
+    
     local notification = {
         Config = {
             Title = config.Title or "Notification",
@@ -132,8 +143,8 @@ function NotificationManager:CreateNotification(config)
     title.BackgroundTransparency = 1
     title.Text = notification.Config.Title
     title.TextColor3 = self.Window.Theme.Colors.Text
-    title.TextSize = self.Window.Theme.TextSize.Regular
-    title.Font = self.Window.Theme.Font.Bold
+    title.TextSize = self.Window.Theme.TextSize.Regular or 14
+    title.Font = self.Window.Theme.Font.Bold or Enum.Font.GothamBold
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.TextYAlignment = Enum.TextYAlignment.Top
     title.Parent = notification.Container
@@ -147,8 +158,8 @@ function NotificationManager:CreateNotification(config)
         message.BackgroundTransparency = 1
         message.Text = notification.Config.Message
         message.TextColor3 = self.Window.Theme.Colors.TextDim
-        message.TextSize = self.Window.Theme.TextSize.Small
-        message.Font = self.Window.Theme.Font.Regular
+        message.TextSize = self.Window.Theme.TextSize.Small or 12
+        message.Font = self.Window.Theme.Font.Regular or Enum.Font.Gotham
         message.TextXAlignment = Enum.TextXAlignment.Left
         message.TextYAlignment = Enum.TextYAlignment.Top
         message.TextWrapped = true
@@ -157,8 +168,8 @@ function NotificationManager:CreateNotification(config)
         -- Calculate height based on message
         local textBounds = self.Window.Utils.GetTextBounds(
             notification.Config.Message,
-            self.Window.Theme.TextSize.Small,
-            self.Window.Theme.Font.Regular,
+            self.Window.Theme.TextSize.Small or 12,
+            self.Window.Theme.Font.Regular or Enum.Font.Gotham,
             Vector2.new(300 - contentX - 12, 1000)
         )
         
