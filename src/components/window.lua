@@ -348,42 +348,42 @@ function Window:MakeResizable(handle)
     local UserInputService = game:GetService("UserInputService")
     
     local dragging = false
-    local dragInput = nil
     local dragStart = nil
     local startSize = nil
     
     handle.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
-            dragInput = input
             dragStart = input.Position
             startSize = self.Container.AbsoluteSize
         end
     end)
     
     handle.InputEnded:Connect(function(input)
-        if input == dragInput then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = false
-            dragInput = nil
         end
     end)
     
-    -- Use global InputChanged for better touch support
+    -- Use global InputChanged for both mouse and touch
     UserInputService.InputChanged:Connect(function(input)
-        if dragging and input == dragInput then
-            local currentPos = input.Position
-            local delta = currentPos - dragStart
-            
-            -- Calculate new size
-            local newWidth = startSize.X + delta.X
-            local newHeight = startSize.Y + delta.Y
-            
-            -- Apply min/max constraints
-            newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
-            newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
-            
-            -- Update container size
-            self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
+        if dragging then
+            -- For mouse: check MouseMovement, for touch: check Touch
+            if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+                local currentPos = input.Position
+                local delta = currentPos - dragStart
+                
+                -- Calculate new size
+                local newWidth = startSize.X + delta.X
+                local newHeight = startSize.Y + delta.Y
+                
+                -- Apply min/max constraints
+                newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
+                newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
+                
+                -- Update container size
+                self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
+            end
         end
     end)
 end
