@@ -28,8 +28,15 @@ function Button:CreateUI()
     self.Container.Text = self.Config.Text
     self.Container.TextColor3 = Color3.fromRGB(0, 0, 0)
     self.Container.TextSize = self.Theme.Font.Size.Regular
+    self.Container.TextScaled = true  -- Auto-scale text
     self.Container.AutoButtonColor = false
     self.Container.Parent = self.Parent
+    
+    -- Add TextSizeConstraint for better scaling
+    local textConstraint = Instance.new("UITextSizeConstraint")
+    textConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    textConstraint.MinTextSize = 10
+    textConstraint.Parent = self.Container
     
     self.Theme.CreateCorner(self.Container)
     

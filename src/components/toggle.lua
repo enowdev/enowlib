@@ -42,9 +42,13 @@ function Toggle:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Switch
     self.Switch = Instance.new("Frame")

@@ -44,9 +44,13 @@ function Keybind:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Keybind Button
     self.Button = Instance.new("TextButton")
@@ -58,11 +62,15 @@ function Keybind:CreateUI()
     self.Button.Font = self.Theme.Font.Mono
     self.Button.Text = self.Value
     self.Button.TextColor3 = self.Theme.Colors.Text
-    self.Button.TextSize = self.Theme.Font.Size.Small
+    self.Button.TextScaled = true
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Container
     
     self.Theme.CreateCorner(self.Button, 6)
+    
+    local buttonSizeConstraint = Instance.new("UITextSizeConstraint")
+    buttonSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    buttonSizeConstraint.Parent = self.Button
     
     -- Events
     self.Button.MouseButton1Click:Connect(function()

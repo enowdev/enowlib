@@ -40,8 +40,12 @@ function Divider:CreateUI()
         text.Font = self.Theme.Font.Bold
         text.Text = self.Config.Text
         text.TextColor3 = self.Theme.Colors.TextDim
-        text.TextSize = self.Theme.Font.Size.Small
+        text.TextScaled = true
         text.Parent = self.Container
+        
+        local textSizeConstraint = Instance.new("UITextSizeConstraint")
+        textSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+        textSizeConstraint.Parent = text
         
         local rightLine = Instance.new("Frame")
         rightLine.BackgroundColor3 = self.Theme.Colors.Border

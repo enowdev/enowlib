@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 11:51:47
+-- Built: 2025-12-27 11:57:34
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -409,9 +409,13 @@ function Label:CreateUI()
     self.Container.Font = self.Config.Font or self.Theme.Font.Regular
     self.Container.Text = self.Config.Text
     self.Container.TextColor3 = self.Config.Color or self.Theme.Colors.TextDim
-    self.Container.TextSize = self.Config.Size or self.Theme.Font.Size.Regular
+    self.Container.TextScaled = true
     self.Container.TextXAlignment = Enum.TextXAlignment.Left
     self.Container.Parent = self.Parent
+    
+    local textSizeConstraint = Instance.new("UITextSizeConstraint")
+    textSizeConstraint.MaxTextSize = self.Config.Size or self.Theme.Font.Size.Regular
+    textSizeConstraint.Parent = self.Container
 end
 Label = Label
 assert(Label, "Failed to assign Label module")
@@ -455,9 +459,13 @@ function Paragraph:CreateUI()
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Content
     local content = Instance.new("TextLabel")
@@ -467,11 +475,15 @@ function Paragraph:CreateUI()
     content.Font = self.Theme.Font.Mono
     content.Text = self.Config.Content
     content.TextColor3 = self.Theme.Colors.TextDim
-    content.TextSize = self.Theme.Font.Size.Regular
+    content.TextScaled = true
     content.TextXAlignment = Enum.TextXAlignment.Left
     content.TextYAlignment = Enum.TextYAlignment.Top
     content.TextWrapped = true
     content.Parent = self.Container
+    
+    local contentSizeConstraint = Instance.new("UITextSizeConstraint")
+    contentSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    contentSizeConstraint.Parent = content
     
     -- Auto-size based on text
     content.Size = UDim2.new(1, 0, 0, content.TextBounds.Y + 4)
@@ -532,8 +544,12 @@ function Divider:CreateUI()
         text.Font = self.Theme.Font.Bold
         text.Text = self.Config.Text
         text.TextColor3 = self.Theme.Colors.TextDim
-        text.TextSize = self.Theme.Font.Size.Small
+        text.TextScaled = true
         text.Parent = self.Container
+        
+        local textSizeConstraint = Instance.new("UITextSizeConstraint")
+        textSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+        textSizeConstraint.Parent = text
         
         local rightLine = Instance.new("Frame")
         rightLine.BackgroundColor3 = self.Theme.Colors.Border
@@ -588,8 +604,15 @@ function Button:CreateUI()
     self.Container.Text = self.Config.Text
     self.Container.TextColor3 = Color3.fromRGB(0, 0, 0)
     self.Container.TextSize = self.Theme.Font.Size.Regular
+    self.Container.TextScaled = true  -- Auto-scale text
     self.Container.AutoButtonColor = false
     self.Container.Parent = self.Parent
+    
+    -- Add TextSizeConstraint for better scaling
+    local textConstraint = Instance.new("UITextSizeConstraint")
+    textConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    textConstraint.MinTextSize = 10
+    textConstraint.Parent = self.Container
     
     self.Theme.CreateCorner(self.Container)
     
@@ -661,9 +684,13 @@ function Toggle:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Switch
     self.Switch = Instance.new("Frame")
@@ -813,9 +840,13 @@ function Slider:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Value
     self.ValueLabel = Instance.new("TextLabel")
@@ -825,9 +856,13 @@ function Slider:CreateUI()
     self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Accent
-    self.ValueLabel.TextSize = self.Theme.Font.Size.Regular
+    self.ValueLabel.TextScaled = true
     self.ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
     self.ValueLabel.Parent = self.Container
+    
+    local valueSizeConstraint = Instance.new("UITextSizeConstraint")
+    valueSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    valueSizeConstraint.Parent = self.ValueLabel
     
     -- Track
     self.Track = Instance.new("Frame")
@@ -989,9 +1024,13 @@ function TextBox:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Input Box
     self.InputBox = Instance.new("TextBox")
@@ -1004,13 +1043,17 @@ function TextBox:CreateUI()
     self.InputBox.PlaceholderText = self.Config.Placeholder
     self.InputBox.TextColor3 = self.Theme.Colors.Text
     self.InputBox.PlaceholderColor3 = self.Theme.Colors.TextDim
-    self.InputBox.TextSize = self.Theme.Font.Size.Regular
+    self.InputBox.TextScaled = true
     self.InputBox.TextXAlignment = Enum.TextXAlignment.Left
     self.InputBox.ClearTextOnFocus = false
     self.InputBox.Parent = self.Container
     
     self.Theme.CreateCorner(self.InputBox, 6)
     self.Theme.CreatePadding(self.InputBox, 10)
+    
+    local inputBoxSizeConstraint = Instance.new("UITextSizeConstraint")
+    inputBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    inputBoxSizeConstraint.Parent = self.InputBox
     
     -- Events
     self.InputBox.FocusLost:Connect(function(enterPressed)
@@ -1073,9 +1116,13 @@ function Dropdown:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Dropdown Button
     self.Button = Instance.new("TextButton")
@@ -1101,9 +1148,13 @@ function Dropdown:CreateUI()
     self.SelectedText.Font = self.Theme.Font.Mono
     self.SelectedText.Text = self.Value
     self.SelectedText.TextColor3 = self.Theme.Colors.Text
-    self.SelectedText.TextSize = self.Theme.Font.Size.Regular
+    self.SelectedText.TextScaled = true
     self.SelectedText.TextXAlignment = Enum.TextXAlignment.Left
     self.SelectedText.Parent = self.Button
+    
+    local selectedTextSizeConstraint = Instance.new("UITextSizeConstraint")
+    selectedTextSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    selectedTextSizeConstraint.Parent = self.SelectedText
     
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
@@ -1146,7 +1197,7 @@ function Dropdown:CreateUI()
         self.SearchBox.Text = ""
         self.SearchBox.TextColor3 = self.Theme.Colors.Text
         self.SearchBox.PlaceholderColor3 = self.Theme.Colors.TextDim
-        self.SearchBox.TextSize = self.Theme.Font.Size.Regular
+        self.SearchBox.TextScaled = true
         self.SearchBox.TextXAlignment = Enum.TextXAlignment.Left
         self.SearchBox.ClearTextOnFocus = false
         self.SearchBox.ZIndex = 6
@@ -1155,6 +1206,10 @@ function Dropdown:CreateUI()
         
         self.Theme.CreateCorner(self.SearchBox, 4)
         self.Theme.CreatePadding(self.SearchBox, 8)
+        
+        local searchBoxSizeConstraint = Instance.new("UITextSizeConstraint")
+        searchBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+        searchBoxSizeConstraint.Parent = self.SearchBox
         
         self.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
             self:FilterOptions(self.SearchBox.Text)
@@ -1186,7 +1241,7 @@ function Dropdown:CreateOption(optionText)
     option.Font = self.Theme.Font.Mono
     option.Text = optionText
     option.TextColor3 = self.Theme.Colors.TextDim
-    option.TextSize = self.Theme.Font.Size.Regular
+    option.TextScaled = true
     option.TextXAlignment = Enum.TextXAlignment.Left
     option.AutoButtonColor = false
     option.Visible = true
@@ -1194,6 +1249,10 @@ function Dropdown:CreateOption(optionText)
     option.Parent = self.OptionsList
     
     self.Theme.CreatePadding(option, 10)
+    
+    local optionSizeConstraint = Instance.new("UITextSizeConstraint")
+    optionSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    optionSizeConstraint.Parent = option
     
     -- Store reference
     table.insert(self.AllOptions, {
@@ -1346,9 +1405,13 @@ function MultiSelect:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- MultiSelect Button
     self.Button = Instance.new("TextButton")
@@ -1374,10 +1437,14 @@ function MultiSelect:CreateUI()
     self.SelectedText.Font = self.Theme.Font.Mono
     self.SelectedText.Text = "None selected"
     self.SelectedText.TextColor3 = self.Theme.Colors.TextDim
-    self.SelectedText.TextSize = self.Theme.Font.Size.Regular
+    self.SelectedText.TextScaled = true
     self.SelectedText.TextXAlignment = Enum.TextXAlignment.Left
     self.SelectedText.TextTruncate = Enum.TextTruncate.AtEnd
     self.SelectedText.Parent = self.Button
+    
+    local selectedTextSizeConstraint = Instance.new("UITextSizeConstraint")
+    selectedTextSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    selectedTextSizeConstraint.Parent = self.SelectedText
     
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
@@ -1443,9 +1510,13 @@ function MultiSelect:CreateOption(optionText)
     optionLabel.Font = self.Theme.Font.Mono
     optionLabel.Text = optionText
     optionLabel.TextColor3 = self.Theme.Colors.TextDim
-    optionLabel.TextSize = self.Theme.Font.Size.Regular
+    optionLabel.TextScaled = true
     optionLabel.TextXAlignment = Enum.TextXAlignment.Left
     optionLabel.Parent = option
+    
+    local optionLabelSizeConstraint = Instance.new("UITextSizeConstraint")
+    optionLabelSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    optionLabelSizeConstraint.Parent = optionLabel
     
     -- Update visual if already selected
     if self.Values[optionText] then
@@ -1595,9 +1666,13 @@ function ColorPicker:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Color Display
     self.ColorDisplay = Instance.new("TextButton")
@@ -1687,9 +1762,13 @@ function Keybind:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Keybind Button
     self.Button = Instance.new("TextButton")
@@ -1701,11 +1780,15 @@ function Keybind:CreateUI()
     self.Button.Font = self.Theme.Font.Mono
     self.Button.Text = self.Value
     self.Button.TextColor3 = self.Theme.Colors.Text
-    self.Button.TextSize = self.Theme.Font.Size.Small
+    self.Button.TextScaled = true
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Container
     
     self.Theme.CreateCorner(self.Button, 6)
+    
+    local buttonSizeConstraint = Instance.new("UITextSizeConstraint")
+    buttonSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    buttonSizeConstraint.Parent = self.Button
     
     -- Events
     self.Button.MouseButton1Click:Connect(function()
@@ -1783,9 +1866,13 @@ function Section:CreateUI()
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Accent
-    title.TextSize = self.Theme.Font.Size.Large
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Large
+    titleSizeConstraint.Parent = title
     
     -- Content Container
     self.ContentContainer = Instance.new("Frame")
@@ -1902,9 +1989,13 @@ function Item:CreateUI()
     self.Title.Font = self.Theme.Font.Mono
     self.Title.Text = self.Config.Title
     self.Title.TextColor3 = self.Theme.Colors.TextDim
-    self.Title.TextSize = self.Theme.Font.Size.Regular
+    self.Title.TextScaled = true
     self.Title.TextXAlignment = Enum.TextXAlignment.Left
     self.Title.Parent = self.Button
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = self.Title
     
     -- Events
     self.Button.MouseButton1Click:Connect(function()
@@ -2073,9 +2164,13 @@ function Category:CreateUI()
     self.Title.Font = self.Theme.Font.Mono
     self.Title.Text = self.Config.Title
     self.Title.TextColor3 = self.Theme.Colors.Text
-    self.Title.TextSize = self.Theme.Font.Size.Regular
+    self.Title.TextScaled = true
     self.Title.TextXAlignment = Enum.TextXAlignment.Left
     self.Title.Parent = self.Button
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = self.Title
     
     -- Items Container
     self.ItemsContainer = Instance.new("Frame")
@@ -2263,9 +2358,13 @@ function Tab:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.TextDim
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Button
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     self.Title = title
     

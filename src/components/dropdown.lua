@@ -45,9 +45,13 @@ function Dropdown:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Dropdown Button
     self.Button = Instance.new("TextButton")
@@ -73,9 +77,13 @@ function Dropdown:CreateUI()
     self.SelectedText.Font = self.Theme.Font.Mono
     self.SelectedText.Text = self.Value
     self.SelectedText.TextColor3 = self.Theme.Colors.Text
-    self.SelectedText.TextSize = self.Theme.Font.Size.Regular
+    self.SelectedText.TextScaled = true
     self.SelectedText.TextXAlignment = Enum.TextXAlignment.Left
     self.SelectedText.Parent = self.Button
+    
+    local selectedTextSizeConstraint = Instance.new("UITextSizeConstraint")
+    selectedTextSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    selectedTextSizeConstraint.Parent = self.SelectedText
     
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
@@ -118,7 +126,7 @@ function Dropdown:CreateUI()
         self.SearchBox.Text = ""
         self.SearchBox.TextColor3 = self.Theme.Colors.Text
         self.SearchBox.PlaceholderColor3 = self.Theme.Colors.TextDim
-        self.SearchBox.TextSize = self.Theme.Font.Size.Regular
+        self.SearchBox.TextScaled = true
         self.SearchBox.TextXAlignment = Enum.TextXAlignment.Left
         self.SearchBox.ClearTextOnFocus = false
         self.SearchBox.ZIndex = 6
@@ -127,6 +135,10 @@ function Dropdown:CreateUI()
         
         self.Theme.CreateCorner(self.SearchBox, 4)
         self.Theme.CreatePadding(self.SearchBox, 8)
+        
+        local searchBoxSizeConstraint = Instance.new("UITextSizeConstraint")
+        searchBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+        searchBoxSizeConstraint.Parent = self.SearchBox
         
         self.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
             self:FilterOptions(self.SearchBox.Text)
@@ -158,7 +170,7 @@ function Dropdown:CreateOption(optionText)
     option.Font = self.Theme.Font.Mono
     option.Text = optionText
     option.TextColor3 = self.Theme.Colors.TextDim
-    option.TextSize = self.Theme.Font.Size.Regular
+    option.TextScaled = true
     option.TextXAlignment = Enum.TextXAlignment.Left
     option.AutoButtonColor = false
     option.Visible = true
@@ -166,6 +178,10 @@ function Dropdown:CreateOption(optionText)
     option.Parent = self.OptionsList
     
     self.Theme.CreatePadding(option, 10)
+    
+    local optionSizeConstraint = Instance.new("UITextSizeConstraint")
+    optionSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    optionSizeConstraint.Parent = option
     
     -- Store reference
     table.insert(self.AllOptions, {

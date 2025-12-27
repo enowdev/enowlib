@@ -44,9 +44,13 @@ function Section:CreateUI()
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Accent
-    title.TextSize = self.Theme.Font.Size.Large
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Large
+    titleSizeConstraint.Parent = title
     
     -- Content Container
     self.ContentContainer = Instance.new("Frame")

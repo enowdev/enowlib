@@ -78,9 +78,13 @@ function Tab:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.TextDim
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Button
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     self.Title = title
     

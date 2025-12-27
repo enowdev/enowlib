@@ -32,9 +32,13 @@ function Paragraph:CreateUI()
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- Content
     local content = Instance.new("TextLabel")
@@ -44,11 +48,15 @@ function Paragraph:CreateUI()
     content.Font = self.Theme.Font.Mono
     content.Text = self.Config.Content
     content.TextColor3 = self.Theme.Colors.TextDim
-    content.TextSize = self.Theme.Font.Size.Regular
+    content.TextScaled = true
     content.TextXAlignment = Enum.TextXAlignment.Left
     content.TextYAlignment = Enum.TextYAlignment.Top
     content.TextWrapped = true
     content.Parent = self.Container
+    
+    local contentSizeConstraint = Instance.new("UITextSizeConstraint")
+    contentSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    contentSizeConstraint.Parent = content
     
     -- Auto-size based on text
     content.Size = UDim2.new(1, 0, 0, content.TextBounds.Y + 4)

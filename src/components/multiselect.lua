@@ -47,9 +47,13 @@ function MultiSelect:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextScaled = true
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
+    
+    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.Parent = title
     
     -- MultiSelect Button
     self.Button = Instance.new("TextButton")
@@ -75,10 +79,14 @@ function MultiSelect:CreateUI()
     self.SelectedText.Font = self.Theme.Font.Mono
     self.SelectedText.Text = "None selected"
     self.SelectedText.TextColor3 = self.Theme.Colors.TextDim
-    self.SelectedText.TextSize = self.Theme.Font.Size.Regular
+    self.SelectedText.TextScaled = true
     self.SelectedText.TextXAlignment = Enum.TextXAlignment.Left
     self.SelectedText.TextTruncate = Enum.TextTruncate.AtEnd
     self.SelectedText.Parent = self.Button
+    
+    local selectedTextSizeConstraint = Instance.new("UITextSizeConstraint")
+    selectedTextSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    selectedTextSizeConstraint.Parent = self.SelectedText
     
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
@@ -144,9 +152,13 @@ function MultiSelect:CreateOption(optionText)
     optionLabel.Font = self.Theme.Font.Mono
     optionLabel.Text = optionText
     optionLabel.TextColor3 = self.Theme.Colors.TextDim
-    optionLabel.TextSize = self.Theme.Font.Size.Regular
+    optionLabel.TextScaled = true
     optionLabel.TextXAlignment = Enum.TextXAlignment.Left
     optionLabel.Parent = option
+    
+    local optionLabelSizeConstraint = Instance.new("UITextSizeConstraint")
+    optionLabelSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    optionLabelSizeConstraint.Parent = optionLabel
     
     -- Update visual if already selected
     if self.Values[optionText] then
