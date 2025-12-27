@@ -326,11 +326,8 @@ function Window:SetupAutoResize()
         updateWindowSize()
     end)
     
-    -- Initial size adjustment
-    task.spawn(function()
-        task.wait(0.1)
-        updateWindowSize()
-    end)
+    -- Don't run initial adjustment, let window stay centered
+    -- Only adjust on actual viewport changes
 end
 
 function Window:AddCategory(config)

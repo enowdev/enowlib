@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 10:07:58
+-- Built: 2025-12-27 10:11:48
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -154,7 +154,7 @@ function Utils.Tween(instance, properties, duration, easingStyle, easingDirectio
     return tween
 end
 
--- Create draggable frame (supports mouse and touch)
+-- Create draggable frame (supports mouse and touch) with boundary checking
 function Utils.MakeDraggable(frame, dragHandle)
     dragHandle = dragHandle or frame
     
@@ -165,13 +165,23 @@ function Utils.MakeDraggable(frame, dragHandle)
     
     local function update(input)
         local delta = input.Position - dragStart
+        local Camera = workspace.CurrentCamera
+        local viewportSize = Camera.ViewportSize
+        
+        -- Calculate new position
+        local newX = startPos.X.Offset + delta.X
+        local newY = startPos.Y.Offset + delta.Y
+        
+        -- Get frame size
+        local frameSize = frame.AbsoluteSize
+        
+        -- Clamp position to keep window within bounds
+        -- Ensure at least 48px (header) is visible from top
+        newX = math.clamp(newX, 0, viewportSize.X - frameSize.X)
+        newY = math.clamp(newY, 0, viewportSize.Y - frameSize.Y)
+        
         Utils.Tween(frame, {
-            Position = UDim2.new(
-                startPos.X.Scale,
-                startPos.X.Offset + delta.X,
-                startPos.Y.Scale,
-                startPos.Y.Offset + delta.Y
-            )
+            Position = UDim2.fromOffset(newX, newY)
         }, 0.15)
     end
     
@@ -2717,11 +2727,8 @@ function Window:SetupAutoResize()
         updateWindowSize()
     end)
     
-    -- Initial size adjustment
-    task.spawn(function()
-        task.wait(0.1)
-        updateWindowSize()
-    end)
+    -- Don't run initial adjustment, let window stay centered
+    -- Only adjust on actual viewport changes
 end
 
 function Window:AddCategory(config)
