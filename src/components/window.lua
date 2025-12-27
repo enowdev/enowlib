@@ -277,35 +277,34 @@ function Window:CreateUI()
     self.FooterLabel.Parent = self.Footer
     
     -- Resize Handle Button
-    self.ResizeHandle = Instance.new("TextButton")
+    self.ResizeHandle = Instance.new("ImageButton")
     self.ResizeHandle.BackgroundColor3 = self.Theme.Colors.Secondary
     self.ResizeHandle.BackgroundTransparency = 0.5
     self.ResizeHandle.BorderSizePixel = 0
     self.ResizeHandle.Size = UDim2.fromOffset(28, 28)
     self.ResizeHandle.Position = UDim2.new(1, -30, 0.5, -14)
-    self.ResizeHandle.Text = ""
+    self.ResizeHandle.Image = "rbxassetid://10734923214"
+    self.ResizeHandle.ImageColor3 = self.Theme.Colors.TextDim
+    self.ResizeHandle.ScaleType = Enum.ScaleType.Fit
     self.ResizeHandle.ZIndex = 2
     self.ResizeHandle.Parent = self.Footer
     
     self.Theme.CreateCorner(self.ResizeHandle, 6)
     
-    -- Resize Icon (diagonal arrows)
-    local resizeIcon = Instance.new("ImageLabel")
-    resizeIcon.BackgroundTransparency = 1
-    resizeIcon.Size = UDim2.fromOffset(16, 16)
-    resizeIcon.Position = UDim2.fromScale(0.5, 0.5)
-    resizeIcon.AnchorPoint = Vector2.new(0.5, 0.5)
-    resizeIcon.Image = "rbxassetid://10734896206"
-    resizeIcon.ImageColor3 = self.Theme.Colors.TextDim
-    resizeIcon.Rotation = 90
-    resizeIcon.Parent = self.ResizeHandle
+    -- Padding for icon
+    local padding = Instance.new("UIPadding")
+    padding.PaddingLeft = UDim.new(0, 6)
+    padding.PaddingRight = UDim.new(0, 6)
+    padding.PaddingTop = UDim.new(0, 6)
+    padding.PaddingBottom = UDim.new(0, 6)
+    padding.Parent = self.ResizeHandle
     
     -- Hover effect for resize handle
     self.ResizeHandle.MouseEnter:Connect(function()
         self.Utils.Tween(self.ResizeHandle, {
             BackgroundTransparency = 0.2
         }, 0.2)
-        self.Utils.Tween(resizeIcon, {
+        self.Utils.Tween(self.ResizeHandle, {
             ImageColor3 = self.Theme.Colors.Accent
         }, 0.2)
     end)
@@ -314,7 +313,7 @@ function Window:CreateUI()
         self.Utils.Tween(self.ResizeHandle, {
             BackgroundTransparency = 0.5
         }, 0.2)
-        self.Utils.Tween(resizeIcon, {
+        self.Utils.Tween(self.ResizeHandle, {
             ImageColor3 = self.Theme.Colors.TextDim
         }, 0.2)
     end)
