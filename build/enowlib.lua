@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 13:13:20
+-- Built: 2025-12-27 13:16:49
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -592,7 +592,7 @@ function Button:CreateUI()
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container, 4)
-    self.Theme.CreatePadding(self.Container, 6)
+    self.Theme.CreatePadding(self.Container, 8)
     self.Theme.CreateCorner(self.Container)
     
     self.Container.MouseButton1Click:Connect(function()
@@ -654,7 +654,7 @@ function Toggle:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 6)
+    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -806,7 +806,7 @@ function Slider:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 9)  -- 12 * 0.75 = 9
+    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -982,7 +982,7 @@ function TextBox:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 15)  -- 20 * 0.75 = 15
+    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -1066,7 +1066,7 @@ function Dropdown:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 20)
+    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -1339,7 +1339,7 @@ function MultiSelect:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 20)
+    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -1588,7 +1588,7 @@ function ColorPicker:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 6)
+    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
@@ -1680,7 +1680,7 @@ function Keybind:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 6)
+    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
