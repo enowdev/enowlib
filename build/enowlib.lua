@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 11:39:29
+-- Built: 2025-12-27 11:41:16
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2712,9 +2712,9 @@ function Window:SetupAutoResize()
         
         -- For mobile/small screens, calculate target size then compensate for UIScale
         if viewportSize.X < 1024 then
-            -- Target: 60% width, 75% height of viewport
-            local targetWidth = viewportSize.X * 0.6
-            local targetHeight = viewportSize.Y * 0.75
+            -- Target: 80% width, 85% height of viewport (increased for better mobile UX)
+            local targetWidth = viewportSize.X * 0.8
+            local targetHeight = viewportSize.Y * 0.85
             
             -- Calculate scale factor that will be applied
             local scaleFactor = targetWidth / 900
