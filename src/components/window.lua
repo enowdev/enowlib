@@ -279,14 +279,14 @@ function Window:SetupAutoResize()
     local function calculateScaledSize()
         local viewportSize = Camera.ViewportSize
         
-        -- For mobile/small screens, use 25% of viewport size (1/4 of screen)
+        -- For mobile/small screens, use 50% of viewport size (half of screen)
         if viewportSize.X < 1024 then
-            local newWidth = viewportSize.X * 0.25
-            local newHeight = viewportSize.Y * 0.25
+            local newWidth = viewportSize.X * 0.5
+            local newHeight = viewportSize.Y * 0.5
             
-            -- Apply very small min constraints for mobile
-            newWidth = math.max(newWidth, 250)
-            newHeight = math.max(newHeight, 180)
+            -- Apply min constraints for mobile
+            newWidth = math.max(newWidth, 350)
+            newHeight = math.max(newHeight, 250)
             
             print("[EnowLib] Mobile mode - Viewport:", viewportSize.X, "x", viewportSize.Y, "Window:", newWidth, "x", newHeight)
             
