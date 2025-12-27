@@ -2,7 +2,7 @@
 inclusion: always
 ---
 
-# VaporUI Development Standards
+# Enowlib UI Development Standards
 
 ## Code Quality Rules
 
@@ -15,6 +15,10 @@ inclusion: always
 6. Cache game services
 7. Use task.wait() instead of wait()
 8. Yield in long loops to prevent UI freeze
+9. Don't create separate example (all in one file example)
+10. Don't Create summary .md except i ask for it
+11. Always Build after you made change on src or main script
+12. Always push to github after build
 
 ### Naming Conventions:
 ```lua

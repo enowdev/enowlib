@@ -1,12 +1,16 @@
 -- EnowLib v2.0.0 - Complete Example
--- Hacker IDE Theme with All Components
+-- Demonstrates all components and managers
 
 print("=== EnowLib Loading ===")
-print("Fetching library from GitHub...")
 
+-- Load main library
 local EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/enowlib.lua"))()
 
-print("Library loaded successfully!")
+-- Load managers
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/interfacemanager.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/savemanager.lua"))()
+
+print("Library and managers loaded!")
 
 -- Lucide Icons
 local Icons = {
@@ -23,7 +27,11 @@ local Window = EnowLib:CreateWindow({
     Size = UDim2.fromOffset(900, 600)
 })
 
-print("Window created!")
+-- Initialize managers
+InterfaceManager:Initialize(Window)
+SaveManager:Initialize(Window)
+
+print("Window and managers initialized!")
 
 -- Universal Category
 print("Adding Universal category...")
@@ -288,79 +296,184 @@ local SettingsCategory = Window:AddCategory({
     Expanded = false
 })
 
+-- Interface Manager Tab
 SettingsCategory:AddItem({
-    Title = "General.lua",
+    Title = "Interface.lua",
     Icon = Icons.FileCode,
     Content = function(window)
-        print("[Example] Loading General settings...")
-        
         window:AddLabel({
-            Text = "> General Settings",
+            Text = "> Interface Manager",
             Size = 18,
             Color = window.Theme.Colors.Accent,
             Font = window.Theme.Font.Bold
         })
         
         window:AddParagraph({
-            Title = "Configuration",
-            Content = "Configure general application settings and preferences for the best experience."
+            Title = "About Interface Manager",
+            Content = "Manage UI visibility, keybinds, and themes. Press the minimize key to toggle UI visibility. Choose from 8 beautiful themes inspired by Kiro IDE."
         })
         
         window:AddDivider()
         
-        local generalSection = window:AddSection({
-            Title = "General Options"
+        local interfaceSection = window:AddSection({
+            Title = "Interface Settings"
         })
         
-        generalSection:AddToggle({
-            Text = "Auto Save",
-            Default = true,
+        -- Theme selector
+        local themes = InterfaceManager:GetThemeList()
+        interfaceSection:AddDropdown({
+            Text = "UI Theme",
+            Options = themes,
+            Default = InterfaceManager.Settings.CurrentTheme,
+            Searchable = false,
             Callback = function(value)
-                print("[Settings] Auto Save:", value)
+                local success = InterfaceManager:SetTheme(value)
+                if success then
+                    print("[Interface] Theme changed to:", value)
+                else
+                    warn("[Interface] Failed to change theme")
+                end
             end
         })
         
-        generalSection:AddToggle({
-            Text = "Notifications",
-            Default = true,
-            Callback = function(value)
-                print("[Settings] Notifications:", value)
+        -- Minimize keybind
+        interfaceSection:AddKeybind({
+            Text = "Minimize Key",
+            Default = "RightControl",
+            Callback = function(key)
+                local keyCode = Enum.KeyCode[key]
+                if keyCode then
+                    InterfaceManager:SetMinimizeKey(keyCode)
+                    print("[Interface] Minimize key set to:", key)
+                end
             end
         })
         
-        generalSection:AddSlider({
-            Text = "UI Scale",
-            Min = 80,
-            Max = 120,
-            Default = 100,
-            Callback = function(value)
-                print("[Settings] UI Scale:", value .. "%")
-            end
+        window:AddDivider()
+        
+        window:AddLabel({
+            Text = "Available Themes:",
+            Color = window.Theme.Colors.Accent
         })
         
-        generalSection:AddTextBox({
-            Text = "Config Name",
-            Placeholder = "Enter config name...",
-            Default = "default",
-            Callback = function(value)
-                print("[Settings] Config Name:", value)
-            end
+        window:AddLabel({
+            Text = "Hacker (Green), Ocean (Blue), Purple (Violet), Sunset (Pink)",
+            Color = window.Theme.Colors.TextDim
         })
         
-        generalSection:AddDropdown({
-            Text = "Theme",
-            Options = {"Dark", "Darker", "Darkest"},
-            Default = "Dark",
-            Callback = function(value)
-                print("[Settings] Theme:", value)
-            end
+        window:AddLabel({
+            Text = "Midnight (Dark Blue), Forest (Green), Amber (Orange), Crimson (Red)",
+            Color = window.Theme.Colors.TextDim
         })
-        
-        print("[Example] General settings loaded!")
     end
 })
 
--- All Components Test
+-- Save Manager Tab
+SettingsCategory:AddItem({
+    Title = "SaveManager.lua",
+    Icon = Icons.FileCode,
+    Content = function(window)
+        window:AddLabel({
+            Text = "> Save Manager",
+            Size = 18,
+            Color = window.Theme.Colors.Accent,
+            Font = window.Theme.Font.Bold
+        })
+        
+        window:AddParagraph({
+            Title = "About Save Manager",
+            Content = "Save and load your configurations. Register components to automatically save their values."
+        })
+        
+        window:AddDivider()
+        
+        local saveSection = window:AddSection({
+            Title = "Configuration Management"
+        })
+        
+        -- Config name
+        local configName = "myconfig"
+        
+        saveSection:AddTextBox({
+            Text = "Config Name",
+            Placeholder = "Enter config name...",
+            Default = "myconfig",
+            Callback = function(value)
+                configName = value
+                print("[SaveManager] Config name set to:", value)
+            end
+        })
+        
+        -- Save button
+        saveSection:AddButton({
+            Text = "Save Config",
+            Callback = function()
+                local success = SaveManager:Save(configName)
+                if success then
+                    print("[SaveManager] Config saved:", configName)
+                else
+                    warn("[SaveManager] Failed to save config")
+                end
+            end
+        })
+        
+        -- Load dropdown
+        local configs = SaveManager:ListConfigs()
+        
+        if #configs > 0 then
+            saveSection:AddDropdown({
+                Text = "Load Config",
+                Options = configs,
+                Default = configs[1],
+                Callback = function(value)
+                    local success, count = SaveManager:Load(value)
+                    if success then
+                        print("[SaveManager] Config loaded:", value, "(" .. count .. " components)")
+                    else
+                        warn("[SaveManager] Failed to load config")
+                    end
+                end
+            })
+            
+            -- Delete dropdown
+            saveSection:AddDropdown({
+                Text = "Delete Config",
+                Options = configs,
+                Default = configs[1],
+                Callback = function(value)
+                    local success = SaveManager:Delete(value)
+                    if success then
+                        print("[SaveManager] Config deleted:", value)
+                    else
+                        warn("[SaveManager] Failed to delete config")
+                    end
+                end
+            })
+        else
+            saveSection:AddLabel({
+                Text = "No saved configs found",
+                Color = window.Theme.Colors.TextDim
+            })
+        end
+        
+        -- Auto-save toggle
+        saveSection:AddToggle({
+            Text = "Auto Save (60s)",
+            Default = false,
+            Callback = function(value)
+                if value then
+                    SaveManager:EnableAutoSave(60)
+                    print("[SaveManager] Auto-save enabled")
+                else
+                    SaveManager:DisableAutoSave()
+                    print("[SaveManager] Auto-save disabled")
+                end
+            end
+        })
+    end
+})
+
+-- All Components Test with SaveManager
 SettingsCategory:AddItem({
     Title = "Components.lua",
     Icon = Icons.FileCode,
@@ -376,7 +489,7 @@ SettingsCategory:AddItem({
         
         window:AddParagraph({
             Title = "Component Testing",
-            Content = "This tab demonstrates all available components in EnowLib. Test each component to ensure responsive design works on all devices (PC, tablet, mobile)."
+            Content = "This tab demonstrates all available components in EnowLib. Components marked with [SAVED] are registered with SaveManager and will persist their values."
         })
         
         window:AddDivider({Text = "Basic Components"})
@@ -395,7 +508,7 @@ SettingsCategory:AddItem({
         -- Divider
         window:AddDivider()
         
-        window:AddDivider({Text = "Input Components"})
+        window:AddDivider({Text = "Input Components (Saveable)"})
         
         -- Button
         window:AddButton({
@@ -405,18 +518,19 @@ SettingsCategory:AddItem({
             end
         })
         
-        -- Toggle
-        window:AddToggle({
-            Text = "Toggle Component - Enable/Disable",
+        -- Toggle (Saved)
+        local toggle1 = window:AddToggle({
+            Text = "[SAVED] Toggle Component",
             Default = false,
             Callback = function(value)
                 print("[Test] Toggle:", value)
             end
         })
+        SaveManager:RegisterComponent("test_toggle1", toggle1)
         
-        -- Slider
-        window:AddSlider({
-            Text = "Slider Component - Adjust Value",
+        -- Slider (Saved)
+        local slider1 = window:AddSlider({
+            Text = "[SAVED] Slider Component",
             Min = 1,
             Max = 100,
             Default = 50,
@@ -424,20 +538,22 @@ SettingsCategory:AddItem({
                 print("[Test] Slider:", value)
             end
         })
+        SaveManager:RegisterComponent("test_slider1", slider1)
         
-        -- TextBox
-        window:AddTextBox({
-            Text = "TextBox Component",
+        -- TextBox (Saved)
+        local textbox1 = window:AddTextBox({
+            Text = "[SAVED] TextBox Component",
             Placeholder = "Type something here...",
             Default = "",
             Callback = function(value)
                 print("[Test] TextBox:", value)
             end
         })
+        SaveManager:RegisterComponent("test_textbox1", textbox1)
         
-        -- Dropdown
-        window:AddDropdown({
-            Text = "Dropdown Component",
+        -- Dropdown (Saved)
+        local dropdown1 = window:AddDropdown({
+            Text = "[SAVED] Dropdown Component",
             Options = {"Option A", "Option B", "Option C", "Option D"},
             Default = "Option A",
             Searchable = false,
@@ -445,6 +561,7 @@ SettingsCategory:AddItem({
                 print("[Test] Dropdown:", value)
             end
         })
+        SaveManager:RegisterComponent("test_dropdown1", dropdown1)
         
         -- Dropdown with Search
         window:AddDropdown({
@@ -457,33 +574,36 @@ SettingsCategory:AddItem({
             end
         })
         
-        -- MultiSelect
-        window:AddMultiSelect({
-            Text = "MultiSelect Component",
+        -- MultiSelect (Saved)
+        local multiselect1 = window:AddMultiSelect({
+            Text = "[SAVED] MultiSelect Component",
             Options = {"Feature 1", "Feature 2", "Feature 3", "Feature 4"},
             Default = {"Feature 1"},
             Callback = function(values)
                 print("[Test] MultiSelect:", table.concat(values, ", "))
             end
         })
+        SaveManager:RegisterComponent("test_multiselect1", multiselect1)
         
-        -- ColorPicker
-        window:AddColorPicker({
-            Text = "ColorPicker Component",
+        -- ColorPicker (Saved)
+        local colorpicker1 = window:AddColorPicker({
+            Text = "[SAVED] ColorPicker Component",
             Default = Color3.fromRGB(46, 204, 113),
             Callback = function(color)
                 print("[Test] ColorPicker:", color)
             end
         })
+        SaveManager:RegisterComponent("test_colorpicker1", colorpicker1)
         
-        -- Keybind
-        window:AddKeybind({
-            Text = "Keybind Component",
+        -- Keybind (Saved)
+        local keybind1 = window:AddKeybind({
+            Text = "[SAVED] Keybind Component",
             Default = "None",
             Callback = function(key)
                 print("[Test] Keybind:", key)
             end
         })
+        SaveManager:RegisterComponent("test_keybind1", keybind1)
         
         window:AddDivider({Text = "Section Component"})
         
@@ -496,16 +616,17 @@ SettingsCategory:AddItem({
             Text = "Components inside a Section are grouped together"
         })
         
-        testSection:AddToggle({
-            Text = "Nested Toggle",
+        local toggle2 = testSection:AddToggle({
+            Text = "[SAVED] Nested Toggle",
             Default = true,
             Callback = function(value)
                 print("[Test] Nested Toggle:", value)
             end
         })
+        SaveManager:RegisterComponent("test_toggle2", toggle2)
         
-        testSection:AddSlider({
-            Text = "Nested Slider",
+        local slider2 = testSection:AddSlider({
+            Text = "[SAVED] Nested Slider",
             Min = 0,
             Max = 10,
             Default = 5,
@@ -513,6 +634,7 @@ SettingsCategory:AddItem({
                 print("[Test] Nested Slider:", value)
             end
         })
+        SaveManager:RegisterComponent("test_slider2", slider2)
         
         testSection:AddButton({
             Text = "Nested Button",
@@ -524,7 +646,7 @@ SettingsCategory:AddItem({
         window:AddDivider()
         
         window:AddLabel({
-            Text = "✓ All 12 components are working perfectly!",
+            Text = "All 12 components working! Go to SaveManager.lua to save/load configs.",
             Color = window.Theme.Colors.Success
         })
         
@@ -538,4 +660,6 @@ SettingsCategory:AddItem({
 })
 
 print("=== EnowLib Loaded Successfully! ===")
-print("Click any tab in the sidebar to test components")
+print("Press RightControl to toggle UI visibility")
+print("Go to Settings > SaveManager.lua to save/load configs")
+print("Go to Settings > Interface.lua to change themes")
