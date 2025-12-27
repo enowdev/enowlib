@@ -279,10 +279,11 @@ function Window:SetupAutoResize()
     local function calculateScaledSize()
         local viewportSize = Camera.ViewportSize
         
-        -- Use larger margin for mobile devices (smaller screens)
-        local margin = 80  -- Increased from 40 for better mobile UX
-        if viewportSize.X < 768 or viewportSize.Y < 768 then
-            margin = 100  -- Even larger margin for very small screens
+        -- Use much larger margin for mobile devices
+        local margin = 80
+        if viewportSize.X < 1024 then
+            -- Mobile/small tablet - use percentage-based margin
+            margin = math.max(viewportSize.X * 0.15, 120)  -- 15% of width or 120px minimum
         end
         
         -- Calculate size that fits viewport with margin
@@ -303,9 +304,17 @@ function Window:SetupAutoResize()
             newHeight = newHeight * scale
         end
         
+        -- Use smaller min size for mobile
+        local minWidth = self.MinSize.X
+        local minHeight = self.MinSize.Y
+        if viewportSize.X < 768 then
+            minWidth = 400  -- Smaller min for mobile
+            minHeight = 300
+        end
+        
         -- Apply min/max constraints
-        newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
-        newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
+        newWidth = math.clamp(newWidth, minWidth, self.MaxSize.X)
+        newHeight = math.clamp(newHeight, minHeight, self.MaxSize.Y)
         
         return Vector2.new(newWidth, newHeight)
     end
@@ -360,8 +369,8 @@ function Window:SetupAutoResize()
         
         -- Determine margin based on screen size
         local margin = 80
-        if viewportSize.X < 768 or viewportSize.Y < 768 then
-            margin = 100
+        if viewportSize.X < 1024 then
+            margin = math.max(viewportSize.X * 0.15, 120)
         end
         
         -- Check if window needs scaling (too big for viewport)
