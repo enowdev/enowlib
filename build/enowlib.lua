@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 16:11:59
+-- Built: 2025-12-27 16:15:42
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2435,7 +2435,7 @@ function Window.new(config, theme, utils, enowlib)
         Size = UDim2.fromOffset(900, 600),
         ShowStatusBar = true,
         AutoResize = true,
-        MinSize = Vector2.new(600, 400),
+        MinSize = Vector2.new(150, 100),
         MaxSize = Vector2.new(1400, 900)
     }, config or {})
     

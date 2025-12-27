@@ -14,7 +14,7 @@ function Window.new(config, theme, utils, enowlib)
         Size = UDim2.fromOffset(900, 600),
         ShowStatusBar = true,
         AutoResize = true,
-        MinSize = Vector2.new(600, 400),
+        MinSize = Vector2.new(150, 100),
         MaxSize = Vector2.new(1400, 900)
     }, config or {})
     
