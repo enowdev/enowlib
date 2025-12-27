@@ -279,18 +279,23 @@ function Window:SetupAutoResize()
     local function calculateScaledSize()
         local viewportSize = Camera.ViewportSize
         
-        -- Use much larger margin for mobile devices
-        local margin = 80
+        -- For mobile/small screens, use 50% of viewport size
         if viewportSize.X < 1024 then
-            -- Mobile/small tablet - use percentage-based margin
-            margin = math.max(viewportSize.X * 0.15, 120)  -- 15% of width or 120px minimum
+            local newWidth = viewportSize.X * 0.5
+            local newHeight = viewportSize.Y * 0.5
+            
+            -- Apply min constraints (but no max for mobile)
+            newWidth = math.max(newWidth, 350)
+            newHeight = math.max(newHeight, 250)
+            
+            return Vector2.new(newWidth, newHeight)
         end
         
-        -- Calculate size that fits viewport with margin
+        -- For PC/large screens, use original size with margin
+        local margin = 80
         local maxWidth = viewportSize.X - margin
         local maxHeight = viewportSize.Y - margin
         
-        -- Start with original size
         local newWidth = self.OriginalSize.X
         local newHeight = self.OriginalSize.Y
         
@@ -304,17 +309,9 @@ function Window:SetupAutoResize()
             newHeight = newHeight * scale
         end
         
-        -- Use smaller min size for mobile
-        local minWidth = self.MinSize.X
-        local minHeight = self.MinSize.Y
-        if viewportSize.X < 768 then
-            minWidth = 400  -- Smaller min for mobile
-            minHeight = 300
-        end
-        
-        -- Apply min/max constraints
-        newWidth = math.clamp(newWidth, minWidth, self.MaxSize.X)
-        newHeight = math.clamp(newHeight, minHeight, self.MaxSize.Y)
+        -- Apply constraints for PC
+        newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
+        newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
         
         return Vector2.new(newWidth, newHeight)
     end
@@ -367,18 +364,16 @@ function Window:SetupAutoResize()
         local viewportSize = Camera.ViewportSize
         local windowSize = self.Container.AbsoluteSize
         
-        -- Determine margin based on screen size
-        local margin = 80
+        -- For mobile (< 1024px), always scale to 50% of viewport
+        -- For PC, only scale if window is too big
         if viewportSize.X < 1024 then
-            margin = math.max(viewportSize.X * 0.15, 120)
-        end
-        
-        -- Check if window needs scaling (too big for viewport)
-        if windowSize.X > viewportSize.X - margin or windowSize.Y > viewportSize.Y - margin then
-            -- Scale and position
+            -- Mobile: always scale
+            updateWindowSize()
+        elseif windowSize.X > viewportSize.X - 80 or windowSize.Y > viewportSize.Y - 80 then
+            -- PC: scale if too big
             updateWindowSize()
         else
-            -- Just center without scaling
+            -- PC: just center
             local centerX = (viewportSize.X - windowSize.X) / 2
             local centerY = (viewportSize.Y - windowSize.Y) / 2
             self.Container.Position = UDim2.fromOffset(centerX, centerY)
