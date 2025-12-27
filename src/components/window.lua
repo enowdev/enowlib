@@ -283,7 +283,7 @@ function Window:CreateUI()
     self.ResizeHandle.BorderSizePixel = 0
     self.ResizeHandle.Size = UDim2.fromOffset(28, 28)
     self.ResizeHandle.Position = UDim2.new(1, -30, 0.5, -14)
-    self.ResizeHandle.Image = "rbxassetid://10734923214"
+    self.ResizeHandle.Image = "rbxassetid://10734898934"
     self.ResizeHandle.ImageColor3 = self.Theme.Colors.TextDim
     self.ResizeHandle.ScaleType = Enum.ScaleType.Fit
     self.ResizeHandle.ZIndex = 2
