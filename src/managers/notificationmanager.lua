@@ -47,7 +47,7 @@ function NotificationManager:Notify(config)
         return
     end
     
-    local success = pcall(function()
+    local success, err = pcall(function()
         -- Create notification inline (since we can't require external component)
         local notification = self:CreateNotification(config)
         
@@ -67,7 +67,7 @@ function NotificationManager:Notify(config)
     end)
     
     if not success then
-        warn("[NotificationManager] Failed to create notification")
+        warn("[NotificationManager] Failed to create notification:", err)
     end
 end
 
