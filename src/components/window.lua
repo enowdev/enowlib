@@ -53,8 +53,9 @@ function Window:CreateUI()
     self.Container.BackgroundTransparency = 0.15
     self.Container.BorderSizePixel = 0
     self.Container.Size = self.Config.Size
-    self.Container.Position = UDim2.fromScale(0.5, 0.5)
-    self.Container.AnchorPoint = Vector2.new(0.5, 0.5)
+    -- Use Offset position for consistency with drag system
+    -- Will be centered after ScreenGui is parented
+    self.Container.Position = UDim2.fromOffset(0, 0)
     self.Container.Parent = self.ScreenGui
     
     self.Theme.CreateCorner(self.Container, 12)
@@ -253,6 +254,19 @@ function Window:CreateUI()
     
     -- Parent to CoreGui
     self.ScreenGui.Parent = game:GetService("CoreGui")
+    
+    -- Center window after parenting
+    task.spawn(function()
+        task.wait(0.05)
+        local Camera = workspace.CurrentCamera
+        local viewportSize = Camera.ViewportSize
+        local windowSize = self.Container.AbsoluteSize
+        
+        local centerX = (viewportSize.X - windowSize.X) / 2
+        local centerY = (viewportSize.Y - windowSize.Y) / 2
+        
+        self.Container.Position = UDim2.fromOffset(centerX, centerY)
+    end)
 end
 
 function Window:SetupAutoResize()
