@@ -83,6 +83,13 @@ function NotificationManager:CreateNotification(config)
         return nil
     end
     
+    -- Cache theme references with fallbacks
+    local theme = self.Window.Theme
+    local textSizeRegular = (theme.TextSize and theme.TextSize.Regular) or 14
+    local textSizeSmall = (theme.TextSize and theme.TextSize.Small) or 12
+    local fontBold = (theme.Font and theme.Font.Bold) or Enum.Font.GothamBold
+    local fontRegular = (theme.Font and theme.Font.Regular) or Enum.Font.Gotham
+    
     local notification = {
         Config = {
             Title = config.Title or "Notification",
@@ -97,13 +104,13 @@ function NotificationManager:CreateNotification(config)
     -- Get type color
     local function getTypeColor()
         if notification.Config.Type == "success" then
-            return self.Window.Theme.Colors.Success
+            return theme.Colors.Success
         elseif notification.Config.Type == "warning" then
-            return self.Window.Theme.Colors.Warning
+            return theme.Colors.Warning
         elseif notification.Config.Type == "error" then
-            return self.Window.Theme.Colors.Error
+            return theme.Colors.Error
         else
-            return self.Window.Theme.Colors.Accent
+            return theme.Colors.Accent
         end
     end
     
@@ -112,13 +119,13 @@ function NotificationManager:CreateNotification(config)
     notification.Container.Name = "Notification"
     notification.Container.Size = UDim2.new(0, 300, 0, 0)
     notification.Container.Position = UDim2.new(1, -320, 1, 20)
-    notification.Container.BackgroundColor3 = self.Window.Theme.Colors.Panel
+    notification.Container.BackgroundColor3 = theme.Colors.Panel
     notification.Container.BorderSizePixel = 0
     notification.Container.ClipsDescendants = true
     notification.Container.Parent = self.Container
     
-    self.Window.Theme.CreateCorner(notification.Container, 8)
-    self.Window.Theme.CreateStroke(notification.Container, getTypeColor())
+    theme.CreateCorner(notification.Container, 8)
+    theme.CreateStroke(notification.Container, getTypeColor())
     
     -- Icon
     if notification.Config.Icon then
@@ -142,9 +149,9 @@ function NotificationManager:CreateNotification(config)
     title.Position = UDim2.new(0, contentX, 0, 10)
     title.BackgroundTransparency = 1
     title.Text = notification.Config.Title
-    title.TextColor3 = self.Window.Theme.Colors.Text
-    title.TextSize = self.Window.Theme.TextSize.Regular or 14
-    title.Font = self.Window.Theme.Font.Bold or Enum.Font.GothamBold
+    title.TextColor3 = theme.Colors.Text
+    title.TextSize = textSizeRegular
+    title.Font = fontBold
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.TextYAlignment = Enum.TextYAlignment.Top
     title.Parent = notification.Container
@@ -157,9 +164,9 @@ function NotificationManager:CreateNotification(config)
         message.Position = UDim2.new(0, contentX, 0, 28)
         message.BackgroundTransparency = 1
         message.Text = notification.Config.Message
-        message.TextColor3 = self.Window.Theme.Colors.TextDim
-        message.TextSize = self.Window.Theme.TextSize.Small or 12
-        message.Font = self.Window.Theme.Font.Regular or Enum.Font.Gotham
+        message.TextColor3 = theme.Colors.TextDim
+        message.TextSize = textSizeSmall
+        message.Font = fontRegular
         message.TextXAlignment = Enum.TextXAlignment.Left
         message.TextYAlignment = Enum.TextYAlignment.Top
         message.TextWrapped = true
@@ -168,8 +175,8 @@ function NotificationManager:CreateNotification(config)
         -- Calculate height based on message
         local textBounds = self.Window.Utils.GetTextBounds(
             notification.Config.Message,
-            self.Window.Theme.TextSize.Small or 12,
-            self.Window.Theme.Font.Regular or Enum.Font.Gotham,
+            textSizeSmall,
+            fontRegular,
             Vector2.new(300 - contentX - 12, 1000)
         )
         
