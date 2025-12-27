@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 11:34:01
+-- Built: 2025-12-27 11:37:06
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2459,25 +2459,15 @@ end
 function Window:ApplyResponsiveScaling()
     self.ScaleFactor = self:CalculateScaleFactor()
     
-    -- Scale sidebar width more aggressively
-    local sidebarWidth = math.floor(280 * self.ScaleFactor)
-    self.Sidebar.Size = UDim2.new(0, sidebarWidth, 1, -73)
-    self.VerticalSeparator.Position = UDim2.fromOffset(sidebarWidth, 49)
-    self.ContentArea.Size = UDim2.new(1, -(sidebarWidth + 1), 1, -73)
-    self.ContentArea.Position = UDim2.fromOffset(sidebarWidth + 1, 49)
+    -- Use UIScale to scale entire UI tree (simpler than updating each component)
+    if not self.UIScale then
+        self.UIScale = Instance.new("UIScale")
+        self.UIScale.Parent = self.Container
+    end
     
-    -- Scale font sizes more aggressively
-    local baseFontSize = 14
-    self.Theme.Font.Size.Small = math.max(8, math.floor(11 * self.ScaleFactor))
-    self.Theme.Font.Size.Medium = math.max(10, math.floor(baseFontSize * self.ScaleFactor))
-    self.Theme.Font.Size.Large = math.max(12, math.floor(16 * self.ScaleFactor))
+    self.UIScale.Scale = self.ScaleFactor
     
-    -- Scale spacing more aggressively
-    self.Theme.Spacing.Small = math.max(2, math.floor(4 * self.ScaleFactor))
-    self.Theme.Spacing.Medium = math.max(4, math.floor(8 * self.ScaleFactor))
-    self.Theme.Spacing.Large = math.max(8, math.floor(16 * self.ScaleFactor))
-    
-    print("[EnowLib] Scale factor:", self.ScaleFactor, "Sidebar width:", sidebarWidth, "Font size:", self.Theme.Font.Size.Medium)
+    print("[EnowLib] Scale factor:", self.ScaleFactor, "UIScale applied to entire window")
 end
 
 function Window:CreateUI()
