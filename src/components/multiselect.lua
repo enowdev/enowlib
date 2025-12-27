@@ -33,17 +33,17 @@ function MultiSelect:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 86)
+    self.Container.Size = UDim2.new(1, 0, 0, 74)
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, 0, 0, 20)
+    title.Size = UDim2.new(1, -16, 0, 20)
+    title.Position = UDim2.fromOffset(8, 8)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -55,8 +55,8 @@ function MultiSelect:CreateUI()
     self.Button = Instance.new("TextButton")
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 32)
-    self.Button.Position = UDim2.fromOffset(0, 26)
+    self.Button.Size = UDim2.new(1, -16, 0, 32)
+    self.Button.Position = UDim2.fromOffset(8, 34)
     self.Button.Font = self.Theme.Font.Mono
     self.Button.Text = ""
     self.Button.TextColor3 = self.Theme.Colors.Text
@@ -236,12 +236,12 @@ function MultiSelect:Toggle()
         local optionsHeight = math.min(#self.Config.Options * 30, 150)
         self.OptionsList.Size = UDim2.new(1, 0, 0, optionsHeight)
         self.OptionsList.Visible = true
-        self.Container.Size = UDim2.new(1, 0, 0, 86 + optionsHeight + 4)
+        self.Container.Size = UDim2.new(1, 0, 0, 74 + optionsHeight + 4)
         self.ChevronIcon.Rotation = 180
     else
         self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
         self.OptionsList.Visible = false
-        self.Container.Size = UDim2.new(1, 0, 0, 86)
+        self.Container.Size = UDim2.new(1, 0, 0, 74)
         self.ChevronIcon.Rotation = 0
     end
 end

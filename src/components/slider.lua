@@ -39,12 +39,12 @@ function Slider:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -45, 0, 14)  -- 60 * 0.75 = 45, 18 * 0.75 = 13.5 ≈ 14
+    title.Position = UDim2.fromOffset(8, 8)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -56,7 +56,7 @@ function Slider:CreateUI()
     self.ValueLabel = Instance.new("TextLabel")
     self.ValueLabel.BackgroundTransparency = 1
     self.ValueLabel.Size = UDim2.fromOffset(38, 14)  -- 50 * 0.75 = 37.5 ≈ 38, 18 * 0.75 = 13.5 ≈ 14
-    self.ValueLabel.Position = UDim2.new(1, -38, 0, 0)
+    self.ValueLabel.Position = UDim2.new(1, -46, 0, 8)
     self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Accent
@@ -68,8 +68,8 @@ function Slider:CreateUI()
     self.Track = Instance.new("Frame")
     self.Track.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Track.BorderSizePixel = 0
-    self.Track.Size = UDim2.new(1, 0, 0, 5)  -- 6 * 0.75 = 4.5 ≈ 5
-    self.Track.Position = UDim2.fromOffset(0, 23)  -- 30 * 0.75 = 22.5 ≈ 23
+    self.Track.Size = UDim2.new(1, -16, 0, 5)  -- 6 * 0.75 = 4.5 ≈ 5
+    self.Track.Position = UDim2.fromOffset(8, 31)  -- 30 * 0.75 = 22.5 ≈ 23
     self.Track.Parent = self.Container
     
     self.Theme.CreateCorner(self.Track, 3)
@@ -98,8 +98,8 @@ function Slider:CreateUI()
     -- Input Button
     local input = Instance.new("TextButton")
     input.BackgroundTransparency = 1
-    input.Size = UDim2.new(1, 0, 0, 15)  -- 20 * 0.75 = 15
-    input.Position = UDim2.fromOffset(0, 19)  -- 25 * 0.75 = 18.75 ≈ 19
+    input.Size = UDim2.new(1, -16, 0, 15)  -- 20 * 0.75 = 15
+    input.Position = UDim2.fromOffset(8, 27)  -- 25 * 0.75 = 18.75 ≈ 19
     input.Text = ""
     input.Parent = self.Container
     

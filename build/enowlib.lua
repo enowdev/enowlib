@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 13:16:49
+-- Built: 2025-12-27 13:25:58
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -592,7 +592,6 @@ function Button:CreateUI()
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container, 4)
-    self.Theme.CreatePadding(self.Container, 8)
     self.Theme.CreateCorner(self.Container)
     
     self.Container.MouseButton1Click:Connect(function()
@@ -654,12 +653,12 @@ function Toggle:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -40, 1, 0)
+    title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -806,12 +805,12 @@ function Slider:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -45, 0, 14)  -- 60 * 0.75 = 45, 18 * 0.75 = 13.5 ≈ 14
+    title.Position = UDim2.fromOffset(8, 8)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -823,7 +822,7 @@ function Slider:CreateUI()
     self.ValueLabel = Instance.new("TextLabel")
     self.ValueLabel.BackgroundTransparency = 1
     self.ValueLabel.Size = UDim2.fromOffset(38, 14)  -- 50 * 0.75 = 37.5 ≈ 38, 18 * 0.75 = 13.5 ≈ 14
-    self.ValueLabel.Position = UDim2.new(1, -38, 0, 0)
+    self.ValueLabel.Position = UDim2.new(1, -46, 0, 8)
     self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Accent
@@ -835,8 +834,8 @@ function Slider:CreateUI()
     self.Track = Instance.new("Frame")
     self.Track.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Track.BorderSizePixel = 0
-    self.Track.Size = UDim2.new(1, 0, 0, 5)  -- 6 * 0.75 = 4.5 ≈ 5
-    self.Track.Position = UDim2.fromOffset(0, 23)  -- 30 * 0.75 = 22.5 ≈ 23
+    self.Track.Size = UDim2.new(1, -16, 0, 5)  -- 6 * 0.75 = 4.5 ≈ 5
+    self.Track.Position = UDim2.fromOffset(8, 31)  -- 30 * 0.75 = 22.5 ≈ 23
     self.Track.Parent = self.Container
     
     self.Theme.CreateCorner(self.Track, 3)
@@ -865,8 +864,8 @@ function Slider:CreateUI()
     -- Input Button
     local input = Instance.new("TextButton")
     input.BackgroundTransparency = 1
-    input.Size = UDim2.new(1, 0, 0, 15)  -- 20 * 0.75 = 15
-    input.Position = UDim2.fromOffset(0, 19)  -- 25 * 0.75 = 18.75 ≈ 19
+    input.Size = UDim2.new(1, -16, 0, 15)  -- 20 * 0.75 = 15
+    input.Position = UDim2.fromOffset(8, 27)  -- 25 * 0.75 = 18.75 ≈ 19
     input.Text = ""
     input.Parent = self.Container
     
@@ -982,12 +981,12 @@ function TextBox:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, 0, 0, 15)  -- 20 * 0.75 = 15
+    title.Size = UDim2.new(1, -16, 0, 15)  -- 20 * 0.75 = 15
+    title.Position = UDim2.fromOffset(8, 8)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -999,8 +998,8 @@ function TextBox:CreateUI()
     self.InputBox = Instance.new("TextBox")
     self.InputBox.BackgroundColor3 = self.Theme.Colors.Secondary
     self.InputBox.BorderSizePixel = 0
-    self.InputBox.Size = UDim2.new(1, 0, 0, 24)  -- 32 * 0.75 = 24
-    self.InputBox.Position = UDim2.fromOffset(0, 20)  -- 26 * 0.75 = 19.5 ≈ 20
+    self.InputBox.Size = UDim2.new(1, -16, 0, 24)  -- 32 * 0.75 = 24
+    self.InputBox.Position = UDim2.fromOffset(8, 28)  -- 26 * 0.75 = 19.5 ≈ 20
     self.InputBox.Font = self.Theme.Font.Mono
     self.InputBox.Text = self.Value
     self.InputBox.PlaceholderText = self.Config.Placeholder
@@ -1061,17 +1060,17 @@ function Dropdown:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 86)
+    self.Container.Size = UDim2.new(1, 0, 0, 74)
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, 0, 0, 20)
+    title.Size = UDim2.new(1, -16, 0, 20)
+    title.Position = UDim2.fromOffset(8, 8)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -1083,8 +1082,8 @@ function Dropdown:CreateUI()
     self.Button = Instance.new("TextButton")
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 32)
-    self.Button.Position = UDim2.fromOffset(0, 26)
+    self.Button.Size = UDim2.new(1, -16, 0, 32)
+    self.Button.Position = UDim2.fromOffset(8, 34)
     self.Button.Font = self.Theme.Font.Mono
     self.Button.Text = ""
     self.Button.TextColor3 = self.Theme.Colors.Text
@@ -1229,7 +1228,7 @@ function Dropdown:FilterOptions(searchText)
             local baseHeight = self.Config.Searchable and 32 or 0
             local optionsHeight = math.min(#self.AllOptions * 34, 150)
             self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
-            self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 16)
+            self.Container.Size = UDim2.new(1, 0, 0, 74 + baseHeight + optionsHeight + 16)
         end
         return
     end
@@ -1251,7 +1250,7 @@ function Dropdown:FilterOptions(searchText)
         local baseHeight = self.Config.Searchable and 32 or 0
         local optionsHeight = visibleCount > 0 and math.min(visibleCount * 34, 150) or 32
         self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
-        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 16)
+        self.Container.Size = UDim2.new(1, 0, 0, 74 + baseHeight + optionsHeight + 16)
     end
 end
 
@@ -1263,7 +1262,7 @@ function Dropdown:Toggle()
         local optionsHeight = math.min(#self.Config.Options * 34, 150)
         self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
         self.OptionsList.Visible = true
-        self.Container.Size = UDim2.new(1, 0, 0, 86 + baseHeight + optionsHeight + 16)
+        self.Container.Size = UDim2.new(1, 0, 0, 74 + baseHeight + optionsHeight + 16)
         self.ChevronIcon.Rotation = 180
         
         -- Focus search box if searchable
@@ -1274,7 +1273,7 @@ function Dropdown:Toggle()
     else
         self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
         self.OptionsList.Visible = false
-        self.Container.Size = UDim2.new(1, 0, 0, 86)
+        self.Container.Size = UDim2.new(1, 0, 0, 74)
         self.ChevronIcon.Rotation = 0
         
         -- Clear search
@@ -1334,17 +1333,17 @@ function MultiSelect:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 86)
+    self.Container.Size = UDim2.new(1, 0, 0, 74)
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, 0, 0, 20)
+    title.Size = UDim2.new(1, -16, 0, 20)
+    title.Position = UDim2.fromOffset(8, 8)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -1356,8 +1355,8 @@ function MultiSelect:CreateUI()
     self.Button = Instance.new("TextButton")
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 32)
-    self.Button.Position = UDim2.fromOffset(0, 26)
+    self.Button.Size = UDim2.new(1, -16, 0, 32)
+    self.Button.Position = UDim2.fromOffset(8, 34)
     self.Button.Font = self.Theme.Font.Mono
     self.Button.Text = ""
     self.Button.TextColor3 = self.Theme.Colors.Text
@@ -1537,12 +1536,12 @@ function MultiSelect:Toggle()
         local optionsHeight = math.min(#self.Config.Options * 30, 150)
         self.OptionsList.Size = UDim2.new(1, 0, 0, optionsHeight)
         self.OptionsList.Visible = true
-        self.Container.Size = UDim2.new(1, 0, 0, 86 + optionsHeight + 4)
+        self.Container.Size = UDim2.new(1, 0, 0, 74 + optionsHeight + 4)
         self.ChevronIcon.Rotation = 180
     else
         self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
         self.OptionsList.Visible = false
-        self.Container.Size = UDim2.new(1, 0, 0, 86)
+        self.Container.Size = UDim2.new(1, 0, 0, 74)
         self.ChevronIcon.Rotation = 0
     end
 end
@@ -1588,12 +1587,12 @@ function ColorPicker:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -45, 1, 0)  -- 60 * 0.75 = 45
+    title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -1606,7 +1605,7 @@ function ColorPicker:CreateUI()
     self.ColorDisplay.BackgroundColor3 = self.Value
     self.ColorDisplay.BorderSizePixel = 0
     self.ColorDisplay.Size = UDim2.fromOffset(33, 18)  -- 44x24 * 0.75 = 33x18
-    self.ColorDisplay.Position = UDim2.new(1, 0, 0.5, 0)
+    self.ColorDisplay.Position = UDim2.new(1, -8, 0.5, 0)
     self.ColorDisplay.AnchorPoint = Vector2.new(1, 0.5)
     self.ColorDisplay.Text = ""
     self.ColorDisplay.Parent = self.Container
@@ -1680,12 +1679,12 @@ function Keybind:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -70, 1, 0)  -- 100 * 0.75 = 75, but use 70
+    title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -1698,7 +1697,7 @@ function Keybind:CreateUI()
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BorderSizePixel = 0
     self.Button.Size = UDim2.fromOffset(60, 18)  -- 80x24 * 0.75 = 60x18
-    self.Button.Position = UDim2.new(1, 0, 0.5, 0)
+    self.Button.Position = UDim2.new(1, -8, 0.5, 0)
     self.Button.AnchorPoint = Vector2.new(1, 0.5)
     self.Button.Font = self.Theme.Font.Mono
     self.Button.Text = self.Value

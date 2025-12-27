@@ -33,12 +33,12 @@ function TextBox:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, 0, 0, 15)  -- 20 * 0.75 = 15
+    title.Size = UDim2.new(1, -16, 0, 15)  -- 20 * 0.75 = 15
+    title.Position = UDim2.fromOffset(8, 8)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -50,8 +50,8 @@ function TextBox:CreateUI()
     self.InputBox = Instance.new("TextBox")
     self.InputBox.BackgroundColor3 = self.Theme.Colors.Secondary
     self.InputBox.BorderSizePixel = 0
-    self.InputBox.Size = UDim2.new(1, 0, 0, 24)  -- 32 * 0.75 = 24
-    self.InputBox.Position = UDim2.fromOffset(0, 20)  -- 26 * 0.75 = 19.5 ≈ 20
+    self.InputBox.Size = UDim2.new(1, -16, 0, 24)  -- 32 * 0.75 = 24
+    self.InputBox.Position = UDim2.fromOffset(8, 28)  -- 26 * 0.75 = 19.5 ≈ 20
     self.InputBox.Font = self.Theme.Font.Mono
     self.InputBox.Text = self.Value
     self.InputBox.PlaceholderText = self.Config.Placeholder

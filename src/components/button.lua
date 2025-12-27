@@ -32,7 +32,6 @@ function Button:CreateUI()
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container, 4)
-    self.Theme.CreatePadding(self.Container, 8)
     self.Theme.CreateCorner(self.Container)
     
     self.Container.MouseButton1Click:Connect(function()

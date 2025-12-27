@@ -32,12 +32,12 @@ function ColorPicker:CreateUI()
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -45, 1, 0)  -- 60 * 0.75 = 45
+    title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -50,7 +50,7 @@ function ColorPicker:CreateUI()
     self.ColorDisplay.BackgroundColor3 = self.Value
     self.ColorDisplay.BorderSizePixel = 0
     self.ColorDisplay.Size = UDim2.fromOffset(33, 18)  -- 44x24 * 0.75 = 33x18
-    self.ColorDisplay.Position = UDim2.new(1, 0, 0.5, 0)
+    self.ColorDisplay.Position = UDim2.new(1, -8, 0.5, 0)
     self.ColorDisplay.AnchorPoint = Vector2.new(1, 0.5)
     self.ColorDisplay.Text = ""
     self.ColorDisplay.Parent = self.Container
