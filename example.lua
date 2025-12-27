@@ -627,7 +627,15 @@ SettingsCategory:AddItem({
             Content = "This tab demonstrates all available components in EnowLib. Components marked with [SAVED] are registered with SaveManager and will persist their values."
         })
         
-        window:AddDivider({Text = "Basic Components"})
+        window:AddDivider()
+        
+        window:AddLabel({
+            Text = "Basic Components",
+            Color = window.Theme.Colors.Accent,
+            Font = window.Theme.Font.Bold
+        })
+        
+        window:AddDivider()
         
         -- Label
         window:AddLabel({
@@ -643,7 +651,15 @@ SettingsCategory:AddItem({
         -- Divider
         window:AddDivider()
         
-        window:AddDivider({Text = "Input Components (Saveable)"})
+        window:AddDivider()
+        
+        window:AddLabel({
+            Text = "Input Components (Saveable)",
+            Color = window.Theme.Colors.Accent,
+            Font = window.Theme.Font.Bold
+        })
+        
+        window:AddDivider()
         
         -- Button
         window:AddButton({
@@ -740,7 +756,15 @@ SettingsCategory:AddItem({
         })
         SaveManager:RegisterComponent("test_keybind1", keybind1)
         
-        window:AddDivider({Text = "Section Component"})
+        window:AddDivider()
+        
+        window:AddLabel({
+            Text = "Section Component Example",
+            Color = window.Theme.Colors.Accent,
+            Font = window.Theme.Font.Bold
+        })
+        
+        window:AddDivider()
         
         -- Section with nested components
         local testSection = window:AddSection({
