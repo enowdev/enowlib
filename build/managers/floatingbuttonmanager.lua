@@ -82,7 +82,6 @@ end
 function FloatingButtonManager:SetupDragging()
     local camera = workspace.CurrentCamera
     local dragging = false
-    local dragInput = nil
     local dragStart = nil
     local startPos = nil
     
@@ -97,36 +96,28 @@ function FloatingButtonManager:SetupDragging()
         return Vector2.new(x, y)
     end
     
-    -- Function to update position during drag
-    local function update(input)
-        local delta = input.Position - dragStart
-        local newPosition = startPos + Vector2.new(delta.X, delta.Y)
-        local boundedPosition = checkBoundaries(newPosition)
-        self.Button.Position = UDim2.fromOffset(boundedPosition.X, boundedPosition.Y)
-    end
-    
     -- Input began
     table.insert(self.Connections, self.Button.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
-            dragInput = input
             dragStart = input.Position
             startPos = self.Button.AbsolutePosition
         end
     end))
     
     -- Input changed (dragging)
-    table.insert(self.Connections, self.Button.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            if dragging and input == dragInput then
-                update(input)
-            end
+    table.insert(self.Connections, self.UserInputService.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            local newPosition = startPos + Vector2.new(delta.X, delta.Y)
+            local boundedPosition = checkBoundaries(newPosition)
+            self.Button.Position = UDim2.fromOffset(boundedPosition.X, boundedPosition.Y)
         end
     end))
     
     -- Input ended
-    table.insert(self.Connections, self.Button.InputEnded:Connect(function(input)
-        if input == dragInput then
+    table.insert(self.Connections, self.UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             if dragging then
                 -- Calculate drag distance
                 local delta = input.Position - dragStart
@@ -138,16 +129,7 @@ function FloatingButtonManager:SetupDragging()
                 end
                 
                 dragging = false
-                dragInput = nil
             end
-        end
-    end))
-    
-    -- Global input ended (fallback for when touch leaves button)
-    table.insert(self.Connections, self.UserInputService.InputEnded:Connect(function(input)
-        if input == dragInput then
-            dragging = false
-            dragInput = nil
         end
     end))
     
