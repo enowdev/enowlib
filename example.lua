@@ -24,7 +24,7 @@ local Icons = {
 print("Creating window...")
 
 -- Window will auto-size based on device:
--- Mobile (< 1024px): 50% of viewport
+-- Mobile (< 1024px): 75% of viewport (3/4 of screen)
 -- PC (>= 1024px): 900x600 default
 local Window = EnowLib:CreateWindow({
     Title = "EnowHub UI Testing"
