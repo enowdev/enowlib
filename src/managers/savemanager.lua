@@ -171,9 +171,21 @@ function SaveManager:Save(configName)
     
     if success then
         self.CurrentConfig = configName
+        
+        -- Notify success
+        if self.Window and self.Window.NotificationManager then
+            self.Window.NotificationManager:Success("Config Saved", "Saved to " .. configName)
+        end
+        
         return true
     else
         warn("[SaveManager] Failed to save:", result)
+        
+        -- Notify error
+        if self.Window and self.Window.NotificationManager then
+            self.Window.NotificationManager:Error("Save Failed", "Could not save config")
+        end
+        
         return false
     end
 end
@@ -189,6 +201,12 @@ function SaveManager:Load(configName)
     
     if not isfile(filePath) then
         warn("[SaveManager] Config not found:", configName)
+        
+        -- Notify error
+        if self.Window and self.Window.NotificationManager then
+            self.Window.NotificationManager:Error("Load Failed", "Config not found")
+        end
+        
         return false
     end
     
@@ -200,6 +218,12 @@ function SaveManager:Load(configName)
     
     if not success then
         warn("[SaveManager] Failed to load:", result)
+        
+        -- Notify error
+        if self.Window and self.Window.NotificationManager then
+            self.Window.NotificationManager:Error("Load Failed", "Could not read config")
+        end
+        
         return false
     end
     
@@ -207,6 +231,12 @@ function SaveManager:Load(configName)
     
     if applied then
         self.CurrentConfig = configName
+        
+        -- Notify success
+        if self.Window and self.Window.NotificationManager then
+            self.Window.NotificationManager:Success("Config Loaded", "Loaded " .. configName .. " (" .. count .. " items)")
+        end
+        
         return true, count
     end
     
@@ -223,12 +253,30 @@ function SaveManager:Delete(configName)
     
     if not isfile(filePath) then
         warn("[SaveManager] Config not found:", configName)
+        
+        -- Notify error
+        if self.Window and self.Window.NotificationManager then
+            self.Window.NotificationManager:Error("Delete Failed", "Config not found")
+        end
+        
         return false
     end
     
     local success = pcall(function()
         delfile(filePath)
     end)
+    
+    if success then
+        -- Notify success
+        if self.Window and self.Window.NotificationManager then
+            self.Window.NotificationManager:Success("Config Deleted", "Deleted " .. configName)
+        end
+    else
+        -- Notify error
+        if self.Window and self.Window.NotificationManager then
+            self.Window.NotificationManager:Error("Delete Failed", "Could not delete config")
+        end
+    end
     
     return success
 end

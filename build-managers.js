@@ -28,6 +28,11 @@ const managers = [
         name: 'FloatingButtonManager',
         source: 'src/managers/floatingbuttonmanager.lua',
         output: 'build/managers/floatingbuttonmanager.lua'
+    },
+    {
+        name: 'NotificationManager',
+        source: 'src/managers/notificationmanager.lua',
+        output: 'build/managers/notificationmanager.lua'
     }
 ];
 

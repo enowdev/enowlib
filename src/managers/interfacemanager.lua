@@ -10,7 +10,8 @@ local UserInputService = game:GetService("UserInputService")
 InterfaceManager.Settings = {
     MinimizeKey = Enum.KeyCode.RightControl,
     Visible = true,
-    CurrentTheme = "Hacker"
+    CurrentTheme = "Hacker",
+    NotificationsEnabled = true
 }
 
 -- Theme presets (inspired by Kiro IDE)
@@ -277,6 +278,11 @@ function InterfaceManager:SetTheme(themeName)
             task.wait(0.05)
             currentItem:Select()
         end
+        
+        -- Notify theme change
+        if self.Window.NotificationManager then
+            self.Window.NotificationManager:Success("Theme Changed", "Applied " .. themeName .. " theme")
+        end
     end)
     
     if not success then
@@ -534,6 +540,18 @@ function InterfaceManager:RefreshCategories()
     if not success then
         warn("[InterfaceManager] Failed to refresh categories")
     end
+end
+
+function InterfaceManager:SetNotificationsEnabled(enabled)
+    self.Settings.NotificationsEnabled = enabled
+    
+    if self.Window and self.Window.NotificationManager then
+        self.Window.NotificationManager:SetEnabled(enabled)
+    end
+end
+
+function InterfaceManager:GetNotificationsEnabled()
+    return self.Settings.NotificationsEnabled
 end
 
 function InterfaceManager:GetCurrentTheme()
