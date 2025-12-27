@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 14:46:11
+-- Built: 2025-12-27 14:49:34
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1115,21 +1115,30 @@ function Dropdown:CreateUI()
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
     
-    -- Options List - positioned below button with gap, narrower to prevent overflow
+    -- Options List Wrapper - for clipping scrollbar with rounded corners
+    self.OptionsWrapper = Instance.new("Frame")
+    self.OptionsWrapper.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.OptionsWrapper.BorderSizePixel = 0
+    self.OptionsWrapper.Size = UDim2.new(1, -16, 0, 0)
+    self.OptionsWrapper.Position = UDim2.fromOffset(8, 74)
+    self.OptionsWrapper.Visible = false
+    self.OptionsWrapper.ClipsDescendants = true
+    self.OptionsWrapper.ZIndex = 5
+    self.OptionsWrapper.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.OptionsWrapper, 6)
+    
+    -- Options List - inside wrapper
     self.OptionsList = Instance.new("ScrollingFrame")
-    self.OptionsList.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.OptionsList.BackgroundTransparency = 1
     self.OptionsList.BorderSizePixel = 0
-    self.OptionsList.Size = UDim2.new(1, -24, 0, 0)
-    self.OptionsList.Position = UDim2.fromOffset(8, 74)
+    self.OptionsList.Size = UDim2.new(1, 0, 1, 0)
+    self.OptionsList.Position = UDim2.fromOffset(0, 0)
     self.OptionsList.ScrollBarThickness = 4
     self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
-    self.OptionsList.Visible = false
-    self.OptionsList.ClipsDescendants = true
     self.OptionsList.ZIndex = 5
-    self.OptionsList.Parent = self.Container
-    
-    self.Theme.CreateCorner(self.OptionsList, 6)
+    self.OptionsList.Parent = self.OptionsWrapper
     
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -1227,7 +1236,7 @@ function Dropdown:FilterOptions(searchText)
         if self.Open then
             local baseHeight = self.Config.Searchable and 32 or 0
             local optionsHeight = math.min(#self.AllOptions * 34, 150)
-            self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
+            self.OptionsWrapper.Size = UDim2.new(1, -16, 0, baseHeight + optionsHeight + 8)
             self.Container.Size = UDim2.new(1, 0, 0, 74 + baseHeight + optionsHeight + 16)
         end
         return
@@ -1249,7 +1258,7 @@ function Dropdown:FilterOptions(searchText)
     if self.Open then
         local baseHeight = self.Config.Searchable and 32 or 0
         local optionsHeight = visibleCount > 0 and math.min(visibleCount * 34, 150) or 32
-        self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
+        self.OptionsWrapper.Size = UDim2.new(1, -16, 0, baseHeight + optionsHeight + 8)
         self.Container.Size = UDim2.new(1, 0, 0, 74 + baseHeight + optionsHeight + 16)
     end
 end
@@ -1260,8 +1269,8 @@ function Dropdown:Toggle()
     if self.Open then
         local baseHeight = self.Config.Searchable and 32 or 0
         local optionsHeight = math.min(#self.Config.Options * 34, 150)
-        self.OptionsList.Size = UDim2.new(1, 0, 0, baseHeight + optionsHeight + 8)
-        self.OptionsList.Visible = true
+        self.OptionsWrapper.Size = UDim2.new(1, -16, 0, baseHeight + optionsHeight + 8)
+        self.OptionsWrapper.Visible = true
         self.Container.Size = UDim2.new(1, 0, 0, 74 + baseHeight + optionsHeight + 16)
         self.ChevronIcon.Rotation = 180
         
@@ -1271,8 +1280,8 @@ function Dropdown:Toggle()
             self.SearchBox:CaptureFocus()
         end
     else
-        self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
-        self.OptionsList.Visible = false
+        self.OptionsWrapper.Size = UDim2.new(1, -16, 0, 0)
+        self.OptionsWrapper.Visible = false
         self.Container.Size = UDim2.new(1, 0, 0, 74)
         self.ChevronIcon.Rotation = 0
         
@@ -1389,21 +1398,30 @@ function MultiSelect:CreateUI()
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
     
-    -- Options List - narrower to prevent overflow
+    -- Options List Wrapper - for clipping scrollbar with rounded corners
+    self.OptionsWrapper = Instance.new("Frame")
+    self.OptionsWrapper.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.OptionsWrapper.BorderSizePixel = 0
+    self.OptionsWrapper.Size = UDim2.new(1, -16, 0, 0)
+    self.OptionsWrapper.Position = UDim2.fromOffset(8, 74)
+    self.OptionsWrapper.Visible = false
+    self.OptionsWrapper.ClipsDescendants = true
+    self.OptionsWrapper.ZIndex = 5
+    self.OptionsWrapper.Parent = self.Container
+    
+    self.Theme.CreateCorner(self.OptionsWrapper, 6)
+    
+    -- Options List - inside wrapper
     self.OptionsList = Instance.new("ScrollingFrame")
-    self.OptionsList.BackgroundColor3 = self.Theme.Colors.Secondary
+    self.OptionsList.BackgroundTransparency = 1
     self.OptionsList.BorderSizePixel = 0
-    self.OptionsList.Size = UDim2.new(1, -24, 0, 0)
-    self.OptionsList.Position = UDim2.fromOffset(8, 74)
+    self.OptionsList.Size = UDim2.new(1, 0, 1, 0)
+    self.OptionsList.Position = UDim2.fromOffset(0, 0)
     self.OptionsList.ScrollBarThickness = 4
     self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
-    self.OptionsList.Visible = false
-    self.OptionsList.ClipsDescendants = true
     self.OptionsList.ZIndex = 5
-    self.OptionsList.Parent = self.Container
-    
-    self.Theme.CreateCorner(self.OptionsList, 6)
+    self.OptionsList.Parent = self.OptionsWrapper
     
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -1535,13 +1553,13 @@ function MultiSelect:Toggle()
     
     if self.Open then
         local optionsHeight = math.min(#self.Config.Options * 30, 150)
-        self.OptionsList.Size = UDim2.new(1, 0, 0, optionsHeight)
-        self.OptionsList.Visible = true
+        self.OptionsWrapper.Size = UDim2.new(1, -16, 0, optionsHeight)
+        self.OptionsWrapper.Visible = true
         self.Container.Size = UDim2.new(1, 0, 0, 74 + optionsHeight + 4)
         self.ChevronIcon.Rotation = 180
     else
-        self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
-        self.OptionsList.Visible = false
+        self.OptionsWrapper.Size = UDim2.new(1, -16, 0, 0)
+        self.OptionsWrapper.Visible = false
         self.Container.Size = UDim2.new(1, 0, 0, 74)
         self.ChevronIcon.Rotation = 0
     end
