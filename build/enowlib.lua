@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 11:11:06
+-- Built: 2025-12-27 11:20:06
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2431,6 +2431,9 @@ function Window.new(config, theme, utils, enowlib)
         self.Config.Size.Y.Offset
     )
     
+    -- Responsive scale factor (will be calculated based on window size)
+    self.ScaleFactor = 1
+    
     self:CreateUI()
     
     if self.Config.AutoResize then
@@ -2438,6 +2441,43 @@ function Window.new(config, theme, utils, enowlib)
     end
     
     return self
+end
+
+function Window:CalculateScaleFactor()
+    -- Calculate scale factor based on window width
+    -- Base width: 900px = scale 1.0
+    -- Mobile width: 400px = scale 0.5
+    local windowWidth = self.Container.AbsoluteSize.X
+    local scaleFactor = windowWidth / 900
+    
+    -- Clamp between 0.5 and 1.2
+    scaleFactor = math.clamp(scaleFactor, 0.5, 1.2)
+    
+    return scaleFactor
+end
+
+function Window:ApplyResponsiveScaling()
+    self.ScaleFactor = self:CalculateScaleFactor()
+    
+    -- Scale sidebar width
+    local sidebarWidth = math.floor(280 * self.ScaleFactor)
+    self.Sidebar.Size = UDim2.new(0, sidebarWidth, 1, -73)
+    self.VerticalSeparator.Position = UDim2.fromOffset(sidebarWidth, 49)
+    self.ContentArea.Size = UDim2.new(1, -(sidebarWidth + 1), 1, -73)
+    self.ContentArea.Position = UDim2.fromOffset(sidebarWidth + 1, 49)
+    
+    -- Scale font sizes in theme
+    local baseFontSize = 14
+    self.Theme.Font.Size.Small = math.floor(11 * self.ScaleFactor)
+    self.Theme.Font.Size.Medium = math.floor(baseFontSize * self.ScaleFactor)
+    self.Theme.Font.Size.Large = math.floor(16 * self.ScaleFactor)
+    
+    -- Scale spacing
+    self.Theme.Spacing.Small = math.floor(4 * self.ScaleFactor)
+    self.Theme.Spacing.Medium = math.floor(8 * self.ScaleFactor)
+    self.Theme.Spacing.Large = math.floor(16 * self.ScaleFactor)
+    
+    print("[EnowLib] Scale factor:", self.ScaleFactor, "Sidebar width:", sidebarWidth)
 end
 
 function Window:CreateUI()
@@ -2756,6 +2796,10 @@ function Window:SetupAutoResize()
             Size = UDim2.fromOffset(newSize.X, newSize.Y),
             Position = UDim2.fromOffset(newX, newY)
         }, 0.3)
+        
+        -- Apply responsive scaling after resize
+        task.wait(0.35)
+        self:ApplyResponsiveScaling()
     end
     
     -- Listen to viewport size changes
@@ -2782,6 +2826,10 @@ function Window:SetupAutoResize()
             local centerX = (viewportSize.X - windowSize.X) / 2
             local centerY = (viewportSize.Y - windowSize.Y) / 2
             self.Container.Position = UDim2.fromOffset(centerX, centerY)
+            
+            -- Apply initial responsive scaling
+            task.wait(0.05)
+            self:ApplyResponsiveScaling()
         end
     end)
 end
