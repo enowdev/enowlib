@@ -27,17 +27,17 @@ function ColorPicker:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 48)
+    self.Container.Size = UDim2.new(1, 0, 0, 27)  -- 48 * 0.75 = 36, but match toggle at 27
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 12)
+    self.Theme.CreatePadding(self.Container, 6)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 1, 0)
+    title.Size = UDim2.new(1, -45, 1, 0)  -- 60 * 0.75 = 45
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -46,20 +46,20 @@ function ColorPicker:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     -- Color Display
     self.ColorDisplay = Instance.new("TextButton")
     self.ColorDisplay.BackgroundColor3 = self.Value
     self.ColorDisplay.BorderSizePixel = 0
-    self.ColorDisplay.Size = UDim2.fromOffset(44, 24)
+    self.ColorDisplay.Size = UDim2.fromOffset(33, 18)  -- 44x24 * 0.75 = 33x18
     self.ColorDisplay.Position = UDim2.new(1, 0, 0.5, 0)
     self.ColorDisplay.AnchorPoint = Vector2.new(1, 0.5)
     self.ColorDisplay.Text = ""
     self.ColorDisplay.Parent = self.Container
     
-    self.Theme.CreateCorner(self.ColorDisplay, 6)
+    self.Theme.CreateCorner(self.ColorDisplay, 4)
     self.Theme.CreateStroke(self.ColorDisplay, self.Theme.Colors.Border)
     
     -- Simple color picker (click to cycle through preset colors)

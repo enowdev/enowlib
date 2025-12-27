@@ -28,7 +28,7 @@ function Tab:CreateUI()
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BackgroundTransparency = self.Theme.Transparency.Subtle
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 32)
+    self.Button.Size = UDim2.new(1, 0, 0, 24)  -- 32 * 0.75 = 24
     self.Button.Font = self.Theme.Font.Regular
     self.Button.Text = ""
     self.Button.TextColor3 = self.Theme.Colors.TextDim
@@ -36,14 +36,14 @@ function Tab:CreateUI()
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Window.SidebarList
     
-    self.Theme.CreateCorner(self.Button, 6)
-    self.Theme.CreatePadding(self.Button, 8)
+    self.Theme.CreateCorner(self.Button, 4)
+    self.Theme.CreatePadding(self.Button, 6)
     
     -- Tab Icon (optional)
     if self.Config.Icon then
         self.TabIcon = Instance.new("ImageLabel")
         self.TabIcon.BackgroundTransparency = 1
-        self.TabIcon.Size = UDim2.fromOffset(14, 14)
+        self.TabIcon.Size = UDim2.fromOffset(11, 11)  -- 14 * 0.75 = 10.5 ≈ 11
         self.TabIcon.Position = UDim2.fromOffset(0, 0)
         self.TabIcon.AnchorPoint = Vector2.new(0, 0.5)
         self.TabIcon.Image = self.Config.Icon
@@ -61,16 +61,16 @@ function Tab:CreateUI()
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
     self.ChevronIcon.BackgroundTransparency = 1
-    self.ChevronIcon.Size = UDim2.fromOffset(14, 14)
-    self.ChevronIcon.Position = UDim2.new(1, -14, 0.5, 0)
+    self.ChevronIcon.Size = UDim2.fromOffset(11, 11)  -- 14 * 0.75 = 10.5 ≈ 11
+    self.ChevronIcon.Position = UDim2.new(1, -11, 0.5, 0)
     self.ChevronIcon.AnchorPoint = Vector2.new(0, 0.5)
     self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
     
     -- Title
-    local titleOffset = self.Config.Icon and 20 or 0
-    local titleRightOffset = 20
+    local titleOffset = self.Config.Icon and 15 or 0  -- 20 * 0.75 = 15
+    local titleRightOffset = 15  -- 20 * 0.75 = 15
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -(titleOffset + titleRightOffset), 1, 0)
@@ -83,7 +83,7 @@ function Tab:CreateUI()
     title.Parent = self.Button
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     self.Title = title

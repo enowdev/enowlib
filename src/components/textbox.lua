@@ -28,17 +28,17 @@ function TextBox:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 86)
+    self.Container.Size = UDim2.new(1, 0, 0, 65)  -- 86 * 0.75 = 64.5 ≈ 65
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 20)
+    self.Theme.CreatePadding(self.Container, 15)  -- 20 * 0.75 = 15
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, 0, 0, 20)
+    title.Size = UDim2.new(1, 0, 0, 15)  -- 20 * 0.75 = 15
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -47,15 +47,15 @@ function TextBox:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     -- Input Box
     self.InputBox = Instance.new("TextBox")
     self.InputBox.BackgroundColor3 = self.Theme.Colors.Secondary
     self.InputBox.BorderSizePixel = 0
-    self.InputBox.Size = UDim2.new(1, 0, 0, 32)
-    self.InputBox.Position = UDim2.fromOffset(0, 26)
+    self.InputBox.Size = UDim2.new(1, 0, 0, 24)  -- 32 * 0.75 = 24
+    self.InputBox.Position = UDim2.fromOffset(0, 20)  -- 26 * 0.75 = 19.5 ≈ 20
     self.InputBox.Font = self.Theme.Font.Mono
     self.InputBox.Text = self.Value
     self.InputBox.PlaceholderText = self.Config.Placeholder
@@ -66,11 +66,11 @@ function TextBox:CreateUI()
     self.InputBox.ClearTextOnFocus = false
     self.InputBox.Parent = self.Container
     
-    self.Theme.CreateCorner(self.InputBox, 6)
-    self.Theme.CreatePadding(self.InputBox, 10)
+    self.Theme.CreateCorner(self.InputBox, 4)
+    self.Theme.CreatePadding(self.InputBox, 8)
     
     local inputBoxSizeConstraint = Instance.new("UITextSizeConstraint")
-    inputBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    inputBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     inputBoxSizeConstraint.Parent = self.InputBox
     
     -- Events

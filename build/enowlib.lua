@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 12:05:05
+-- Built: 2025-12-27 12:21:06
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -599,7 +599,7 @@ function Button:CreateUI()
     self.Container = Instance.new("TextButton")
     self.Container.BackgroundColor3 = self.Theme.Colors.Accent
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 36)
+    self.Container.Size = UDim2.new(1, 0, 0, 27)  -- 36 * 0.75 = 27
     self.Container.Font = self.Theme.Font.Regular
     self.Container.Text = self.Config.Text
     self.Container.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -610,12 +610,12 @@ function Button:CreateUI()
     
     -- Add TextSizeConstraint for better scaling
     local textConstraint = Instance.new("UITextSizeConstraint")
-    textConstraint.MaxTextSize = self.Theme.Font.Size.Regular
-    textConstraint.MinTextSize = 10
+    textConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    textConstraint.MinTextSize = 8
     textConstraint.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Container, 6)
-    self.Theme.CreatePadding(self.Container, 8)
+    self.Theme.CreateCorner(self.Container, 4)
+    self.Theme.CreatePadding(self.Container, 6)
     self.Theme.CreateCorner(self.Container)
     
     self.Container.MouseButton1Click:Connect(function()
@@ -672,17 +672,17 @@ function Toggle:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 36)
+    self.Container.Size = UDim2.new(1, 0, 0, 27)  -- 36 * 0.75 = 27
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
+    self.Theme.CreatePadding(self.Container, 6)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -50, 1, 0)
+    title.Size = UDim2.new(1, -40, 1, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -691,34 +691,34 @@ function Toggle:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     -- Switch
     self.Switch = Instance.new("Frame")
     self.Switch.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Switch.BorderSizePixel = 0
-    self.Switch.Size = UDim2.fromOffset(36, 20)
+    self.Switch.Size = UDim2.fromOffset(27, 15)  -- 36x20 * 0.75 = 27x15
     self.Switch.Position = UDim2.new(1, 0, 0.5, 0)
     self.Switch.AnchorPoint = Vector2.new(1, 0.5)
     self.Switch.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Switch, 10)
+    self.Theme.CreateCorner(self.Switch, 8)
     
     -- Knob
     self.Knob = Instance.new("Frame")
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(16, 16)
+    self.Knob.Size = UDim2.fromOffset(12, 12)  -- 16x16 * 0.75 = 12x12
     self.Knob.Position = UDim2.fromOffset(2, 2)
     self.Knob.Parent = self.Switch
     
-    self.Theme.CreateCorner(self.Knob, 8)
+    self.Theme.CreateCorner(self.Knob, 6)
     
     -- Check icon
     self.CheckIcon = Instance.new("ImageLabel")
     self.CheckIcon.BackgroundTransparency = 1
-    self.CheckIcon.Size = UDim2.fromOffset(12, 12)
+    self.CheckIcon.Size = UDim2.fromOffset(9, 9)  -- 12 * 0.75 = 9
     self.CheckIcon.Position = UDim2.fromScale(0.5, 0.5)
     self.CheckIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     self.CheckIcon.Image = self.Theme.Icons.Check
@@ -764,7 +764,7 @@ function Toggle:UpdateVisual()
         }, self.Theme.Animation.Duration)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(18, 2)
+            Position = UDim2.fromOffset(13, 2)  -- 18 * 0.75 = 13.5 ≈ 13
         }, self.Theme.Animation.Duration)
         
         self.Utils.Tween(self.CheckIcon, {
@@ -828,17 +828,17 @@ function Slider:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 60)
+    self.Container.Size = UDim2.new(1, 0, 0, 45)  -- 60 * 0.75 = 45
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 12)
+    self.Theme.CreatePadding(self.Container, 9)  -- 12 * 0.75 = 9
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 0, 18)
+    title.Size = UDim2.new(1, -45, 0, 14)  -- 60 * 0.75 = 45, 18 * 0.75 = 13.5 ≈ 14
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -847,14 +847,14 @@ function Slider:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     -- Value
     self.ValueLabel = Instance.new("TextLabel")
     self.ValueLabel.BackgroundTransparency = 1
-    self.ValueLabel.Size = UDim2.fromOffset(50, 18)
-    self.ValueLabel.Position = UDim2.new(1, -50, 0, 0)
+    self.ValueLabel.Size = UDim2.fromOffset(38, 14)  -- 50 * 0.75 = 37.5 ≈ 38, 18 * 0.75 = 13.5 ≈ 14
+    self.ValueLabel.Position = UDim2.new(1, -38, 0, 0)
     self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Accent
@@ -863,15 +863,15 @@ function Slider:CreateUI()
     self.ValueLabel.Parent = self.Container
     
     local valueSizeConstraint = Instance.new("UITextSizeConstraint")
-    valueSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    valueSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     valueSizeConstraint.Parent = self.ValueLabel
     
     -- Track
     self.Track = Instance.new("Frame")
     self.Track.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Track.BorderSizePixel = 0
-    self.Track.Size = UDim2.new(1, 0, 0, 6)
-    self.Track.Position = UDim2.fromOffset(0, 30)
+    self.Track.Size = UDim2.new(1, 0, 0, 5)  -- 6 * 0.75 = 4.5 ≈ 5
+    self.Track.Position = UDim2.fromOffset(0, 23)  -- 30 * 0.75 = 22.5 ≈ 23
     self.Track.Parent = self.Container
     
     self.Theme.CreateCorner(self.Track, 3)
@@ -889,19 +889,19 @@ function Slider:CreateUI()
     self.Knob = Instance.new("Frame")
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(16, 16)
+    self.Knob.Size = UDim2.fromOffset(12, 12)  -- 16 * 0.75 = 12
     self.Knob.Position = UDim2.new(0, 0, 0.5, 0)
     self.Knob.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Knob.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Knob, 8)
+    self.Theme.CreateCorner(self.Knob, 6)
     self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Accent, 2)
     
     -- Input Button
     local input = Instance.new("TextButton")
     input.BackgroundTransparency = 1
-    input.Size = UDim2.new(1, 0, 0, 20)
-    input.Position = UDim2.fromOffset(0, 25)
+    input.Size = UDim2.new(1, 0, 0, 15)  -- 20 * 0.75 = 15
+    input.Position = UDim2.fromOffset(0, 19)  -- 25 * 0.75 = 18.75 ≈ 19
     input.Text = ""
     input.Parent = self.Container
     
@@ -929,7 +929,7 @@ function Slider:CreateUI()
             if self.Dragging then
                 self.Dragging = false
                 self.Utils.Tween(self.Knob, {
-                    Size = UDim2.fromOffset(16, 16)
+                    Size = UDim2.fromOffset(12, 12)
                 }, 0.15)
             end
         end
@@ -947,14 +947,14 @@ function Slider:CreateUI()
     -- Hover effect on knob
     table.insert(self.Connections, input.MouseEnter:Connect(function()
         self.Utils.Tween(self.Knob, {
-            Size = UDim2.fromOffset(18, 18)
+            Size = UDim2.fromOffset(14, 14)  -- 18 * 0.75 = 13.5 ≈ 14
         }, 0.15)
     end))
     
     table.insert(self.Connections, input.MouseLeave:Connect(function()
         if not self.Dragging then
             self.Utils.Tween(self.Knob, {
-                Size = UDim2.fromOffset(16, 16)
+                Size = UDim2.fromOffset(12, 12)
             }, 0.15)
         end
     end))
@@ -1012,17 +1012,17 @@ function TextBox:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 86)
+    self.Container.Size = UDim2.new(1, 0, 0, 65)  -- 86 * 0.75 = 64.5 ≈ 65
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 20)
+    self.Theme.CreatePadding(self.Container, 15)  -- 20 * 0.75 = 15
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, 0, 0, 20)
+    title.Size = UDim2.new(1, 0, 0, 15)  -- 20 * 0.75 = 15
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -1031,15 +1031,15 @@ function TextBox:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     -- Input Box
     self.InputBox = Instance.new("TextBox")
     self.InputBox.BackgroundColor3 = self.Theme.Colors.Secondary
     self.InputBox.BorderSizePixel = 0
-    self.InputBox.Size = UDim2.new(1, 0, 0, 32)
-    self.InputBox.Position = UDim2.fromOffset(0, 26)
+    self.InputBox.Size = UDim2.new(1, 0, 0, 24)  -- 32 * 0.75 = 24
+    self.InputBox.Position = UDim2.fromOffset(0, 20)  -- 26 * 0.75 = 19.5 ≈ 20
     self.InputBox.Font = self.Theme.Font.Mono
     self.InputBox.Text = self.Value
     self.InputBox.PlaceholderText = self.Config.Placeholder
@@ -1050,11 +1050,11 @@ function TextBox:CreateUI()
     self.InputBox.ClearTextOnFocus = false
     self.InputBox.Parent = self.Container
     
-    self.Theme.CreateCorner(self.InputBox, 6)
-    self.Theme.CreatePadding(self.InputBox, 10)
+    self.Theme.CreateCorner(self.InputBox, 4)
+    self.Theme.CreatePadding(self.InputBox, 8)
     
     local inputBoxSizeConstraint = Instance.new("UITextSizeConstraint")
-    inputBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    inputBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     inputBoxSizeConstraint.Parent = self.InputBox
     
     -- Events
@@ -1654,17 +1654,17 @@ function ColorPicker:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 48)
+    self.Container.Size = UDim2.new(1, 0, 0, 27)  -- 48 * 0.75 = 36, but match toggle at 27
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 12)
+    self.Theme.CreatePadding(self.Container, 6)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 1, 0)
+    title.Size = UDim2.new(1, -45, 1, 0)  -- 60 * 0.75 = 45
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -1673,20 +1673,20 @@ function ColorPicker:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     -- Color Display
     self.ColorDisplay = Instance.new("TextButton")
     self.ColorDisplay.BackgroundColor3 = self.Value
     self.ColorDisplay.BorderSizePixel = 0
-    self.ColorDisplay.Size = UDim2.fromOffset(44, 24)
+    self.ColorDisplay.Size = UDim2.fromOffset(33, 18)  -- 44x24 * 0.75 = 33x18
     self.ColorDisplay.Position = UDim2.new(1, 0, 0.5, 0)
     self.ColorDisplay.AnchorPoint = Vector2.new(1, 0.5)
     self.ColorDisplay.Text = ""
     self.ColorDisplay.Parent = self.Container
     
-    self.Theme.CreateCorner(self.ColorDisplay, 6)
+    self.Theme.CreateCorner(self.ColorDisplay, 4)
     self.Theme.CreateStroke(self.ColorDisplay, self.Theme.Colors.Border)
     
     -- Simple color picker (click to cycle through preset colors)
@@ -1750,17 +1750,17 @@ function Keybind:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 48)
+    self.Container.Size = UDim2.new(1, 0, 0, 27)  -- 48 * 0.75 = 36, but match toggle at 27
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 12)
+    self.Theme.CreatePadding(self.Container, 6)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -100, 1, 0)
+    title.Size = UDim2.new(1, -70, 1, 0)  -- 100 * 0.75 = 75, but use 70
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -1769,14 +1769,14 @@ function Keybind:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     -- Keybind Button
     self.Button = Instance.new("TextButton")
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.fromOffset(80, 24)
+    self.Button.Size = UDim2.fromOffset(60, 18)  -- 80x24 * 0.75 = 60x18
     self.Button.Position = UDim2.new(1, 0, 0.5, 0)
     self.Button.AnchorPoint = Vector2.new(1, 0.5)
     self.Button.Font = self.Theme.Font.Mono
@@ -1786,10 +1786,10 @@ function Keybind:CreateUI()
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Button, 6)
+    self.Theme.CreateCorner(self.Button, 4)
     
     local buttonSizeConstraint = Instance.new("UITextSizeConstraint")
-    buttonSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    buttonSizeConstraint.MaxTextSize = 10  -- Small * 0.75 ≈ 10
     buttonSizeConstraint.Parent = self.Button
     
     -- Events
@@ -2310,7 +2310,7 @@ function Tab:CreateUI()
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BackgroundTransparency = self.Theme.Transparency.Subtle
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 32)
+    self.Button.Size = UDim2.new(1, 0, 0, 24)  -- 32 * 0.75 = 24
     self.Button.Font = self.Theme.Font.Regular
     self.Button.Text = ""
     self.Button.TextColor3 = self.Theme.Colors.TextDim
@@ -2318,14 +2318,14 @@ function Tab:CreateUI()
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Window.SidebarList
     
-    self.Theme.CreateCorner(self.Button, 6)
-    self.Theme.CreatePadding(self.Button, 8)
+    self.Theme.CreateCorner(self.Button, 4)
+    self.Theme.CreatePadding(self.Button, 6)
     
     -- Tab Icon (optional)
     if self.Config.Icon then
         self.TabIcon = Instance.new("ImageLabel")
         self.TabIcon.BackgroundTransparency = 1
-        self.TabIcon.Size = UDim2.fromOffset(14, 14)
+        self.TabIcon.Size = UDim2.fromOffset(11, 11)  -- 14 * 0.75 = 10.5 ≈ 11
         self.TabIcon.Position = UDim2.fromOffset(0, 0)
         self.TabIcon.AnchorPoint = Vector2.new(0, 0.5)
         self.TabIcon.Image = self.Config.Icon
@@ -2343,16 +2343,16 @@ function Tab:CreateUI()
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
     self.ChevronIcon.BackgroundTransparency = 1
-    self.ChevronIcon.Size = UDim2.fromOffset(14, 14)
-    self.ChevronIcon.Position = UDim2.new(1, -14, 0.5, 0)
+    self.ChevronIcon.Size = UDim2.fromOffset(11, 11)  -- 14 * 0.75 = 10.5 ≈ 11
+    self.ChevronIcon.Position = UDim2.new(1, -11, 0.5, 0)
     self.ChevronIcon.AnchorPoint = Vector2.new(0, 0.5)
     self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
     
     -- Title
-    local titleOffset = self.Config.Icon and 20 or 0
-    local titleRightOffset = 20
+    local titleOffset = self.Config.Icon and 15 or 0  -- 20 * 0.75 = 15
+    local titleRightOffset = 15  -- 20 * 0.75 = 15
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -(titleOffset + titleRightOffset), 1, 0)
@@ -2365,7 +2365,7 @@ function Tab:CreateUI()
     title.Parent = self.Button
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     self.Title = title
@@ -2580,18 +2580,18 @@ function Window:CreateUI()
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
     self.TitleBar.BackgroundTransparency = 1
-    self.TitleBar.Size = UDim2.new(1, 0, 0, 36)
+    self.TitleBar.Size = UDim2.new(1, 0, 0, 28)
     self.TitleBar.Parent = self.Container
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -50, 1, 0)
-    title.Position = UDim2.fromOffset(12, 0)
+    title.Size = UDim2.new(1, -40, 1, 0)
+    title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Regular
+    title.TextSize = self.Theme.Font.Size.Small
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.TitleBar
     
@@ -2600,8 +2600,8 @@ function Window:CreateUI()
     closeBtn.BackgroundColor3 = self.Theme.Colors.Secondary
     closeBtn.BackgroundTransparency = self.Theme.Transparency.Subtle
     closeBtn.BorderSizePixel = 0
-    closeBtn.Size = UDim2.fromOffset(24, 24)
-    closeBtn.Position = UDim2.new(1, -32, 0.5, -12)
+    closeBtn.Size = UDim2.fromOffset(20, 20)
+    closeBtn.Position = UDim2.new(1, -26, 0.5, -10)
     closeBtn.Text = ""
     closeBtn.Parent = self.TitleBar
     
@@ -2610,7 +2610,7 @@ function Window:CreateUI()
     -- Close Icon
     local closeIcon = Instance.new("ImageLabel")
     closeIcon.BackgroundTransparency = 1
-    closeIcon.Size = UDim2.fromOffset(16, 16)
+    closeIcon.Size = UDim2.fromOffset(14, 14)
     closeIcon.Position = UDim2.fromScale(0.5, 0.5)
     closeIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     closeIcon.Image = self.Theme.Icons.X
@@ -2647,7 +2647,7 @@ function Window:CreateUI()
     separator.BackgroundColor3 = self.Theme.Colors.Border
     separator.BorderSizePixel = 0
     separator.Size = UDim2.new(1, 0, 0, 1)
-    separator.Position = UDim2.new(0, 0, 0, 36)
+    separator.Position = UDim2.new(0, 0, 0, 28)
     separator.Parent = self.Container
     
     self.HeaderSeparator = separator
@@ -2658,8 +2658,8 @@ function Window:CreateUI()
     self.Sidebar.BackgroundColor3 = self.Theme.Colors.Panel
     self.Sidebar.BackgroundTransparency = 0.2
     self.Sidebar.BorderSizePixel = 0
-    self.Sidebar.Size = UDim2.new(0.3, 0, 1, -61)  -- 30% width, proportional
-    self.Sidebar.Position = UDim2.fromOffset(0, 37)
+    self.Sidebar.Size = UDim2.new(0.3, 0, 1, -47)  -- 30% width, proportional
+    self.Sidebar.Position = UDim2.fromOffset(0, 29)
     self.Sidebar.Parent = self.Container
     
     -- Sidebar Header
@@ -2668,39 +2668,39 @@ function Window:CreateUI()
     self.SidebarHeader.BackgroundColor3 = self.Theme.Colors.Secondary
     self.SidebarHeader.BackgroundTransparency = self.Theme.Transparency.Subtle
     self.SidebarHeader.BorderSizePixel = 0
-    self.SidebarHeader.Size = UDim2.new(1, 0, 0, 28)
+    self.SidebarHeader.Size = UDim2.new(1, 0, 0, 22)
     self.SidebarHeader.Parent = self.Sidebar
     
     self.ExplorerLabel = Instance.new("TextLabel")
     self.ExplorerLabel.BackgroundTransparency = 1
-    self.ExplorerLabel.Size = UDim2.new(1, -12, 1, 0)
-    self.ExplorerLabel.Position = UDim2.fromOffset(8, 0)
+    self.ExplorerLabel.Size = UDim2.new(1, -8, 1, 0)
+    self.ExplorerLabel.Position = UDim2.fromOffset(6, 0)
     self.ExplorerLabel.Font = self.Theme.Font.Bold
     self.ExplorerLabel.Text = "EXPLORER"
     self.ExplorerLabel.TextColor3 = self.Theme.Colors.TextDim
-    self.ExplorerLabel.TextSize = 10
+    self.ExplorerLabel.TextSize = 9
     self.ExplorerLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.ExplorerLabel.Parent = self.SidebarHeader
     
     self.SidebarList = Instance.new("ScrollingFrame")
     self.SidebarList.BackgroundTransparency = 1
     self.SidebarList.BorderSizePixel = 0
-    self.SidebarList.Size = UDim2.new(1, 0, 1, -28)
-    self.SidebarList.Position = UDim2.fromOffset(0, 28)
-    self.SidebarList.ScrollBarThickness = 4
+    self.SidebarList.Size = UDim2.new(1, 0, 1, -22)
+    self.SidebarList.Position = UDim2.fromOffset(0, 22)
+    self.SidebarList.ScrollBarThickness = 3
     self.SidebarList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.SidebarList.CanvasSize = UDim2.fromOffset(0, 0)
     self.SidebarList.Parent = self.Sidebar
     
-    self.Theme.CreatePadding(self.SidebarList, 4)
+    self.Theme.CreatePadding(self.SidebarList, 3)
     
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, 4)
+    layout.Padding = UDim.new(0, 3)
     layout.Parent = self.SidebarList
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        self.SidebarList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 6)
+        self.SidebarList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 4)
     end)
     
     -- Vertical Separator - Position after sidebar (30%)
@@ -2708,8 +2708,8 @@ function Window:CreateUI()
     self.VerticalSeparator.Name = "VerticalSeparator"
     self.VerticalSeparator.BackgroundColor3 = self.Theme.Colors.Border
     self.VerticalSeparator.BorderSizePixel = 0
-    self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -61)
-    self.VerticalSeparator.Position = UDim2.new(0.3, 0, 0, 37)  -- At 30% width
+    self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -47)
+    self.VerticalSeparator.Position = UDim2.new(0.3, 0, 0, 29)  -- At 30% width
     self.VerticalSeparator.Parent = self.Container
     
     -- Content Area - Use remaining 70% width
@@ -2717,22 +2717,22 @@ function Window:CreateUI()
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BackgroundTransparency = 0.2
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(0.7, -1, 1, -61)  -- 70% width minus separator
-    self.ContentArea.Position = UDim2.new(0.3, 1, 0, 37)  -- Start after separator
-    self.ContentArea.ScrollBarThickness = 6
+    self.ContentArea.Size = UDim2.new(0.7, -1, 1, -47)  -- 70% width minus separator
+    self.ContentArea.Position = UDim2.new(0.3, 1, 0, 29)  -- Start after separator
+    self.ContentArea.ScrollBarThickness = 4
     self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
     self.ContentArea.Parent = self.Container
     
-    self.Theme.CreatePadding(self.ContentArea, 12)
+    self.Theme.CreatePadding(self.ContentArea, 8)
     
     local contentLayout = Instance.new("UIListLayout")
     contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    contentLayout.Padding = UDim.new(0, 8)
+    contentLayout.Padding = UDim.new(0, 6)
     contentLayout.Parent = self.ContentArea
     
     contentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        self.ContentArea.CanvasSize = UDim2.fromOffset(0, contentLayout.AbsoluteContentSize.Y + 24)
+        self.ContentArea.CanvasSize = UDim2.fromOffset(0, contentLayout.AbsoluteContentSize.Y + 16)
     end)
     
     -- Footer Separator
@@ -2741,26 +2741,26 @@ function Window:CreateUI()
     self.FooterSeparator.BackgroundColor3 = self.Theme.Colors.Border
     self.FooterSeparator.BorderSizePixel = 0
     self.FooterSeparator.Size = UDim2.new(1, 0, 0, 1)
-    self.FooterSeparator.Position = UDim2.new(0, 0, 1, -20)
+    self.FooterSeparator.Position = UDim2.new(0, 0, 1, -16)
     self.FooterSeparator.Parent = self.Container
     
     -- Footer
     self.Footer = Instance.new("Frame")
     self.Footer.Name = "Footer"
     self.Footer.BackgroundTransparency = 1
-    self.Footer.Size = UDim2.new(1, 0, 0, 20)
-    self.Footer.Position = UDim2.new(0, 0, 1, -20)
+    self.Footer.Size = UDim2.new(1, 0, 0, 16)
+    self.Footer.Position = UDim2.new(0, 0, 1, -16)
     self.Footer.Parent = self.Container
     
     -- Footer Text (read-only)
     self.FooterLabel = Instance.new("TextLabel")
     self.FooterLabel.BackgroundTransparency = 1
-    self.FooterLabel.Size = UDim2.new(1, -24, 1, 0)
-    self.FooterLabel.Position = UDim2.fromOffset(12, 0)
+    self.FooterLabel.Size = UDim2.new(1, -16, 1, 0)
+    self.FooterLabel.Position = UDim2.fromOffset(8, 0)
     self.FooterLabel.Font = self.Theme.Font.Mono
     self.FooterLabel.Text = "EnowLib v2.0.0"
     self.FooterLabel.TextColor3 = self.Theme.Colors.TextDim
-    self.FooterLabel.TextSize = 10
+    self.FooterLabel.TextSize = 9
     self.FooterLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.FooterLabel.Parent = self.Footer
     
@@ -2796,9 +2796,9 @@ function Window:SetupAutoResize()
         
         -- For mobile/small screens, use direct percentage (no compensation needed)
         if viewportSize.X < 1024 then
-            -- Direct: 65% width, 85% height of viewport
+            -- Direct: 65% width, 75% height of viewport
             local newWidth = viewportSize.X * 0.65
-            local newHeight = viewportSize.Y * 0.85
+            local newHeight = viewportSize.Y * 0.75
             
             -- Apply min constraints
             newWidth = math.max(newWidth, 300)
@@ -2846,7 +2846,7 @@ function Window:SetupAutoResize()
         
         -- Calculate new position ensuring header stays visible
         local minY = 0  -- Minimum Y to keep header visible
-        local maxY = viewportSize.Y - 36  -- At least 36px (header height) visible
+        local maxY = viewportSize.Y - 28  -- At least 28px (header height) visible
         local maxX = viewportSize.X - 100  -- At least 100px visible on right
         
         -- Clamp position to keep window within bounds
@@ -2861,7 +2861,7 @@ function Window:SetupAutoResize()
             newY = viewportSize.Y - newSize.Y
         end
         
-        -- Ensure at least header is visible (36px from top)
+        -- Ensure at least header is visible (28px from top)
         if newY < 0 then
             newY = 0
         end

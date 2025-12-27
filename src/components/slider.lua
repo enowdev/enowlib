@@ -34,17 +34,17 @@ function Slider:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 60)
+    self.Container.Size = UDim2.new(1, 0, 0, 45)  -- 60 * 0.75 = 45
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 12)
+    self.Theme.CreatePadding(self.Container, 9)  -- 12 * 0.75 = 9
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 0, 18)
+    title.Size = UDim2.new(1, -45, 0, 14)  -- 60 * 0.75 = 45, 18 * 0.75 = 13.5 ≈ 14
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -53,14 +53,14 @@ function Slider:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     -- Value
     self.ValueLabel = Instance.new("TextLabel")
     self.ValueLabel.BackgroundTransparency = 1
-    self.ValueLabel.Size = UDim2.fromOffset(50, 18)
-    self.ValueLabel.Position = UDim2.new(1, -50, 0, 0)
+    self.ValueLabel.Size = UDim2.fromOffset(38, 14)  -- 50 * 0.75 = 37.5 ≈ 38, 18 * 0.75 = 13.5 ≈ 14
+    self.ValueLabel.Position = UDim2.new(1, -38, 0, 0)
     self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Accent
@@ -69,15 +69,15 @@ function Slider:CreateUI()
     self.ValueLabel.Parent = self.Container
     
     local valueSizeConstraint = Instance.new("UITextSizeConstraint")
-    valueSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    valueSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     valueSizeConstraint.Parent = self.ValueLabel
     
     -- Track
     self.Track = Instance.new("Frame")
     self.Track.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Track.BorderSizePixel = 0
-    self.Track.Size = UDim2.new(1, 0, 0, 6)
-    self.Track.Position = UDim2.fromOffset(0, 30)
+    self.Track.Size = UDim2.new(1, 0, 0, 5)  -- 6 * 0.75 = 4.5 ≈ 5
+    self.Track.Position = UDim2.fromOffset(0, 23)  -- 30 * 0.75 = 22.5 ≈ 23
     self.Track.Parent = self.Container
     
     self.Theme.CreateCorner(self.Track, 3)
@@ -95,19 +95,19 @@ function Slider:CreateUI()
     self.Knob = Instance.new("Frame")
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(16, 16)
+    self.Knob.Size = UDim2.fromOffset(12, 12)  -- 16 * 0.75 = 12
     self.Knob.Position = UDim2.new(0, 0, 0.5, 0)
     self.Knob.AnchorPoint = Vector2.new(0.5, 0.5)
     self.Knob.Parent = self.Track
     
-    self.Theme.CreateCorner(self.Knob, 8)
+    self.Theme.CreateCorner(self.Knob, 6)
     self.Theme.CreateStroke(self.Knob, self.Theme.Colors.Accent, 2)
     
     -- Input Button
     local input = Instance.new("TextButton")
     input.BackgroundTransparency = 1
-    input.Size = UDim2.new(1, 0, 0, 20)
-    input.Position = UDim2.fromOffset(0, 25)
+    input.Size = UDim2.new(1, 0, 0, 15)  -- 20 * 0.75 = 15
+    input.Position = UDim2.fromOffset(0, 19)  -- 25 * 0.75 = 18.75 ≈ 19
     input.Text = ""
     input.Parent = self.Container
     
@@ -135,7 +135,7 @@ function Slider:CreateUI()
             if self.Dragging then
                 self.Dragging = false
                 self.Utils.Tween(self.Knob, {
-                    Size = UDim2.fromOffset(16, 16)
+                    Size = UDim2.fromOffset(12, 12)
                 }, 0.15)
             end
         end
@@ -153,14 +153,14 @@ function Slider:CreateUI()
     -- Hover effect on knob
     table.insert(self.Connections, input.MouseEnter:Connect(function()
         self.Utils.Tween(self.Knob, {
-            Size = UDim2.fromOffset(18, 18)
+            Size = UDim2.fromOffset(14, 14)  -- 18 * 0.75 = 13.5 ≈ 14
         }, 0.15)
     end))
     
     table.insert(self.Connections, input.MouseLeave:Connect(function()
         if not self.Dragging then
             self.Utils.Tween(self.Knob, {
-                Size = UDim2.fromOffset(16, 16)
+                Size = UDim2.fromOffset(12, 12)
             }, 0.15)
         end
     end))

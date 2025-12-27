@@ -30,17 +30,17 @@ function Keybind:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 48)
+    self.Container.Size = UDim2.new(1, 0, 0, 27)  -- 48 * 0.75 = 36, but match toggle at 27
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 12)
+    self.Theme.CreatePadding(self.Container, 6)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -100, 1, 0)
+    title.Size = UDim2.new(1, -70, 1, 0)  -- 100 * 0.75 = 75, but use 70
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
@@ -49,14 +49,14 @@ function Keybind:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     -- Keybind Button
     self.Button = Instance.new("TextButton")
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.fromOffset(80, 24)
+    self.Button.Size = UDim2.fromOffset(60, 18)  -- 80x24 * 0.75 = 60x18
     self.Button.Position = UDim2.new(1, 0, 0.5, 0)
     self.Button.AnchorPoint = Vector2.new(1, 0.5)
     self.Button.Font = self.Theme.Font.Mono
@@ -66,10 +66,10 @@ function Keybind:CreateUI()
     self.Button.AutoButtonColor = false
     self.Button.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Button, 6)
+    self.Theme.CreateCorner(self.Button, 4)
     
     local buttonSizeConstraint = Instance.new("UITextSizeConstraint")
-    buttonSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    buttonSizeConstraint.MaxTextSize = 10  -- Small * 0.75 ≈ 10
     buttonSizeConstraint.Parent = self.Button
     
     -- Events

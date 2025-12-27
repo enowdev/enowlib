@@ -23,7 +23,7 @@ function Button:CreateUI()
     self.Container = Instance.new("TextButton")
     self.Container.BackgroundColor3 = self.Theme.Colors.Accent
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 36)
+    self.Container.Size = UDim2.new(1, 0, 0, 27)  -- 36 * 0.75 = 27
     self.Container.Font = self.Theme.Font.Regular
     self.Container.Text = self.Config.Text
     self.Container.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -34,12 +34,12 @@ function Button:CreateUI()
     
     -- Add TextSizeConstraint for better scaling
     local textConstraint = Instance.new("UITextSizeConstraint")
-    textConstraint.MaxTextSize = self.Theme.Font.Size.Regular
-    textConstraint.MinTextSize = 10
+    textConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    textConstraint.MinTextSize = 8
     textConstraint.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Container, 6)
-    self.Theme.CreatePadding(self.Container, 8)
+    self.Theme.CreateCorner(self.Container, 4)
+    self.Theme.CreatePadding(self.Container, 6)
     self.Theme.CreateCorner(self.Container)
     
     self.Container.MouseButton1Click:Connect(function()

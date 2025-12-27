@@ -28,17 +28,17 @@ function Toggle:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 36)
+    self.Container.Size = UDim2.new(1, 0, 0, 27)  -- 36 * 0.75 = 27
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 8)
+    self.Theme.CreatePadding(self.Container, 6)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -50, 1, 0)
+    title.Size = UDim2.new(1, -40, 1, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -47,34 +47,34 @@ function Toggle:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
     titleSizeConstraint.Parent = title
     
     -- Switch
     self.Switch = Instance.new("Frame")
     self.Switch.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Switch.BorderSizePixel = 0
-    self.Switch.Size = UDim2.fromOffset(36, 20)
+    self.Switch.Size = UDim2.fromOffset(27, 15)  -- 36x20 * 0.75 = 27x15
     self.Switch.Position = UDim2.new(1, 0, 0.5, 0)
     self.Switch.AnchorPoint = Vector2.new(1, 0.5)
     self.Switch.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Switch, 10)
+    self.Theme.CreateCorner(self.Switch, 8)
     
     -- Knob
     self.Knob = Instance.new("Frame")
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(16, 16)
+    self.Knob.Size = UDim2.fromOffset(12, 12)  -- 16x16 * 0.75 = 12x12
     self.Knob.Position = UDim2.fromOffset(2, 2)
     self.Knob.Parent = self.Switch
     
-    self.Theme.CreateCorner(self.Knob, 8)
+    self.Theme.CreateCorner(self.Knob, 6)
     
     -- Check icon
     self.CheckIcon = Instance.new("ImageLabel")
     self.CheckIcon.BackgroundTransparency = 1
-    self.CheckIcon.Size = UDim2.fromOffset(12, 12)
+    self.CheckIcon.Size = UDim2.fromOffset(9, 9)  -- 12 * 0.75 = 9
     self.CheckIcon.Position = UDim2.fromScale(0.5, 0.5)
     self.CheckIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     self.CheckIcon.Image = self.Theme.Icons.Check
@@ -120,7 +120,7 @@ function Toggle:UpdateVisual()
         }, self.Theme.Animation.Duration)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(18, 2)
+            Position = UDim2.fromOffset(13, 2)  -- 18 * 0.75 = 13.5 ≈ 13
         }, self.Theme.Animation.Duration)
         
         self.Utils.Tween(self.CheckIcon, {
