@@ -259,6 +259,9 @@ function Window:SetupAutoResize()
     local UserInputService = game:GetService("UserInputService")
     local Camera = workspace.CurrentCamera
     
+    -- Track if user has manually moved the window
+    self.IsManuallyPositioned = false
+    
     -- Function to calculate scaled size
     local function calculateScaledSize()
         local viewportSize = Camera.ViewportSize
@@ -289,24 +292,18 @@ function Window:SetupAutoResize()
         local newSize = calculateScaledSize()
         local viewportSize = Camera.ViewportSize
         
-        -- Animate resize
+        -- Always recenter on resize to prevent header going off-screen
+        local centerX = (viewportSize.X - newSize.X) / 2
+        local centerY = (viewportSize.Y - newSize.Y) / 2
+        
+        -- Animate resize and recenter simultaneously
         self.Utils.Tween(self.Container, {
-            Size = UDim2.fromOffset(newSize.X, newSize.Y)
+            Size = UDim2.fromOffset(newSize.X, newSize.Y),
+            Position = UDim2.fromOffset(centerX, centerY)
         }, 0.3)
         
-        -- Ensure window stays within bounds
-        task.wait(0.3)
-        local pos = self.Container.AbsolutePosition
-        local size = self.Container.AbsoluteSize
-        
-        local newX = math.clamp(pos.X, 0, viewportSize.X - size.X)
-        local newY = math.clamp(pos.Y, 0, viewportSize.Y - size.Y)
-        
-        if pos.X ~= newX or pos.Y ~= newY then
-            self.Utils.Tween(self.Container, {
-                Position = UDim2.fromOffset(newX, newY)
-            }, 0.2)
-        end
+        -- Reset manual position flag after recenter
+        self.IsManuallyPositioned = false
     end
     
     -- Listen to viewport size changes
