@@ -42,13 +42,9 @@ function TextBox:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextScaled = true
+    title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
-    
-    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
-    titleSizeConstraint.Parent = title
     
     -- Input Box
     self.InputBox = Instance.new("TextBox")
@@ -61,17 +57,13 @@ function TextBox:CreateUI()
     self.InputBox.PlaceholderText = self.Config.Placeholder
     self.InputBox.TextColor3 = self.Theme.Colors.Text
     self.InputBox.PlaceholderColor3 = self.Theme.Colors.TextDim
-    self.InputBox.TextScaled = true
+    self.InputBox.TextSize = self.Theme.Font.Size.Regular
     self.InputBox.TextXAlignment = Enum.TextXAlignment.Left
     self.InputBox.ClearTextOnFocus = false
     self.InputBox.Parent = self.Container
     
     self.Theme.CreateCorner(self.InputBox, 4)
     self.Theme.CreatePadding(self.InputBox, 8)
-    
-    local inputBoxSizeConstraint = Instance.new("UITextSizeConstraint")
-    inputBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
-    inputBoxSizeConstraint.Parent = self.InputBox
     
     -- Events
     self.InputBox.FocusLost:Connect(function(enterPressed)

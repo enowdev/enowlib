@@ -28,13 +28,9 @@ function Label:CreateUI()
     self.Container.Font = self.Config.Font or self.Theme.Font.Regular
     self.Container.Text = self.Config.Text
     self.Container.TextColor3 = self.Config.Color or self.Theme.Colors.TextDim
-    self.Container.TextScaled = true
+    self.Container.TextSize = self.Config.Size or self.Theme.Font.Size.Regular
     self.Container.TextXAlignment = Enum.TextXAlignment.Left
     self.Container.Parent = self.Parent
-    
-    local textSizeConstraint = Instance.new("UITextSizeConstraint")
-    textSizeConstraint.MaxTextSize = self.Config.Size or self.Theme.Font.Size.Regular
-    textSizeConstraint.Parent = self.Container
 end
 
 return Label

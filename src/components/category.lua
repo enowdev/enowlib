@@ -70,13 +70,9 @@ function Category:CreateUI()
     self.Title.Font = self.Theme.Font.Mono
     self.Title.Text = self.Config.Title
     self.Title.TextColor3 = self.Theme.Colors.Text
-    self.Title.TextScaled = true
+    self.Title.TextSize = self.Theme.Font.Size.Regular
     self.Title.TextXAlignment = Enum.TextXAlignment.Left
     self.Title.Parent = self.Button
-    
-    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
-    titleSizeConstraint.Parent = self.Title
     
     -- Items Container
     self.ItemsContainer = Instance.new("Frame")

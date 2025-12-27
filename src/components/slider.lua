@@ -48,13 +48,9 @@ function Slider:CreateUI()
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextScaled = true
+    title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.Container
-    
-    local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
-    titleSizeConstraint.Parent = title
     
     -- Value
     self.ValueLabel = Instance.new("TextLabel")
@@ -64,13 +60,9 @@ function Slider:CreateUI()
     self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Accent
-    self.ValueLabel.TextScaled = true
+    self.ValueLabel.TextSize = self.Theme.Font.Size.Regular
     self.ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
     self.ValueLabel.Parent = self.Container
-    
-    local valueSizeConstraint = Instance.new("UITextSizeConstraint")
-    valueSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
-    valueSizeConstraint.Parent = self.ValueLabel
     
     -- Track
     self.Track = Instance.new("Frame")
