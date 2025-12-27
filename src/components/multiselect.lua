@@ -93,8 +93,8 @@ function MultiSelect:CreateUI()
     self.OptionsList = Instance.new("ScrollingFrame")
     self.OptionsList.BackgroundColor3 = self.Theme.Colors.Secondary
     self.OptionsList.BorderSizePixel = 0
-    self.OptionsList.Size = UDim2.new(1, 0, 0, 0)
-    self.OptionsList.Position = UDim2.fromOffset(0, 60)
+    self.OptionsList.Size = UDim2.new(1, -16, 0, 0)
+    self.OptionsList.Position = UDim2.fromOffset(8, 74)
     self.OptionsList.ScrollBarThickness = 4
     self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
@@ -103,6 +103,7 @@ function MultiSelect:CreateUI()
     self.OptionsList.Parent = self.Container
     
     self.Theme.CreateCorner(self.OptionsList, 6)
+    self.Theme.CreatePadding(self.OptionsList, 4)
     
     local layout = Instance.new("UIListLayout")
     layout.SortOrder = Enum.SortOrder.LayoutOrder

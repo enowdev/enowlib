@@ -327,11 +327,6 @@ SettingsCategory:AddItem({
             Font = window.Theme.Font.Bold
         })
         
-        window:AddParagraph({
-            Title = "About Interface Manager",
-            Content = "Manage UI visibility, keybinds, and themes. Press the minimize key to toggle UI visibility. Choose from 8 beautiful themes inspired by Kiro IDE. Auto-resize is enabled by default."
-        })
-        
         window:AddDivider()
         
         local interfaceSection = window:AddSection({
@@ -366,40 +361,6 @@ SettingsCategory:AddItem({
                     print("[Interface] Minimize key set to:", key)
                 end
             end
-        })
-        
-        window:AddDivider()
-        
-        window:AddLabel({
-            Text = "Auto-Resize Feature:",
-            Color = window.Theme.Colors.Accent
-        })
-        
-        window:AddLabel({
-            Text = "Window automatically scales when screen size changes (PC resize, mobile split-screen, tablet rotation)",
-            Color = window.Theme.Colors.TextDim
-        })
-        
-        window:AddLabel({
-            Text = "Min: 600x400 | Max: 1400x900 | Scale: 0.5x - 1.2x",
-            Color = window.Theme.Colors.TextDim
-        })
-        
-        window:AddDivider()
-        
-        window:AddLabel({
-            Text = "Available Themes:",
-            Color = window.Theme.Colors.Accent
-        })
-        
-        window:AddLabel({
-            Text = "Hacker (Green), Ocean (Blue), Purple (Violet), Sunset (Pink)",
-            Color = window.Theme.Colors.TextDim
-        })
-        
-        window:AddLabel({
-            Text = "Midnight (Dark Blue), Forest (Green), Amber (Orange), Crimson (Red)",
-            Color = window.Theme.Colors.TextDim
         })
     end
 })
