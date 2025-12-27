@@ -43,49 +43,13 @@ function Window.new(config, theme, utils, enowlib)
 end
 
 function Window:CalculateScaleFactor()
-    -- Calculate scale factor based on window width
-    -- Base width: 900px = scale 1.0
-    -- Mobile width: 400px = scale 0.4 (more aggressive)
-    local windowWidth = self.Container.AbsoluteSize.X
-    local scaleFactor = windowWidth / 900
-    
-    -- Clamp between 0.4 and 1.2 (lower min for more aggressive mobile scaling)
-    scaleFactor = math.clamp(scaleFactor, 0.4, 1.2)
-    
-    return scaleFactor
+    -- No longer needed - using proportional sizing instead
+    return 1
 end
 
 function Window:ApplyResponsiveScaling()
-    self.ScaleFactor = self:CalculateScaleFactor()
-    
-    -- Apply UIScale to children only, not Container
-    -- This keeps window size intact while scaling components
-    
-    if not self.TitleBarScale then
-        self.TitleBarScale = Instance.new("UIScale")
-        self.TitleBarScale.Parent = self.TitleBar
-    end
-    self.TitleBarScale.Scale = self.ScaleFactor
-    
-    if not self.SidebarScale then
-        self.SidebarScale = Instance.new("UIScale")
-        self.SidebarScale.Parent = self.Sidebar
-    end
-    self.SidebarScale.Scale = self.ScaleFactor
-    
-    if not self.ContentAreaScale then
-        self.ContentAreaScale = Instance.new("UIScale")
-        self.ContentAreaScale.Parent = self.ContentArea
-    end
-    self.ContentAreaScale.Scale = self.ScaleFactor
-    
-    if not self.FooterScale then
-        self.FooterScale = Instance.new("UIScale")
-        self.FooterScale.Parent = self.Footer
-    end
-    self.FooterScale.Scale = self.ScaleFactor
-    
-    print("[EnowLib] Scale factor:", self.ScaleFactor, "Applied to children only")
+    -- No longer needed - layout is now proportional
+    print("[EnowLib] Using proportional layout - no scaling needed")
 end
 
 function Window:CreateUI()
@@ -186,13 +150,13 @@ function Window:CreateUI()
     
     self.HeaderSeparator = separator
     
-    -- Tab Bar (Sidebar)
+    -- Tab Bar (Sidebar) - Use proportional width (30% of window)
     self.Sidebar = Instance.new("Frame")
     self.Sidebar.Name = "Sidebar"
     self.Sidebar.BackgroundColor3 = self.Theme.Colors.Panel
     self.Sidebar.BackgroundTransparency = 0.2
     self.Sidebar.BorderSizePixel = 0
-    self.Sidebar.Size = UDim2.new(0, 280, 1, -73)
+    self.Sidebar.Size = UDim2.new(0.3, 0, 1, -73)  -- 30% width, proportional
     self.Sidebar.Position = UDim2.fromOffset(0, 49)
     self.Sidebar.Parent = self.Container
     
@@ -237,22 +201,22 @@ function Window:CreateUI()
         self.SidebarList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 8)
     end)
     
-    -- Vertical Separator
+    -- Vertical Separator - Position after sidebar (30%)
     self.VerticalSeparator = Instance.new("Frame")
     self.VerticalSeparator.Name = "VerticalSeparator"
     self.VerticalSeparator.BackgroundColor3 = self.Theme.Colors.Border
     self.VerticalSeparator.BorderSizePixel = 0
     self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -73)
-    self.VerticalSeparator.Position = UDim2.fromOffset(280, 49)
+    self.VerticalSeparator.Position = UDim2.new(0.3, 0, 0, 49)  -- At 30% width
     self.VerticalSeparator.Parent = self.Container
     
-    -- Content Area
+    -- Content Area - Use remaining 70% width
     self.ContentArea = Instance.new("ScrollingFrame")
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BackgroundTransparency = 0.2
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(1, -281, 1, -73)
-    self.ContentArea.Position = UDim2.fromOffset(281, 49)
+    self.ContentArea.Size = UDim2.new(0.7, -1, 1, -73)  -- 70% width minus separator
+    self.ContentArea.Position = UDim2.new(0.3, 1, 0, 49)  -- Start after separator
     self.ContentArea.ScrollBarThickness = 6
     self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
@@ -405,10 +369,6 @@ function Window:SetupAutoResize()
             Size = UDim2.fromOffset(newSize.X, newSize.Y),
             Position = UDim2.fromOffset(newX, newY)
         }, 0.3)
-        
-        -- Apply responsive scaling after resize
-        task.wait(0.35)
-        self:ApplyResponsiveScaling()
     end
     
     -- Listen to viewport size changes
@@ -435,10 +395,6 @@ function Window:SetupAutoResize()
             local centerX = (viewportSize.X - windowSize.X) / 2
             local centerY = (viewportSize.Y - windowSize.Y) / 2
             self.Container.Position = UDim2.fromOffset(centerX, centerY)
-            
-            -- Apply initial responsive scaling
-            task.wait(0.05)
-            self:ApplyResponsiveScaling()
         end
     end)
 end
