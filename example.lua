@@ -23,15 +23,12 @@ local Icons = {
 
 print("Creating window...")
 
--- Window size behavior:
--- PC (viewport >= 1024px): Uses Size config (900x600)
--- Mobile (viewport < 1024px): Auto-scales to 50% of viewport size
+-- Window will auto-size based on device:
+-- Mobile (< 1024px): 50% of viewport
+-- PC (>= 1024px): 900x600 default
 local Window = EnowLib:CreateWindow({
-    Title = "EnowHub UI Testing",
-    Size = UDim2.fromOffset(900, 600),  -- Base size for PC
-    AutoResize = true,  -- Enable responsive scaling
-    MinSize = Vector2.new(600, 400),  -- Min size for PC
-    MaxSize = Vector2.new(1400, 900)  -- Max size for PC
+    Title = "EnowHub UI Testing"
+    -- Size, MinSize, MaxSize are optional - library handles it automatically
 })
 
 -- Initialize managers
