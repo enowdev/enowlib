@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 11:26:53
+-- Built: 2025-12-27 11:34:01
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2446,12 +2446,12 @@ end
 function Window:CalculateScaleFactor()
     -- Calculate scale factor based on window width
     -- Base width: 900px = scale 1.0
-    -- Mobile width: 400px = scale 0.5
+    -- Mobile width: 400px = scale 0.4 (more aggressive)
     local windowWidth = self.Container.AbsoluteSize.X
     local scaleFactor = windowWidth / 900
     
-    -- Clamp between 0.5 and 1.2
-    scaleFactor = math.clamp(scaleFactor, 0.5, 1.2)
+    -- Clamp between 0.4 and 1.2 (lower min for more aggressive mobile scaling)
+    scaleFactor = math.clamp(scaleFactor, 0.4, 1.2)
     
     return scaleFactor
 end
@@ -2459,25 +2459,25 @@ end
 function Window:ApplyResponsiveScaling()
     self.ScaleFactor = self:CalculateScaleFactor()
     
-    -- Scale sidebar width
+    -- Scale sidebar width more aggressively
     local sidebarWidth = math.floor(280 * self.ScaleFactor)
     self.Sidebar.Size = UDim2.new(0, sidebarWidth, 1, -73)
     self.VerticalSeparator.Position = UDim2.fromOffset(sidebarWidth, 49)
     self.ContentArea.Size = UDim2.new(1, -(sidebarWidth + 1), 1, -73)
     self.ContentArea.Position = UDim2.fromOffset(sidebarWidth + 1, 49)
     
-    -- Scale font sizes in theme
+    -- Scale font sizes more aggressively
     local baseFontSize = 14
-    self.Theme.Font.Size.Small = math.floor(11 * self.ScaleFactor)
-    self.Theme.Font.Size.Medium = math.floor(baseFontSize * self.ScaleFactor)
-    self.Theme.Font.Size.Large = math.floor(16 * self.ScaleFactor)
+    self.Theme.Font.Size.Small = math.max(8, math.floor(11 * self.ScaleFactor))
+    self.Theme.Font.Size.Medium = math.max(10, math.floor(baseFontSize * self.ScaleFactor))
+    self.Theme.Font.Size.Large = math.max(12, math.floor(16 * self.ScaleFactor))
     
-    -- Scale spacing
-    self.Theme.Spacing.Small = math.floor(4 * self.ScaleFactor)
-    self.Theme.Spacing.Medium = math.floor(8 * self.ScaleFactor)
-    self.Theme.Spacing.Large = math.floor(16 * self.ScaleFactor)
+    -- Scale spacing more aggressively
+    self.Theme.Spacing.Small = math.max(2, math.floor(4 * self.ScaleFactor))
+    self.Theme.Spacing.Medium = math.max(4, math.floor(8 * self.ScaleFactor))
+    self.Theme.Spacing.Large = math.max(8, math.floor(16 * self.ScaleFactor))
     
-    print("[EnowLib] Scale factor:", self.ScaleFactor, "Sidebar width:", sidebarWidth)
+    print("[EnowLib] Scale factor:", self.ScaleFactor, "Sidebar width:", sidebarWidth, "Font size:", self.Theme.Font.Size.Medium)
 end
 
 function Window:CreateUI()
