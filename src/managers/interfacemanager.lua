@@ -185,13 +185,14 @@ function InterfaceManager:SetupKeybind()
 end
 
 function InterfaceManager:Toggle()
-    if not self.Window or not self.Window.Container then
-        warn("[InterfaceManager] Window container not found")
+    if not self.Window then
+        warn("[InterfaceManager] Window not found")
         return
     end
     
-    self.Settings.Visible = not self.Settings.Visible
-    self.Window.Container.Visible = self.Settings.Visible
+    -- Call window's toggle method to handle blur effect
+    self.Window:Toggle()
+    self.Settings.Visible = self.Window.Container.Visible
 end
 
 function InterfaceManager:Show()
@@ -199,6 +200,11 @@ function InterfaceManager:Show()
     
     self.Settings.Visible = true
     self.Window.Container.Visible = true
+    
+    -- Enable blur effect
+    if self.Window.BlurEffect then
+        self.Window.BlurEffect.Enabled = true
+    end
 end
 
 function InterfaceManager:Hide()
@@ -206,6 +212,11 @@ function InterfaceManager:Hide()
     
     self.Settings.Visible = false
     self.Window.Container.Visible = false
+    
+    -- Disable blur effect
+    if self.Window.BlurEffect then
+        self.Window.BlurEffect.Enabled = false
+    end
 end
 
 function InterfaceManager:SetMinimizeKey(keyCode)

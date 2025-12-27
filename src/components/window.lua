@@ -348,43 +348,42 @@ function Window:MakeResizable(handle)
     local UserInputService = game:GetService("UserInputService")
     
     local dragging = false
+    local dragInput = nil
     local dragStart = nil
     local startSize = nil
-    local connection = nil
     
     handle.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
+            dragInput = input
             dragStart = input.Position
             startSize = self.Container.AbsoluteSize
-            
-            -- Create connection for input changed
-            connection = UserInputService.InputChanged:Connect(function(changedInput)
-                if dragging and (changedInput.UserInputType == Enum.UserInputType.MouseMovement or changedInput.UserInputType == Enum.UserInputType.Touch) then
-                    local delta = changedInput.Position - dragStart
-                    
-                    -- Calculate new size
-                    local newWidth = startSize.X + delta.X
-                    local newHeight = startSize.Y + delta.Y
-                    
-                    -- Apply min/max constraints
-                    newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
-                    newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
-                    
-                    -- Update container size
-                    self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
-                end
-            end)
         end
     end)
     
     handle.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        if input == dragInput then
             dragging = false
-            if connection then
-                connection:Disconnect()
-                connection = nil
-            end
+            dragInput = nil
+        end
+    end)
+    
+    -- Use global InputChanged for better touch support
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and input == dragInput then
+            local currentPos = input.Position
+            local delta = currentPos - dragStart
+            
+            -- Calculate new size
+            local newWidth = startSize.X + delta.X
+            local newHeight = startSize.Y + delta.Y
+            
+            -- Apply min/max constraints
+            newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
+            newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
+            
+            -- Update container size
+            self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
         end
     end)
 end
