@@ -279,14 +279,14 @@ function Window:SetupAutoResize()
     local function calculateScaledSize()
         local viewportSize = Camera.ViewportSize
         
-        -- For mobile/small screens, use 50% of viewport size
+        -- For mobile/small screens, use 25% of viewport size (1/4 of screen)
         if viewportSize.X < 1024 then
-            local newWidth = viewportSize.X * 0.5
-            local newHeight = viewportSize.Y * 0.5
+            local newWidth = viewportSize.X * 0.25
+            local newHeight = viewportSize.Y * 0.25
             
             -- Apply min constraints (but no max for mobile)
-            newWidth = math.max(newWidth, 350)
-            newHeight = math.max(newHeight, 250)
+            newWidth = math.max(newWidth, 300)
+            newHeight = math.max(newHeight, 200)
             
             return Vector2.new(newWidth, newHeight)
         end
