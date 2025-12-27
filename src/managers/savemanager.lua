@@ -48,8 +48,20 @@ function SaveManager:BuildConfig()
     local config = {
         Version = "2.0.0",
         Timestamp = os.time(),
-        Components = {}
+        Components = {},
+        Settings = {}
     }
+    
+    -- Save theme setting
+    if self.Window and self.Window.InterfaceManager then
+        local success, theme = pcall(function()
+            return self.Window.InterfaceManager.Settings.CurrentTheme
+        end)
+        
+        if success and theme then
+            config.Settings.Theme = theme
+        end
+    end
     
     for id, component in pairs(self.ComponentRegistry) do
         local success, value = pcall(function()
@@ -79,45 +91,61 @@ function SaveManager:BuildConfig()
 end
 
 function SaveManager:ApplyConfig(config)
-    if not config or not config.Components then
+    if not config then
         warn("[SaveManager] Invalid config data")
         return false
     end
     
     local appliedCount = 0
     
-    for id, value in pairs(config.Components) do
-        local component = self.ComponentRegistry[id]
-        
-        if component then
+    -- Apply theme setting
+    if config.Settings and config.Settings.Theme then
+        if self.Window and self.Window.InterfaceManager then
             local success = pcall(function()
-                -- Reconstruct Color3
-                if type(value) == "table" and value.R then
-                    value = Color3.new(value.R, value.G, value.B)
-                end
-                
-                -- Reconstruct EnumItem
-                if type(value) == "string" and component.Config and component.Config.Default then
-                    if typeof(component.Config.Default) == "EnumItem" then
-                        value = Enum.KeyCode[value]
-                    end
-                end
-                
-                -- Apply value
-                if component.SetValue then
-                    component:SetValue(value)
-                elseif component.Select then
-                    component:Select(value)
-                elseif component.Value ~= nil then
-                    component.Value = value
-                    if component.Config and component.Config.Callback then
-                        pcall(component.Config.Callback, value)
-                    end
-                end
+                self.Window.InterfaceManager:SetTheme(config.Settings.Theme)
             end)
             
             if success then
                 appliedCount = appliedCount + 1
+            end
+        end
+    end
+    
+    -- Apply component values
+    if config.Components then
+        for id, value in pairs(config.Components) do
+            local component = self.ComponentRegistry[id]
+            
+            if component then
+                local success = pcall(function()
+                    -- Reconstruct Color3
+                    if type(value) == "table" and value.R then
+                        value = Color3.new(value.R, value.G, value.B)
+                    end
+                    
+                    -- Reconstruct EnumItem
+                    if type(value) == "string" and component.Config and component.Config.Default then
+                        if typeof(component.Config.Default) == "EnumItem" then
+                            value = Enum.KeyCode[value]
+                        end
+                    end
+                    
+                    -- Apply value
+                    if component.SetValue then
+                        component:SetValue(value)
+                    elseif component.Select then
+                        component:Select(value)
+                    elseif component.Value ~= nil then
+                        component.Value = value
+                        if component.Config and component.Config.Callback then
+                            pcall(component.Config.Callback, value)
+                        end
+                    end
+                end)
+                
+                if success then
+                    appliedCount = appliedCount + 1
+                end
             end
         end
     end

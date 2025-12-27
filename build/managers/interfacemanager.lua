@@ -190,32 +190,50 @@ function InterfaceManager:Toggle()
         return
     end
     
-    -- Call window's toggle method to handle blur effect
-    self.Window:Toggle()
-    self.Settings.Visible = self.Window.Container.Visible
+    local success = pcall(function()
+        -- Call window's toggle method to handle blur effect
+        self.Window:Toggle()
+        self.Settings.Visible = self.Window.Container.Visible
+    end)
+    
+    if not success then
+        warn("[InterfaceManager] Failed to toggle window")
+    end
 end
 
 function InterfaceManager:Show()
     if not self.Window or not self.Window.Container then return end
     
-    self.Settings.Visible = true
-    self.Window.Container.Visible = true
+    local success = pcall(function()
+        self.Settings.Visible = true
+        self.Window.Container.Visible = true
+        
+        -- Enable blur effect
+        if self.Window.BlurEffect then
+            self.Window.BlurEffect.Enabled = true
+        end
+    end)
     
-    -- Enable blur effect
-    if self.Window.BlurEffect then
-        self.Window.BlurEffect.Enabled = true
+    if not success then
+        warn("[InterfaceManager] Failed to show window")
     end
 end
 
 function InterfaceManager:Hide()
     if not self.Window or not self.Window.Container then return end
     
-    self.Settings.Visible = false
-    self.Window.Container.Visible = false
+    local success = pcall(function()
+        self.Settings.Visible = false
+        self.Window.Container.Visible = false
+        
+        -- Disable blur effect
+        if self.Window.BlurEffect then
+            self.Window.BlurEffect.Enabled = false
+        end
+    end)
     
-    -- Disable blur effect
-    if self.Window.BlurEffect then
-        self.Window.BlurEffect.Enabled = false
+    if not success then
+        warn("[InterfaceManager] Failed to hide window")
     end
 end
 
@@ -241,22 +259,29 @@ function InterfaceManager:SetTheme(themeName)
         return false
     end
     
-    -- Update theme colors
-    for key, color in pairs(theme.Colors) do
-        self.Window.Theme.Colors[key] = color
-    end
+    local success = pcall(function()
+        -- Update theme colors
+        for key, color in pairs(theme.Colors) do
+            self.Window.Theme.Colors[key] = color
+        end
+        
+        self.Settings.CurrentTheme = themeName
+        
+        -- Refresh UI with new theme
+        self:RefreshUI()
+        
+        -- Re-select current item to refresh active state with new theme
+        if self.Window.CurrentItem then
+            local currentItem = self.Window.CurrentItem
+            currentItem:Deselect()
+            task.wait(0.05)
+            currentItem:Select()
+        end
+    end)
     
-    self.Settings.CurrentTheme = themeName
-    
-    -- Refresh UI with new theme
-    self:RefreshUI()
-    
-    -- Re-select current item to refresh active state with new theme
-    if self.Window.CurrentItem then
-        local currentItem = self.Window.CurrentItem
-        currentItem:Deselect()
-        task.wait(0.05)
-        currentItem:Select()
+    if not success then
+        warn("[InterfaceManager] Failed to apply theme:", themeName)
+        return false
     end
     
     return true
@@ -265,224 +290,254 @@ end
 function InterfaceManager:RefreshUI()
     if not self.Window then return end
     
-    local theme = self.Window.Theme
-    
-    -- Refresh window container
-    if self.Window.Container then
-        self.Window.Container.BackgroundColor3 = theme.Colors.Panel
+    local success = pcall(function()
+        local theme = self.Window.Theme
         
-        local stroke = self.Window.Container:FindFirstChildOfClass("UIStroke")
-        if stroke then
-            stroke.Color = theme.Colors.Border
-        end
-    end
-    
-    -- Refresh titlebar
-    if self.Window.TitleBar then
-        self.Window.TitleBar.BackgroundColor3 = theme.Colors.Panel
-        
-        local titleLabel = self.Window.TitleBar:FindFirstChildOfClass("TextLabel")
-        if titleLabel then
-            titleLabel.TextColor3 = theme.Colors.Text
-        end
-    end
-    
-    -- Refresh separators
-    if self.Window.HeaderSeparator then
-        self.Window.HeaderSeparator.BackgroundColor3 = theme.Colors.Border
-    end
-    
-    if self.Window.FooterSeparator then
-        self.Window.FooterSeparator.BackgroundColor3 = theme.Colors.Border
-    end
-    
-    if self.Window.VerticalSeparator then
-        self.Window.VerticalSeparator.BackgroundColor3 = theme.Colors.Border
-    end
-    
-    -- Refresh sidebar
-    if self.Window.Sidebar then
-        self.Window.Sidebar.BackgroundColor3 = theme.Colors.Panel
-        
-        if self.Window.SidebarHeader then
-            self.Window.SidebarHeader.BackgroundColor3 = theme.Colors.Secondary
+        -- Refresh window container
+        if self.Window.Container then
+            self.Window.Container.BackgroundColor3 = theme.Colors.Panel
+            
+            local stroke = self.Window.Container:FindFirstChildOfClass("UIStroke")
+            if stroke then
+                stroke.Color = theme.Colors.Border
+            end
         end
         
-        if self.Window.ExplorerLabel then
-            self.Window.ExplorerLabel.TextColor3 = theme.Colors.TextDim
+        -- Refresh titlebar
+        if self.Window.TitleBar then
+            self.Window.TitleBar.BackgroundColor3 = theme.Colors.Panel
+            
+            local titleLabel = self.Window.TitleBar:FindFirstChildOfClass("TextLabel")
+            if titleLabel then
+                titleLabel.TextColor3 = theme.Colors.Text
+            end
         end
         
-        if self.Window.SidebarList then
-            self.Window.SidebarList.ScrollBarImageColor3 = theme.Colors.Border
+        -- Refresh separators
+        if self.Window.HeaderSeparator then
+            self.Window.HeaderSeparator.BackgroundColor3 = theme.Colors.Border
         end
+        
+        if self.Window.FooterSeparator then
+            self.Window.FooterSeparator.BackgroundColor3 = theme.Colors.Border
+        end
+        
+        if self.Window.VerticalSeparator then
+            self.Window.VerticalSeparator.BackgroundColor3 = theme.Colors.Border
+        end
+        
+        -- Refresh sidebar
+        if self.Window.Sidebar then
+            self.Window.Sidebar.BackgroundColor3 = theme.Colors.Panel
+            
+            if self.Window.SidebarHeader then
+                self.Window.SidebarHeader.BackgroundColor3 = theme.Colors.Secondary
+            end
+            
+            if self.Window.ExplorerLabel then
+                self.Window.ExplorerLabel.TextColor3 = theme.Colors.TextDim
+            end
+            
+            if self.Window.SidebarList then
+                self.Window.SidebarList.ScrollBarImageColor3 = theme.Colors.Border
+            end
+        end
+        
+        -- Refresh content area
+        if self.Window.ContentArea then
+            self.Window.ContentArea.BackgroundColor3 = theme.Colors.Background
+            self.Window.ContentArea.ScrollBarImageColor3 = theme.Colors.Border
+        end
+        
+        -- Refresh footer
+        if self.Window.FooterLabel then
+            self.Window.FooterLabel.TextColor3 = theme.Colors.TextDim
+        end
+        
+        -- Refresh all categories and items
+        self:RefreshCategories()
+        
+        -- Refresh content area components
+        self:RefreshContentComponents()
+    end)
+    
+    if not success then
+        warn("[InterfaceManager] Failed to refresh UI")
     end
-    
-    -- Refresh content area
-    if self.Window.ContentArea then
-        self.Window.ContentArea.BackgroundColor3 = theme.Colors.Background
-        self.Window.ContentArea.ScrollBarImageColor3 = theme.Colors.Border
-    end
-    
-    -- Refresh footer
-    if self.Window.FooterLabel then
-        self.Window.FooterLabel.TextColor3 = theme.Colors.TextDim
-    end
-    
-    -- Refresh all categories and items
-    self:RefreshCategories()
-    
-    -- Refresh content area components
-    self:RefreshContentComponents()
 end
 
 function InterfaceManager:RefreshContentComponents()
     if not self.Window or not self.Window.ContentArea then return end
     
-    local theme = self.Window.Theme
-    
-    -- Recursively refresh all descendants
-    for _, child in ipairs(self.Window.ContentArea:GetDescendants()) do
-        -- Refresh frames (sections, components)
-        if child:IsA("Frame") then
-            if child.Name == "Container" or child.Name:match("Section") then
-                -- Section/Component containers
-                if child.BackgroundTransparency < 1 then
-                    child.BackgroundColor3 = theme.Colors.Panel
+    local success = pcall(function()
+        local theme = self.Window.Theme
+        local descendants = self.Window.ContentArea:GetDescendants()
+        local processedCount = 0
+        
+        -- Recursively refresh all descendants with yield to prevent freeze
+        for _, child in ipairs(descendants) do
+            -- Yield every 50 items to prevent UI freeze
+            processedCount = processedCount + 1
+            if processedCount % 50 == 0 then
+                task.wait()
+            end
+            
+            -- Refresh frames (sections, components)
+            if child:IsA("Frame") then
+                if child.Name == "Container" or child.Name:match("Section") then
+                    -- Section/Component containers
+                    if child.BackgroundTransparency < 1 then
+                        child.BackgroundColor3 = theme.Colors.Panel
+                    end
+                    
+                    local stroke = child:FindFirstChildOfClass("UIStroke")
+                    if stroke then
+                        stroke.Color = theme.Colors.Border
+                    end
+                elseif child.Name:match("Button") or child.Name:match("Dropdown") or child.Name:match("TextBox") then
+                    -- Interactive elements
+                    if child.BackgroundTransparency < 1 then
+                        child.BackgroundColor3 = theme.Colors.Secondary
+                    end
+                end
+            end
+            
+            -- Refresh text labels
+            if child:IsA("TextLabel") then
+                -- Check if it's a button text (black color for contrast)
+                local isButtonText = false
+                if child.Parent and child.Parent:IsA("TextButton") and child.Parent.Name == "Button" then
+                    isButtonText = true
                 end
                 
-                local stroke = child:FindFirstChildOfClass("UIStroke")
-                if stroke then
-                    stroke.Color = theme.Colors.Border
+                if not isButtonText then
+                    -- Section titles and bold text
+                    if child.Font == theme.Font.Bold or child.Name:match("Title") then
+                        child.TextColor3 = theme.Colors.Accent
+                    else
+                        -- Regular text
+                        child.TextColor3 = theme.Colors.Text
+                    end
                 end
-            elseif child.Name:match("Button") or child.Name:match("Dropdown") or child.Name:match("TextBox") then
-                -- Interactive elements
+            end
+            
+            -- Refresh text boxes
+            if child:IsA("TextBox") then
+                child.TextColor3 = theme.Colors.Text
+                child.PlaceholderColor3 = theme.Colors.TextDim
                 if child.BackgroundTransparency < 1 then
                     child.BackgroundColor3 = theme.Colors.Secondary
                 end
             end
-        end
-        
-        -- Refresh text labels
-        if child:IsA("TextLabel") then
-            -- Check if it's a button text (black color for contrast)
-            local isButtonText = false
-            if child.Parent and child.Parent:IsA("TextButton") and child.Parent.Name == "Button" then
-                isButtonText = true
-            end
             
-            if not isButtonText then
-                -- Section titles and bold text
-                if child.Font == theme.Font.Bold or child.Name:match("Title") then
-                    child.TextColor3 = theme.Colors.Accent
-                else
-                    -- Regular text
+            -- Refresh text buttons
+            if child:IsA("TextButton") then
+                if child.Name == "Button" then
+                    -- Main buttons
+                    child.BackgroundColor3 = theme.Colors.Accent
+                    child.TextColor3 = Color3.new(0, 0, 0)
+                elseif child.BackgroundTransparency < 1 then
+                    child.BackgroundColor3 = theme.Colors.Secondary
                     child.TextColor3 = theme.Colors.Text
                 end
             end
-        end
-        
-        -- Refresh text boxes
-        if child:IsA("TextBox") then
-            child.TextColor3 = theme.Colors.Text
-            child.PlaceholderColor3 = theme.Colors.TextDim
-            if child.BackgroundTransparency < 1 then
-                child.BackgroundColor3 = theme.Colors.Secondary
-            end
-        end
-        
-        -- Refresh text buttons
-        if child:IsA("TextButton") then
-            if child.Name == "Button" then
-                -- Main buttons
-                child.BackgroundColor3 = theme.Colors.Accent
-                child.TextColor3 = Color3.new(0, 0, 0)
-            elseif child.BackgroundTransparency < 1 then
-                child.BackgroundColor3 = theme.Colors.Secondary
-                child.TextColor3 = theme.Colors.Text
-            end
-        end
-        
-        -- Refresh image labels (icons) - include accent color icons
-        if child:IsA("ImageLabel") then
-            -- Check if parent is active or highlighted
-            local isActive = false
-            if child.Parent and child.Parent.Name:match("Category") then
-                isActive = true
+            
+            -- Refresh image labels (icons)
+            if child:IsA("ImageLabel") then
+                -- Check if parent is active or highlighted
+                local isActive = false
+                if child.Parent and child.Parent.Name:match("Category") then
+                    isActive = true
+                end
+                
+                if isActive then
+                    child.ImageColor3 = theme.Colors.Accent
+                else
+                    child.ImageColor3 = theme.Colors.TextDim
+                end
             end
             
-            if isActive then
-                child.ImageColor3 = theme.Colors.Accent
-            else
-                child.ImageColor3 = theme.Colors.TextDim
+            -- Refresh scrolling frames
+            if child:IsA("ScrollingFrame") then
+                if child.BackgroundTransparency < 1 then
+                    child.BackgroundColor3 = theme.Colors.Secondary
+                end
+                child.ScrollBarImageColor3 = theme.Colors.Border
             end
         end
-        
-        -- Refresh scrolling frames
-        if child:IsA("ScrollingFrame") then
-            if child.BackgroundTransparency < 1 then
-                child.BackgroundColor3 = theme.Colors.Secondary
-            end
-            child.ScrollBarImageColor3 = theme.Colors.Border
-        end
+    end)
+    
+    if not success then
+        warn("[InterfaceManager] Failed to refresh content components")
     end
 end
 
 function InterfaceManager:RefreshCategories()
     if not self.Window or not self.Window.Categories then return end
     
-    local theme = self.Window.Theme
-    
-    for _, category in ipairs(self.Window.Categories) do
-        if category.Container then
-            category.Container.BackgroundColor3 = theme.Colors.Secondary
-        end
+    local success = pcall(function()
+        local theme = self.Window.Theme
         
-        if category.Title then
-            category.Title.TextColor3 = theme.Colors.Text
-        end
-        
-        if category.FolderIcon then
-            category.FolderIcon.ImageColor3 = theme.Colors.Accent
-        end
-        
-        if category.ChevronIcon then
-            category.ChevronIcon.ImageColor3 = theme.Colors.Accent
-        end
-        
-        -- Refresh items in category
-        if category.Items then
-            for _, item in ipairs(category.Items) do
-                if item.Button then
-                    -- Check if this is the active item
-                    local isActive = (self.Window.CurrentItem == item)
-                    
-                    if isActive then
-                        -- Active item - highlight with accent
-                        item.Button.BackgroundColor3 = theme.Colors.Accent
-                        item.Button.BackgroundTransparency = 0.85
+        for _, category in ipairs(self.Window.Categories) do
+            if category.Container then
+                category.Container.BackgroundColor3 = theme.Colors.Secondary
+            end
+            
+            if category.Title then
+                category.Title.TextColor3 = theme.Colors.Text
+            end
+            
+            if category.FolderIcon then
+                category.FolderIcon.ImageColor3 = theme.Colors.Accent
+            end
+            
+            if category.ChevronIcon then
+                category.ChevronIcon.ImageColor3 = theme.Colors.Accent
+            end
+            
+            -- Refresh items in category
+            if category.Items then
+                for _, item in ipairs(category.Items) do
+                    if item.Button then
+                        -- Check if this is the active item
+                        local isActive = (self.Window.CurrentItem == item)
                         
-                        if item.Title then
-                            item.Title.TextColor3 = theme.Colors.Text
-                        end
-                        if item.Icon then
-                            item.Icon.ImageColor3 = theme.Colors.Text
-                        end
-                    else
-                        -- Inactive item
-                        item.Button.BackgroundColor3 = theme.Colors.Secondary
-                        item.Button.BackgroundTransparency = 1
-                        
-                        if item.Title then
-                            item.Title.TextColor3 = theme.Colors.TextDim
-                        end
-                        if item.Icon then
-                            item.Icon.ImageColor3 = theme.Colors.TextDim
+                        if isActive then
+                            -- Active item - highlight with accent
+                            item.Button.BackgroundColor3 = theme.Colors.Accent
+                            item.Button.BackgroundTransparency = 0.85
+                            
+                            if item.Title then
+                                item.Title.TextColor3 = theme.Colors.Text
+                            end
+                            if item.Icon then
+                                item.Icon.ImageColor3 = theme.Colors.Text
+                            end
+                        else
+                            -- Inactive item
+                            item.Button.BackgroundColor3 = theme.Colors.Secondary
+                            item.Button.BackgroundTransparency = 1
+                            
+                            if item.Title then
+                                item.Title.TextColor3 = theme.Colors.TextDim
+                            end
+                            if item.Icon then
+                                item.Icon.ImageColor3 = theme.Colors.TextDim
+                            end
                         end
                     end
                 end
             end
         end
+    end)
+    
+    if not success then
+        warn("[InterfaceManager] Failed to refresh categories")
     end
+end
+
+function InterfaceManager:GetCurrentTheme()
+    return self.Settings.CurrentTheme
 end
 
 function InterfaceManager:GetThemeList()
