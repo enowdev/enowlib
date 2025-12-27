@@ -351,20 +351,24 @@ function Window:MakeResizable(handle)
     local resizeStart = nil
     local startSize = nil
     
-    -- Mouse events
+    -- Mouse button down on handle
     handle.MouseButton1Down:Connect(function()
         resizing = true
         resizeStart = UserInputService:GetMouseLocation()
         startSize = self.Container.AbsoluteSize
     end)
     
-    UserInputService.InputEnded:Connect(function(input)
+    -- Global input ended to catch mouse release anywhere
+    local mouseUpConnection = UserInputService.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            resizing = false
+            if resizing then
+                resizing = false
+            end
         end
     end)
     
-    UserInputService.InputChanged:Connect(function(input)
+    -- Global input changed for dragging
+    local inputChangedConnection = UserInputService.InputChanged:Connect(function(input)
         if not resizing then return end
         
         if input.UserInputType == Enum.UserInputType.MouseMovement then
@@ -397,7 +401,7 @@ function Window:MakeResizable(handle)
         end
     end)
     
-    -- Touch events
+    -- Touch events on handle
     handle.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.Touch then
             resizing = true
