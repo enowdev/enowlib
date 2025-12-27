@@ -278,24 +278,28 @@ function Window:SetupAutoResize()
     -- Function to calculate scaled size
     local function calculateScaledSize()
         local viewportSize = Camera.ViewportSize
-        local scaleX = viewportSize.X / 1920
-        local scaleY = viewportSize.Y / 1080
-        local scale = math.min(scaleX, scaleY)
         
-        -- Clamp scale between 0.5 and 1.2
-        scale = math.clamp(scale, 0.5, 1.2)
+        -- Calculate size that fits viewport with 40px margin
+        local maxWidth = viewportSize.X - 40
+        local maxHeight = viewportSize.Y - 40
         
-        local newWidth = math.clamp(
-            self.OriginalSize.X * scale,
-            self.MinSize.X,
-            math.min(self.MaxSize.X, viewportSize.X - 40)
-        )
+        -- Start with original size
+        local newWidth = self.OriginalSize.X
+        local newHeight = self.OriginalSize.Y
         
-        local newHeight = math.clamp(
-            self.OriginalSize.Y * scale,
-            self.MinSize.Y,
-            math.min(self.MaxSize.Y, viewportSize.Y - 40)
-        )
+        -- Scale down if too big for viewport
+        if newWidth > maxWidth or newHeight > maxHeight then
+            local scaleX = maxWidth / newWidth
+            local scaleY = maxHeight / newHeight
+            local scale = math.min(scaleX, scaleY)
+            
+            newWidth = newWidth * scale
+            newHeight = newHeight * scale
+        end
+        
+        -- Apply min/max constraints
+        newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
+        newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
         
         return Vector2.new(newWidth, newHeight)
     end
