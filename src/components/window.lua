@@ -284,9 +284,11 @@ function Window:SetupAutoResize()
             local newWidth = viewportSize.X * 0.25
             local newHeight = viewportSize.Y * 0.25
             
-            -- Apply min constraints (but no max for mobile)
-            newWidth = math.max(newWidth, 300)
-            newHeight = math.max(newHeight, 200)
+            -- Apply very small min constraints for mobile
+            newWidth = math.max(newWidth, 250)
+            newHeight = math.max(newHeight, 180)
+            
+            print("[EnowLib] Mobile mode - Viewport:", viewportSize.X, "x", viewportSize.Y, "Window:", newWidth, "x", newHeight)
             
             return Vector2.new(newWidth, newHeight)
         end
@@ -312,6 +314,8 @@ function Window:SetupAutoResize()
         -- Apply constraints for PC
         newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
         newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
+        
+        print("[EnowLib] PC mode - Viewport:", viewportSize.X, "x", viewportSize.Y, "Window:", newWidth, "x", newHeight)
         
         return Vector2.new(newWidth, newHeight)
     end
