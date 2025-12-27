@@ -154,7 +154,7 @@ function Window:CreateUI()
     local viewportSize = workspace.CurrentCamera.ViewportSize
     local isMobile = viewportSize.X < 1024
     
-    local sidebarWidth = isMobile and 0.20 or 0.3  -- 20% for mobile, 30% for desktop
+    local sidebarWidth = isMobile and 0.28 or 0.3  -- 28% for mobile, 30% for desktop
     
     -- Tab Bar (Sidebar) - Use proportional width
     self.Sidebar = Instance.new("Frame")

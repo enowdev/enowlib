@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 12:28:18
+-- Built: 2025-12-27 12:30:13
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2656,7 +2656,7 @@ function Window:CreateUI()
     local viewportSize = workspace.CurrentCamera.ViewportSize
     local isMobile = viewportSize.X < 1024
     
-    local sidebarWidth = isMobile and 0.20 or 0.3  -- 20% for mobile, 30% for desktop
+    local sidebarWidth = isMobile and 0.28 or 0.3  -- 28% for mobile, 30% for desktop
     
     -- Tab Bar (Sidebar) - Use proportional width
     self.Sidebar = Instance.new("Frame")
