@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 11:57:34
+-- Built: 2025-12-27 12:05:05
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -599,7 +599,7 @@ function Button:CreateUI()
     self.Container = Instance.new("TextButton")
     self.Container.BackgroundColor3 = self.Theme.Colors.Accent
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Theme.Size.Component)
+    self.Container.Size = UDim2.new(1, 0, 0, 36)
     self.Container.Font = self.Theme.Font.Regular
     self.Container.Text = self.Config.Text
     self.Container.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -614,6 +614,8 @@ function Button:CreateUI()
     textConstraint.MinTextSize = 10
     textConstraint.Parent = self.Container
     
+    self.Theme.CreateCorner(self.Container, 6)
+    self.Theme.CreatePadding(self.Container, 8)
     self.Theme.CreateCorner(self.Container)
     
     self.Container.MouseButton1Click:Connect(function()
@@ -670,17 +672,17 @@ function Toggle:CreateUI()
     self.Container.BackgroundColor3 = self.Theme.Colors.Panel
     self.Container.BackgroundTransparency = self.Theme.Transparency.Glass
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, 48)
+    self.Container.Size = UDim2.new(1, 0, 0, 36)
     self.Container.Parent = self.Parent
     
     self.Theme.CreateCorner(self.Container)
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
-    self.Theme.CreatePadding(self.Container, 12)
+    self.Theme.CreatePadding(self.Container, 8)
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 1, 0)
+    title.Size = UDim2.new(1, -50, 1, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
     title.TextColor3 = self.Theme.Colors.Text
@@ -696,27 +698,27 @@ function Toggle:CreateUI()
     self.Switch = Instance.new("Frame")
     self.Switch.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Switch.BorderSizePixel = 0
-    self.Switch.Size = UDim2.fromOffset(44, 24)
+    self.Switch.Size = UDim2.fromOffset(36, 20)
     self.Switch.Position = UDim2.new(1, 0, 0.5, 0)
     self.Switch.AnchorPoint = Vector2.new(1, 0.5)
     self.Switch.Parent = self.Container
     
-    self.Theme.CreateCorner(self.Switch, 12)
+    self.Theme.CreateCorner(self.Switch, 10)
     
     -- Knob
     self.Knob = Instance.new("Frame")
     self.Knob.BackgroundColor3 = self.Theme.Colors.Text
     self.Knob.BorderSizePixel = 0
-    self.Knob.Size = UDim2.fromOffset(20, 20)
+    self.Knob.Size = UDim2.fromOffset(16, 16)
     self.Knob.Position = UDim2.fromOffset(2, 2)
     self.Knob.Parent = self.Switch
     
-    self.Theme.CreateCorner(self.Knob, 10)
+    self.Theme.CreateCorner(self.Knob, 8)
     
     -- Check icon
     self.CheckIcon = Instance.new("ImageLabel")
     self.CheckIcon.BackgroundTransparency = 1
-    self.CheckIcon.Size = UDim2.fromOffset(16, 16)
+    self.CheckIcon.Size = UDim2.fromOffset(12, 12)
     self.CheckIcon.Position = UDim2.fromScale(0.5, 0.5)
     self.CheckIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     self.CheckIcon.Image = self.Theme.Icons.Check
@@ -762,7 +764,7 @@ function Toggle:UpdateVisual()
         }, self.Theme.Animation.Duration)
         
         self.Utils.Tween(self.Knob, {
-            Position = UDim2.fromOffset(22, 2)
+            Position = UDim2.fromOffset(18, 2)
         }, self.Theme.Animation.Duration)
         
         self.Utils.Tween(self.CheckIcon, {
@@ -2308,7 +2310,7 @@ function Tab:CreateUI()
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BackgroundTransparency = self.Theme.Transparency.Subtle
     self.Button.BorderSizePixel = 0
-    self.Button.Size = UDim2.new(1, 0, 0, 36)
+    self.Button.Size = UDim2.new(1, 0, 0, 32)
     self.Button.Font = self.Theme.Font.Regular
     self.Button.Text = ""
     self.Button.TextColor3 = self.Theme.Colors.TextDim
@@ -2317,13 +2319,13 @@ function Tab:CreateUI()
     self.Button.Parent = self.Window.SidebarList
     
     self.Theme.CreateCorner(self.Button, 6)
-    self.Theme.CreatePadding(self.Button, 12)
+    self.Theme.CreatePadding(self.Button, 8)
     
     -- Tab Icon (optional)
     if self.Config.Icon then
         self.TabIcon = Instance.new("ImageLabel")
         self.TabIcon.BackgroundTransparency = 1
-        self.TabIcon.Size = UDim2.fromOffset(18, 18)
+        self.TabIcon.Size = UDim2.fromOffset(14, 14)
         self.TabIcon.Position = UDim2.fromOffset(0, 0)
         self.TabIcon.AnchorPoint = Vector2.new(0, 0.5)
         self.TabIcon.Image = self.Config.Icon
@@ -2341,16 +2343,16 @@ function Tab:CreateUI()
     -- Chevron Icon
     self.ChevronIcon = Instance.new("ImageLabel")
     self.ChevronIcon.BackgroundTransparency = 1
-    self.ChevronIcon.Size = UDim2.fromOffset(16, 16)
-    self.ChevronIcon.Position = UDim2.new(1, -16, 0.5, 0)
+    self.ChevronIcon.Size = UDim2.fromOffset(14, 14)
+    self.ChevronIcon.Position = UDim2.new(1, -14, 0.5, 0)
     self.ChevronIcon.AnchorPoint = Vector2.new(0, 0.5)
     self.ChevronIcon.Image = self.Theme.Icons.ChevronRight
     self.ChevronIcon.ImageColor3 = self.Theme.Colors.TextDim
     self.ChevronIcon.Parent = self.Button
     
     -- Title
-    local titleOffset = self.Config.Icon and 24 or 0
-    local titleRightOffset = 24
+    local titleOffset = self.Config.Icon and 20 or 0
+    local titleRightOffset = 20
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -(titleOffset + titleRightOffset), 1, 0)
@@ -2578,18 +2580,18 @@ function Window:CreateUI()
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
     self.TitleBar.BackgroundTransparency = 1
-    self.TitleBar.Size = UDim2.new(1, 0, 0, 48)
+    self.TitleBar.Size = UDim2.new(1, 0, 0, 36)
     self.TitleBar.Parent = self.Container
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -60, 1, 0)
-    title.Position = UDim2.fromOffset(16, 0)
+    title.Size = UDim2.new(1, -50, 1, 0)
+    title.Position = UDim2.fromOffset(12, 0)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Large
+    title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.TitleBar
     
@@ -2598,17 +2600,17 @@ function Window:CreateUI()
     closeBtn.BackgroundColor3 = self.Theme.Colors.Secondary
     closeBtn.BackgroundTransparency = self.Theme.Transparency.Subtle
     closeBtn.BorderSizePixel = 0
-    closeBtn.Size = UDim2.fromOffset(32, 32)
-    closeBtn.Position = UDim2.new(1, -40, 0.5, -16)
+    closeBtn.Size = UDim2.fromOffset(24, 24)
+    closeBtn.Position = UDim2.new(1, -32, 0.5, -12)
     closeBtn.Text = ""
     closeBtn.Parent = self.TitleBar
     
-    self.Theme.CreateCorner(closeBtn, 6)
+    self.Theme.CreateCorner(closeBtn, 4)
     
     -- Close Icon
     local closeIcon = Instance.new("ImageLabel")
     closeIcon.BackgroundTransparency = 1
-    closeIcon.Size = UDim2.fromOffset(20, 20)
+    closeIcon.Size = UDim2.fromOffset(16, 16)
     closeIcon.Position = UDim2.fromScale(0.5, 0.5)
     closeIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     closeIcon.Image = self.Theme.Icons.X
@@ -2645,7 +2647,7 @@ function Window:CreateUI()
     separator.BackgroundColor3 = self.Theme.Colors.Border
     separator.BorderSizePixel = 0
     separator.Size = UDim2.new(1, 0, 0, 1)
-    separator.Position = UDim2.new(0, 0, 0, 48)
+    separator.Position = UDim2.new(0, 0, 0, 36)
     separator.Parent = self.Container
     
     self.HeaderSeparator = separator
@@ -2656,8 +2658,8 @@ function Window:CreateUI()
     self.Sidebar.BackgroundColor3 = self.Theme.Colors.Panel
     self.Sidebar.BackgroundTransparency = 0.2
     self.Sidebar.BorderSizePixel = 0
-    self.Sidebar.Size = UDim2.new(0.3, 0, 1, -73)  -- 30% width, proportional
-    self.Sidebar.Position = UDim2.fromOffset(0, 49)
+    self.Sidebar.Size = UDim2.new(0.3, 0, 1, -61)  -- 30% width, proportional
+    self.Sidebar.Position = UDim2.fromOffset(0, 37)
     self.Sidebar.Parent = self.Container
     
     -- Sidebar Header
@@ -2666,25 +2668,25 @@ function Window:CreateUI()
     self.SidebarHeader.BackgroundColor3 = self.Theme.Colors.Secondary
     self.SidebarHeader.BackgroundTransparency = self.Theme.Transparency.Subtle
     self.SidebarHeader.BorderSizePixel = 0
-    self.SidebarHeader.Size = UDim2.new(1, 0, 0, 32)
+    self.SidebarHeader.Size = UDim2.new(1, 0, 0, 28)
     self.SidebarHeader.Parent = self.Sidebar
     
     self.ExplorerLabel = Instance.new("TextLabel")
     self.ExplorerLabel.BackgroundTransparency = 1
-    self.ExplorerLabel.Size = UDim2.new(1, -16, 1, 0)
-    self.ExplorerLabel.Position = UDim2.fromOffset(12, 0)
+    self.ExplorerLabel.Size = UDim2.new(1, -12, 1, 0)
+    self.ExplorerLabel.Position = UDim2.fromOffset(8, 0)
     self.ExplorerLabel.Font = self.Theme.Font.Bold
     self.ExplorerLabel.Text = "EXPLORER"
     self.ExplorerLabel.TextColor3 = self.Theme.Colors.TextDim
-    self.ExplorerLabel.TextSize = 11
+    self.ExplorerLabel.TextSize = 10
     self.ExplorerLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.ExplorerLabel.Parent = self.SidebarHeader
     
     self.SidebarList = Instance.new("ScrollingFrame")
     self.SidebarList.BackgroundTransparency = 1
     self.SidebarList.BorderSizePixel = 0
-    self.SidebarList.Size = UDim2.new(1, 0, 1, -32)
-    self.SidebarList.Position = UDim2.fromOffset(0, 32)
+    self.SidebarList.Size = UDim2.new(1, 0, 1, -28)
+    self.SidebarList.Position = UDim2.fromOffset(0, 28)
     self.SidebarList.ScrollBarThickness = 4
     self.SidebarList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.SidebarList.CanvasSize = UDim2.fromOffset(0, 0)
@@ -2698,7 +2700,7 @@ function Window:CreateUI()
     layout.Parent = self.SidebarList
     
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        self.SidebarList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 8)
+        self.SidebarList.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 6)
     end)
     
     -- Vertical Separator - Position after sidebar (30%)
@@ -2706,8 +2708,8 @@ function Window:CreateUI()
     self.VerticalSeparator.Name = "VerticalSeparator"
     self.VerticalSeparator.BackgroundColor3 = self.Theme.Colors.Border
     self.VerticalSeparator.BorderSizePixel = 0
-    self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -73)
-    self.VerticalSeparator.Position = UDim2.new(0.3, 0, 0, 49)  -- At 30% width
+    self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -61)
+    self.VerticalSeparator.Position = UDim2.new(0.3, 0, 0, 37)  -- At 30% width
     self.VerticalSeparator.Parent = self.Container
     
     -- Content Area - Use remaining 70% width
@@ -2715,22 +2717,22 @@ function Window:CreateUI()
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BackgroundTransparency = 0.2
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(0.7, -1, 1, -73)  -- 70% width minus separator
-    self.ContentArea.Position = UDim2.new(0.3, 1, 0, 49)  -- Start after separator
+    self.ContentArea.Size = UDim2.new(0.7, -1, 1, -61)  -- 70% width minus separator
+    self.ContentArea.Position = UDim2.new(0.3, 1, 0, 37)  -- Start after separator
     self.ContentArea.ScrollBarThickness = 6
     self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
     self.ContentArea.Parent = self.Container
     
-    self.Theme.CreatePadding(self.ContentArea, self.Theme.Spacing.Large)
+    self.Theme.CreatePadding(self.ContentArea, 12)
     
     local contentLayout = Instance.new("UIListLayout")
     contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    contentLayout.Padding = UDim.new(0, self.Theme.Spacing.Medium)
+    contentLayout.Padding = UDim.new(0, 8)
     contentLayout.Parent = self.ContentArea
     
     contentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        self.ContentArea.CanvasSize = UDim2.fromOffset(0, contentLayout.AbsoluteContentSize.Y + 32)
+        self.ContentArea.CanvasSize = UDim2.fromOffset(0, contentLayout.AbsoluteContentSize.Y + 24)
     end)
     
     -- Footer Separator
@@ -2739,26 +2741,26 @@ function Window:CreateUI()
     self.FooterSeparator.BackgroundColor3 = self.Theme.Colors.Border
     self.FooterSeparator.BorderSizePixel = 0
     self.FooterSeparator.Size = UDim2.new(1, 0, 0, 1)
-    self.FooterSeparator.Position = UDim2.new(0, 0, 1, -24)
+    self.FooterSeparator.Position = UDim2.new(0, 0, 1, -20)
     self.FooterSeparator.Parent = self.Container
     
     -- Footer
     self.Footer = Instance.new("Frame")
     self.Footer.Name = "Footer"
     self.Footer.BackgroundTransparency = 1
-    self.Footer.Size = UDim2.new(1, 0, 0, 24)
-    self.Footer.Position = UDim2.new(0, 0, 1, -24)
+    self.Footer.Size = UDim2.new(1, 0, 0, 20)
+    self.Footer.Position = UDim2.new(0, 0, 1, -20)
     self.Footer.Parent = self.Container
     
     -- Footer Text (read-only)
     self.FooterLabel = Instance.new("TextLabel")
     self.FooterLabel.BackgroundTransparency = 1
-    self.FooterLabel.Size = UDim2.new(1, -32, 1, 0)
-    self.FooterLabel.Position = UDim2.fromOffset(16, 0)
+    self.FooterLabel.Size = UDim2.new(1, -24, 1, 0)
+    self.FooterLabel.Position = UDim2.fromOffset(12, 0)
     self.FooterLabel.Font = self.Theme.Font.Mono
     self.FooterLabel.Text = "EnowLib v2.0.0"
     self.FooterLabel.TextColor3 = self.Theme.Colors.TextDim
-    self.FooterLabel.TextSize = 11
+    self.FooterLabel.TextSize = 10
     self.FooterLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.FooterLabel.Parent = self.Footer
     
@@ -2794,12 +2796,12 @@ function Window:SetupAutoResize()
         
         -- For mobile/small screens, use direct percentage (no compensation needed)
         if viewportSize.X < 1024 then
-            -- Direct: 80% width, 85% height of viewport
-            local newWidth = viewportSize.X * 0.8
+            -- Direct: 65% width, 85% height of viewport
+            local newWidth = viewportSize.X * 0.65
             local newHeight = viewportSize.Y * 0.85
             
             -- Apply min constraints
-            newWidth = math.max(newWidth, 350)
+            newWidth = math.max(newWidth, 300)
             newHeight = math.max(newHeight, 250)
             
             print("[EnowLib] Mobile mode - Viewport:", viewportSize.X, "x", viewportSize.Y, "Window:", newWidth, "x", newHeight)
@@ -2844,7 +2846,7 @@ function Window:SetupAutoResize()
         
         -- Calculate new position ensuring header stays visible
         local minY = 0  -- Minimum Y to keep header visible
-        local maxY = viewportSize.Y - 48  -- At least 48px (header height) visible
+        local maxY = viewportSize.Y - 36  -- At least 36px (header height) visible
         local maxX = viewportSize.X - 100  -- At least 100px visible on right
         
         -- Clamp position to keep window within bounds
@@ -2859,7 +2861,7 @@ function Window:SetupAutoResize()
             newY = viewportSize.Y - newSize.Y
         end
         
-        -- Ensure at least header is visible (48px from top)
+        -- Ensure at least header is visible (36px from top)
         if newY < 0 then
             newY = 0
         end

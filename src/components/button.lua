@@ -23,7 +23,7 @@ function Button:CreateUI()
     self.Container = Instance.new("TextButton")
     self.Container.BackgroundColor3 = self.Theme.Colors.Accent
     self.Container.BorderSizePixel = 0
-    self.Container.Size = UDim2.new(1, 0, 0, self.Theme.Size.Component)
+    self.Container.Size = UDim2.new(1, 0, 0, 36)
     self.Container.Font = self.Theme.Font.Regular
     self.Container.Text = self.Config.Text
     self.Container.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -38,6 +38,8 @@ function Button:CreateUI()
     textConstraint.MinTextSize = 10
     textConstraint.Parent = self.Container
     
+    self.Theme.CreateCorner(self.Container, 6)
+    self.Theme.CreatePadding(self.Container, 8)
     self.Theme.CreateCorner(self.Container)
     
     self.Container.MouseButton1Click:Connect(function()
