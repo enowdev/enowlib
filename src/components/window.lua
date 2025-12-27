@@ -12,14 +12,29 @@ function Window.new(config, theme, utils, enowlib)
     self.Config = utils.Merge({
         Title = "EnowLib IDE",
         Size = UDim2.fromOffset(900, 600),
-        ShowStatusBar = true
+        ShowStatusBar = true,
+        AutoResize = true,
+        MinSize = Vector2.new(600, 400),
+        MaxSize = Vector2.new(1400, 900)
     }, config or {})
     
     self.Categories = {}
     self.Tabs = {}
     self.CurrentTab = nil
     
+    -- Auto-resize settings
+    self.MinSize = self.Config.MinSize
+    self.MaxSize = self.Config.MaxSize
+    self.OriginalSize = Vector2.new(
+        self.Config.Size.X.Offset,
+        self.Config.Size.Y.Offset
+    )
+    
     self:CreateUI()
+    
+    if self.Config.AutoResize then
+        self:SetupAutoResize()
+    end
     
     return self
 end
@@ -238,6 +253,72 @@ function Window:CreateUI()
     
     -- Parent to CoreGui
     self.ScreenGui.Parent = game:GetService("CoreGui")
+end
+
+function Window:SetupAutoResize()
+    local UserInputService = game:GetService("UserInputService")
+    local Camera = workspace.CurrentCamera
+    
+    -- Function to calculate scaled size
+    local function calculateScaledSize()
+        local viewportSize = Camera.ViewportSize
+        local scaleX = viewportSize.X / 1920
+        local scaleY = viewportSize.Y / 1080
+        local scale = math.min(scaleX, scaleY)
+        
+        -- Clamp scale between 0.5 and 1.2
+        scale = math.clamp(scale, 0.5, 1.2)
+        
+        local newWidth = math.clamp(
+            self.OriginalSize.X * scale,
+            self.MinSize.X,
+            math.min(self.MaxSize.X, viewportSize.X - 40)
+        )
+        
+        local newHeight = math.clamp(
+            self.OriginalSize.Y * scale,
+            self.MinSize.Y,
+            math.min(self.MaxSize.Y, viewportSize.Y - 40)
+        )
+        
+        return Vector2.new(newWidth, newHeight)
+    end
+    
+    -- Function to update window size and position
+    local function updateWindowSize()
+        local newSize = calculateScaledSize()
+        local viewportSize = Camera.ViewportSize
+        
+        -- Animate resize
+        self.Utils.Tween(self.Container, {
+            Size = UDim2.fromOffset(newSize.X, newSize.Y)
+        }, 0.3)
+        
+        -- Ensure window stays within bounds
+        task.wait(0.3)
+        local pos = self.Container.AbsolutePosition
+        local size = self.Container.AbsoluteSize
+        
+        local newX = math.clamp(pos.X, 0, viewportSize.X - size.X)
+        local newY = math.clamp(pos.Y, 0, viewportSize.Y - size.Y)
+        
+        if pos.X ~= newX or pos.Y ~= newY then
+            self.Utils.Tween(self.Container, {
+                Position = UDim2.fromOffset(newX, newY)
+            }, 0.2)
+        end
+    end
+    
+    -- Listen to viewport size changes
+    Camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+        updateWindowSize()
+    end)
+    
+    -- Initial size adjustment
+    task.spawn(function()
+        task.wait(0.1)
+        updateWindowSize()
+    end)
 end
 
 function Window:AddCategory(config)
