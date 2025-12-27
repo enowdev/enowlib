@@ -255,18 +255,20 @@ function Window:CreateUI()
     -- Parent to CoreGui
     self.ScreenGui.Parent = game:GetService("CoreGui")
     
-    -- Center window after parenting
-    task.spawn(function()
-        task.wait(0.05)
-        local Camera = workspace.CurrentCamera
-        local viewportSize = Camera.ViewportSize
-        local windowSize = self.Container.AbsoluteSize
-        
-        local centerX = (viewportSize.X - windowSize.X) / 2
-        local centerY = (viewportSize.Y - windowSize.Y) / 2
-        
-        self.Container.Position = UDim2.fromOffset(centerX, centerY)
-    end)
+    -- Center window if auto-resize is disabled
+    if not self.Config.AutoResize then
+        task.spawn(function()
+            task.wait(0.1)
+            local Camera = workspace.CurrentCamera
+            local viewportSize = Camera.ViewportSize
+            local windowSize = self.Container.AbsoluteSize
+            
+            local centerX = (viewportSize.X - windowSize.X) / 2
+            local centerY = (viewportSize.Y - windowSize.Y) / 2
+            
+            self.Container.Position = UDim2.fromOffset(centerX, centerY)
+        end)
+    end
 end
 
 function Window:SetupAutoResize()
@@ -340,8 +342,23 @@ function Window:SetupAutoResize()
         updateWindowSize()
     end)
     
-    -- Don't run initial adjustment, let window stay centered
-    -- Only adjust on actual viewport changes
+    -- Run initial scaling and centering
+    task.spawn(function()
+        task.wait(0.1)
+        local viewportSize = Camera.ViewportSize
+        local windowSize = self.Container.AbsoluteSize
+        
+        -- Check if window needs scaling (too big for viewport)
+        if windowSize.X > viewportSize.X - 40 or windowSize.Y > viewportSize.Y - 40 then
+            -- Scale and position
+            updateWindowSize()
+        else
+            -- Just center without scaling
+            local centerX = (viewportSize.X - windowSize.X) / 2
+            local centerY = (viewportSize.Y - windowSize.Y) / 2
+            self.Container.Position = UDim2.fromOffset(centerX, centerY)
+        end
+    end)
 end
 
 function Window:AddCategory(config)
