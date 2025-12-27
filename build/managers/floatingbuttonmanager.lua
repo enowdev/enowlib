@@ -14,12 +14,12 @@ function FloatingButtonManager.new(config)
     self.TweenService = TweenService
     
     self.Config = {
-        Size = config.Size or UDim2.fromOffset(60, 60),
-        Position = config.Position or UDim2.new(1, -80, 0.5, -30),
+        Size = config.Size or UDim2.fromOffset(70, 70),
+        Position = config.Position or UDim2.new(1, -90, 0.5, -35),
         ImageId = config.ImageId or "rbxassetid://0",
         BackgroundColor = config.BackgroundColor or Color3.fromRGB(0, 0, 0),
         BackgroundTransparency = config.BackgroundTransparency or 0.3,
-        CornerRadius = config.CornerRadius or 30,
+        CornerRadius = config.CornerRadius or 35,
         OnClick = config.OnClick or function() end
     }
     
@@ -100,6 +100,24 @@ function FloatingButtonManager:SetupDragging()
             self.DragStart = input.Position
             self.StartPos = self.Button.AbsolutePosition
             
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    self.Dragging = false
+                    
+                    -- Scale back animation
+                    local tween = self.TweenService:Create(self.Button, TweenInfo.new(0.1), {
+                        Size = self.Config.Size
+                    })
+                    tween:Play()
+                    
+                    -- Check if it was a click (not drag)
+                    local dragDistance = (input.Position - self.DragStart).Magnitude
+                    if dragDistance < 5 then
+                        pcall(self.Config.OnClick)
+                    end
+                end
+            end)
+            
             -- Scale down animation
             local tween = self.TweenService:Create(self.Button, TweenInfo.new(0.1), {
                 Size = UDim2.fromOffset(
@@ -111,29 +129,8 @@ function FloatingButtonManager:SetupDragging()
         end
     end))
     
-    -- Input ended (mouse or touch)
-    table.insert(self.Connections, self.UserInputService.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            if self.Dragging then
-                self.Dragging = false
-                
-                -- Scale back animation
-                local tween = self.TweenService:Create(self.Button, TweenInfo.new(0.1), {
-                    Size = self.Config.Size
-                })
-                tween:Play()
-                
-                -- Check if it was a click (not drag)
-                local dragDistance = (input.Position - self.DragStart).Magnitude
-                if dragDistance < 5 then
-                    pcall(self.Config.OnClick)
-                end
-            end
-        end
-    end))
-    
     -- Input changed (mouse move or touch move)
-    table.insert(self.Connections, self.UserInputService.InputChanged:Connect(function(input)
+    table.insert(self.Connections, self.Button.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             if self.Dragging then
                 local delta = input.Position - self.DragStart

@@ -10,6 +10,7 @@ local EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowd
 -- Load managers
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/interfacemanager.lua" .. cacheBuster))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/savemanager.lua" .. cacheBuster))()
+local FloatingButtonManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/floatingbuttonmanager.lua" .. cacheBuster))()
 
 print("Library and managers loaded!")
 
@@ -34,6 +35,20 @@ local Window = EnowLib:CreateWindow({
 -- Initialize managers
 InterfaceManager:Initialize(Window)
 SaveManager:Initialize(Window)
+
+-- Create floating button to toggle UI
+local floatingButton = FloatingButtonManager.new({
+    Size = UDim2.fromOffset(70, 70),
+    Position = UDim2.new(1, -90, 0.5, -35),
+    ImageId = "rbxassetid://7733964719", -- Settings icon
+    BackgroundColor = Color3.fromRGB(0, 0, 0),
+    BackgroundTransparency = 0.3,
+    CornerRadius = 35,
+    OnClick = function()
+        Window:Toggle()
+        print("[FloatingButton] UI toggled!")
+    end
+})
 
 print("Window and managers initialized!")
 
