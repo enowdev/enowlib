@@ -259,9 +259,6 @@ function Window:SetupAutoResize()
     local UserInputService = game:GetService("UserInputService")
     local Camera = workspace.CurrentCamera
     
-    -- Track if user has manually moved the window
-    self.IsManuallyPositioned = false
-    
     -- Function to calculate scaled size
     local function calculateScaledSize()
         local viewportSize = Camera.ViewportSize
@@ -292,18 +289,36 @@ function Window:SetupAutoResize()
         local newSize = calculateScaledSize()
         local viewportSize = Camera.ViewportSize
         
-        -- Always recenter on resize to prevent header going off-screen
-        local centerX = (viewportSize.X - newSize.X) / 2
-        local centerY = (viewportSize.Y - newSize.Y) / 2
+        -- Get current position
+        local currentPos = self.Container.AbsolutePosition
         
-        -- Animate resize and recenter simultaneously
+        -- Calculate new position ensuring header stays visible
+        local minY = 0  -- Minimum Y to keep header visible
+        local maxY = viewportSize.Y - 48  -- At least 48px (header height) visible
+        local maxX = viewportSize.X - 100  -- At least 100px visible on right
+        
+        -- Clamp position to keep window within bounds
+        local newX = math.clamp(currentPos.X, 0, math.max(0, viewportSize.X - newSize.X))
+        local newY = math.clamp(currentPos.Y, minY, math.max(minY, viewportSize.Y - newSize.Y))
+        
+        -- If window would be too far right or bottom, adjust
+        if newX + newSize.X > viewportSize.X then
+            newX = viewportSize.X - newSize.X
+        end
+        if newY + newSize.Y > viewportSize.Y then
+            newY = viewportSize.Y - newSize.Y
+        end
+        
+        -- Ensure at least header is visible (48px from top)
+        if newY < 0 then
+            newY = 0
+        end
+        
+        -- Animate resize and reposition
         self.Utils.Tween(self.Container, {
             Size = UDim2.fromOffset(newSize.X, newSize.Y),
-            Position = UDim2.fromOffset(centerX, centerY)
+            Position = UDim2.fromOffset(newX, newY)
         }, 0.3)
-        
-        -- Reset manual position flag after recenter
-        self.IsManuallyPositioned = false
     end
     
     -- Listen to viewport size changes
