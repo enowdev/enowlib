@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 12:46:54
+-- Built: 2025-12-27 12:55:49
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2577,16 +2577,9 @@ function Window:CreateUI()
     self.Theme.CreateStroke(self.Container, self.Theme.Colors.Border)
     
     -- Add Acrylic Blur Effect
-    local blurFrame = Instance.new("Frame")
-    blurFrame.Name = "BlurFrame"
-    blurFrame.BackgroundTransparency = 1
-    blurFrame.Size = UDim2.new(1, 0, 1, 0)
-    blurFrame.ZIndex = 0
-    blurFrame.Parent = self.Container
-    
-    local blurEffect = Instance.new("BlurEffect")
-    blurEffect.Size = 24
-    blurEffect.Parent = game:GetService("Lighting")
+    self.BlurEffect = Instance.new("BlurEffect")
+    self.BlurEffect.Size = 24
+    self.BlurEffect.Parent = game:GetService("Lighting")
     
     -- Title Bar
     self.TitleBar = Instance.new("Frame")
@@ -2960,6 +2953,11 @@ end
 
 function Window:Toggle()
     self.Container.Visible = not self.Container.Visible
+    
+    -- Toggle blur effect
+    if self.BlurEffect then
+        self.BlurEffect.Enabled = self.Container.Visible
+    end
 end
 
 -- Component Factory Methods (for use in Content functions)

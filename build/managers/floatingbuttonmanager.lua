@@ -16,7 +16,7 @@ function FloatingButtonManager.new(config)
     self.Config = {
         Size = config.Size or UDim2.fromOffset(70, 70),
         Position = config.Position or UDim2.new(1, -90, 0.5, -35),
-        ImageId = config.ImageId or "rbxassetid://0",
+        ImageId = config.ImageId or "rbxassetid://103844172237114",
         BackgroundColor = config.BackgroundColor or Color3.fromRGB(0, 0, 0),
         BackgroundTransparency = config.BackgroundTransparency or 0.3,
         CornerRadius = config.CornerRadius or 35,
@@ -81,6 +81,9 @@ end
 
 function FloatingButtonManager:SetupDragging()
     local camera = workspace.CurrentCamera
+    local isDragging = false
+    local dragStart = nil
+    local startPos = nil
     
     -- Function to check boundaries
     local function checkBoundaries(position)
@@ -93,48 +96,49 @@ function FloatingButtonManager:SetupDragging()
         return Vector2.new(x, y)
     end
     
-    -- Input began (mouse or touch)
-    table.insert(self.Connections, self.Button.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            self.Dragging = true
-            self.DragStart = input.Position
-            self.StartPos = self.Button.AbsolutePosition
+    -- Mouse/Touch button down
+    table.insert(self.Connections, self.Button.MouseButton1Down:Connect(function()
+        isDragging = true
+        dragStart = self.UserInputService:GetMouseLocation()
+        startPos = self.Button.AbsolutePosition
+        
+        -- Scale down animation
+        local tween = self.TweenService:Create(self.Button, TweenInfo.new(0.1), {
+            Size = UDim2.fromOffset(
+                self.Config.Size.X.Offset * 0.9,
+                self.Config.Size.Y.Offset * 0.9
+            )
+        })
+        tween:Play()
+    end))
+    
+    -- Mouse/Touch button up
+    table.insert(self.Connections, self.Button.MouseButton1Up:Connect(function()
+        if isDragging then
+            isDragging = false
             
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    self.Dragging = false
-                    
-                    -- Scale back animation
-                    local tween = self.TweenService:Create(self.Button, TweenInfo.new(0.1), {
-                        Size = self.Config.Size
-                    })
-                    tween:Play()
-                    
-                    -- Check if it was a click (not drag)
-                    local dragDistance = (input.Position - self.DragStart).Magnitude
-                    if dragDistance < 5 then
-                        pcall(self.Config.OnClick)
-                    end
-                end
-            end)
-            
-            -- Scale down animation
+            -- Scale back animation
             local tween = self.TweenService:Create(self.Button, TweenInfo.new(0.1), {
-                Size = UDim2.fromOffset(
-                    self.Config.Size.X.Offset * 0.9,
-                    self.Config.Size.Y.Offset * 0.9
-                )
+                Size = self.Config.Size
             })
             tween:Play()
+            
+            -- Check if it was a click (not drag)
+            local currentPos = self.UserInputService:GetMouseLocation()
+            local dragDistance = (currentPos - dragStart).Magnitude
+            if dragDistance < 5 then
+                pcall(self.Config.OnClick)
+            end
         end
     end))
     
-    -- Input changed (mouse move or touch move)
-    table.insert(self.Connections, self.Button.InputChanged:Connect(function(input)
+    -- Mouse/Touch move
+    table.insert(self.Connections, self.UserInputService.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            if self.Dragging then
-                local delta = input.Position - self.DragStart
-                local newPosition = self.StartPos + delta
+            if isDragging then
+                local currentPos = self.UserInputService:GetMouseLocation()
+                local delta = currentPos - dragStart
+                local newPosition = startPos + delta
                 
                 -- Apply boundaries
                 local boundedPosition = checkBoundaries(newPosition)
@@ -146,7 +150,7 @@ function FloatingButtonManager:SetupDragging()
     
     -- Viewport size changed - recheck boundaries
     table.insert(self.Connections, camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
-        if not self.Dragging then
+        if not isDragging then
             local currentPos = self.Button.AbsolutePosition
             local boundedPosition = checkBoundaries(currentPos)
             

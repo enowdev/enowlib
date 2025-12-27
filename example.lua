@@ -40,7 +40,7 @@ SaveManager:Initialize(Window)
 local floatingButton = FloatingButtonManager.new({
     Size = UDim2.fromOffset(70, 70),
     Position = UDim2.new(1, -90, 0.5, -35),
-    ImageId = "rbxassetid://7733964719", -- Settings icon
+    ImageId = "rbxassetid://103844172237114", -- Menu icon
     BackgroundColor = Color3.fromRGB(0, 0, 0),
     BackgroundTransparency = 0.3,
     CornerRadius = 35,
