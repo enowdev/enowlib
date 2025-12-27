@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 15:53:26
+-- Built: 2025-12-27 15:57:05
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2767,57 +2767,74 @@ end
 
 function Window:MakeResizable(handle)
     local UserInputService = game:GetService("UserInputService")
+    local RunService = game:GetService("RunService")
     
     local resizing = false
     local resizeStart = nil
     local startSize = nil
+    local touchInput = nil
+    local renderConnection = nil
     
     -- Mouse button down on handle
     handle.MouseButton1Down:Connect(function()
         resizing = true
         resizeStart = UserInputService:GetMouseLocation()
         startSize = self.Container.AbsoluteSize
+        touchInput = nil
     end)
     
-    -- Touch/Mouse began on handle
+    -- Touch began on handle
     handle.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.Touch then
             resizing = true
+            touchInput = input
             resizeStart = input.Position
             startSize = self.Container.AbsoluteSize
+            
+            -- Start polling touch position every frame
+            if renderConnection then
+                renderConnection:Disconnect()
+            end
+            
+            renderConnection = RunService.RenderStepped:Connect(function()
+                if resizing and touchInput then
+                    local currentPos = touchInput.Position
+                    local delta = currentPos - resizeStart
+                    
+                    -- Calculate new size
+                    local newWidth = startSize.X + delta.X
+                    local newHeight = startSize.Y + delta.Y
+                    
+                    -- Apply min/max constraints
+                    newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
+                    newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
+                    
+                    -- Update container size
+                    self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
+                end
+            end)
         end
     end)
     
-    -- Touch/Mouse ended on handle
+    -- Touch/Mouse ended
     handle.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.Touch then
+            if input == touchInput then
+                resizing = false
+                touchInput = nil
+                if renderConnection then
+                    renderConnection:Disconnect()
+                    renderConnection = nil
+                end
+            end
+        elseif input.UserInputType == Enum.UserInputType.MouseButton1 then
             resizing = false
         end
     end)
     
-    -- Input changed on handle (for touch)
-    handle.InputChanged:Connect(function(input)
-        if not resizing then return end
-        
-        if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseMovement then
-            local delta = input.Position - resizeStart
-            
-            -- Calculate new size
-            local newWidth = startSize.X + delta.X
-            local newHeight = startSize.Y + delta.Y
-            
-            -- Apply min/max constraints
-            newWidth = math.clamp(newWidth, self.MinSize.X, self.MaxSize.X)
-            newHeight = math.clamp(newHeight, self.MinSize.Y, self.MaxSize.Y)
-            
-            -- Update container size
-            self.Container.Size = UDim2.fromOffset(newWidth, newHeight)
-        end
-    end)
-    
-    -- Global input changed for mouse movement (when mouse leaves handle)
+    -- Global input changed for mouse movement
     UserInputService.InputChanged:Connect(function(input)
-        if not resizing then return end
+        if not resizing or touchInput then return end
         
         if input.UserInputType == Enum.UserInputType.MouseMovement then
             local currentPos = UserInputService:GetMouseLocation()
@@ -2840,6 +2857,15 @@ function Window:MakeResizable(handle)
     UserInputService.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             resizing = false
+        elseif input.UserInputType == Enum.UserInputType.Touch then
+            if input == touchInput then
+                resizing = false
+                touchInput = nil
+                if renderConnection then
+                    renderConnection:Disconnect()
+                    renderConnection = nil
+                end
+            end
         end
     end)
 end
