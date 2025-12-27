@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 15:19:42
+-- Built: 2025-12-27 15:25:12
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2967,6 +2967,14 @@ function Window:Toggle()
     -- Toggle blur effect
     if self.BlurEffect then
         self.BlurEffect.Enabled = self.Container.Visible
+    else
+        -- Try to find blur effect if not cached
+        local Lighting = game:GetService("Lighting")
+        local blur = Lighting:FindFirstChildOfClass("BlurEffect")
+        if blur then
+            self.BlurEffect = blur
+            blur.Enabled = self.Container.Visible
+        end
     end
 end
 
