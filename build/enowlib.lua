@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 14:49:34
+-- Built: 2025-12-27 15:00:08
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2505,18 +2505,18 @@ function Window:CreateUI()
     self.TitleBar = Instance.new("Frame")
     self.TitleBar.Name = "TitleBar"
     self.TitleBar.BackgroundTransparency = 1
-    self.TitleBar.Size = UDim2.new(1, 0, 0, 28)
+    self.TitleBar.Size = UDim2.new(1, 0, 0, 36)
     self.TitleBar.Parent = self.Container
     
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
     title.Size = UDim2.new(1, -40, 1, 0)
-    title.Position = UDim2.fromOffset(8, 0)
+    title.Position = UDim2.fromOffset(12, 0)
     title.Font = self.Theme.Font.Bold
     title.Text = self.Config.Title
     title.TextColor3 = self.Theme.Colors.Text
-    title.TextSize = self.Theme.Font.Size.Small
+    title.TextSize = self.Theme.Font.Size.Regular
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = self.TitleBar
     
@@ -2525,8 +2525,8 @@ function Window:CreateUI()
     closeBtn.BackgroundColor3 = self.Theme.Colors.Secondary
     closeBtn.BackgroundTransparency = self.Theme.Transparency.Subtle
     closeBtn.BorderSizePixel = 0
-    closeBtn.Size = UDim2.fromOffset(20, 20)
-    closeBtn.Position = UDim2.new(1, -26, 0.5, -10)
+    closeBtn.Size = UDim2.fromOffset(24, 24)
+    closeBtn.Position = UDim2.new(1, -30, 0.5, -12)
     closeBtn.Text = ""
     closeBtn.Parent = self.TitleBar
     
@@ -2535,7 +2535,7 @@ function Window:CreateUI()
     -- Close Icon
     local closeIcon = Instance.new("ImageLabel")
     closeIcon.BackgroundTransparency = 1
-    closeIcon.Size = UDim2.fromOffset(14, 14)
+    closeIcon.Size = UDim2.fromOffset(16, 16)
     closeIcon.Position = UDim2.fromScale(0.5, 0.5)
     closeIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     closeIcon.Image = self.Theme.Icons.X
@@ -2572,7 +2572,7 @@ function Window:CreateUI()
     separator.BackgroundColor3 = self.Theme.Colors.Border
     separator.BorderSizePixel = 0
     separator.Size = UDim2.new(1, 0, 0, 1)
-    separator.Position = UDim2.new(0, 0, 0, 28)
+    separator.Position = UDim2.new(0, 0, 0, 36)
     separator.Parent = self.Container
     
     self.HeaderSeparator = separator
@@ -2589,8 +2589,8 @@ function Window:CreateUI()
     self.Sidebar.BackgroundColor3 = self.Theme.Colors.Panel
     self.Sidebar.BackgroundTransparency = 0.2
     self.Sidebar.BorderSizePixel = 0
-    self.Sidebar.Size = UDim2.new(sidebarWidth, 0, 1, -47)
-    self.Sidebar.Position = UDim2.fromOffset(0, 29)
+    self.Sidebar.Size = UDim2.new(sidebarWidth, 0, 1, -61)
+    self.Sidebar.Position = UDim2.fromOffset(0, 37)
     self.Sidebar.Parent = self.Container
     
     -- Sidebar Header
@@ -2639,8 +2639,8 @@ function Window:CreateUI()
     self.VerticalSeparator.Name = "VerticalSeparator"
     self.VerticalSeparator.BackgroundColor3 = self.Theme.Colors.Border
     self.VerticalSeparator.BorderSizePixel = 0
-    self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -47)
-    self.VerticalSeparator.Position = UDim2.new(sidebarWidth, 0, 0, 29)
+    self.VerticalSeparator.Size = UDim2.new(0, 1, 1, -61)
+    self.VerticalSeparator.Position = UDim2.new(sidebarWidth, 0, 0, 37)
     self.VerticalSeparator.Parent = self.Container
     
     -- Content Area - Use remaining width
@@ -2650,8 +2650,8 @@ function Window:CreateUI()
     self.ContentArea.BackgroundColor3 = self.Theme.Colors.Background
     self.ContentArea.BackgroundTransparency = 0.2
     self.ContentArea.BorderSizePixel = 0
-    self.ContentArea.Size = UDim2.new(contentWidth, -1, 1, -47)
-    self.ContentArea.Position = UDim2.new(sidebarWidth, 1, 0, 29)
+    self.ContentArea.Size = UDim2.new(contentWidth, -1, 1, -61)
+    self.ContentArea.Position = UDim2.new(sidebarWidth, 1, 0, 37)
     self.ContentArea.ScrollBarThickness = 4
     self.ContentArea.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.ContentArea.CanvasSize = UDim2.fromOffset(0, 0)
@@ -2674,26 +2674,26 @@ function Window:CreateUI()
     self.FooterSeparator.BackgroundColor3 = self.Theme.Colors.Border
     self.FooterSeparator.BorderSizePixel = 0
     self.FooterSeparator.Size = UDim2.new(1, 0, 0, 1)
-    self.FooterSeparator.Position = UDim2.new(0, 0, 1, -16)
+    self.FooterSeparator.Position = UDim2.new(0, 0, 1, -24)
     self.FooterSeparator.Parent = self.Container
     
     -- Footer
     self.Footer = Instance.new("Frame")
     self.Footer.Name = "Footer"
     self.Footer.BackgroundTransparency = 1
-    self.Footer.Size = UDim2.new(1, 0, 0, 16)
-    self.Footer.Position = UDim2.new(0, 0, 1, -16)
+    self.Footer.Size = UDim2.new(1, 0, 0, 24)
+    self.Footer.Position = UDim2.new(0, 0, 1, -24)
     self.Footer.Parent = self.Container
     
     -- Footer Text (read-only)
     self.FooterLabel = Instance.new("TextLabel")
     self.FooterLabel.BackgroundTransparency = 1
     self.FooterLabel.Size = UDim2.new(1, -16, 1, 0)
-    self.FooterLabel.Position = UDim2.fromOffset(8, 0)
+    self.FooterLabel.Position = UDim2.fromOffset(12, 0)
     self.FooterLabel.Font = self.Theme.Font.Mono
     self.FooterLabel.Text = "EnowLib v2.0.0"
     self.FooterLabel.TextColor3 = self.Theme.Colors.TextDim
-    self.FooterLabel.TextSize = 9
+    self.FooterLabel.TextSize = 11
     self.FooterLabel.TextXAlignment = Enum.TextXAlignment.Left
     self.FooterLabel.Parent = self.Footer
     
@@ -2794,7 +2794,7 @@ function Window:SetupAutoResize()
             newY = viewportSize.Y - newSize.Y
         end
         
-        -- Ensure at least header is visible (28px from top)
+        -- Ensure at least header is visible (36px from top)
         if newY < 0 then
             newY = 0
         end
