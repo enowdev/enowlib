@@ -23,6 +23,11 @@ const managers = [
         name: 'SaveManager',
         source: 'src/managers/savemanager.lua',
         output: 'build/managers/savemanager.lua'
+    },
+    {
+        name: 'FloatingButtonManager',
+        source: 'src/managers/floatingbuttonmanager.lua',
+        output: 'build/managers/floatingbuttonmanager.lua'
     }
 ];
 
