@@ -96,6 +96,7 @@ function Dropdown:CreateUI()
     self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
     self.OptionsList.Visible = false
+    self.OptionsList.ClipsDescendants = true
     self.OptionsList.ZIndex = 5
     self.OptionsList.Parent = self.Container
     

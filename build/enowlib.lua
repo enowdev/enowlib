@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 13:46:12
+-- Built: 2025-12-27 13:49:05
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -1125,6 +1125,7 @@ function Dropdown:CreateUI()
     self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
     self.OptionsList.Visible = false
+    self.OptionsList.ClipsDescendants = true
     self.OptionsList.ZIndex = 5
     self.OptionsList.Parent = self.Container
     
@@ -1399,6 +1400,7 @@ function MultiSelect:CreateUI()
     self.OptionsList.ScrollBarImageColor3 = self.Theme.Colors.Border
     self.OptionsList.CanvasSize = UDim2.fromOffset(0, 0)
     self.OptionsList.Visible = false
+    self.OptionsList.ClipsDescendants = true
     self.OptionsList.ZIndex = 5
     self.OptionsList.Parent = self.Container
     
