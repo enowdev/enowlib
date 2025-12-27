@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 10:20:21
+-- Built: 2025-12-27 11:00:03
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -2680,9 +2680,15 @@ function Window:SetupAutoResize()
     local function calculateScaledSize()
         local viewportSize = Camera.ViewportSize
         
-        -- Calculate size that fits viewport with 40px margin
-        local maxWidth = viewportSize.X - 40
-        local maxHeight = viewportSize.Y - 40
+        -- Use larger margin for mobile devices (smaller screens)
+        local margin = 80  -- Increased from 40 for better mobile UX
+        if viewportSize.X < 768 or viewportSize.Y < 768 then
+            margin = 100  -- Even larger margin for very small screens
+        end
+        
+        -- Calculate size that fits viewport with margin
+        local maxWidth = viewportSize.X - margin
+        local maxHeight = viewportSize.Y - margin
         
         -- Start with original size
         local newWidth = self.OriginalSize.X
@@ -2753,8 +2759,14 @@ function Window:SetupAutoResize()
         local viewportSize = Camera.ViewportSize
         local windowSize = self.Container.AbsoluteSize
         
+        -- Determine margin based on screen size
+        local margin = 80
+        if viewportSize.X < 768 or viewportSize.Y < 768 then
+            margin = 100
+        end
+        
         -- Check if window needs scaling (too big for viewport)
-        if windowSize.X > viewportSize.X - 40 or windowSize.Y > viewportSize.Y - 40 then
+        if windowSize.X > viewportSize.X - margin or windowSize.Y > viewportSize.Y - margin then
             -- Scale and position
             updateWindowSize()
         else
