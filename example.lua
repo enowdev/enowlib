@@ -11,6 +11,7 @@ local EnowLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowd
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/interfacemanager.lua" .. cacheBuster))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/savemanager.lua" .. cacheBuster))()
 local FloatingButtonManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/floatingbuttonmanager.lua" .. cacheBuster))()
+local NotificationManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/enowdev/enowlib/refs/heads/main/build/managers/notificationmanager.lua" .. cacheBuster))()
 
 print("Library and managers loaded!")
 
@@ -35,6 +36,12 @@ local Window = EnowLib:CreateWindow({
 -- Initialize managers
 InterfaceManager:Initialize(Window)
 SaveManager:Initialize(Window)
+NotificationManager:Initialize(Window)
+
+-- Link managers to window
+Window.InterfaceManager = InterfaceManager
+Window.SaveManager = SaveManager
+Window.NotificationManager = NotificationManager
 
 -- Create floating button to toggle UI
 local floatingButton = FloatingButtonManager.new({
@@ -350,6 +357,16 @@ SettingsCategory:AddItem({
             end
         })
         
+        -- Notifications toggle
+        interfaceSection:AddToggle({
+            Text = "Enable Notifications",
+            Default = InterfaceManager.Settings.NotificationsEnabled,
+            Callback = function(value)
+                InterfaceManager:SetNotificationsEnabled(value)
+                print("[Interface] Notifications:", value)
+            end
+        })
+        
         -- Minimize keybind
         interfaceSection:AddKeybind({
             Text = "Minimize Key",
@@ -465,6 +482,127 @@ SettingsCategory:AddItem({
                     SaveManager:DisableAutoSave()
                     print("[SaveManager] Auto-save disabled")
                 end
+            end
+        })
+    end
+})
+
+-- Notification Manager Tab
+SettingsCategory:AddItem({
+    Title = "Notifications.lua",
+    Icon = Icons.FileCode,
+    Content = function(window)
+        window:AddLabel({
+            Text = "> Notification Manager",
+            Size = 18,
+            Color = window.Theme.Colors.Accent,
+            Font = window.Theme.Font.Bold
+        })
+        
+        window:AddParagraph({
+            Title = "About Notifications",
+            Content = "Toast notifications appear in the bottom-right corner. They auto-dismiss after a few seconds and support different types: Info, Success, Warning, and Error."
+        })
+        
+        window:AddDivider()
+        
+        local notifSection = window:AddSection({
+            Title = "Test Notifications"
+        })
+        
+        -- Info notification
+        notifSection:AddButton({
+            Text = "Show Info Notification",
+            Callback = function()
+                NotificationManager:Info("Information", "This is an info notification")
+                print("[Notification] Info notification shown")
+            end
+        })
+        
+        -- Success notification
+        notifSection:AddButton({
+            Text = "Show Success Notification",
+            Callback = function()
+                NotificationManager:Success("Success!", "Operation completed successfully")
+                print("[Notification] Success notification shown")
+            end
+        })
+        
+        -- Warning notification
+        notifSection:AddButton({
+            Text = "Show Warning Notification",
+            Callback = function()
+                NotificationManager:Warning("Warning", "This is a warning message")
+                print("[Notification] Warning notification shown")
+            end
+        })
+        
+        -- Error notification
+        notifSection:AddButton({
+            Text = "Show Error Notification",
+            Callback = function()
+                NotificationManager:Error("Error!", "Something went wrong")
+                print("[Notification] Error notification shown")
+            end
+        })
+        
+        notifSection:AddDivider()
+        
+        -- Custom notification
+        local customTitle = "Custom"
+        local customMessage = "Custom message"
+        local customDuration = 3
+        
+        notifSection:AddTextBox({
+            Text = "Custom Title",
+            Placeholder = "Enter title...",
+            Default = "Custom",
+            Callback = function(value)
+                customTitle = value
+            end
+        })
+        
+        notifSection:AddTextBox({
+            Text = "Custom Message",
+            Placeholder = "Enter message...",
+            Default = "Custom message",
+            Callback = function(value)
+                customMessage = value
+            end
+        })
+        
+        notifSection:AddSlider({
+            Text = "Duration (seconds)",
+            Min = 1,
+            Max = 10,
+            Default = 3,
+            Callback = function(value)
+                customDuration = value
+            end
+        })
+        
+        notifSection:AddButton({
+            Text = "Show Custom Notification",
+            Callback = function()
+                NotificationManager:Notify({
+                    Title = customTitle,
+                    Message = customMessage,
+                    Type = "info",
+                    Duration = customDuration,
+                    Icon = "rbxassetid://10734950309"
+                })
+                print("[Notification] Custom notification shown")
+            end
+        })
+        
+        notifSection:AddDivider()
+        
+        -- Clear all button
+        notifSection:AddButton({
+            Text = "Clear All Notifications",
+            Callback = function()
+                NotificationManager:ClearAll()
+                print("[Notification] All notifications cleared")
             end
         })
     end
