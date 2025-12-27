@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 13:25:58
+-- Built: 2025-12-27 13:30:15
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -657,7 +657,7 @@ function Toggle:CreateUI()
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -40, 1, 0)
+    title.Size = UDim2.new(1, -51, 1, 0)  -- Account for switch width (27) + margins (8+8+8)
     title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
@@ -671,8 +671,8 @@ function Toggle:CreateUI()
     self.Switch.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Switch.BorderSizePixel = 0
     self.Switch.Size = UDim2.fromOffset(27, 15)  -- 36x20 * 0.75 = 27x15
-    self.Switch.Position = UDim2.new(1, 0, 0.5, 0)
-    self.Switch.AnchorPoint = Vector2.new(1, 0.5)
+    self.Switch.Position = UDim2.new(1, -35, 0.5, 0)  -- 8px margin from right
+    self.Switch.AnchorPoint = Vector2.new(0, 0.5)
     self.Switch.Parent = self.Container
     
     self.Theme.CreateCorner(self.Switch, 8)
@@ -809,7 +809,7 @@ function Slider:CreateUI()
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -45, 0, 14)  -- 60 * 0.75 = 45, 18 * 0.75 = 13.5 ≈ 14
+    title.Size = UDim2.new(1, -62, 0, 14)  -- Account for value label (38) + margins (8+8+8)
     title.Position = UDim2.fromOffset(8, 8)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
@@ -822,7 +822,7 @@ function Slider:CreateUI()
     self.ValueLabel = Instance.new("TextLabel")
     self.ValueLabel.BackgroundTransparency = 1
     self.ValueLabel.Size = UDim2.fromOffset(38, 14)  -- 50 * 0.75 = 37.5 ≈ 38, 18 * 0.75 = 13.5 ≈ 14
-    self.ValueLabel.Position = UDim2.new(1, -46, 0, 8)
+    self.ValueLabel.Position = UDim2.new(1, -46, 0, 8)  -- 8px margin from right
     self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Accent
@@ -1591,7 +1591,7 @@ function ColorPicker:CreateUI()
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -45, 1, 0)  -- 60 * 0.75 = 45
+    title.Size = UDim2.new(1, -57, 1, 0)  -- Account for color display (33) + margins (8+8+8)
     title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
@@ -1605,8 +1605,8 @@ function ColorPicker:CreateUI()
     self.ColorDisplay.BackgroundColor3 = self.Value
     self.ColorDisplay.BorderSizePixel = 0
     self.ColorDisplay.Size = UDim2.fromOffset(33, 18)  -- 44x24 * 0.75 = 33x18
-    self.ColorDisplay.Position = UDim2.new(1, -8, 0.5, 0)
-    self.ColorDisplay.AnchorPoint = Vector2.new(1, 0.5)
+    self.ColorDisplay.Position = UDim2.new(1, -41, 0.5, 0)  -- 8px margin from right
+    self.ColorDisplay.AnchorPoint = Vector2.new(0, 0.5)
     self.ColorDisplay.Text = ""
     self.ColorDisplay.Parent = self.Container
     
@@ -1683,7 +1683,7 @@ function Keybind:CreateUI()
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -70, 1, 0)  -- 100 * 0.75 = 75, but use 70
+    title.Size = UDim2.new(1, -78, 1, 0)  -- Account for keybind button (60) + margins (8+8+2)
     title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
@@ -1697,8 +1697,8 @@ function Keybind:CreateUI()
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BorderSizePixel = 0
     self.Button.Size = UDim2.fromOffset(60, 18)  -- 80x24 * 0.75 = 60x18
-    self.Button.Position = UDim2.new(1, -8, 0.5, 0)
-    self.Button.AnchorPoint = Vector2.new(1, 0.5)
+    self.Button.Position = UDim2.new(1, -68, 0.5, 0)  -- 8px margin from right
+    self.Button.AnchorPoint = Vector2.new(0, 0.5)
     self.Button.Font = self.Theme.Font.Mono
     self.Button.Text = self.Value
     self.Button.TextColor3 = self.Theme.Colors.Text

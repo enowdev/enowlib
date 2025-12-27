@@ -37,7 +37,7 @@ function Toggle:CreateUI()
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -40, 1, 0)
+    title.Size = UDim2.new(1, -51, 1, 0)  -- Account for switch width (27) + margins (8+8+8)
     title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
@@ -51,8 +51,8 @@ function Toggle:CreateUI()
     self.Switch.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Switch.BorderSizePixel = 0
     self.Switch.Size = UDim2.fromOffset(27, 15)  -- 36x20 * 0.75 = 27x15
-    self.Switch.Position = UDim2.new(1, 0, 0.5, 0)
-    self.Switch.AnchorPoint = Vector2.new(1, 0.5)
+    self.Switch.Position = UDim2.new(1, -35, 0.5, 0)  -- 8px margin from right
+    self.Switch.AnchorPoint = Vector2.new(0, 0.5)
     self.Switch.Parent = self.Container
     
     self.Theme.CreateCorner(self.Switch, 8)

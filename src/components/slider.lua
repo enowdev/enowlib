@@ -43,7 +43,7 @@ function Slider:CreateUI()
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -45, 0, 14)  -- 60 * 0.75 = 45, 18 * 0.75 = 13.5 ≈ 14
+    title.Size = UDim2.new(1, -62, 0, 14)  -- Account for value label (38) + margins (8+8+8)
     title.Position = UDim2.fromOffset(8, 8)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Text
@@ -56,7 +56,7 @@ function Slider:CreateUI()
     self.ValueLabel = Instance.new("TextLabel")
     self.ValueLabel.BackgroundTransparency = 1
     self.ValueLabel.Size = UDim2.fromOffset(38, 14)  -- 50 * 0.75 = 37.5 ≈ 38, 18 * 0.75 = 13.5 ≈ 14
-    self.ValueLabel.Position = UDim2.new(1, -46, 0, 8)
+    self.ValueLabel.Position = UDim2.new(1, -46, 0, 8)  -- 8px margin from right
     self.ValueLabel.Font = self.Theme.Font.Bold
     self.ValueLabel.Text = tostring(self.Value)
     self.ValueLabel.TextColor3 = self.Theme.Colors.Accent

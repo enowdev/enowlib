@@ -39,7 +39,7 @@ function Keybind:CreateUI()
     -- Title
     local title = Instance.new("TextLabel")
     title.BackgroundTransparency = 1
-    title.Size = UDim2.new(1, -70, 1, 0)  -- 100 * 0.75 = 75, but use 70
+    title.Size = UDim2.new(1, -78, 1, 0)  -- Account for keybind button (60) + margins (8+8+2)
     title.Position = UDim2.fromOffset(8, 0)
     title.Font = self.Theme.Font.Regular
     title.Text = self.Config.Title
@@ -53,8 +53,8 @@ function Keybind:CreateUI()
     self.Button.BackgroundColor3 = self.Theme.Colors.Secondary
     self.Button.BorderSizePixel = 0
     self.Button.Size = UDim2.fromOffset(60, 18)  -- 80x24 * 0.75 = 60x18
-    self.Button.Position = UDim2.new(1, -8, 0.5, 0)
-    self.Button.AnchorPoint = Vector2.new(1, 0.5)
+    self.Button.Position = UDim2.new(1, -68, 0.5, 0)  -- 8px margin from right
+    self.Button.AnchorPoint = Vector2.new(0, 0.5)
     self.Button.Font = self.Theme.Font.Mono
     self.Button.Text = self.Value
     self.Button.TextColor3 = self.Theme.Colors.Text
