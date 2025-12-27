@@ -44,7 +44,7 @@ function Divider:CreateUI()
         text.Parent = self.Container
         
         local textSizeConstraint = Instance.new("UITextSizeConstraint")
-        textSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+        textSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
         textSizeConstraint.Parent = text
         
         local rightLine = Instance.new("Frame")

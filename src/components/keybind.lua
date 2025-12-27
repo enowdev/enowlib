@@ -49,7 +49,7 @@ function Keybind:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     titleSizeConstraint.Parent = title
     
     -- Keybind Button
@@ -69,7 +69,7 @@ function Keybind:CreateUI()
     self.Theme.CreateCorner(self.Button, 4)
     
     local buttonSizeConstraint = Instance.new("UITextSizeConstraint")
-    buttonSizeConstraint.MaxTextSize = 10  -- Small * 0.75 ≈ 10
+    buttonSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     buttonSizeConstraint.Parent = self.Button
     
     -- Events

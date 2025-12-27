@@ -34,7 +34,7 @@ function Button:CreateUI()
     
     -- Add TextSizeConstraint for better scaling
     local textConstraint = Instance.new("UITextSizeConstraint")
-    textConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    textConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     textConstraint.MinTextSize = 8
     textConstraint.Parent = self.Container
     

@@ -46,7 +46,7 @@ function ColorPicker:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     titleSizeConstraint.Parent = title
     
     -- Color Display

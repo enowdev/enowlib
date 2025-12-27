@@ -1,6 +1,6 @@
 -- EnowLib v2.0.0
 -- Radix UI Style - Modern Minimalist Design
--- Built: 2025-12-27 13:01:17
+-- Built: 2025-12-27 13:06:15
 -- Author: EnowHub Development
 
 local EnowLib = {}
@@ -548,7 +548,7 @@ function Divider:CreateUI()
         text.Parent = self.Container
         
         local textSizeConstraint = Instance.new("UITextSizeConstraint")
-        textSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+        textSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
         textSizeConstraint.Parent = text
         
         local rightLine = Instance.new("Frame")
@@ -610,7 +610,7 @@ function Button:CreateUI()
     
     -- Add TextSizeConstraint for better scaling
     local textConstraint = Instance.new("UITextSizeConstraint")
-    textConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    textConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     textConstraint.MinTextSize = 8
     textConstraint.Parent = self.Container
     
@@ -691,7 +691,7 @@ function Toggle:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     titleSizeConstraint.Parent = title
     
     -- Switch
@@ -847,7 +847,7 @@ function Slider:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     titleSizeConstraint.Parent = title
     
     -- Value
@@ -863,7 +863,7 @@ function Slider:CreateUI()
     self.ValueLabel.Parent = self.Container
     
     local valueSizeConstraint = Instance.new("UITextSizeConstraint")
-    valueSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    valueSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     valueSizeConstraint.Parent = self.ValueLabel
     
     -- Track
@@ -1031,7 +1031,7 @@ function TextBox:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     titleSizeConstraint.Parent = title
     
     -- Input Box
@@ -1054,7 +1054,7 @@ function TextBox:CreateUI()
     self.Theme.CreatePadding(self.InputBox, 8)
     
     local inputBoxSizeConstraint = Instance.new("UITextSizeConstraint")
-    inputBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    inputBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     inputBoxSizeConstraint.Parent = self.InputBox
     
     -- Events
@@ -1673,7 +1673,7 @@ function ColorPicker:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     titleSizeConstraint.Parent = title
     
     -- Color Display
@@ -1769,7 +1769,7 @@ function Keybind:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     titleSizeConstraint.Parent = title
     
     -- Keybind Button
@@ -1789,7 +1789,7 @@ function Keybind:CreateUI()
     self.Theme.CreateCorner(self.Button, 4)
     
     local buttonSizeConstraint = Instance.new("UITextSizeConstraint")
-    buttonSizeConstraint.MaxTextSize = 10  -- Small * 0.75 ≈ 10
+    buttonSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     buttonSizeConstraint.Parent = self.Button
     
     -- Events
@@ -2365,7 +2365,7 @@ function Tab:CreateUI()
     title.Parent = self.Button
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     titleSizeConstraint.Parent = title
     
     self.Title = title

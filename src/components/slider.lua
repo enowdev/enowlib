@@ -53,7 +53,7 @@ function Slider:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     titleSizeConstraint.Parent = title
     
     -- Value
@@ -69,7 +69,7 @@ function Slider:CreateUI()
     self.ValueLabel.Parent = self.Container
     
     local valueSizeConstraint = Instance.new("UITextSizeConstraint")
-    valueSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    valueSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     valueSizeConstraint.Parent = self.ValueLabel
     
     -- Track

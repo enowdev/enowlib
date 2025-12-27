@@ -47,7 +47,7 @@ function TextBox:CreateUI()
     title.Parent = self.Container
     
     local titleSizeConstraint = Instance.new("UITextSizeConstraint")
-    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    titleSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     titleSizeConstraint.Parent = title
     
     -- Input Box
@@ -70,7 +70,7 @@ function TextBox:CreateUI()
     self.Theme.CreatePadding(self.InputBox, 8)
     
     local inputBoxSizeConstraint = Instance.new("UITextSizeConstraint")
-    inputBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Small
+    inputBoxSizeConstraint.MaxTextSize = self.Theme.Font.Size.Regular
     inputBoxSizeConstraint.Parent = self.InputBox
     
     -- Events
