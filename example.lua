@@ -24,7 +24,10 @@ print("Creating window...")
 
 local Window = EnowLib:CreateWindow({
     Title = "EnowHub UI Testing",
-    Size = UDim2.fromOffset(900, 600)
+    Size = UDim2.fromOffset(900, 600),
+    AutoResize = true,
+    MinSize = Vector2.new(600, 400),
+    MaxSize = Vector2.new(1400, 900)
 })
 
 -- Initialize managers
@@ -310,7 +313,7 @@ SettingsCategory:AddItem({
         
         window:AddParagraph({
             Title = "About Interface Manager",
-            Content = "Manage UI visibility, keybinds, and themes. Press the minimize key to toggle UI visibility. Choose from 8 beautiful themes inspired by Kiro IDE."
+            Content = "Manage UI visibility, keybinds, and themes. Press the minimize key to toggle UI visibility. Choose from 8 beautiful themes inspired by Kiro IDE. Auto-resize is enabled by default."
         })
         
         window:AddDivider()
@@ -347,6 +350,23 @@ SettingsCategory:AddItem({
                     print("[Interface] Minimize key set to:", key)
                 end
             end
+        })
+        
+        window:AddDivider()
+        
+        window:AddLabel({
+            Text = "Auto-Resize Feature:",
+            Color = window.Theme.Colors.Accent
+        })
+        
+        window:AddLabel({
+            Text = "Window automatically scales when screen size changes (PC resize, mobile split-screen, tablet rotation)",
+            Color = window.Theme.Colors.TextDim
+        })
+        
+        window:AddLabel({
+            Text = "Min: 600x400 | Max: 1400x900 | Scale: 0.5x - 1.2x",
+            Color = window.Theme.Colors.TextDim
         })
         
         window:AddDivider()
